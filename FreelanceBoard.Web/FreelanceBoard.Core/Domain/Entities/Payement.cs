@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FreelanceBoard.Core.Domain
+namespace FreelanceBoard.Core.Domain.Entities
 {
     public class Payement
     {

@@ -6,23 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FreelanceBoard.Core.Domain
+namespace FreelanceBoard.Core.Domain.Entities
 {
-    public class Proposal
+    public class Notification
     {
         [Key]
         public int Id { get; set; }
-        public string Message { get; set; }
+        public string Body { get; set; }
+        public bool IsRead { get; set; }
         public string Status { get; set; }
-        public decimal Price { get; set; }
+        public DateTime Date { get; set; }
 
         [ForeignKey("User")]
         public string UserId { get; set; }
-        
-        [ForeignKey("Job")]
-        public int JobId { get; set; }
         public virtual ApplicationUser User { get; set; }
-        public virtual Job Job { get; set; }
-
     }
 }

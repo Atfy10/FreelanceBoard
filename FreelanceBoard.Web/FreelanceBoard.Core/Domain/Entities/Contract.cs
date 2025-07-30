@@ -5,8 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FreelanceBoard.Core.Domain.Enums;
 
-namespace FreelanceBoard.Core.Domain
+
+namespace FreelanceBoard.Core.Domain.Entities
 {
     public class Contract
     {
@@ -15,9 +17,9 @@ namespace FreelanceBoard.Core.Domain
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal Price { get; set; }
-        public string Status { get; set; }
+		public ContractStatus Status { get; set; } //after Review i think it must be enum
 
-        [ForeignKey("User")]
+		[ForeignKey("User")]
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 

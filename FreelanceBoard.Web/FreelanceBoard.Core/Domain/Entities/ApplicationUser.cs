@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FreelanceBoard.Core.Domain
+namespace FreelanceBoard.Core.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
@@ -17,12 +17,19 @@ namespace FreelanceBoard.Core.Domain
         //Navigation Properties
         public virtual ICollection<Job> Jobs { get; set; }
         public virtual Profile Profile { get; set; }
-        public virtual Proposal Proposal { get; set; }
-        public virtual ICollection<Notification> Notifications { get; set; }
+
+		// after REVIEW i think each user can have more than one proposal
+		//public virtual Proposal Proposal { get; set; }
+		public virtual ICollection<Proposal> Proposals { get; set; } //added
+
+		public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Contract> Contracts { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
-        public virtual ICollection<Skill> Skills { get; set; }
+		//after Review i think each user and skills has relation many to many so we need add new class
+		//public virtual ICollection<Skill> Skills { get; set; }
+		public virtual ICollection<UserSkill> UserSkills { get; set; } = new List<UserSkill>();
 
-    }
+
+	}
 }
