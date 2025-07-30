@@ -18,7 +18,7 @@ namespace FreelanceBoard.Core.Domain
         public decimal Price { get; set; }
 
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
         public virtual Contract Contract { get; set; }
         public virtual ICollection<Skill> Skills { get; set; }

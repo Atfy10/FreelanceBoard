@@ -18,17 +18,17 @@ namespace FreelanceBoard.Core.Domain
         public string Status { get; set; }
 
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
         [ForeignKey("Job")]
 
-        public int ContractId { get; set; }
+        public int JobId { get; set; }
         public virtual Job Job { get; set; }
 
         [ForeignKey("Payement")]
 
-        public int PayementNumber { get; set; }
+        public string PayementNumber { get; set; }
         public virtual Payement Payement { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }
