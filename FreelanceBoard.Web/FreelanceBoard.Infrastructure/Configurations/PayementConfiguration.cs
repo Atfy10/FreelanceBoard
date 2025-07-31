@@ -9,26 +9,24 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FreelanceBoard.Infrastructure.Configurations
 {
-	internal class ContractConfiguration : IEntityTypeConfiguration<Contract>
+	internal class PayementConfiguration : IEntityTypeConfiguration<Payement>
 	{
-		public void Configure(EntityTypeBuilder<Contract> builder)
+		public void Configure(EntityTypeBuilder<Payement> builder)
 		{
-			builder.ToTable("Contracts");
+			builder.ToTable("Payements");
 
-			builder.Property(c => c.Price)
-				   .HasColumnType("decimal(18,2)");
+			builder.HasKey(p => p.PaymentNumber);
 
-			builder.Property(c => c.Status)
-				   .HasConversion<string>()
+			builder.Property(p => p.Amount)
+				   .HasColumnType("decimal(18,2)")
 				   .IsRequired();
 
-			builder.Property(c => c.StartDate)
+			builder.Property(p => p.Status)
+				   .HasMaxLength(50)
 				   .IsRequired();
 
-			builder.Property(c => c.EndDate)
+			builder.Property(p => p.Date)
 				   .IsRequired();
-
-			
 		}
 	}
 }

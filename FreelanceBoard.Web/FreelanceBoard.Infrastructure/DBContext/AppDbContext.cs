@@ -21,6 +21,9 @@ namespace FreelanceBoard.Infrastructure.DBContext
         {
             base.OnModelCreating(builder);
 
+			builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+
 			// Apply Restrict globally on all FK relationships
 			foreach (var entityType in builder.Model.GetEntityTypes())
 			{

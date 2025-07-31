@@ -18,4 +18,5 @@ namespace FreelanceBoard.Core.Domain.Entities
         // Navigation properties
         public virtual Contract Contract { get; set; }
     }
+
 }
