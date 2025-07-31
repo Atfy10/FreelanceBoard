@@ -14,6 +14,8 @@ namespace FreelanceBoard.Core.Domain.Entities
         public decimal Amount { get; set; }
         public string Status { get; set; }
         public DateTime Date { get; set; }
+
+        // Navigation properties
         public virtual Contract Contract { get; set; }
     }
 }

@@ -17,22 +17,21 @@ namespace FreelanceBoard.Core.Domain.Entities
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal Price { get; set; }
-		public ContractStatus Status { get; set; } //after Review i think it must be enum
+        public string Status { get; set; }
 
-		[ForeignKey("User")]
+        [ForeignKey("User")]
         public string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
 
         [ForeignKey("Job")]
-
         public int JobId { get; set; }
-        public virtual Job Job { get; set; }
 
         [ForeignKey("Payement")]
+        public string PaymentNumber { get; set; }
 
-        public string PayementNumber { get; set; }
-        public virtual Payement Payement { get; set; }
-
+        // Navigation properties
+        public virtual Job Job { get; set; }
+        public virtual Payement Payment { get; set; }
+        public virtual ApplicationUser User { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
     }
 }

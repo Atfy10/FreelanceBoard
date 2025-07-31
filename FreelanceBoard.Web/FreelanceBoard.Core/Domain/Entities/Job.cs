@@ -16,17 +16,14 @@ namespace FreelanceBoard.Core.Domain.Entities
         public string Description { get; set; }
         public string Category { get; set; }
         public decimal Price { get; set; }
-
         [ForeignKey("User")]
         public string UserId { get; set; }
+
+        //  Navigation properties
         public virtual ApplicationUser User { get; set; }
         public virtual Contract Contract { get; set; }
-        //after REVIEW skills jobs relation is many to many
-        //public virtual ICollection<Skill> Skills { get; set; }
-		public virtual ICollection<JobSkill> JobSkills { get; set; } = new List<JobSkill>();
-
-
-		public virtual ICollection<Proposal> Proposals { get; set; }
+        public virtual ICollection<Skill> Skills { get; set; }
+        public virtual ICollection<Proposal> Proposals { get; set; }
 
     }
 }

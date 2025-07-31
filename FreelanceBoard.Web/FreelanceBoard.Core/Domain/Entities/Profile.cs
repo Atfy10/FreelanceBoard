@@ -17,6 +17,8 @@ namespace FreelanceBoard.Core.Domain.Entities
 
         [ForeignKey("User")]
         public string UserId { get; set; }
+
+        // Navigation properties
         public virtual ApplicationUser User { get; set; }
     }
 }

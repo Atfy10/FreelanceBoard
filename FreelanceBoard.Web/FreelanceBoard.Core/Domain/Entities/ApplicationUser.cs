@@ -17,21 +17,13 @@ namespace FreelanceBoard.Core.Domain.Entities
         //Navigation Properties
         public virtual ICollection<Job> Jobs { get; set; }
         public virtual Profile Profile { get; set; }
-
-		// after REVIEW i think each user can have more than one proposal
-		//public virtual Proposal Proposal { get; set; }
 		public virtual ICollection<Proposal> Proposals { get; set; } //added
-
 		public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Contract> Contracts { get; set; }
-		//public virtual ICollection<Message> Messages { get; set; }
-		//after review i think each user must have sent and received messages
 		public virtual ICollection<Message> SentMessages { get; set; } = new List<Message>();
 		public virtual ICollection<Message> ReceivedMessages { get; set; } = new List<Message>();
 		public virtual ICollection<Project> Projects { get; set; }
-		//after Review i think each user and skills has relation many to many so we need add new class
-		//public virtual ICollection<Skill> Skills { get; set; }
-		public virtual ICollection<UserSkill> UserSkills { get; set; } = new List<UserSkill>();
+		public virtual ICollection<Skill> Skills { get; set; }
 
 
 	}

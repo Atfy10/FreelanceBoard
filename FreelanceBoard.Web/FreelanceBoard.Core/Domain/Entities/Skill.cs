@@ -12,11 +12,9 @@ namespace FreelanceBoard.Core.Domain.Entities
         [Key]
         public int Id { get; set; }
         public required string Name { get; set; }
-		//after review i think each skill can have many users
-		//public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; }
-		public virtual ICollection<UserSkill> UserSkills { get; set; } = new List<UserSkill>();
-		public virtual ICollection<JobSkill> JobSkills { get; set; } = new List<JobSkill>();
 
-		//public virtual ICollection<Job> Jobs { get; set; }
+        // Navigation properties
+        public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; }
+        public virtual ICollection<Job> Jobs { get; set; }
     }
 }
