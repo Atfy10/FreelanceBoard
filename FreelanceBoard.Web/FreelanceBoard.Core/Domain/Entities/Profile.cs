@@ -10,15 +10,13 @@ namespace FreelanceBoard.Core.Domain.Entities
 {
 	public class Profile
 	{
-		[Key]
-		[ForeignKey("User")] // use same key as FK
 		public string UserId { get; set; }
-
 		public string Bio { get; set; }
 		public string Image { get; set; }
 
-		// Navigation properties
+		// Navigation property
 		public virtual ApplicationUser User { get; set; }
 	}
+
 
 }

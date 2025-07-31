@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Core.Domain.Entities
 {
-    public class Skill
-    {
-        [Key]
-        public int Id { get; set; }
-        public required string Name { get; set; }
+	public class Skill
+	{
+		public int Id { get; set; }
+		public string Name { get; set; }
 
-        // Navigation properties
-        public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; } = [];
-        public virtual ICollection<Job> Jobs { get; set; } = [];
-    }
+		// Navigation properties
+		public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; } = [];
+		public virtual ICollection<Job> Jobs { get; set; } = [];
+	}
+
 }

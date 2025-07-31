@@ -8,17 +8,16 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Core.Domain.Entities
 {
-    public class Project
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Attachments { get; set; }
-        [ForeignKey("User")]
-        public string UserId { get; set; }
+	public class Project
+	{
+		public int Id { get; set; }
+		public string Title { get; set; }
+		public string Description { get; set; }
+		public string Attachments { get; set; }
+		public string UserId { get; set; }
 
-        // Navigation properties
-        public virtual ApplicationUser User { get; set; }
-    }
+		// Navigation property
+		public virtual ApplicationUser User { get; set; }
+	}
+
 }

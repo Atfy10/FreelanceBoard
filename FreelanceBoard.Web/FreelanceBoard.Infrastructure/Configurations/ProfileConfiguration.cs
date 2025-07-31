@@ -15,17 +15,20 @@ namespace FreelanceBoard.Infrastructure.Configurations
 		{
 			builder.ToTable("Profiles");
 
-			builder.HasKey(p => p.UserId);
+			builder.HasKey(p => p.UserId); 
+
+			builder.Property(p => p.UserId)
+				   .IsRequired();
+
+			builder.Property(p => p.Bio)
+				   .HasMaxLength(1000); 
+
+			builder.Property(p => p.Image)
+				   .HasMaxLength(255);
 
 			builder.HasOne(p => p.User)
 				   .WithOne(u => u.Profile)
 				   .HasForeignKey<Profile>(p => p.UserId);
-
-			builder.Property(p => p.Bio)
-				   .HasMaxLength(1000);
-
-			builder.Property(p => p.Image)
-				   .HasMaxLength(255);
 		}
 	}
 }

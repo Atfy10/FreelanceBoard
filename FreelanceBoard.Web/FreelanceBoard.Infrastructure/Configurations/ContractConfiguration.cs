@@ -15,12 +15,7 @@ namespace FreelanceBoard.Infrastructure.Configurations
 		{
 			builder.ToTable("Contracts");
 
-			builder.Property(c => c.Price)
-				   .HasColumnType("decimal(18,2)");
-
-			builder.Property(c => c.Status)
-				   .HasConversion<string>()
-				   .IsRequired();
+			builder.HasKey(c => c.Id);
 
 			builder.Property(c => c.StartDate)
 				   .IsRequired();
@@ -28,7 +23,35 @@ namespace FreelanceBoard.Infrastructure.Configurations
 			builder.Property(c => c.EndDate)
 				   .IsRequired();
 
-			
+			builder.Property(c => c.Price)
+				   .HasColumnType("decimal(18,2)")
+				   .IsRequired();
+
+			builder.Property(c => c.Status)
+				   .IsRequired();
+				   
+
+			builder.Property(c => c.UserId)
+				   .IsRequired();
+
+			builder.Property(c => c.JobId)
+				   .IsRequired();
+
+			builder.Property(c => c.PaymentNumber)
+				   .IsRequired();
+
+			builder.HasOne(c => c.User)
+				   .WithMany(u => u.Contracts)
+				   .HasForeignKey(c => c.UserId);
+
+			builder.HasOne(c => c.Job)
+				   .WithOne(j => j.Contract)
+				   .HasForeignKey<Contract>(c => c.JobId);
+
+			builder.HasOne(c => c.Payment)
+				   .WithOne(p => p.Contract)
+				   .HasForeignKey<Contract>(c => c.PaymentNumber);
 		}
 	}
 }
+

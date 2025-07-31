@@ -15,11 +15,12 @@ namespace FreelanceBoard.Infrastructure.Configurations
 		{
 			builder.ToTable("Skills");
 
+			builder.HasKey(s => s.Id);
+
 			builder.Property(s => s.Name)
 				   .IsRequired()
-				   .HasMaxLength(70);
+				   .HasMaxLength(100);
 
-			builder.HasIndex(s => s.Name).IsUnique();
 		}
 	}
 }

@@ -15,21 +15,37 @@ namespace FreelanceBoard.Infrastructure.Configurations
 		{
 			builder.ToTable("Jobs");
 
+			builder.HasKey(j => j.Id);
+
 			builder.Property(j => j.Title)
 				   .IsRequired()
 				   .HasMaxLength(100);
 
 			builder.Property(j => j.Description)
-				   .IsRequired()
-				   .HasMaxLength(1000);
+				   .IsRequired();
 
 			builder.Property(j => j.Category)
 				   .IsRequired()
-				   .HasMaxLength(100);
+				   .HasMaxLength(50);
 
 			builder.Property(j => j.Price)
 				   .HasColumnType("decimal(18,2)")
 				   .IsRequired();
+
+			builder.Property(j => j.UserId)
+				   .IsRequired();
+
+			builder.HasOne(j => j.User)
+				   .WithMany(u => u.Jobs)
+				   .HasForeignKey(j => j.UserId);
+
+			builder.HasMany(j => j.Proposals)
+				   .WithOne(p => p.Job)
+				   .HasForeignKey(p => p.JobId);
+
+			builder.HasMany(j => j.Skills)
+				   .WithMany(s => s.Jobs)
+				   .UsingEntity(j => j.ToTable("JobSkills")); 
 		}
 	}
 }

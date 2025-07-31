@@ -15,6 +15,8 @@ namespace FreelanceBoard.Infrastructure.Configurations
 		{
 			builder.ToTable("Notifications");
 
+			builder.HasKey(n => n.Id);
+
 			builder.Property(n => n.Body)
 				   .IsRequired()
 				   .HasMaxLength(500);
@@ -24,6 +26,13 @@ namespace FreelanceBoard.Infrastructure.Configurations
 
 			builder.Property(n => n.CreatedAt)
 				   .IsRequired();
+
+			builder.Property(n => n.UserId)
+				   .IsRequired();
+
+			builder.HasOne(n => n.User)
+				   .WithMany(u => u.Notifications)
+				   .HasForeignKey(n => n.UserId);
 		}
 	}
 }

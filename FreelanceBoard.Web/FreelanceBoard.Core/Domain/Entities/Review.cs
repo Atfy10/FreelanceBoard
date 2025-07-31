@@ -8,21 +8,19 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Core.Domain.Entities
 {
-    public class Review
-    {
-        [Key]
-        public int Id { get; set; }
-        [Range(1, 5)]
+	public class Review
+	{
+		public int Id { get; set; }
 		public int Rating { get; set; }
-        public string Feedback { get; set; }
-        public DateTime Date { get; set; }
-        [ForeignKey("Contract")]
-        public int ContractId { get; set; }
-		[ForeignKey("Reviewer")]
+		public string Feedback { get; set; }
+		public DateTime Date { get; set; }
+
+		public int ContractId { get; set; }
 		public string ReviewerId { get; set; }
 
-        // Navigation properties
+		// Navigation properties
 		public virtual ApplicationUser Reviewer { get; set; }
-        public virtual Contract Contract { get; set; }
+		public virtual Contract Contract { get; set; }
 	}
+
 }

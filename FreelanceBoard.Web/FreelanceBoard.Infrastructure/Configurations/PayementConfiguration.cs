@@ -17,6 +17,7 @@ namespace FreelanceBoard.Infrastructure.Configurations
 
 			builder.HasKey(p => p.PaymentNumber);
 
+			
 			builder.Property(p => p.Amount)
 				   .HasColumnType("decimal(18,2)")
 				   .IsRequired();
@@ -27,6 +28,10 @@ namespace FreelanceBoard.Infrastructure.Configurations
 
 			builder.Property(p => p.Date)
 				   .IsRequired();
+
+			builder.HasOne(p => p.Contract)
+				   .WithOne(c => c.Payment)
+				   .HasForeignKey<Contract>(c => c.PaymentNumber);
 		}
 	}
 }
