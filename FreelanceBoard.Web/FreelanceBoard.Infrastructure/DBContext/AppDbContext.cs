@@ -1,4 +1,5 @@
 ﻿using FreelanceBoard.Core.Domain;
+using FreelanceBoard.Core.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -36,38 +37,43 @@ namespace FreelanceBoard.Infrastructure.DBContext
         .WithMany(j => j.Proposals)
         .HasForeignKey(p => p.JobId)
         .OnDelete(DeleteBehavior.Restrict); // 🛠 Prevent cascade
-        }
 
-		modelBuilder.Entity<UserSkill>()
-        .HasKey(us => new { us.UserId, us.SkillId
-	    });
-        modelBuilder.Entity<UserSkill>()
-        .HasOne(us => us.User)
-        .WithMany(u => u.UserSkills)
-        .HasForeignKey(us => us.UserId);
+			builder.Entity<UserSkill>()
+		.HasKey(us => new {
+			us.UserId,
+			us.SkillId
+		});
+			builder.Entity<UserSkill>()
+			.HasOne(us => us.User)
+			.WithMany(u => u.UserSkills)
+			.HasForeignKey(us => us.UserId);
 
-	    modelBuilder.Entity<UserSkill>()
-        .HasOne(us => us.Skill)
-        .WithMany(s => s.UserSkills)
-        .HasForeignKey(us => us.SkillId);
+			builder.Entity<UserSkill>()
+			.HasOne(us => us.Skill)
+			.WithMany(s => s.UserSkills)
+			.HasForeignKey(us => us.SkillId);
 
-	modelBuilder.Entity<JobSkill>()
-        .HasKey(js => new { js.JobId, js.SkillId
-    });
+			builder.Entity<JobSkill>()
+				.HasKey(js => new {
+					js.JobId,
+					js.SkillId
+				});
 
-    modelBuilder.Entity<JobSkill>()
-	    .HasOne(js => js.Job)
-	    .WithMany(j => j.JobSkills)
-	    .HasForeignKey(js => js.JobId);
+			builder.Entity<JobSkill>()
+				.HasOne(js => js.Job)
+				.WithMany(j => j.JobSkills)
+				.HasForeignKey(js => js.JobId);
 
-    modelBuilder.Entity<JobSkill>()
-	    .HasOne(js => js.Skill)
-	    .WithMany(s => s.JobSkills)
-	    .HasForeignKey(js => js.SkillId);
+			builder.Entity<JobSkill>()
+				.HasOne(js => js.Skill)
+				.WithMany(s => s.JobSkills)
+				.HasForeignKey(js => js.SkillId);
 
 
+		}
 
-public DbSet<Contract> Contracts { get; set; }
+
+		public DbSet<Contract> Contracts { get; set; }
         public DbSet<Job> Jobs{ get; set; }
         public DbSet<Message> Messages{ get; set; }
         public DbSet<Notification> Notifications{ get; set; }
