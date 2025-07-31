@@ -25,7 +25,7 @@ namespace FreelanceBoard.Core.Domain.Entities
         [ForeignKey("Job")]
         public int JobId { get; set; }
 
-        [ForeignKey("Payement")]
+        [ForeignKey("Payment")]
         public string PaymentNumber { get; set; }
 
         // Navigation properties

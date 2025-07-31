@@ -28,7 +28,7 @@ namespace FreelanceBoard.Infrastructure.Configurations
 			builder.Property(c => c.EndDate)
 				   .IsRequired();
 
-			builder.Property(c => c.PayementNumber)
+			builder.Property(c => c.PaymentNumber)
 				   .HasMaxLength(50); 
 		}
 	}

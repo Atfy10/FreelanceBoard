@@ -15,9 +15,7 @@ namespace FreelanceBoard.Core.Domain.Entities
         public string Body { get; set; }
         public bool IsRead { get; set; }
         public DateTime Timestamp { get; set; }
-		[ForeignKey("Receiver")]
 		public string ReceiverId { get; set; }
-		[ForeignKey("Sender")]
 		public string SenderId { get; set; }
 
         // Navigation properties

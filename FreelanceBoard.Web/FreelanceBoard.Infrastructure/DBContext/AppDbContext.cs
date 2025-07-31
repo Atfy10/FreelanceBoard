@@ -40,11 +40,24 @@ namespace FreelanceBoard.Infrastructure.DBContext
                 .HasForeignKey(p => p.JobId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Avoid confusion in references
+            builder.Entity<Message>()
+                .HasOne(m => m.Sender)
+                .WithMany(u => u.SentMessages)
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-		}
+            // Avoid confusion in references
+            builder.Entity<Message>()
+                .HasOne(m => m.Receiver)
+                .WithMany(u => u.ReceivedMessages)
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+        }
 
 
-		public DbSet<Contract> Contracts { get; set; }
+        public DbSet<Contract> Contracts { get; set; }
         public DbSet<Job> Jobs{ get; set; }
         public DbSet<Message> Messages{ get; set; }
         public DbSet<Notification> Notifications{ get; set; }
