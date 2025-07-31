@@ -17,6 +17,6 @@ namespace FreelanceBoard.Core.Domain.Entities
 		public virtual ICollection<UserSkill> UserSkills { get; set; } = new List<UserSkill>();
 		public virtual ICollection<JobSkill> JobSkills { get; set; } = new List<JobSkill>();
 
-		public virtual ICollection<Job> Jobs { get; set; }
+		//public virtual ICollection<Job> Jobs { get; set; }
     }
 }

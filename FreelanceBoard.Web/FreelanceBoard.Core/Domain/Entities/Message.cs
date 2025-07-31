@@ -16,8 +16,16 @@ namespace FreelanceBoard.Core.Domain.Entities
         public bool IsRead { get; set; }
         public DateTime Timestamp { get; set; }
 
-        [ForeignKey("User")]
-        public string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
-    }
+
+		//after Review i think each message must has sender and receiver
+
+		[ForeignKey("Sender")]
+		public string SenderId { get; set; }
+		public virtual ApplicationUser Sender { get; set; }
+
+		[ForeignKey("Receiver")]
+		public string ReceiverId { get; set; }
+		public virtual ApplicationUser Receiver { get; set; }
+
+	}
 }
