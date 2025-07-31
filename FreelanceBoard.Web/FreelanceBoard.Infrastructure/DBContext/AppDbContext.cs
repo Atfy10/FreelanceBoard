@@ -26,48 +26,19 @@ namespace FreelanceBoard.Infrastructure.DBContext
         {
             base.OnModelCreating(builder);
 
+            // Prevent cascading deletes
             builder.Entity<Contract>()
-        .HasOne(c => c.Job)
-        .WithOne(j => j.Contract)
-        .HasForeignKey<Contract>(c => c.JobId)
-        .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
+                .HasOne(c => c.Job)
+                .WithOne(j => j.Contract)
+                .HasForeignKey<Contract>(c => c.JobId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            // Prevent cascading deletes
             builder.Entity<Proposal>()
-        .HasOne(p => p.Job)
-        .WithMany(j => j.Proposals)
-        .HasForeignKey(p => p.JobId)
-        .OnDelete(DeleteBehavior.Restrict); // 🛠 Prevent cascade
-
-			builder.Entity<UserSkill>()
-		.HasKey(us => new {
-			us.UserId,
-			us.SkillId
-		});
-			builder.Entity<UserSkill>()
-			.HasOne(us => us.User)
-			.WithMany(u => u.UserSkills)
-			.HasForeignKey(us => us.UserId);
-
-			builder.Entity<UserSkill>()
-			.HasOne(us => us.Skill)
-			.WithMany(s => s.UserSkills)
-			.HasForeignKey(us => us.SkillId);
-
-			builder.Entity<JobSkill>()
-				.HasKey(js => new {
-					js.JobId,
-					js.SkillId
-				});
-
-			builder.Entity<JobSkill>()
-				.HasOne(js => js.Job)
-				.WithMany(j => j.JobSkills)
-				.HasForeignKey(js => js.JobId);
-
-			builder.Entity<JobSkill>()
-				.HasOne(js => js.Skill)
-				.WithMany(s => s.JobSkills)
-				.HasForeignKey(js => js.SkillId);
+                .HasOne(p => p.Job)
+                .WithMany(j => j.Proposals)
+                .HasForeignKey(p => p.JobId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
 		}
