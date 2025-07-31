@@ -21,8 +21,17 @@ namespace FreelanceBoard.Infrastructure.DBContext
         {
             base.OnModelCreating(builder);
 
-            // Prevent cascading deletes
-            builder.Entity<Contract>()
+			// Apply Restrict globally on all FK relationships
+			foreach (var entityType in builder.Model.GetEntityTypes())
+			{
+				foreach (var foreignKey in entityType.GetForeignKeys())
+				{
+					foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+				}
+			}
+
+			// Prevent cascading deletes
+			builder.Entity<Contract>()
                 .HasOne(c => c.Job)
                 .WithOne(j => j.Contract)
                 .HasForeignKey<Contract>(c => c.JobId)
@@ -50,13 +59,13 @@ namespace FreelanceBoard.Infrastructure.DBContext
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Profile.User relationship
-            builder.Entity<Profile>()
-                .HasKey(p => p.Id);
+            //builder.Entity<Profile>()
+            //    .HasKey(p => p.Id);
 
-            builder.Entity<Profile>()
-                .HasOne(p => p.User)
-                .WithOne(u => u.Profile)
-                .HasForeignKey<Profile>(p => p.Id);
+            //builder.Entity<Profile>()
+            //    .HasOne(p => p.User)
+            //    .WithOne(u => u.Profile)
+            //    .HasForeignKey<Profile>(p => p.Id);
 
         }
 
