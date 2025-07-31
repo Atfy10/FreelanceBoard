@@ -14,7 +14,7 @@ namespace FreelanceBoard.Core.Domain.Entities
         public required string Name { get; set; }
 
         // Navigation properties
-        public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; }
-        public virtual ICollection<Job> Jobs { get; set; }
+        public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; } = [];
+        public virtual ICollection<Job> Jobs { get; set; } = [];
     }
 }

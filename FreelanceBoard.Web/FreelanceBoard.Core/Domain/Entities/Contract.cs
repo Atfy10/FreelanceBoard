@@ -32,6 +32,6 @@ namespace FreelanceBoard.Core.Domain.Entities
         public virtual Job Job { get; set; }
         public virtual Payement Payment { get; set; }
         public virtual ApplicationUser User { get; set; }
-        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; } = [];
     }
 }

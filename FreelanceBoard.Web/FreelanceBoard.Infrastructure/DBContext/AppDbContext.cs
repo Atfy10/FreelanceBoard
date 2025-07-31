@@ -17,11 +17,6 @@ namespace FreelanceBoard.Infrastructure.DBContext
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            base.OnConfiguring(options);
-        }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -54,8 +49,16 @@ namespace FreelanceBoard.Infrastructure.DBContext
                 .HasForeignKey(m => m.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-        }
+            // Profile.User relationship
+            builder.Entity<Profile>()
+                .HasKey(p => p.Id);
 
+            builder.Entity<Profile>()
+                .HasOne(p => p.User)
+                .WithOne(u => u.Profile)
+                .HasForeignKey<Profile>(p => p.Id);
+
+        }
 
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<Job> Jobs{ get; set; }

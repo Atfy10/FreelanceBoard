@@ -17,12 +17,12 @@ namespace FreelanceBoard.Core.Domain.Entities
         //Navigation Properties
         public virtual ICollection<Job> Jobs { get; set; }
         public virtual Profile Profile { get; set; }
-		public virtual ICollection<Proposal> Proposals { get; set; } //added
-		public virtual ICollection<Notification> Notifications { get; set; }
-        public virtual ICollection<Contract> Contracts { get; set; }
-		public virtual ICollection<Message> SentMessages { get; set; } = new List<Message>();
-		public virtual ICollection<Message> ReceivedMessages { get; set; } = new List<Message>();
-		public virtual ICollection<Project> Projects { get; set; }
-		public virtual ICollection<Skill> Skills { get; set; }
-	}
+		public virtual ICollection<Proposal> Proposals { get; set; } = [];
+        public virtual ICollection<Notification> Notifications { get; set; } = [];
+        public virtual ICollection<Contract> Contracts { get; set; } = [];
+        public virtual ICollection<Message> SentMessages { get; set; } = [];
+        public virtual ICollection<Message> ReceivedMessages { get; set; } = [];
+        public virtual ICollection<Project> Projects { get; set; } = [];
+        public virtual ICollection<Skill> Skills { get; set; } = [];
+    }
 }
