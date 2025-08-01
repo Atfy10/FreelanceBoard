@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-
+using FreelanceBoard.Core.Commands;
+using FreelanceBoard.Core.Dtos;
 namespace FreelanceBoard.Core
 {
 	public class AutoMapperProfile : Profile
 	{
 		public AutoMapperProfile()
 		{
-			CreateMap<Commands.CreateUserCommand, Domain.Entities.ApplicationUser>(); 
+			CreateMap<Commands.CreateUserCommand, Domain.Entities.ApplicationUser>();
+			CreateMap<Domain.Entities.ApplicationUser, ApplicationUserDto>();
 		}
 	}
 }

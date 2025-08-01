@@ -3,6 +3,8 @@ using FluentValidation;
 using FreelanceBoard.Core;
 using FreelanceBoard.Core.CommandHandlers;
 using FreelanceBoard.Core.Commands;
+using FreelanceBoard.Core.Queries.Implementations;
+using FreelanceBoard.Core.Queries.Interfaces;
 using FreelanceBoard.Core.Validators;
 using FreelanceBoard.Infrastructure.DBContext;
 using MediatR;
@@ -30,6 +32,8 @@ namespace FreelanceBoard.Web
 			builder.Services.AddMediatR(typeof(CreateUserCommandHandler).Assembly);
             builder.Services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
 			builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+			builder.Services.AddScoped<IUserQuery, UserQuery>();
+
 
 
 

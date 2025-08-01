@@ -18,7 +18,7 @@ namespace FreelanceBoard.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(int id)
+        public Task DeleteAsync(string id)
         {
             throw new NotImplementedException();
         }
@@ -28,7 +28,7 @@ namespace FreelanceBoard.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> GetByIdAsync(int id)
+        public Task<TEntity> GetByIdAsync(string id)
         {
             throw new NotImplementedException();
         }
