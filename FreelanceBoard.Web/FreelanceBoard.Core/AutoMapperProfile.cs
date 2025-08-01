@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FreelanceBoard.Core.Commands;
 using FreelanceBoard.Core.Dtos;
+
 namespace FreelanceBoard.Core
 {
 	public class AutoMapperProfile : Profile
@@ -14,6 +15,7 @@ namespace FreelanceBoard.Core
 		{
 			CreateMap<Commands.CreateUserCommand, Domain.Entities.ApplicationUser>();
 			CreateMap<Domain.Entities.ApplicationUser, ApplicationUserDto>();
+			CreateMap<ApplicationUserDto, Domain.Entities.ApplicationUser>();
 			CreateMap<UserUpdateDto, Domain.Entities.ApplicationUser>()
 			.ForMember(dest => dest.Id, opt => opt.Ignore());
 		}

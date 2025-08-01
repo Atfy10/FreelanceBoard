@@ -22,9 +22,11 @@ namespace FreelanceBoard.Core.Queries.Implementations
 			_mapper = mapper;
 		}
 
-		public Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
+		public async Task<IEnumerable<ApplicationUserDto>> GetAllUsersAsync()
 		{
-			throw new NotImplementedException();
+			var users = await _userRepository.GetAllAsync();
+			var userDtos = _mapper.Map<IEnumerable<ApplicationUserDto>>(users);
+			return userDtos;
 		}
 
 		public Task<IEnumerable<ApplicationUser>> GetPaginatedUsersAsync(int pageNumber, int pageSize)
@@ -62,5 +64,7 @@ namespace FreelanceBoard.Core.Queries.Implementations
 		{
 			throw new NotImplementedException();
 		}
+
+		
 	}
 }

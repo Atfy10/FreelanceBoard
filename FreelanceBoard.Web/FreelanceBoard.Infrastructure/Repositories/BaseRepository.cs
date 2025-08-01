@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Infrastructure.Repositories
 {
-    internal class BaseRepository<TEntity>(AppDbContext dbContext) : IBaseRepository<TEntity> where TEntity : class
+    public class BaseRepository<TEntity>(AppDbContext dbContext) : IBaseRepository<TEntity> where TEntity : class
     {
         protected readonly AppDbContext _dbContext = dbContext 
             ?? throw new ArgumentNullException(nameof(dbContext));

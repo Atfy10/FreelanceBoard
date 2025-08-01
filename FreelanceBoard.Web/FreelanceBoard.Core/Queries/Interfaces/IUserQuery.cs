@@ -11,7 +11,8 @@ namespace FreelanceBoard.Core.Queries.Interfaces
 	public interface IUserQuery
 	{
 		Task<ApplicationUserDto>GetUserByIdAsync(string id);
-		Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
+		Task<IEnumerable<ApplicationUserDto>> GetAllUsersAsync();
+
 		Task<bool> IsUserBannedAsync(string id);
 		Task<IEnumerable<ApplicationUser>> GetUsersByRoleAsync(string roleName);
 		Task<IEnumerable<ApplicationUser>> SearchUsersAsync(string searchTerm);

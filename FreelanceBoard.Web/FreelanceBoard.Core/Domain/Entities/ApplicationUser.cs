@@ -11,9 +11,9 @@ namespace FreelanceBoard.Core.Domain.Entities
 {
 	public class ApplicationUser : IdentityUser
 	{
-		public string FirstName { get; private set; }
-		public string LastName { get; private set; }
-		public bool IsBanned { get; private set; }
+		public string FirstName { get;  set; }
+		public string LastName { get;  set; }
+		public bool IsBanned { get;  set; }
 
 		// Navigation properties 
 		public virtual ICollection<Job> Jobs { get; private set; } = [];

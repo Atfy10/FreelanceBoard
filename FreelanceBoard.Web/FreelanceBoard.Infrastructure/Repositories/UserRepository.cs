@@ -10,7 +10,7 @@ using FreelanceBoard.Infrastructure.DBContext;
 
 namespace FreelanceBoard.Infrastructure.Repositories
 {
-	internal class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
+	public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
 	{
 		private readonly AppDbContext _context;
 
