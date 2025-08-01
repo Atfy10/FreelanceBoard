@@ -9,5 +9,9 @@ namespace FreelanceBoard.Core
 {
 	public class AutoMapperProfile : Profile
 	{
+		public AutoMapperProfile()
+		{
+			CreateMap<Commands.CreateUserCommand, Domain.Entities.ApplicationUser>(); 
+		}
 	}
 }
