@@ -14,6 +14,8 @@ namespace FreelanceBoard.Core
 		{
 			CreateMap<Commands.CreateUserCommand, Domain.Entities.ApplicationUser>();
 			CreateMap<Domain.Entities.ApplicationUser, ApplicationUserDto>();
+			CreateMap<UserUpdateDto, Domain.Entities.ApplicationUser>()
+			.ForMember(dest => dest.Id, opt => opt.Ignore());
 		}
 	}
 }
