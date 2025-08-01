@@ -9,7 +9,8 @@ namespace FreelanceBoard.Core.Interfaces
 {
 	public interface IUserRepository : IBaseRepository<ApplicationUser>
 	{
-		Task<ApplicationUser> GetUserWithDetails(string id);
+		Task<ApplicationUser?> GetUserFullProfileAsync(string userId);
+
 
 	}
 }

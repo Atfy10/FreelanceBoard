@@ -12,12 +12,14 @@ namespace FreelanceBoard.Core.Queries.Interfaces
 	{
 		Task<ApplicationUserDto>GetUserByIdAsync(string id);
 		Task<IEnumerable<ApplicationUserDto>> GetAllUsersAsync();
+		Task<IEnumerable<ApplicationUserDto>> GetAllBannedUsersAsync();
+		Task<IEnumerable<ApplicationUserDto>> SearchUsersByNameAsync(string name);
+		Task<UserWithProjectsDto> GetUserWithProjectsAsync(string id);
+		Task<UserWithSkillsDto> GetUserWithSkillsAsync(string id);
+		Task<ApplicationUserFullProfileDto> GetUserFullProfileAsync(string id);
 
-		Task<bool> IsUserBannedAsync(string id);
-		Task<IEnumerable<ApplicationUser>> GetUsersByRoleAsync(string roleName);
-		Task<IEnumerable<ApplicationUser>> SearchUsersAsync(string searchTerm);
-		Task<int> GetTotalUsersCountAsync();
-		Task<IEnumerable<ApplicationUser>> GetPaginatedUsersAsync(int pageNumber, int pageSize);
+
+
 
 	}
 }

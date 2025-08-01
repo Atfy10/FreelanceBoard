@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FreelanceBoard.Core.Interfaces;
-
 using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Infrastructure.DBContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace FreelanceBoard.Infrastructure.Repositories
 {
@@ -19,9 +19,16 @@ namespace FreelanceBoard.Infrastructure.Repositories
 			_context = context;
 		}
 
-		public Task<ApplicationUser> GetUserWithDetails(string id)
+		public async Task<ApplicationUser?> GetUserFullProfileAsync(string userId)
 		{
-			throw new NotImplementedException();
+			if (string.IsNullOrWhiteSpace(userId))
+				return null;
+			return await _dbContext.Users
+				.Include(u => u.Profile)
+				.Include(u => u.Skills)
+				.Include(u => u.Projects)
+				.FirstOrDefaultAsync(u => u.Id == userId);
+
 		}
 	}
 
