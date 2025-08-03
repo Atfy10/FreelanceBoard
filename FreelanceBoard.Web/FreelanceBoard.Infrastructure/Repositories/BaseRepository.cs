@@ -28,12 +28,13 @@ namespace FreelanceBoard.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> GetByIdAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
+		public async Task<TEntity?> GetByIdAsync(string id)
+		{
+			var entity = await _dbContext.Set<TEntity>().FindAsync(id);
+			return entity;
+		}
 
-        public Task UpdateAsync(TEntity entity)
+		public Task UpdateAsync(TEntity entity)
         {
             throw new NotImplementedException();
         }

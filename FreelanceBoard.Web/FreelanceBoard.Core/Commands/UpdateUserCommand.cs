@@ -10,11 +10,12 @@ namespace FreelanceBoard.Core.Commands
 {
 	public class UpdateUserCommand : IRequest<bool>
 	{
-		public UserUpdateDto User { get; set; }
-
-		public UpdateUserCommand(UserUpdateDto user)
-		{
-			User = user;
-		}
+		public string Id { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public string Email { get; set; }
+		public string PhoneNumber { get; set; }
+		public string UserName { get; set; }
+		public bool IsBanned { get; set; }
 	}
 }

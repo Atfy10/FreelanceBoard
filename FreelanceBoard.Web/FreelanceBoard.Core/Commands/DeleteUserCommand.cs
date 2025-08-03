@@ -10,13 +10,5 @@ namespace FreelanceBoard.Core.Commands
 	public class DeleteUserCommand : IRequest<bool>
 	{
 		public string UserId { get; private set; }
-		public DeleteUserCommand(string userId)
-		{
-			if (string.IsNullOrWhiteSpace(userId))
-			{
-				throw new ArgumentException("UserId cannot be null or empty.", nameof(userId));
-			}
-			UserId = userId;
-		}
 	}
 }

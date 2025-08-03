@@ -5,42 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using FreelanceBoard.Core.Commands;
+using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Interfaces;
+using FreelanceBoard.Core.Services.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace FreelanceBoard.Core.CommandHandlers
 {
 	public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand,bool>
 	{
-		private readonly IUserRepository _userRepository;
-		private readonly ILogger<UpdateUserCommandHandler> _logger;
-		private readonly IMapper _mapper;
+		private readonly IUserService _userService;
 
-		public UpdateUserCommandHandler(IUserRepository userRepository, ILogger<UpdateUserCommandHandler> logger, IMapper mapper)
+		public UpdateUserCommandHandler(IUserService userService)
 		{
-			_userRepository = userRepository;
-			_logger = logger;
-			_mapper = mapper;
+			_userService = userService;
 		}
 
 		public async Task<bool> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
 		{
-			var userDto = request.User;
-
-			var existingUser = await _userRepository.GetByIdAsync(userDto.Id);
-			if (existingUser is null)
-			{
-				_logger.LogWarning("User with ID {UserId} not found", userDto.Id);
-				return false;
-			}
-
-			_mapper.Map(userDto, existingUser); 
-
-			await _userRepository.UpdateAsync(existingUser);
-
-			_logger.LogInformation("User with ID {UserId} updated successfully", userDto.Id);
-			return true;
+			return await _userService.UpdateUserAsync(request);
 		}
 	}
 }

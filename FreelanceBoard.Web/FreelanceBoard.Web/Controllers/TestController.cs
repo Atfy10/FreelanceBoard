@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FreelanceBoard.Core.Queries.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FreelanceBoard.Web.Controllers
@@ -7,6 +9,15 @@ namespace FreelanceBoard.Web.Controllers
 	[ApiController]
 	public class TestController : ControllerBase
 	{
+		private readonly IMediator _mediator;
+		private readonly IUserQuery _userQuery;
+
+
+		public TestController(IMediator mediator, IUserQuery userQuery)
+		{
+			_mediator = mediator;
+			_userQuery = userQuery;
+		}
 
 		[HttpGet("test")]
 		public IActionResult Test()
@@ -19,6 +30,13 @@ namespace FreelanceBoard.Web.Controllers
 			return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred");
 		}
 
-		
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetById(string id)
+		{
+			var user = await _userQuery.GetUserByIdAsync(id);
+			return Ok(user);
+		}
+
+
 	}
 }

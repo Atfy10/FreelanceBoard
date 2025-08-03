@@ -1,19 +1,20 @@
-﻿using FreelanceBoard.Core.Dtos;
-using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using FreelanceBoard.Core.Dtos;
+using Microsoft.AspNetCore.Identity;
 
 namespace FreelanceBoard.Core.Domain.Entities
 {
 	public class ApplicationUser : IdentityUser
 	{
-		public string FirstName { get; private set; }
-		public string LastName { get; private set; }
-		public bool IsBanned { get; private set; }
+		public string FirstName { get;  set; }
+		public string LastName { get;  set; }
+		public bool IsBanned { get;  set; }
 
 		// Navigation properties 
 		public virtual ICollection<Job> Jobs { get; private set; } = [];
@@ -26,22 +27,14 @@ namespace FreelanceBoard.Core.Domain.Entities
 		public virtual ICollection<Project> Projects { get; private set; } = [];
 		public virtual ICollection<Skill> Skills { get; private set; } = [];
 
-		public void UpdateDetails(UserUpdateDto userDto)
+		public void UpdateDetails(string firstName,string lastName,string email,string phoneNumber,string userName,bool isBanned)
 		{
-			if (userDto == null)
-			{
-				throw new ArgumentNullException(nameof(userDto), "User update data cannot be null.");
-			}
-			if (string.IsNullOrWhiteSpace(userDto.Id) || userDto.Id != Id)
-			{
-				throw new ArgumentException("Invalid user ID.", nameof(userDto.Id));
-			}
-			FirstName = userDto.FirstName;
-			LastName = userDto.LastName;
-			Email = userDto.Email;
-			PhoneNumber = userDto.PhoneNumber;
-			UserName = userDto.UserName;
-			IsBanned = userDto.IsBanned;
+			FirstName = firstName;
+			LastName = lastName;
+			Email = email;
+			PhoneNumber = phoneNumber;
+			UserName = userName;
+			IsBanned = isBanned;
 		}
 
 	}

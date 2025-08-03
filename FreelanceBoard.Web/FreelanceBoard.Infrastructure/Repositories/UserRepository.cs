@@ -13,11 +13,13 @@ namespace FreelanceBoard.Infrastructure.Repositories
 	public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
 	{
 		private readonly AppDbContext _context;
-
-		public UserRepository(AppDbContext context) : base(context)
+		//private readonly IBaseRepository<ApplicationUser> _baseRepo;
+		public UserRepository(AppDbContext context, IBaseRepository<ApplicationUser> baseRepo) : base(context)
 		{
 			_context = context;
+			//_baseRepo = baseRepo;
 		}
+
 
 		public async Task<ApplicationUser?> GetUserFullProfileAsync(string userId)
 		{
@@ -30,6 +32,11 @@ namespace FreelanceBoard.Infrastructure.Repositories
 				.FirstOrDefaultAsync(u => u.Id == userId);
 
 		}
+
+		//public Task AddAsync(ApplicationUser user)
+		//{
+		//	return _baseRepo.AddAsync(user);
+		//}
 	}
 
 }

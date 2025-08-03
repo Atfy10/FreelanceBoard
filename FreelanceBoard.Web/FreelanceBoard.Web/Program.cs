@@ -13,6 +13,8 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FreelanceBoard.Infrastructure.Repositories;
+using FreelanceBoard.Core.Services.Interfaces;
+using FreelanceBoard.Core.Services.Implementations;
 
 namespace FreelanceBoard.Web
 {
@@ -44,7 +46,11 @@ namespace FreelanceBoard.Web
 	        .AddEntityFrameworkStores<AppDbContext>()
 	        .AddDefaultTokenProviders();
 
+
 			builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+			builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+			builder.Services.AddScoped<IUserService, UserService>();
 
 
 			///////////////////
