@@ -26,4 +26,8 @@
     <ProjectReference Include="..\FreelanceBoard.Infrastructure\FreelanceBoard.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>
