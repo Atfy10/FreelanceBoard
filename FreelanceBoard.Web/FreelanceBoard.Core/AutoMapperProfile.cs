@@ -13,11 +13,11 @@ namespace FreelanceBoard.Core
 	{
 		public AutoMapperProfile()
 		{
-			CreateMap<Commands.CreateUserCommand, Domain.Entities.ApplicationUser>();
+			CreateMap<CreateUserCommand, Domain.Entities.ApplicationUser>();
 			CreateMap<Domain.Entities.ApplicationUser, ApplicationUserDto>();
 			CreateMap<ApplicationUserDto, Domain.Entities.ApplicationUser>();
 			CreateMap<UserUpdateDto, Domain.Entities.ApplicationUser>()
-			.ForMember(dest => dest.Id, opt => opt.Ignore());
+				.ForMember(dest => dest.Id, opt => opt.Ignore());
 			CreateMap<Domain.Entities.ApplicationUser, UserWithProjectsDto>();
 			CreateMap<Domain.Entities.Project, ProjectDto>();
 			CreateMap<Domain.Entities.ApplicationUser, ApplicationUserFullProfileDto>();
