@@ -82,7 +82,6 @@ namespace FreelanceBoard.Infrastructure.DBContext
         public DbSet<Proposal> Proposals{ get; set; }
         public DbSet<Review> Reviews{ get; set; }
         public DbSet<Skill> Skills { get; set; }
-
-
+        
     }
 }
