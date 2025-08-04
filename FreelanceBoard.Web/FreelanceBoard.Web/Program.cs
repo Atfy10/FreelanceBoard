@@ -1,4 +1,3 @@
-
 using FluentValidation;
 using FreelanceBoard.Core;
 using FreelanceBoard.Core.CommandHandlers.UserCommandHandlers;
