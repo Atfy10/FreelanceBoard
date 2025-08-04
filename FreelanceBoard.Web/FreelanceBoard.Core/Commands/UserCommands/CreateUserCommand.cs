@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace FreelanceBoard.Core.Commands
+namespace FreelanceBoard.Core.Commands.UserCommands
 {
 	public class CreateUserCommand : IRequest<string>
 	{

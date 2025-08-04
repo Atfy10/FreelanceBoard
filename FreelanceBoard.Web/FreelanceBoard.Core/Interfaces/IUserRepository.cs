@@ -10,7 +10,6 @@ namespace FreelanceBoard.Core.Interfaces
 	public interface IUserRepository : IBaseRepository<ApplicationUser>
 	{
 		Task<ApplicationUser?> GetUserFullProfileAsync(string userId);
-		public Task AddAsync(ApplicationUser entity, string pawd);
 
 	}
 }

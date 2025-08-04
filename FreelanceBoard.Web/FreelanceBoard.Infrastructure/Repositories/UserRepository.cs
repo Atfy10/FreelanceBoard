@@ -13,21 +13,13 @@ namespace FreelanceBoard.Infrastructure.Repositories
 {
 	public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
 	{
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly AppDbContext _context;
 		//private readonly IBaseRepository<ApplicationUser> _baseRepo;
-		public UserRepository(UserManager<ApplicationUser> userManager, AppDbContext context, IBaseRepository<ApplicationUser> baseRepo) : base(context)
+		public UserRepository( AppDbContext context) : base(context)
 		{
-
-			_userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
 			_context = context;
-			//_baseRepo = baseRepo;
 		}
 
-        public Task AddAsync(ApplicationUser entity, string pawd)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<ApplicationUser?> GetUserFullProfileAsync(string userId)
 		{

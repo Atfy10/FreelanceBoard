@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
-using FreelanceBoard.Core.Commands;
+using FreelanceBoard.Core.Commands.UserCommands;
 
 namespace FreelanceBoard.Core.Validators
 {

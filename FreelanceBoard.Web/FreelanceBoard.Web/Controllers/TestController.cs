@@ -37,6 +37,17 @@ namespace FreelanceBoard.Web.Controllers
 			return Ok(user);
 		}
 
+		// I want make endpoint to get profile of user by id
+		[HttpGet("profile/{id}")]
+		public async Task<IActionResult> GetUserProfile(string id)
+		{
+			var user = await _userQuery.GetUserFullProfileAsync(id);
+			if (user.IsSuccess)
+			{
+				return Ok(user);
+			}
+			return NotFound(user);
+		}
 
 	}
 }

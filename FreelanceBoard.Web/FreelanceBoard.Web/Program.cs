@@ -1,20 +1,19 @@
 
 using FluentValidation;
 using FreelanceBoard.Core;
-using FreelanceBoard.Core.CommandHandlers;
+using FreelanceBoard.Core.CommandHandlers.UserCommandHandlers;
 using FreelanceBoard.Core.Commands;
 using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Helpers;
 using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Core.Queries.Implementations;
 using FreelanceBoard.Core.Queries.Interfaces;
 using FreelanceBoard.Core.Validators;
 using FreelanceBoard.Infrastructure.DBContext;
+using FreelanceBoard.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using FreelanceBoard.Infrastructure.Repositories;
-using FreelanceBoard.Core.Services.Interfaces;
-using FreelanceBoard.Core.Services.Implementations;
 
 namespace FreelanceBoard.Web
 {
@@ -48,9 +47,9 @@ namespace FreelanceBoard.Web
 
 
 			builder.Services.AddScoped<IUserRepository, UserRepository>();
+			builder.Services.AddScoped<OperationExecutor>();
 
 			builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-			builder.Services.AddScoped<IUserService, UserService>();
 
 
 			///////////////////

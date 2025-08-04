@@ -5,18 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Dtos;
+using FreelanceBoard.Core.Helpers;
 
 namespace FreelanceBoard.Core.Queries.Interfaces
 {
 	public interface IUserQuery
 	{
-		Task<ApplicationUserDto>GetUserByIdAsync(string id);
-		Task<IEnumerable<ApplicationUserDto>> GetAllUsersAsync();
-		Task<IEnumerable<ApplicationUserDto>> GetAllBannedUsersAsync();
-		Task<IEnumerable<ApplicationUserDto>> SearchUsersByNameAsync(string name);
-		Task<UserWithProjectsDto> GetUserWithProjectsAsync(string id);
-		Task<UserWithSkillsDto> GetUserWithSkillsAsync(string id);
-		Task<ApplicationUserFullProfileDto> GetUserFullProfileAsync(string id);
+		Task<Result<ApplicationUserDto>> GetUserByIdAsync(string id);
+		Task<Result<IEnumerable<ApplicationUserDto>>> GetAllUsersAsync();
+		Task<Result<IEnumerable<ApplicationUserDto>>> GetAllBannedUsersAsync();
+		Task<Result<IEnumerable<ApplicationUserDto>>> SearchUsersByNameAsync(string name);
+		Task<Result<UserWithProjectsDto>> GetUserWithProjectsAsync(string id);
+		Task<Result<UserWithSkillsDto>> GetUserWithSkillsAsync(string id);
+		Task<Result<ApplicationUserFullProfileDto>> GetUserFullProfileAsync(string id);
 
 
 
