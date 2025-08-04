@@ -7,7 +7,7 @@ using AutoMapper;
 
 namespace FreelanceBoard.Core
 {
-	public class AutoMapperProfile : Profile
-	{
-	}
+    public class AutoMapperProfile : Profile
+    {
+    }
 }

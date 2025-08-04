@@ -25,8 +25,4 @@
     <ProjectReference Include="..\FreelanceBoard.Infrastructure\FreelanceBoard.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

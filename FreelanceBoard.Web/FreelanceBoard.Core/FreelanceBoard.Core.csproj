@@ -14,12 +14,4 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CommandHandlers\" />
-    <Folder Include="Commands\" />
-    <Folder Include="Dtos\" />
-    <Folder Include="Queries\" />
-    <Folder Include="Validators\" />
-  </ItemGroup>
-
 </Project>

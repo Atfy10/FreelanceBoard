@@ -1,41 +1,68 @@
 ﻿using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Infrastructure.DBContext;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FreelanceBoard.Infrastructure.Repositories
 {
-    internal class BaseRepository<TEntity>(AppDbContext dbContext) : IBaseRepository<TEntity> where TEntity : class
+    public class BaseRepository<TEntity>(AppDbContext dbContext) : IBaseRepository<TEntity> where TEntity : class
     {
-        protected readonly AppDbContext _dbContext = dbContext 
-            ?? throw new ArgumentNullException(nameof(dbContext));
+        protected readonly AppDbContext _dbContext;
+        
 
-        public Task AddAsync(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            if (entity == null) 
+                throw new ArgumentNullException(nameof(entity));
+            await _dbContext.Set<TEntity>().AddAsync(entity);
+            await SaveChangesAsync();
+            
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var entity = await _dbContext.Set<TEntity>().FindAsync(id);
+
+            if (entity != null)
+            {
+                _dbContext.Set<TEntity>().Remove(entity);
+                await SaveChangesAsync();
+            }
+            throw new ArgumentNullException(nameof(entity));
+            
+            
+        }
+            
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
-        public Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<TEntity> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            
+            return await _dbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public Task<TEntity> GetByIdAsync(int id)
+        public async Task UpdateAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            if (entity == null) 
+                throw new ArgumentNullException(nameof(entity));
+            _dbContext.Set<TEntity>().Update(entity);
+            await SaveChangesAsync();
+
         }
 
-        public Task UpdateAsync(TEntity entity)
+
+        private async Task SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            await _dbContext.SaveChangesAsync();
         }
+
     }
 }

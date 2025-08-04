@@ -1,12 +1,13 @@
 ﻿using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Infrastructure.DBContext;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace FreelanceBoard.Web
 {
     public class SeedDB
     {
-        public static void Seed(AppDbContext context)
+        public static void Seed(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             if (!context.Users.Any())
             {
@@ -15,7 +16,7 @@ namespace FreelanceBoard.Web
                 new ApplicationUser
                 {
                     Id = "1",
-                    UserName = "john.doe@example.com",
+                    UserName = "johndoe",
                     Email = "john.doe@example.com",
                     FirstName = "John",
                     LastName = "Doe",
@@ -25,7 +26,7 @@ namespace FreelanceBoard.Web
                 new ApplicationUser
                 {
                     Id = "2",
-                    UserName = "jane.smith@example.com",
+                    UserName = "janesmith",
                     Email = "jane.smith@example.com",
                     FirstName = "Jane",
                     LastName = "Smith",
@@ -35,7 +36,7 @@ namespace FreelanceBoard.Web
                 new ApplicationUser
                 {
                     Id = "3",
-                    UserName = "mike.johnson@example.com",
+                    UserName = "mikejohnson",
                     Email = "mike.johnson@example.com",
                     FirstName = "Mike",
                     LastName = "Johnson",
@@ -45,7 +46,7 @@ namespace FreelanceBoard.Web
                 new ApplicationUser
                 {
                     Id = "4",
-                    UserName = "sarah.williams@example.com",
+                    UserName = "sarahwilliams",
                     Email = "sarah.williams@example.com",
                     FirstName = "Sarah",
                     LastName = "Williams",
@@ -55,7 +56,7 @@ namespace FreelanceBoard.Web
                 new ApplicationUser
                 {
                     Id = "5",
-                    UserName = "banned.user@example.com",
+                    UserName = "banneduser",
                     Email = "banned.user@example.com",
                     FirstName = "Banned",
                     LastName = "User",
@@ -63,7 +64,8 @@ namespace FreelanceBoard.Web
                     EmailConfirmed = true
                 }
             };
-                context.AddRange(users);
+                foreach (var user in users)
+                    userManager.CreateAsync(user, "Password123!");
                 context.SaveChanges();
             }
             if (!context.Skills.Any())

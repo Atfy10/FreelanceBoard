@@ -31,7 +31,8 @@ namespace FreelanceBoard.Infrastructure.Configurations
 
 			builder.HasOne(p => p.Contract)
 				   .WithOne(c => c.Payment)
-				   .HasForeignKey<Contract>(c => c.PaymentNumber);
-		}
+				   .HasForeignKey<Contract>(c => c.PaymentNumber)
+				   .OnDelete(DeleteBehavior.SetNull);
+        }
 	}
 }

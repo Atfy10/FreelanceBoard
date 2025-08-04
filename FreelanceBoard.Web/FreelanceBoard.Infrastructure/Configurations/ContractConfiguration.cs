@@ -29,29 +29,32 @@ namespace FreelanceBoard.Infrastructure.Configurations
 
 			builder.Property(c => c.Status)
 				   .IsRequired();
-				   
 
-			builder.Property(c => c.UserId)
+
+            builder.Property(c => c.JobId)
 				   .IsRequired();
 
-			builder.Property(c => c.JobId)
-				   .IsRequired();
+            builder.Property(c => c.UserId)
+                   .IsRequired();
 
-			builder.Property(c => c.PaymentNumber)
-				   .IsRequired();
+
 
 			builder.HasOne(c => c.User)
 				   .WithMany(u => u.Contracts)
-				   .HasForeignKey(c => c.UserId);
+				   .HasForeignKey(c => c.UserId)
+				   .OnDelete(DeleteBehavior.Cascade);
 
-			builder.HasOne(c => c.Job)
+
+            builder.HasOne(c => c.Job)
 				   .WithOne(j => j.Contract)
-				   .HasForeignKey<Contract>(c => c.JobId);
+				   .HasForeignKey<Contract>(c => c.JobId)
+				   .OnDelete(DeleteBehavior.Cascade);
 
-			builder.HasOne(c => c.Payment)
+            builder.HasOne(c => c.Payment)
 				   .WithOne(p => p.Contract)
-				   .HasForeignKey<Contract>(c => c.PaymentNumber);
-		}
+				   .HasForeignKey<Contract>(c => c.PaymentNumber)
+				   .OnDelete(DeleteBehavior.SetNull);
+        }
 	}
 }
 

@@ -32,7 +32,8 @@ namespace FreelanceBoard.Infrastructure.Configurations
 
 			builder.HasOne(n => n.User)
 				   .WithMany(u => u.Notifications)
-				   .HasForeignKey(n => n.UserId);
-		}
+				   .HasForeignKey(n => n.UserId)
+				   .OnDelete(DeleteBehavior.Cascade);
+        }
 	}
 }
