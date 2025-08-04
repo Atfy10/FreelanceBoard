@@ -7,8 +7,11 @@ using System.Text;
 using FreelanceBoard.Core.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
-
-
+using MediatR;
+using FreelanceBoard.Core.CommandHandlers;
+using FreelanceBoard.Core;
+using FreelanceBoard.Core.Interfaces;
+using FreelanceBoard.Infrastructure.Repositories;
 namespace FreelanceBoard.Web
 {
     public class Program
@@ -51,8 +54,13 @@ namespace FreelanceBoard.Web
             //    };
             //});
 
+
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddMediatR(typeof(CreateFileCommandHandler).Assembly);
+
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+            builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             // Database
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
@@ -143,8 +151,6 @@ namespace FreelanceBoard.Web
                           .AllowAnyHeader();
                 });
             });
-
-
 
             var app = builder.Build();
 

@@ -8,14 +8,15 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Infrastructure.Repositories
 {
-    internal class BaseRepository<TEntity>(AppDbContext dbContext) : IBaseRepository<TEntity> where TEntity : class
+    public class BaseRepository<TEntity>(AppDbContext dbContext) : IBaseRepository<TEntity> where TEntity : class
     {
         protected readonly AppDbContext _dbContext = dbContext 
             ?? throw new ArgumentNullException(nameof(dbContext));
 
-        public Task AddAsync(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+           await _dbContext.Set<TEntity>().AddAsync(entity);
+            _dbContext.SaveChanges();
         }
 
         public Task DeleteAsync(int id)
