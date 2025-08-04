@@ -1,5 +1,7 @@
 
+using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Infrastructure.DBContext;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace FreelanceBoard.Web
@@ -34,6 +36,23 @@ namespace FreelanceBoard.Web
             app.UseAuthorization();
 
             app.MapControllers();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                try
+                {
+                    SeedDB.Seed(dbContext, userManager);
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (you can use a logging framework here)
+                    Console.WriteLine($"Seed failed: {ex.Message}." +
+                        $"Inner Exception: {ex.InnerException}");
+                }
+            }
 
             app.Run();
         }
