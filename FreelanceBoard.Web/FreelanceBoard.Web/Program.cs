@@ -33,14 +33,11 @@ namespace FreelanceBoard.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 	
-            //////////////
-
 			builder.Services.AddMediatR(typeof(CreateUserCommandHandler).Assembly);
             builder.Services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
 			builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 			builder.Services.AddScoped<IUserQuery, UserQuery>();
 
-			//register to UserManager<ApplicationUser>
 			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 	        .AddEntityFrameworkStores<AppDbContext>()
 	        .AddDefaultTokenProviders();
@@ -51,12 +48,6 @@ namespace FreelanceBoard.Web
 
 			builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
-
-			///////////////////
-
-
-
-
 			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -66,30 +57,30 @@ namespace FreelanceBoard.Web
                 app.UseSwaggerUI();
             }
 
-
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
             app.MapControllers();
 
-			using (var scope = app.Services.CreateScope())
-			{
-				var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-				try
-				{
-					SeedDB.Seed(dbContext);
-				}
-				catch (Exception ex)
-				{
-					// Log the exception (you can use a logging framework here)
-					Console.WriteLine($"Seed failed: {ex.Message}." +
-						$"Inner Exception: {ex.InnerException}");
-				}
-			}
+                try
+                {
+                    SeedDB.Seed(dbContext, userManager);
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (you can use a logging framework here)
+                    Console.WriteLine($"Seed failed: {ex.Message}." +
+                        $"Inner Exception: {ex.InnerException}");
+                }
+            }
 
-			app.Run();
+            app.Run();
         }
     }
 }

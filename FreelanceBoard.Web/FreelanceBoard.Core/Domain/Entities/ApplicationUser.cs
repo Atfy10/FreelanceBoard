@@ -10,33 +10,23 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FreelanceBoard.Core.Domain.Entities
 {
-	public class ApplicationUser : IdentityUser
-	{
-		public string FirstName { get;  set; }
-		public string LastName { get;  set; }
-		public bool IsBanned { get;  set; }
+    public class ApplicationUser : IdentityUser
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public bool IsBanned { get; set; }
 
-		// Navigation properties 
-		public virtual ICollection<Job> Jobs { get; private set; } = [];
-		public virtual Profile Profile { get; private set; }
-		public virtual ICollection<Proposal> Proposals { get; private set; } = [];
-		public virtual ICollection<Notification> Notifications { get; private set; } = [];
-		public virtual ICollection<Contract> Contracts { get; private set; } = [];
-		public virtual ICollection<Message> SentMessages { get; private set; } = [];
-		public virtual ICollection<Message> ReceivedMessages { get; private set; } = [];
-		public virtual ICollection<Project> Projects { get; private set; } = [];
-		public virtual ICollection<Skill> Skills { get; private set; } = [];
+        // Navigation properties 
+        public virtual ICollection<Job> Jobs { get; set; } = [];
+        public virtual Profile Profile { get; set; }
+        public virtual ICollection<Proposal> Proposals { get; set; } = [];
+        public virtual ICollection<Notification> Notifications { get; set; } = [];
+        public virtual ICollection<Contract> Contracts { get; set; } = [];
+        public virtual ICollection<Message> SentMessages { get; set; } = [];
+        public virtual ICollection<Message> ReceivedMessages { get; set; } = [];
+        public virtual ICollection<Project> Projects { get; set; } = [];
+        public virtual ICollection<Skill> Skills { get; set; } = [];
 
-		public void UpdateDetails(string firstName,string lastName,string email,string phoneNumber,string userName,bool isBanned)
-		{
-			FirstName = firstName;
-			LastName = lastName;
-			Email = email;
-			PhoneNumber = phoneNumber;
-			UserName = userName;
-			IsBanned = isBanned;
-		}
-
-	}
+    }
 
 }
