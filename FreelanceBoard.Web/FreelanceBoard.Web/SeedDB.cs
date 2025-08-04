@@ -65,7 +65,7 @@ namespace FreelanceBoard.Web
                 }
             };
                 foreach (var user in users)
-                userManager.CreateAsync(user, "Password123!");
+                    userManager.CreateAsync(user, "Password123!");
                 context.SaveChanges();
             }
             if (!context.Skills.Any())

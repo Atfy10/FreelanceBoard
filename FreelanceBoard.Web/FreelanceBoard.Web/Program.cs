@@ -1,4 +1,10 @@
-
+using FluentValidation;
+using FreelanceBoard.Core;
+using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Interfaces;
+using FreelanceBoard.Infrastructure.DBContext;
+using FreelanceBoard.Infrastructure.Repositories;
+using MediatR;
 using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Infrastructure.DBContext;
 using Microsoft.AspNetCore.Identity;

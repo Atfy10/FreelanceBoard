@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Infrastructure.Repositories
 {
-    internal class BaseRepository<TEntity>(AppDbContext dbContext) : IBaseRepository<TEntity> where TEntity : class
+ public class BaseRepository<TEntity>(AppDbContext dbContext) : IBaseRepository<TEntity> where TEntity : class
     {
         protected readonly AppDbContext _dbContext = dbContext
             ?? throw new ArgumentNullException(nameof(dbContext));
@@ -27,12 +27,24 @@ namespace FreelanceBoard.Infrastructure.Repositories
             await SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(string id)
+        {
+            var entity = await _dbContext.Set<TEntity>().FindAsync(id);
+            _dbContext.Set<TEntity>().Remove(entity);
+            await SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
         public async Task<TEntity> GetByIdAsync(int id)
+        {
+            return await _dbContext.Set<TEntity>().FindAsync(id);
+        }
+
+        public async Task<TEntity> GetByIdAsync(string id)
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }
@@ -47,5 +59,4 @@ namespace FreelanceBoard.Infrastructure.Repositories
         {
             await _dbContext.SaveChangesAsync();
         }
-    }
-}
+    }}
