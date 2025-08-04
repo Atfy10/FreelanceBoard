@@ -8,10 +8,12 @@ namespace FreelanceBoard.Core.Interfaces
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {
-        Task<TEntity> GetByIdAsync(string id); // i convert it from int to string
-		Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<TEntity> GetByIdAsync(int id);
+        Task<TEntity> GetByIdAsync(string id);
+        Task<IEnumerable<TEntity>> GetAllAsync();
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
-        Task DeleteAsync(string id);// i convert it from int to string
-	}
+        Task DeleteAsync(int id);
+        Task DeleteAsync(string id);
+    }
 }

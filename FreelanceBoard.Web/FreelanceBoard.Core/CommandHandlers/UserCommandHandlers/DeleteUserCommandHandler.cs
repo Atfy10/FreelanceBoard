@@ -16,51 +16,43 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 {
-	public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result<ApplicationUser>>
-	{
-		private readonly IUserRepository _userRepository;
-		private readonly ILogger<CreateUserCommandHandler> _logger;
-		private readonly OperationExecutor _executor;
-		private readonly string DeleleOperation;
+    public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result<ApplicationUser>>
+    {
+        private readonly IUserRepository _userRepository;
+        private readonly ILogger<CreateUserCommandHandler> _logger;
+        private readonly OperationExecutor _executor;
+        private readonly string DeleleOperation;
 
 
-		public DeleteUserCommandHandler(IUserRepository userRepository, ILogger<CreateUserCommandHandler> logger,OperationExecutor executor)
-		{
-			_userRepository = userRepository;
-			_logger = logger;
-			_executor = executor;
-			DeleleOperation = OperationType.Delete.ToString();
-		}
+        public DeleteUserCommandHandler(IUserRepository userRepository, ILogger<CreateUserCommandHandler> logger, OperationExecutor executor)
+        {
+            _userRepository = userRepository;
+            _logger = logger;
+            _executor = executor;
+            DeleleOperation = OperationType.Delete.ToString();
+        }
 
-		public async Task<Result<ApplicationUser>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
-		{
-			_logger.LogInformation("Starting user deletion process...");
-			if (request == null)
-			{
-				_logger.LogWarning("DeleteUserCommand is null.");
-				return Result<ApplicationUser>.Failure(DeleleOperation, "Invalid request.");
-			}
-			if (string.IsNullOrWhiteSpace(request.UserId))
-			{
-				_logger.LogWarning("User ID is missing in the delete request.");
-				return Result<ApplicationUser>.Failure(DeleleOperation, "User ID is required.");
-			}
-			return await _executor.Execute(async () =>
-			{
-				var user = await _userRepository.GetByIdAsync(request.UserId);
-				if (user == null)
-				{
-					_logger.LogWarning("User with ID {UserId} not found.", request.UserId);
-					return Result<ApplicationUser>.Failure(DeleleOperation, "User not found.");
-				}
+        public async Task<Result<ApplicationUser>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        => await _executor.Execute(async () =>
+            {
+                _logger.LogInformation("Starting {Operation} process...", DeleleOperation);
 
-				await _userRepository.DeleteAsync(request.UserId);
-				_logger.LogInformation("User with ID {UserId} deleted successfully.", request.UserId);
+                if (request == null)
+                    throw new NullReferenceException("Update request cannot be null.");
 
-				return Result<ApplicationUser>.Success(user, DeleleOperation, "User deleted successfully.");
+                if (string.IsNullOrWhiteSpace(request.UserId))
+                    throw new ArgumentNullException("User ID cannot be null or empty.");
 
-			}, OperationType.Delete);
-			
-		}
-	}
+                var user = await _userRepository.GetByIdAsync(request.UserId) ??
+                throw new KeyNotFoundException($"User with ID {request.UserId} not found.");
+
+                await _userRepository.DeleteAsync(request.UserId);
+
+                _logger.LogInformation("User with ID {UserId} deleted successfully.", request.UserId);
+
+                return Result<ApplicationUser>.Success(user, DeleleOperation, "User deleted successfully.");
+            }, OperationType.Delete);
+
+
+    }
 }

@@ -24,7 +24,27 @@ namespace FreelanceBoard.Core.Helpers
 			{
 				return await operation();
 			}
-			catch (DbUpdateException ex)
+			catch (ArgumentNullException ex)
+			{
+				_logger.LogError(ex, "Argument null error occurred during {Operation}", opType);
+				return Result<T>.Failure(opType.ToString(), "An arg was null: " + ex.Message);
+			}
+			catch (NullReferenceException ex)
+			{
+				_logger.LogError(ex, "Null reference error occurred during {Operation}", opType);
+				return Result<T>.Failure(opType.ToString(), "A null reference was encountered: " + ex.Message);
+			}
+			catch (InvalidOperationException ex)
+			{
+				_logger.LogError(ex, "Invalid operation error occurred during {Operation}", opType);
+				return Result<T>.Failure(opType.ToString(), "An invalid operation was attempted: " + ex.Message);
+			}
+			catch (KeyNotFoundException ex)
+			{
+                _logger.LogError(ex, "Key not found error occurred during {Operation}", opType);
+                return Result<T>.Failure(opType.ToString(), "The key is not found: " + ex.Message);
+            }
+            catch (DbUpdateException ex)
 			{
 				_logger.LogError(ex, "Database error occurred during {Operation}", opType);
 				return Result<T>.Failure(opType.ToString(), "A database error occurred: " + ex.Message);

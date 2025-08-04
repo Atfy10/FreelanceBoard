@@ -15,58 +15,45 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 {
-	public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<ApplicationUser>>
-	{
-		private readonly IUserRepository _userRepository;
-		private readonly IMapper _mapper;
-		private readonly OperationExecutor _executor;
-		private readonly ILogger<UpdateUserCommandHandler> _logger;
-		private readonly string UpdateOperation;
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<ApplicationUser>>
+    {
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+        private readonly OperationExecutor _executor;
+        private readonly ILogger<UpdateUserCommandHandler> _logger;
+        private readonly string UpdateOperation;
 
-		public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper, ILogger<UpdateUserCommandHandler> logger, OperationExecutor executor)
-		{
-			_userRepository = userRepository;
-			_mapper = mapper;
-			_logger = logger;
-			_executor = executor;
-			UpdateOperation = OperationType.Update.ToString();
-		}
-		public async Task<Result<ApplicationUser>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
-		{
-			_logger.LogInformation("Starting user update process...");
+        public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper, ILogger<UpdateUserCommandHandler> logger, OperationExecutor executor)
+        {
+            _userRepository = userRepository;
+            _mapper = mapper;
+            _logger = logger;
+            _executor = executor;
+            UpdateOperation = OperationType.Update.ToString();
+        }
+        public async Task<Result<ApplicationUser>> Handle(UpdateUserCommand request,
+            CancellationToken cancellationToken)
+             => await _executor.Execute(async () =>
+             {
+                 _logger.LogInformation("Starting {Operation} process...", UpdateOperation);
 
-			if (request == null)
-			{
-				_logger.LogWarning("UpdateUserCommand is null.");
-				return Result<ApplicationUser>.Failure(UpdateOperation, "Invalid request.");
-			}
+                 if (request == null)
+                     throw new NullReferenceException("Update request cannot be null.");
 
-			if (string.IsNullOrWhiteSpace(request.Id))
-			{
-				_logger.LogWarning("User ID is missing in the update request.");
-				return Result<ApplicationUser>.Failure(UpdateOperation, "User ID is required.");
-			}
+                 if (string.IsNullOrWhiteSpace(request.Id))
+                     throw new ArgumentNullException("User ID cannot be null or empty.");
 
-			return await _executor.Execute(async () =>
-			{
-				var user = await _userRepository.GetByIdAsync(request.Id);
+                 var user = await _userRepository.GetByIdAsync(request.Id) ??
+                 throw new KeyNotFoundException($"User with ID {request.Id} not found.");
 
-				if (user == null)
-				{
-					_logger.LogWarning("User with ID {UserId} not found.", request.Id);
-					return Result<ApplicationUser>.Failure(UpdateOperation, "User not found.");
-				}
+                 _mapper.Map(request, user);
 
-				_mapper.Map(request, user);
+                 await _userRepository.UpdateAsync(user);
 
-				await _userRepository.UpdateAsync(user);
+                 _logger.LogInformation("User with ID {UserId} updated successfully.", request.Id);
+                 return Result<ApplicationUser>.Success(user, UpdateOperation, "User updated successfully.");
 
-				_logger.LogInformation("User with ID {UserId} updated successfully.", request.Id);
-				return Result<ApplicationUser>.Success(user, UpdateOperation, "User updated successfully.");
-
-			}, OperationType.Update);
-		}
-
-	}
+             }, OperationType.Update);
+    }
 
 }
