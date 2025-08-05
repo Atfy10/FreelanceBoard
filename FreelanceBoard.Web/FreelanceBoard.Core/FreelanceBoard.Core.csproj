@@ -16,10 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CommandHandlers\" />
-    <Folder Include="Commands\" />
-    <Folder Include="Queries\" />
-    <Folder Include="Validators\" />
+    <Folder Include="Services\Implementations\" />
+    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
 </Project>

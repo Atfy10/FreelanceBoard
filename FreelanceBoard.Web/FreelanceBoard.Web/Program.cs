@@ -1,5 +1,17 @@
-
+using FluentValidation;
+using FreelanceBoard.Core;
+using FreelanceBoard.Core.CommandHandlers.UserCommandHandlers;
+using FreelanceBoard.Core.Commands;
+using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Helpers;
+using FreelanceBoard.Core.Interfaces;
+using FreelanceBoard.Core.Queries.Implementations;
+using FreelanceBoard.Core.Queries.Interfaces;
+using FreelanceBoard.Core.Validators;
 using FreelanceBoard.Infrastructure.DBContext;
+using FreelanceBoard.Infrastructure.Repositories;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -167,10 +179,11 @@ namespace FreelanceBoard.Web
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
                 try
                 {
-                    SeedDB.Seed(dbContext);
+                    SeedDB.Seed(dbContext, userManager);
                 }
                 catch (Exception ex)
                 {
