@@ -1,6 +1,8 @@
-﻿using FreelanceBoard.Core.Domain.Entities;
+﻿using FreelanceBoard.Core.Commands;
+using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Dtos;
 using FreelanceBoard.Infrastructure.DBContext;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,44 +15,26 @@ namespace FreelanceBoard.Web.Controllers
 
         private readonly AppDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public ProjectController(AppDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly IMediator _mediator;
+        public ProjectController(AppDbContext context, UserManager<ApplicationUser> userManager, IMediator mediator)
         {
             _context = context;
             _userManager = userManager;
+            _mediator = mediator;
         }
 
         [Authorize]
         [HttpPost]
         [Route("api/projects")]
-        public async Task<IActionResult> CreateProject([FromForm] ProjectCreateRequest request)
+        public async Task<IActionResult> CreateProject([FromForm] CreateFileCommand request)
         {
-            if (request.File != null && request.File.Length > 0)
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            request.UserId = userId;
+            var result =await _mediator.Send(request);
+            if(result == true)
             {
-                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
-                // Generate unique file name
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(request.File.FileName);
-                var filePath = Path.Combine("wwwroot/uploads", fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await request.File.CopyToAsync(stream);
-                }
-
-                var project = new Project
-                {
-                    Title = request.Title,
-                    Description = request.Description,
-                    Attachments = "/uploads/" + fileName,
-                    UserId = userId
-                };
-
-                // Save project to DB (use service/repository pattern if needed)
-                _context.Projects.Add(project);
-                await _context.SaveChangesAsync();
-
-                return Ok(project);
+            return Ok(result);
             }
 
             return BadRequest("No file provided.");
