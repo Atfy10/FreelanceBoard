@@ -41,37 +41,36 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
         }
 
         public async Task<Result<JobDto>> Handle(UpdateJobCommand request, CancellationToken cancellationToken)
-        => await _executor.Execute(async () =>
-        {
-            _logger.LogInformation("Starting {Operation} process for Job ID: {JobId}", UpdateOperation, request.Id);
-            var existingJob = await _jobRepository.GetFullJobWithIdAsync(request.Id);
-            if (existingJob == null)
-                throw new ArgumentNullException(nameof(request.Id), "Job ID was not found");
+            => await _executor.Execute(async () =>
+            {
+                _logger.LogInformation("Starting {Operation} process for Job ID: {JobId}", UpdateOperation, request.Id);
+                var existingJob = await _jobRepository.GetFullJobWithIdAsync(request.Id);
+                if (existingJob == null)
+                    throw new ArgumentNullException(nameof(request.Id), "Job ID was not found");
 
 
-            Contract updatedContract = await _contractRepository.GetFullContractWithIdAsync(request.ContractId);
-            if (updatedContract == null && request.ContractId!=0)
-                throw new ArgumentNullException(nameof(request.ContractId), "Contract ID was not found");
+                Contract updatedContract = await _contractRepository.GetFullContractWithIdAsync(request.ContractId);
+                if (updatedContract == null && request.ContractId!=0)
+                    throw new ArgumentNullException(nameof(request.ContractId), "Contract ID was not found");
 
 
-            _mapper.Map(request, existingJob);
-            existingJob.Contract = updatedContract;
+                _mapper.Map(request, existingJob);
+                existingJob.Contract = updatedContract;
 
-            var updatedSkills = await _skillRepository.GetByNamesAsync(request.SkillNames);
-            EnsureAllFound(request.SkillNames, updatedSkills.Count, "Skills");
+                var updatedSkills = await _skillRepository.GetByNamesAsync(request.SkillNames);
+                EnsureAllFound(request.SkillNames, updatedSkills.Count, "Skills");
 
-            existingJob.Skills = updatedSkills;
+                existingJob.Skills = updatedSkills;
 
-            var updatedProposals = await _proposalRepository.GetByIdsAsync(request.ProposalIds);
-
-            EnsureAllFound(request.ProposalIds, updatedProposals.Count, "Proposals");
+                var updatedProposals = await _proposalRepository.GetByIdsAsync(request.ProposalIds);
+                EnsureAllFound(request.ProposalIds, updatedProposals.Count, "Proposals");
             
-            existingJob.Proposals = updatedProposals;
-            var jobDto = _mapper.Map<JobDto>(existingJob);
+                existingJob.Proposals = updatedProposals;
+                var jobDto = _mapper.Map<JobDto>(existingJob);
 
-            await _jobRepository.UpdateAsync(existingJob);
-            return Result<JobDto>.Success(jobDto, UpdateOperation, "Job updated successfully.");
-        }, OperationType.Update);
+                await _jobRepository.UpdateAsync(existingJob);
+                return Result<JobDto>.Success(jobDto, UpdateOperation, "Job updated successfully.");
+            }, OperationType.Update);
 
 
         private void EnsureAllFound<T>(List<T> foundItems, int expectedCount, string itemName)

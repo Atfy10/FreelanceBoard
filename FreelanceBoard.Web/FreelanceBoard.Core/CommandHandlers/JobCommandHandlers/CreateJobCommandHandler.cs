@@ -41,26 +41,24 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
 
 
         public async Task<Result<int>> Handle(CreateJobCommand request, CancellationToken cancellationToken)
-        => await _executor.Execute(async() =>
-        {
-            _logger.LogInformation("Handling CreateJobCommand for request: {@Request}", request);
-            if (request == null)
+            => await _executor.Execute(async() =>
             {
-                _logger.LogError("CreateJobCommand request is null.");
-                throw new ArgumentNullException(nameof(request), "CreateJobCommand request cannot be null.");
-            }
-            var newJob = _mapper.Map<Job>(request);
-            var skills = await _skillRepository.GetByNamesAsync(request.SkillNames);
-            newJob.Skills = skills;
+                _logger.LogInformation("Handling CreateJobCommand for request: {@Request}", request);
 
+                if (request == null)
+                    throw new ArgumentNullException(nameof(request), "CreateJobCommand request cannot be null.");
 
-            if (skills.Count != request.SkillNames.Count)
-            {
-                throw new ArgumentNullException(nameof(request), "One or more skills wasn't found");
-            }
-            _logger.LogInformation("Created new job with title: {JobTitle} successfully", newJob.Title);
-            await _jobRepository.AddAsync(newJob);
-            return Result<int>.Success(newJob.Id, CreateOperation, "Job created successfully.");
-        },OperationType.Get);
+                var newJob = _mapper.Map<Job>(request);
+                var skills = await _skillRepository.GetByNamesAsync(request.SkillNames);
+                newJob.Skills = skills;
+
+                if (skills.Count != request.SkillNames.Count)
+                    throw new ArgumentNullException(nameof(request), "One or more skills wasn't found");
+
+                _logger.LogInformation("Created new job with title: {JobTitle} successfully", newJob.Title);
+                await _jobRepository.AddAsync(newJob);
+
+                return Result<int>.Success(newJob.Id, CreateOperation, "Job created successfully.");
+            },OperationType.Get);
     }
 }
