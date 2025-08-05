@@ -13,7 +13,9 @@ namespace FreelanceBoard.Core
 	{
 		public AutoMapperProfile()
 		{
-			CreateMap<CreateUserCommand, Domain.Entities.ApplicationUser>();
+			CreateMap<CreateUserCommand, Domain.Entities.ApplicationUser>()
+				.ForMember(dest => dest.Id, opt => opt.Ignore()) // auto-generated
+				.ForMember(dest => dest.IsBanned, opt => opt.Ignore()); // default = false;
 			CreateMap<UpdateUserCommand, Domain.Entities.ApplicationUser>();
 			CreateMap<Domain.Entities.ApplicationUser, ApplicationUserDto>();
 			CreateMap<ApplicationUserDto, Domain.Entities.ApplicationUser>();
@@ -24,6 +26,8 @@ namespace FreelanceBoard.Core
 			CreateMap<Domain.Entities.ApplicationUser, ApplicationUserFullProfileDto>();
 			CreateMap<Domain.Entities.Profile, ProfileDto>();
 			CreateMap<Domain.Entities.Skill, SkillDto>();
+
+
 
 
 

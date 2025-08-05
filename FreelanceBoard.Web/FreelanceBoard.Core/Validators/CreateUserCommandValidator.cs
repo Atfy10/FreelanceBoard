@@ -14,22 +14,26 @@ namespace FreelanceBoard.Core.Validators
 		{
 			RuleFor(x => x.FirstName)
 				.NotEmpty().WithMessage("First name is required.")
-				.MaximumLength(50).WithMessage("First name cannot exceed 50 characters.");
+				.Length(2, 50).WithMessage("First name must be between 2 and 50 characters.");
 			RuleFor(x => x.LastName)
 				.NotEmpty().WithMessage("Last name is required.")
-				.MaximumLength(50).WithMessage("Last name cannot exceed 50 characters.");
+				.Length(2, 50).WithMessage("Last name must be between 2 and 50 characters.");
 			RuleFor(x => x.Email)
 				.NotEmpty().WithMessage("Email is required.")
+				.NotNull().WithMessage("Email cannot be null.")
 				.EmailAddress().WithMessage("Invalid email format.");
 			RuleFor(x => x.Password)
 				.NotEmpty().WithMessage("Password is required.")
+				.NotNull().WithMessage("Email cannot be null.")
 				.MinimumLength(6).WithMessage("Password must be at least 6 characters long.");
+			RuleFor(x => x.ConfirmPassword)
+				.Equal(x => x.Password).WithMessage("Passwords do not match.");
 			RuleFor(x => x.PhoneNumber)
 				.NotEmpty().WithMessage("Phone number is required.")
-				.MaximumLength(15).WithMessage("Phone number cannot exceed 15 characters.");
+				.Length(10, 15).WithMessage("Phone number must be between 10 and 15 characters.");
 			RuleFor(x => x.UserName)
 				.NotEmpty().WithMessage("Username is required.")
-				.MaximumLength(20).WithMessage("Username cannot exceed 20 characters.");
+				.Length(3, 20).WithMessage("Username must be between 3 and 20 characters.");
 		}
 	}
 }
