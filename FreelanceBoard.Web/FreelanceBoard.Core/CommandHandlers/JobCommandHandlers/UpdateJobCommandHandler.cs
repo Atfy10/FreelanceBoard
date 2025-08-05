@@ -58,23 +58,26 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
             existingJob.Contract = updatedContract;
 
             var updatedSkills = await _skillRepository.GetByNamesAsync(request.SkillNames);
-            if (updatedSkills.Count != request.SkillNames.Count)
-            {
-                throw new ArgumentNullException(nameof(request), "One or more skills were not found");
-            }
+            EnsureAllFound(request.SkillNames, updatedSkills.Count, "Skills");
+
             existingJob.Skills = updatedSkills;
 
             var updatedProposals = await _proposalRepository.GetByIdsAsync(request.ProposalIds);
 
-            if (updatedProposals.Count != request.ProposalIds.Count)
-            {
-                throw new ArgumentNullException(nameof(request), "One or more proposals were not found");
-            }
+            EnsureAllFound(request.ProposalIds, updatedProposals.Count, "Proposals");
+            
             existingJob.Proposals = updatedProposals;
             var jobDto = _mapper.Map<JobDto>(existingJob);
 
             await _jobRepository.UpdateAsync(existingJob);
             return Result<JobDto>.Success(jobDto, UpdateOperation, "Job updated successfully.");
         }, OperationType.Update);
+
+
+        private void EnsureAllFound<T>(List<T> foundItems, int expectedCount, string itemName)
+        {
+            if (foundItems.Count != expectedCount)
+                throw new ArgumentNullException(nameof(foundItems), $"One or more {itemName} were not found");
+        }
     }
 }
