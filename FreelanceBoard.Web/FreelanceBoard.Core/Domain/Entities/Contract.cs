@@ -20,11 +20,11 @@ namespace FreelanceBoard.Core.Domain.Entities
 
 		public string UserId { get; set; }
 		public int JobId { get; set; }
-		public string PaymentNumber { get; set; }
+		public string? PaymentNumber { get; set; }
 
 		// Navigation properties
 		public virtual Job Job { get; set; }
-		public virtual Payement Payment { get; set; }
+		public virtual Payement? Payment { get; set; }
 		public virtual ApplicationUser User { get; set; }
 		public virtual ICollection<Review> Reviews { get; set; } = [];
 	}

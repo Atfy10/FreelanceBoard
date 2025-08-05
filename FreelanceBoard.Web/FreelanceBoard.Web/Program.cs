@@ -1,13 +1,12 @@
+
 using FluentValidation;
-using FreelanceBoard.Core;
-using FreelanceBoard.Core.CommandHandlers.UserCommandHandlers;
-using FreelanceBoard.Core.Commands;
 using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Helpers;
 using FreelanceBoard.Core.Interfaces;
-using FreelanceBoard.Core.Queries.Implementations;
+using FreelanceBoard.Core.MapperProfiles;
 using FreelanceBoard.Core.Queries.Interfaces;
-using FreelanceBoard.Core.Validators;
+using FreelanceBoard.Core.QueryHandlers.JobQueryHandlers;
+using FreelanceBoard.Core.Validators.JobValidators;
 using FreelanceBoard.Infrastructure.DBContext;
 using FreelanceBoard.Infrastructure.Repositories;
 using MediatR;
@@ -23,7 +22,7 @@ namespace FreelanceBoard.Web
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<AppDbContext>(options => 
+            builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
             b => b.MigrationsAssembly("FreelanceBoard.Infrastructure")));
 
@@ -31,23 +30,25 @@ namespace FreelanceBoard.Web
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-	
-			builder.Services.AddMediatR(typeof(CreateUserCommandHandler).Assembly);
-            builder.Services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
-			builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-			builder.Services.AddScoped<IUserQuery, UserQuery>();
-
-			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-	        .AddEntityFrameworkStores<AppDbContext>()
-	        .AddDefaultTokenProviders();
 
 
-			builder.Services.AddScoped<IUserRepository, UserRepository>();
-			builder.Services.AddScoped<OperationExecutor>();
-
-			builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-
-			var app = builder.Build();
+            builder.Services.AddAutoMapper(typeof(JobAutoMapperProfile).Assembly);
+            builder.Services.AddScoped<IJobRepository, JobRepository>();
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            builder.Services.AddScoped<IContractRepository, ContractRepository>();
+            builder.Services.AddScoped<IProposalRepository, ProposalRepository>();
+            builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+            builder.Services.AddScoped<IJobQuery,JobQuery>();
+            builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            builder.Services.AddMediatR(typeof(JobAutoMapperProfile).Assembly);
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<OperationExecutor>();
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateJobCommandValidator>();
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                            .AddEntityFrameworkStores<AppDbContext>()
+                            .AddDefaultTokenProviders();
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -57,9 +58,7 @@ namespace FreelanceBoard.Web
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
             app.MapControllers();
 
             using (var scope = app.Services.CreateScope())
@@ -78,7 +77,6 @@ namespace FreelanceBoard.Web
                         $"Inner Exception: {ex.InnerException}");
                 }
             }
-
             app.Run();
         }
     }

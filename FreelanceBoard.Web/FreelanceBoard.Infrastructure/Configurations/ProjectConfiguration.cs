@@ -32,9 +32,10 @@ namespace FreelanceBoard.Infrastructure.Configurations
 
 			builder.HasOne(p => p.User)
 				   .WithMany(u => u.Projects)
-				   .HasForeignKey(p => p.UserId);
-				   
-		}
+				   .HasForeignKey(p => p.UserId)
+				   .OnDelete(DeleteBehavior.Cascade);
+
+        }
 
 	}
 }

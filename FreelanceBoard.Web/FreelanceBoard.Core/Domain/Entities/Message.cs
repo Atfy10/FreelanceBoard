@@ -14,12 +14,12 @@ namespace FreelanceBoard.Core.Domain.Entities
         public string Body { get; set; }
         public bool IsRead { get; set; }
         public DateTime Timestamp { get; set; }
-		public string ReceiverId { get; set; }
-		public string SenderId { get; set; }
+		public string? ReceiverId { get; set; }
+		public string? SenderId { get; set; }
 
         // Navigation properties
-		public virtual ApplicationUser Sender { get; set; }
-		public virtual ApplicationUser Receiver { get; set; }
+		public virtual ApplicationUser? Sender { get; set; }
+		public virtual ApplicationUser? Receiver { get; set; }
 
 	}
 }
