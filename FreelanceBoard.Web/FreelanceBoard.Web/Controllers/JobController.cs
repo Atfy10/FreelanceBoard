@@ -5,7 +5,7 @@ using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Dtos;
 using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Core.Queries;
-using FreelanceBoard.Core.Queries.JobQueries;
+using FreelanceBoard.Core.Queries.Interfaces;
 using FreelanceBoard.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -19,20 +19,18 @@ namespace FreelanceBoard.Web.Controllers
     {
 
         private readonly IMediator _mediator;
-        public JobController(IMediator mediator)
+        private readonly IJobQuery _jobQuery;
+        public JobController(IMediator mediator,IJobQuery jobQuery)
         {
             _mediator = mediator;
+            _jobQuery = jobQuery ?? throw new ArgumentNullException(nameof(jobQuery));
         }
 
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetJobById(int id)
         {
-            var jobDto = await _mediator.Send(new GetJobByIdQuery(id));
-
-            if (jobDto == null)
-                return NotFound();
-
+            var jobDto = await _jobQuery.GetJobByIdAsync(id);
             return Ok(jobDto);
         }
 
@@ -42,11 +40,7 @@ namespace FreelanceBoard.Web.Controllers
         public async Task<IActionResult> DeleteJob(int id)
         {
             var deleted = await _mediator.Send(new DeleteJobCommand(id));
-
-            if (!deleted)
-                return NotFound();
-
-            return NoContent();
+            return Ok(deleted);
         }
 
 
@@ -75,10 +69,8 @@ namespace FreelanceBoard.Web.Controllers
             try
             {
                 var success = await _mediator.Send(command);
-                if (!success)
-                    return NotFound(); // either job or related data was missing
 
-                return NoContent();
+                return Ok(success);
             }
             catch (FluentValidation.ValidationException ex)
             {

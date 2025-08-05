@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Dtos.JobDtos;
+using FreelanceBoard.Core.Helpers;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Core.Commands.JobCommands
 {
-    public class UpdateJobCommand : IRequest<bool>
+    public class UpdateJobCommand : IRequest<Result<JobDto>>
     {
         public int Id { get; set; }
         public string Title { get; set; }

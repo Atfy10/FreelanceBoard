@@ -20,7 +20,7 @@ namespace FreelanceBoard.Core.Validators.JobValidators
             RuleFor(x => x.UserId).NotEmpty().MaximumLength(100).NotNull();
             RuleFor(x => x.SkillNames);
             RuleFor(x => x.ProposalIds);
-            RuleFor(x => x.ContractId).GreaterThan(0);
+            RuleFor(x => x.ContractId).GreaterThan(-1);
         }
     }
 }

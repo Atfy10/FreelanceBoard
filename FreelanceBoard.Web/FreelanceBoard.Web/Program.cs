@@ -1,8 +1,11 @@
 
 using FluentValidation;
 using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Helpers;
 using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Core.MapperProfiles;
+using FreelanceBoard.Core.Queries.Interfaces;
+using FreelanceBoard.Core.QueryHandlers.JobQueryHandlers;
 using FreelanceBoard.Core.Validators.JobValidators;
 using FreelanceBoard.Infrastructure.DBContext;
 using FreelanceBoard.Infrastructure.Repositories;
@@ -35,15 +38,16 @@ namespace FreelanceBoard.Web
             builder.Services.AddScoped<IContractRepository, ContractRepository>();
             builder.Services.AddScoped<IProposalRepository, ProposalRepository>();
             builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+            builder.Services.AddScoped<IJobQuery,JobQuery>();
             builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             builder.Services.AddMediatR(typeof(JobAutoMapperProfile).Assembly);
-
-
-
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<OperationExecutor>();
             builder.Services.AddValidatorsFromAssemblyContaining<CreateJobCommandValidator>();
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
-
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                            .AddEntityFrameworkStores<AppDbContext>()
+                            .AddDefaultTokenProviders();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
