@@ -20,8 +20,14 @@ namespace FreelanceBoard.Infrastructure.Repositories
 			_context = context;
 		}
 
+		public Task<ApplicationUser?> GetByEmailAsync(string email)
+		{
+			if (string.IsNullOrWhiteSpace(email))
+				return Task.FromResult<ApplicationUser?>(null);
+			return _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+		}
 
-        public async Task<ApplicationUser?> GetUserFullProfileAsync(string userId)
+		public async Task<ApplicationUser?> GetUserFullProfileAsync(string userId)
 		{
 			if (string.IsNullOrWhiteSpace(userId))
 				return null;

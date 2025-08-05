@@ -10,7 +10,7 @@ using MediatR;
 
 namespace FreelanceBoard.Core.Commands.UserCommands
 {
-	public class UpdateUserCommand : IRequest<Result<ApplicationUser>>
+	public class UpdateUserCommand : IRequest<Result<ApplicationUserDto>>
 	{
 		public string Id { get; set; }
 		public string FirstName { get; set; }

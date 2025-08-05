@@ -7,6 +7,7 @@ using AutoMapper;
 using FreelanceBoard.Core.Commands.UserCommands;
 using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Domain.Enums;
+using FreelanceBoard.Core.Dtos;
 using FreelanceBoard.Core.Helpers;
 using FreelanceBoard.Core.Interfaces;
 using MediatR;
@@ -16,7 +17,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 {
-    public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result<ApplicationUser>>
+    public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result<string>>
     {
         private readonly IUserRepository _userRepository;
         private readonly ILogger<CreateUserCommandHandler> _logger;
@@ -32,7 +33,7 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
             DeleleOperation = OperationType.Delete.ToString();
         }
 
-        public async Task<Result<ApplicationUser>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         => await _executor.Execute(async () =>
             {
                 _logger.LogInformation("Starting {Operation} process...", DeleleOperation);
@@ -50,7 +51,7 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 
                 _logger.LogInformation("User with ID {UserId} deleted successfully.", request.UserId);
 
-                return Result<ApplicationUser>.Success(user, DeleleOperation, "User deleted successfully.");
+                return Result<string>.Success("", DeleleOperation, "User deleted successfully.");
             }, OperationType.Delete);
 
 

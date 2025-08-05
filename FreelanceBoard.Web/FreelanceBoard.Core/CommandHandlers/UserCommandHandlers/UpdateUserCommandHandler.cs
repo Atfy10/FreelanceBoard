@@ -7,6 +7,7 @@ using AutoMapper;
 using FreelanceBoard.Core.Commands.UserCommands;
 using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Domain.Enums;
+using FreelanceBoard.Core.Dtos;
 using FreelanceBoard.Core.Helpers;
 using FreelanceBoard.Core.Interfaces;
 using MediatR;
@@ -15,7 +16,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<ApplicationUser>>
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<ApplicationUserDto>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -31,7 +32,7 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
             _executor = executor;
             UpdateOperation = OperationType.Update.ToString();
         }
-        public async Task<Result<ApplicationUser>> Handle(UpdateUserCommand request,
+        public async Task<Result<ApplicationUserDto>> Handle(UpdateUserCommand request,
             CancellationToken cancellationToken)
              => await _executor.Execute(async () =>
              {
@@ -48,10 +49,20 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 
                  _mapper.Map(request, user);
 
-                 await _userRepository.UpdateAsync(user);
+                 var userDto = _mapper.Map<ApplicationUserDto>(user);
+                 if (request.Email != null && request.Email != user.Email)
+                 {
+                     var existingUser = await _userRepository.GetByEmailAsync(request.Email);
+					 if (existingUser != null)
+                     {
+						 return Result<ApplicationUserDto>.Failure(UpdateOperation,"Email is already registered");
+                     }
+                 }
+
+				 await _userRepository.UpdateAsync(user);
 
                  _logger.LogInformation("User with ID {UserId} updated successfully.", request.Id);
-                 return Result<ApplicationUser>.Success(user, UpdateOperation, "User updated successfully.");
+                 return Result<ApplicationUserDto>.Success(userDto, UpdateOperation, "User updated successfully.");
 
              }, OperationType.Update);
     }
