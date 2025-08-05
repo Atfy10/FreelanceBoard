@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
 {
-    public class CreateJobCommandHandler : IRequestHandler<CreateJobCommand,int>
+    public class CreateJobCommandHandler : IRequestHandler<CreateJobCommand, int>
     {
         private readonly IJobRepository _jobRepository;
         private readonly ISkillRepository _skillRepository;
@@ -29,7 +29,7 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
         }
 
 
-         public async Task<int> Handle(CreateJobCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateJobCommand request, CancellationToken cancellationToken)
         {
             var newJob = _mapper.Map<Job>(request);
             var skills = await _skillRepository.GetByNamesAsync(request.SkillNames);

@@ -37,28 +37,28 @@ namespace FreelanceBoard.Infrastructure.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task<TEntity> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<TEntity> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Set<TEntity>().FindAsync(id);
         }
 
         public async Task UpdateAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Set<TEntity>().Update(entity);
+            await SaveChangesAsync();
         }
 
-        public Task UpdateAsync(TEntity entity)
+        private async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();
         }
-
     }
 }

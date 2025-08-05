@@ -19,8 +19,10 @@ namespace FreelanceBoard.Web.Controllers
     {
 
         private readonly IMediator _mediator;
-        public JobController(IMediator mediator)=> _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-
+        public JobController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
 
 
         [HttpGet("{id}")]
