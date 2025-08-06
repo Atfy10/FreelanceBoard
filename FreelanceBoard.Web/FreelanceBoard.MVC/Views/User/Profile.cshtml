@@ -1,4 +1,5 @@
-﻿<style>
+﻿
+        <style>
             .profile-section {
                 background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
                 min-height: 100vh;
@@ -335,110 +336,30 @@
                 cursor: not-allowed;
             }
 
-                .projects-container {
-                    grid-template-columns: 1fr;
-                }
-
-                .profile-picture {
-                    width: 120px;
-                    height: 120px;
-                }
-            }
-
-            .password-section {
-    border-top: 2px solid rgba(139, 92, 246, 0.1);
-    padding-top: 30px;
-    margin-top: 30px;
-}
-
-.password-toggle-btn {
+            .change-password-link {
     position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #6c757d;
-    cursor: pointer;
-    z-index: 10;
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
-}
-
-.password-toggle-btn:hover {
-    color: #6366f1;
-}
-
-.password-strength {
-    margin-top: 8px;
-    height: 4px;
-    background: rgba(139, 92, 246, 0.1);
-    border-radius: 2px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.password-strength-bar {
-    height: 100%;
-    transition: all 0.3s ease;
-    border-radius: 2px;
-}
-
-.strength-weak { background: #ef4444; width: 25%; }
-.strength-fair { background: #f59e0b; width: 50%; }
-.strength-good { background: #10b981; width: 75%; }
-.strength-strong { background: #6366f1; width: 100%; }
-
-.password-requirements {
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: #6c757d;
-}
-
-.requirement {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-    transition: color 0.3s ease;
-}
-
-.requirement.met {
-    color: #10b981;
-}
-
-.requirement i {
-    font-size: 0.8rem;
-}
-
-.change-password-btn {
+    top: 20px;
+    right: 180px;
     background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
     border: none;
     color: white;
-    padding: 12px 30px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    text-decoration: none;
     transition: all 0.3s ease;
-    margin-top: 20px;
+    font-size: 14px;
 }
 
-.change-password-btn:hover {
+.change-password-link:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
     color: white;
-}
-
-.change-password-btn:disabled {
-    background: #6c757d;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+    text-decoration: none;
 }
         </style>
 
-
-    <section class="profile-section">
+            <section class="profile-section">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-10 col-12">
@@ -448,6 +369,10 @@
                                     <i class="bi-pencil-square me-2"></i>
                                     <span id="edit-btn-text">Edit Profile</span>
                                 </button>
+                                <a href="/User/ChangePassword" class="change-password-link">
+                                    <i class="bi-shield-lock-fill me-2"></i>
+                                    Change Password
+                                </a>
 
                                 <div class="profile-header">
                                     <div class="profile-picture-container">
@@ -493,89 +418,7 @@
                                     </div>
                                 </div>
                             
-<!-- Change Password Section -->
-<div class="password-section" id="passwordSection" style="display: none;">
-    <h4 class="section-title">
-        <i class="bi-shield-lock-fill"></i>
-        Change Password
-    </h4>
-    
-    <div class="row">
-        <div class="col-12">
-            <div class="form-group">
-                <label for="currentPassword">Current Password</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi-lock-fill"></i></span>
-                    <input type="password" id="currentPassword" class="form-control" placeholder="Enter your current password">
-                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('currentPassword')">
-                        <i class="bi-eye" id="currentPassword-eye"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 col-12">
-            <div class="form-group">
-                <label for="newPassword">New Password</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi-key-fill"></i></span>
-                    <input type="password" id="newPassword" class="form-control" placeholder="Enter new password" oninput="checkPasswordStrength()">
-                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('newPassword')">
-                        <i class="bi-eye" id="newPassword-eye"></i>
-                    </button>
-                </div>
-                <div class="password-strength" id="passwordStrength">
-                    <div class="password-strength-bar" id="passwordStrengthBar"></div>
-                </div>
-                <div class="password-requirements" id="passwordRequirements">
-                    <div class="requirement" id="req-length">
-                        <i class="bi-x-circle"></i>
-                        <span>At least 8 characters</span>
-                    </div>
-                    <div class="requirement" id="req-uppercase">
-                        <i class="bi-x-circle"></i>
-                        <span>One uppercase letter</span>
-                    </div>
-                    <div class="requirement" id="req-lowercase">
-                        <i class="bi-x-circle"></i>
-                        <span>One lowercase letter</span>
-                    </div>
-                    <div class="requirement" id="req-number">
-                        <i class="bi-x-circle"></i>
-                        <span>One number</span>
-                    </div>
-                    <div class="requirement" id="req-special">
-                        <i class="bi-x-circle"></i>
-                        <span>One special character</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6 col-12">
-            <div class="form-group">
-                <label for="confirmNewPassword">Confirm New Password</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi-key-fill"></i></span>
-                    <input type="password" id="confirmNewPassword" class="form-control" placeholder="Confirm new password" oninput="checkPasswordMatch()">
-                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('confirmNewPassword')">
-                        <i class="bi-eye" id="confirmNewPassword-eye"></i>
-                    </button>
-                </div>
-                <div id="passwordMatchMessage" style="margin-top: 8px; font-size: 0.85rem;"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="text-center">
-        <button class="change-password-btn" id="changePasswordBtn" onclick="changePassword()" disabled>
-            <i class="bi-shield-check me-2"></i>
-            Update Password
-        </button>
-    </div>
-</div>
 
                             <!-- Skills Section -->
                             <div class="profile-container">
@@ -674,15 +517,7 @@
                     </div>
                 </div>
             </section>
-        </main>
-
-        <!-- JAVASCRIPT FILES -->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/owl.carousel.min.js"></script>
-        <script src="js/counter.js"></script>
-        <script src="js/custom.js"></script>
-
+   
         <script>
             let isEditMode = false;
 
@@ -690,7 +525,6 @@
     isEditMode = !isEditMode;
     const editBtn = document.getElementById('edit-btn-text');
     const saveBtn = document.getElementById('saveBtn');
-    const passwordSection = document.getElementById('passwordSection');
     const readonlyFields = document.querySelectorAll('.readonly-field');
     const skillRemoveBtns = document.querySelectorAll('.skill-remove');
     const addSkillBtn = document.querySelector('.add-skill-btn');
@@ -699,7 +533,6 @@
     if (isEditMode) {
         editBtn.textContent = 'Cancel Edit';
         saveBtn.style.display = 'inline-block';
-        passwordSection.style.display = 'block';
         addSkillBtn.style.display = 'flex';
         addProjectBtn.style.display = 'flex';
         
@@ -716,16 +549,8 @@
     } else {
         editBtn.textContent = 'Edit Profile';
         saveBtn.style.display = 'none';
-        passwordSection.style.display = 'none';
         addSkillBtn.style.display = 'none';
         addProjectBtn.style.display = 'none';
-        
-        // Clear password fields when exiting edit mode
-        document.getElementById('currentPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmNewPassword').value = '';
-        document.getElementById('passwordMatchMessage').innerHTML = '';
-        resetPasswordRequirements();
         
         readonlyFields.forEach(field => {
             field.setAttribute('readonly', true);
@@ -843,146 +668,4 @@
                 // Exit edit mode
                 toggleEditMode();
             }
-        
-function togglePasswordVisibility(fieldId) {
-    const field = document.getElementById(fieldId);
-    const eye = document.getElementById(fieldId + '-eye');
-    
-    if (field.type === 'password') {
-        field.type = 'text';
-        eye.className = 'bi-eye-slash';
-    } else {
-        field.type = 'password';
-        eye.className = 'bi-eye';
-    }
-}
-
-function checkPasswordStrength() {
-    const password = document.getElementById('newPassword').value;
-    const strengthBar = document.getElementById('passwordStrengthBar');
-    const requirements = {
-        length: password.length >= 8,
-        uppercase: /[A-Z]/.test(password),
-        lowercase: /[a-z]/.test(password),
-        number: /\d/.test(password),
-        special: /[!#$%^&*(),.?":{}|<>]/.test(password)
-    };
-
-    // Update requirement indicators
-    Object.keys(requirements).forEach(req => {
-        const element = document.getElementById(`req-${req}`);
-        const icon = element.querySelector('i');
-        
-        if (requirements[req]) {
-            element.classList.add('met');
-            icon.className = 'bi-check-circle-fill';
-        } else {
-            element.classList.remove('met');
-            icon.className = 'bi-x-circle';
-        }
-    });
-
-    // Calculate strength
-    const metRequirements = Object.values(requirements).filter(Boolean).length;
-    let strengthClass = '';
-    
-    if (metRequirements <= 2) {
-        strengthClass = 'strength-weak';
-    } else if (metRequirements === 3) {
-        strengthClass = 'strength-fair';
-    } else if (metRequirements === 4) {
-        strengthClass = 'strength-good';
-    } else if (metRequirements === 5) {
-        strengthClass = 'strength-strong';
-    }
-
-    strengthBar.className = `password-strength-bar ${strengthClass}`;
-    
-    // Check if passwords match when new password changes
-    checkPasswordMatch();
-}
-
-function checkPasswordMatch() {
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmNewPassword').value;
-    const messageDiv = document.getElementById('passwordMatchMessage');
-    const changeBtn = document.getElementById('changePasswordBtn');
-    
-    if (confirmPassword === '') {
-        messageDiv.innerHTML = '';
-        changeBtn.disabled = true;
-        return;
-    }
-    
-    if (newPassword === confirmPassword) {
-        messageDiv.innerHTML = '<span style="color: #10b981;"><i class="bi-check-circle-fill me-1"></i>Passwords match</span>';
-        
-        // Check if all requirements are met
-        const allRequirementsMet = document.querySelectorAll('.requirement.met').length === 5;
-        const currentPasswordFilled = document.getElementById('currentPassword').value.length > 0;
-        
-        changeBtn.disabled = !(allRequirementsMet && currentPasswordFilled);
-    } else {
-        messageDiv.innerHTML = '<span style="color: #ef4444;"><i class="bi-x-circle-fill me-1"></i>Passwords do not match</span>';
-        changeBtn.disabled = true;
-    }
-}
-
-function resetPasswordRequirements() {
-    const requirements = document.querySelectorAll('.requirement');
-    const strengthBar = document.getElementById('passwordStrengthBar');
-    
-    requirements.forEach(req => {
-        req.classList.remove('met');
-        req.querySelector('i').className = 'bi-x-circle';
-    });
-    
-    strengthBar.className = 'password-strength-bar';
-    document.getElementById('changePasswordBtn').disabled = true;
-}
-
-function changePassword() {
-    const currentPassword = document.getElementById('currentPassword').value;
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmNewPassword').value;
-    
-    // Basic validation
-    if (!currentPassword) {
-        alert('Please enter your current password');
-        return;
-    }
-    
-    if (newPassword !== confirmPassword) {
-        alert('New passwords do not match');
-        return;
-    }
-    
-    // Check password strength
-    const allRequirementsMet = document.querySelectorAll('.requirement.met').length === 5;
-    if (!allRequirementsMet) {
-        alert('Please ensure your new password meets all requirements');
-        return;
-    }
-    
-    // Simulate password change (replace with actual API call)
-    console.log('Changing password...');
-    
-    // Show success message
-    alert('Password changed successfully!');
-    
-    // Clear password fields
-    document.getElementById('currentPassword').value = '';
-    document.getElementById('newPassword').value = '';
-    document.getElementById('confirmNewPassword').value = '';
-    document.getElementById('passwordMatchMessage').innerHTML = '';
-    resetPasswordRequirements();
-}
-
-// Add event listener for current password field
-document.addEventListener('DOMContentLoaded', function() {
-    const currentPasswordField = document.getElementById('currentPassword');
-    if (currentPasswordField) {
-        currentPasswordField.addEventListener('input', checkPasswordMatch);
-    }
-});
 </script>
