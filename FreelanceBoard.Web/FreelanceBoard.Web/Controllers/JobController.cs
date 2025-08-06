@@ -20,7 +20,7 @@ namespace FreelanceBoard.Web.Controllers
 
         private readonly IMediator _mediator;
         private readonly IJobQuery _jobQuery;
-        public JobController(IMediator mediator,IJobQuery jobQuery)
+        public JobController(IMediator mediator, IJobQuery jobQuery)
         {
             _mediator = mediator;
             _jobQuery = jobQuery ?? throw new ArgumentNullException(nameof(jobQuery));
@@ -47,16 +47,8 @@ namespace FreelanceBoard.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateJob(CreateJobCommand command)
         {
-            try
-            {
-                var newJobId = await _mediator.Send(command);
-                return Ok(newJobId);
-            }
-            catch (FluentValidation.ValidationException ex)
-            {
-                var errors = ex.Errors.Select(e => new { e.PropertyName, e.ErrorMessage });
-                return BadRequest(errors); // return all validation errors nicely
-            }
+            var newJobId = await _mediator.Send(command);
+            return Ok(newJobId);
         }
 
 
@@ -64,18 +56,8 @@ namespace FreelanceBoard.Web.Controllers
         [HttpPut()]
         public async Task<IActionResult> UpdateJob(UpdateJobCommand command)
         {
-            try
-            {
-                var success = await _mediator.Send(command);
-                return Ok(success);
-            }
-            catch (FluentValidation.ValidationException ex)
-            {
-                var errors = ex.Errors.Select(e => new { e.PropertyName, e.ErrorMessage });
-                return BadRequest(errors);
-            }
-
-
+            var success = await _mediator.Send(command);
+            return Ok(success);
         }
     }
 }

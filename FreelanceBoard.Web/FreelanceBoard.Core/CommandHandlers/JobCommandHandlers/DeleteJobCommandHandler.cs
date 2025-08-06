@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
 {
-    public class DeleteJobCommandHandler : IRequestHandler<DeleteJobCommand, Result<Job>>
+    public class DeleteJobCommandHandler : IRequestHandler<DeleteJobCommand, Result<int>>
     {
         private readonly IJobRepository _jobRepository;
         private readonly ILogger<DeleteJobCommand> _logger;
@@ -28,7 +28,7 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
             DeleteOperation = OperationType.Delete.ToString();
         }
 
-        public async Task<Result<Job>> Handle(DeleteJobCommand request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(DeleteJobCommand request, CancellationToken cancellationToken)
             => await _executor.Execute(async() =>
             {
                 _logger.LogInformation("Starting {Operation} process...", DeleteOperation);
@@ -43,7 +43,7 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
 
                 await _jobRepository.DeleteAsync(request.JobId);
                 _logger.LogInformation("Job with ID {JobId} deleted successfully.", request.JobId);
-                return Result<Job>.Success(job, DeleteOperation, "Job deleted successfully.");
+                return Result<int>.Success(job.Id, DeleteOperation, "Job deleted successfully.");
             }, OperationType.Delete);
         
     }

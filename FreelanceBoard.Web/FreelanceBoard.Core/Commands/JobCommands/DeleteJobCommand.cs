@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Core.Commands.JobCommands
 {
-    public class DeleteJobCommand : IRequest<Result<Job>>
+    public class DeleteJobCommand : IRequest<Result<int>>
     {
         public int JobId { get; set; }
         public DeleteJobCommand(int jobId) => JobId = jobId;
