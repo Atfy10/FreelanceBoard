@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FreelanceBoard.Core.Helpers;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Core.Commands
 {
-    public class CreateFileCommand : IRequest<bool>
+    public class CreateFileCommand : IRequest<Result<bool>>
     {
         public string Title { get; set; }
         public string Description { get; set; }

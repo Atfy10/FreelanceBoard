@@ -20,14 +20,12 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly OperationExecutor _executor;
-        private readonly ILogger<UpdateUserCommandHandler> _logger;
         private readonly string UpdateOperation;
 
-        public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper, ILogger<UpdateUserCommandHandler> logger, OperationExecutor executor)
+        public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper, OperationExecutor executor)
         {
             _userRepository = userRepository;
             _mapper = mapper;
-            _logger = logger;
             _executor = executor;
             UpdateOperation = OperationType.Update.ToString();
         }
@@ -35,8 +33,6 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
             CancellationToken cancellationToken)
              => await _executor.Execute(async () =>
              {
-                 _logger.LogInformation("Starting {Operation} process...", UpdateOperation);
-
                  if (request == null)
                      throw new NullReferenceException("Update request cannot be null.");
 
@@ -50,8 +46,8 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 
                  await _userRepository.UpdateAsync(user);
 
-                 _logger.LogInformation("User with ID {UserId} updated successfully.", request.Id);
-                 return Result<ApplicationUser>.Success(user, UpdateOperation, "User updated successfully.");
+                 return Result<ApplicationUser>.Success(user, UpdateOperation,
+                     $"User with ID {request.Id} updated successfully.");
 
              }, OperationType.Update);
     }

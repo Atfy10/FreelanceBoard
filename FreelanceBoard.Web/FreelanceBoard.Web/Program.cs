@@ -1,29 +1,30 @@
 using FluentValidation;
 using FreelanceBoard.Core;
+using FreelanceBoard.Core;
+using FreelanceBoard.Core.CommandHandlers;
 using FreelanceBoard.Core.CommandHandlers.UserCommandHandlers;
 using FreelanceBoard.Core.Commands;
 using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Helpers;
+using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Core.Queries.Implementations;
 using FreelanceBoard.Core.Queries.Interfaces;
 using FreelanceBoard.Core.Validators;
 using FreelanceBoard.Infrastructure.DBContext;
 using FreelanceBoard.Infrastructure.Repositories;
+using FreelanceBoard.Infrastructure.Repositories;
 using MediatR;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using FreelanceBoard.Core.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
-using MediatR;
-using FreelanceBoard.Core.CommandHandlers;
-using FreelanceBoard.Core;
-using FreelanceBoard.Core.Interfaces;
-using FreelanceBoard.Infrastructure.Repositories;
+using System.Text;
+using Umbraco.Core.Composing.CompositionExtensions;
 namespace FreelanceBoard.Web
 {
     public class Program
@@ -73,6 +74,9 @@ namespace FreelanceBoard.Web
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+            builder.Services.AddScoped<OperationExecutor>();
+
             // Database
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(

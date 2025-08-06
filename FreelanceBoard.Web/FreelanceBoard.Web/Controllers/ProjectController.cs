@@ -30,11 +30,10 @@ namespace FreelanceBoard.Web.Controllers
         {
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             request.UserId = userId;
-            var result =await _mediator.Send(request);
-            if(result == true)
+            var result = await _mediator.Send(request);
+            if (result.IsSuccess)
             {
-
-            return Ok(result);
+                return Ok(result);
             }
 
             return BadRequest("No file provided.");
