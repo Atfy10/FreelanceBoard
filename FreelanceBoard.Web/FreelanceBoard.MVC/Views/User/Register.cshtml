@@ -1,0 +1,329 @@
+﻿<style>
+    .auth-section {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 80px 0;
+    }
+
+    .auth-form-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 50px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .auth-form-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .auth-form-header .logo-container {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .auth-form-header .logo-container i {
+        font-size: 2rem;
+        color: white;
+    }
+
+    .auth-form-header h2 {
+        color: #6366f1;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .auth-form-header p {
+        color: #6c757d;
+        margin-bottom: 0;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        color: #6366f1;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-group .form-control {
+        padding-left: 50px;
+        height: 55px;
+        border: none;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-group .form-control:focus {
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        outline: none;
+    }
+
+    .input-group-text {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #6c757d;
+        z-index: 10;
+        font-size: 1.2rem;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #6c757d;
+        cursor: pointer;
+        z-index: 10;
+        font-size: 1.1rem;
+    }
+
+    .form-select {
+        padding-left: 50px;
+        height: 55px;
+        border: none;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-select:focus {
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        outline: none;
+    }
+
+    .auth-btn {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        border: none;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 16px;
+        width: 100%;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .auth-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        color: white;
+    }
+
+    .form-check {
+        margin: 20px 0;
+    }
+
+    .form-check-input:checked {
+        background-color: #8b5cf6;
+        border-color: #8b5cf6;
+    }
+
+    .form-check-label {
+        color: #6c757d;
+    }
+
+    .auth-links {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .auth-links a {
+        color: #6366f1;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .auth-links a:hover {
+        color: #8b5cf6;
+    }
+</style>
+            <section class="auth-section">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10 col-md-12 col-12">
+                            <div class="auth-form-container">
+                                <div class="auth-form-header">
+                                    <div class="logo-container">
+                                        <i class="bi-person-plus-fill"></i>
+                                    </div>
+                                    <h2>Create Your Account</h2>
+                                    <p>Join Gotto and start your career journey today</p>
+                                </div>
+
+                                <form class="custom-form" action="#" method="post" role="form">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-12">
+                                            <div class="form-group">
+                                                <label for="firstName">First Name</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="bi-person custom-icon"></i></span>
+                                                    <input type="text" name="firstName" id="firstName" class="form-control" placeholder="Enter your first name" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-12">
+                                            <div class="form-group">
+                                                <label for="lastName">Last Name</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="bi-person custom-icon"></i></span>
+                                                    <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Enter your last name" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi-person-badge custom-icon"></i></span>
+                                            <input type="text" name="username" id="username" class="form-control" placeholder="Choose a username" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6 col-12">
+                                            <div class="form-group">
+                                                <label for="email">Email Address</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="bi-envelope custom-icon"></i></span>
+                                                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-12">
+                                            <div class="form-group">
+                                                <label for="phone">Phone Number</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="bi-telephone custom-icon"></i></span>
+                                                    <input type="tel" name="phone" id="phone" class="form-control" placeholder="Enter your phone number" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="role">Role</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi-briefcase custom-icon"></i></span>
+                                            <select name="role" id="role" class="form-select" required>
+                                                <option value="">Select your role</option>
+                                                <option value="job-seeker">Job Seeker</option>
+                                                <option value="employer">Employer</option>
+                                                <option value="recruiter">Recruiter</option>
+                                                <option value="freelancer">Freelancer</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6 col-12">
+                                            <div class="form-group">
+                                                <label for="password">Password</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="bi-lock custom-icon"></i></span>
+                                                    <input type="password" name="password" id="password" class="form-control" placeholder="Create a password" required>
+                                                    <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                                        <i class="bi-eye" id="password-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-12">
+                                            <div class="form-group">
+                                                <label for="confirmPassword">Confirm Password</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="bi-lock custom-icon"></i></span>
+                                                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                                                    <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                                                        <i class="bi-eye" id="confirmPassword-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="terms" required>
+                                        <label class="form-check-label" for="terms">
+                                            I agree to the <a href="#" style="color: #6366f1;">Terms of Service</a> and <a href="#" style="color: #6366f1;">Privacy Policy</a>
+                                        </label>
+                                    </div>
+
+                                    <button type="submit" class="auth-btn">
+                                        Create Account
+                                    </button>
+                                </form>
+
+                                <div class="auth-links">
+                                    <p>Already have an account? <a href="login.html">Sign in here</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        <script>
+            function togglePassword(fieldId) {
+                const field = document.getElementById(fieldId);
+                const eye = document.getElementById(fieldId + '-eye');
+                
+                if (field.type === 'password') {
+                    field.type = 'text';
+                    eye.className = 'bi-eye-slash';
+                } else {
+                    field.type = 'password';
+                    eye.className = 'bi-eye';
+                }
+            }
+
+            // Form validation
+            document.querySelector('form').addEventListener('submit', function(e) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (password !== confirmPassword) {
+                    e.preventDefault();
+                    alert('Passwords do not match!');
+                    return false;
+                }
+            });
+        </script>
