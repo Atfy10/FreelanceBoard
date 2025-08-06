@@ -22,12 +22,12 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 {
     public class LoginCommandHandler(IUserRepository userRepository,
                         OperationExecutor executor,
-                        IMapper mapper, IConfiguration config) : IRequestHandler<LoginCommand, Result<LoginUserDto>>
+                        IMapper mapper, IJwtToken jwtToken) : IRequestHandler<LoginCommand, Result<LoginUserDto>>
     {
         private readonly IUserRepository _userRepository = userRepository;
         private readonly OperationExecutor _executor = executor;
         private readonly IMapper _mapper = mapper;
-        private readonly IConfiguration _config = config;
+        private readonly IJwtToken _jwtToken = jwtToken;
         private readonly string LoginOperation = OperationType.Login.ToString();
 
 
@@ -50,35 +50,10 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 
                 var userDto = _mapper.Map<LoginUserDto>(request);
 
-                userDto.Token = GenerateJwtToken(user, "Admin");
+                userDto.Token = _jwtToken.GenerateJwtToken(user, "Admin");
 
                 return Result<LoginUserDto>.Success(userDto, LoginOperation, "Login successful.");
             }, OperationType.Login);
-
-        private string GenerateJwtToken(ApplicationUser user, string role)
-        {
-            var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Name, user.UserName)
-        };
-
-            claims.Add(new Claim(ClaimTypes.Role, role));
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FreelanceBoard.Core.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,14 @@ namespace FreelanceBoard.Core.Interfaces
         public Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
         public Task<string> GetUserRolesAsync(ApplicationUser user);
 
-
-
+        /// <summary>
+        /// Create user and assign a role to it.
+        /// </summary>
+        /// <param name="user">user without id</param>
+        /// <param name="pwd"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public Task<IdentityResult> CreateAsync(ApplicationUser user, string pwd, string role);
 
     }
 }

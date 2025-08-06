@@ -1,33 +1,24 @@
-
 using FluentValidation;
 using FreelanceBoard.Core;
-using FreelanceBoard.Core;
 using FreelanceBoard.Core.CommandHandlers;
-using FreelanceBoard.Core.CommandHandlers.UserCommandHandlers;
-using FreelanceBoard.Core.Commands;
-using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Helpers;
 using FreelanceBoard.Core.Interfaces;
-using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Core.Queries.Implementations;
-using FreelanceBoard.Core.MapperProfiles;
 using FreelanceBoard.Core.Queries.Interfaces;
 using FreelanceBoard.Core.QueryHandlers.JobQueryHandlers;
 using FreelanceBoard.Core.Validators.JobValidators;
 using FreelanceBoard.Infrastructure.DBContext;
+using FreelanceBoard.Infrastructure.Implementations;
 using FreelanceBoard.Infrastructure.Repositories;
-using FreelanceBoard.Infrastructure.Repositories;
-using MediatR;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using Umbraco.Core.Composing.CompositionExtensions;
+
 namespace FreelanceBoard.Web
 {
     public class Program
@@ -45,7 +36,13 @@ namespace FreelanceBoard.Web
 
             builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 
+            builder.Services.AddScoped(typeof(IRoleRepository), typeof(RoleRepository));
+
+            builder.Services.AddScoped(typeof(IUserQuery), typeof(UserQuery));
+
             builder.Services.AddScoped<OperationExecutor>();
+
+            builder.Services.AddScoped<IJwtToken, JwtToken>();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
@@ -168,6 +165,7 @@ namespace FreelanceBoard.Web
             app.UseAuthentication();
 
             app.UseAuthorization();
+
             app.MapControllers();
 
             using (var scope = app.Services.CreateScope())

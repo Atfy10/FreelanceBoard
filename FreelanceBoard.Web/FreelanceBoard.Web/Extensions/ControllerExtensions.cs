@@ -5,7 +5,8 @@ namespace FreelanceBoard.Web.Extensions
 {
 	public static class ControllerExtensions
 	{
-		public static IActionResult HandleResult<T>(this ControllerBase controller, Result<T> result, int successStatusCode = 200)
+        // better using of StatusCode in Result<T> to handle various outcomes
+        public static IActionResult HandleResult<T>(this ControllerBase controller, Result<T> result, int successStatusCode = 200)
 		{
 			if (result == null)
 				return controller.StatusCode(500, new { Message = "Unexpected null result." });

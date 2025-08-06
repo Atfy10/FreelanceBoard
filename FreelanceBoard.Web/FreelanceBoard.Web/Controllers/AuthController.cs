@@ -1,14 +1,15 @@
-﻿using FreelanceBoard.Core.Domain.Entities;
+﻿using FreelanceBoard.Core.Commands.UserCommands;
+using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Dtos;
+using FreelanceBoard.Core.Helpers;
+using FreelanceBoard.Web.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using FreelanceBoard.Core.Commands.UserCommands;
-using MediatR;
-using FreelanceBoard.Core.Helpers;
 namespace FreelanceBoard.Web.Controllers
 {
     [ApiController]
@@ -43,6 +44,14 @@ namespace FreelanceBoard.Web.Controllers
 
             return Ok(new { result.Data.Token });
         }
+
+        [HttpPost("signup")]
+        public async Task<IActionResult> SignUp(CreateUserCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return this.HandleResult(result, 201);
+        }
+
 
     }
 

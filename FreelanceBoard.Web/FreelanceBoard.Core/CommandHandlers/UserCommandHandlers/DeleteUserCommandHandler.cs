@@ -31,24 +31,20 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
             DeleleOperation = OperationType.Delete.ToString();
         }
 
-        public async Task<Result<ApplicationUser>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
             => await _executor.Execute(async () =>
             {
                 if (request == null)
                     throw new NullReferenceException("Update request cannot be null.");
 
-                if (string.IsNullOrWhiteSpace(request.UserId))
-                    throw new ArgumentNullException("User ID cannot be null or empty.");
-
                 var user = await _userRepository.GetByIdAsync(request.UserId) ??
-                throw new KeyNotFoundException($"User with ID {request.UserId} not found.");
+                    throw new KeyNotFoundException($"User with ID {request.UserId} not found.");
 
                 await _userRepository.DeleteAsync(request.UserId);
 
-                return Result<ApplicationUser>.Success(user, DeleleOperation,
+                return Result<string>.Success(user.Id, DeleleOperation,
                     $"User with ID {request.UserId} deleted successfully.");
             }, OperationType.Delete);
-
 
     }
 }

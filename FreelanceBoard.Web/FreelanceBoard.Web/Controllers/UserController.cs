@@ -21,13 +21,6 @@ namespace FreelanceBoard.Web.Controllers
 			_userQuery = userQuery;
 		}
 
-		[HttpPost("signup")]
-		public async Task<IActionResult> SignUp(CreateUserCommand command)
-		{
-			var result = await _mediator.Send(command);
-			return this.HandleResult(result, 201);
-		}
-
 		[HttpPost("change-password")]
 		public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
 		{

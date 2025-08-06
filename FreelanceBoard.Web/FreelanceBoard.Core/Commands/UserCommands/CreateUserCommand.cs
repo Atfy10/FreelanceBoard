@@ -17,5 +17,6 @@ namespace FreelanceBoard.Core.Commands.UserCommands
 		public string ConfirmPassword { get; set; }
 		public string PhoneNumber { get; set; }
 		public string UserName { get; set; }
-	}
+		public string Role { get; set; }
+    }
 }

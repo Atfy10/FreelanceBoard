@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FreelanceBoard.Core.Domain.Enums;
+using FreelanceBoard.Core.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -58,6 +59,16 @@ namespace FreelanceBoard.Core.Helpers
             {
                 _logger.LogError(ex, "Database error occurred during {Operation}", opType);
                 return Result<T>.Failure(opType.ToString(), "A database error occurred: " + ex.Message);
+            }
+            catch (EmailNotFoundException ex)
+            {
+                _logger.LogError(ex, "Email not found error occurred during {Operation}", opType);
+                return Result<T>.Failure(opType.ToString(), "Email not found: " + ex.Message);
+            }
+            catch (EmailExistException ex)
+            {
+                _logger.LogError(ex, "Email already exist error occurred during {Operation}", opType);
+                return Result<T>.Failure(opType.ToString(), "Email is exist: " + ex.Message);
             }
             catch (Exception ex)
             {

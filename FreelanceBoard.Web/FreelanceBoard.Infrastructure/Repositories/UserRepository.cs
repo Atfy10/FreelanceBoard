@@ -57,10 +57,12 @@ namespace FreelanceBoard.Infrastructure.Repositories
             return roles.ToList().FirstOrDefault();
         }
 
-        //public Task AddAsync(ApplicationUser user)
-        //{
-        //	return _baseRepo.AddAsync(user);
-        //}
+        public async Task<IdentityResult> CreateAsync(ApplicationUser user, string pwd, string role)
+        {
+            await _userManager.CreateAsync(user, pwd);
+            return await _userManager.AddToRoleAsync(user, role);
+
+        }
     }
 
 }
