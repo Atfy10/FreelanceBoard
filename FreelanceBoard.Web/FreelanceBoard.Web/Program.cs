@@ -34,67 +34,31 @@ namespace FreelanceBoard.Web
     {
         public static void Main(string[] args)
         {
-            //var builder = WebApplication.CreateBuilder(args);
-
-            //// Add services to the container.
-            //builder.Services.AddDbContext<AppDbContext>(options => 
-            //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-            //b => b.MigrationsAssembly("FreelanceBoard.Infrastructure")));
-
-            //builder.Services.AddControllers();
-            //// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            //builder.Services.AddEndpointsApiExplorer();
-            //builder.Services.AddSwaggerGen();
-
-            //builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-            //.AddEntityFrameworkStores<AppDbContext>()
-            //.AddDefaultTokenProviders();
-
-            //builder.Services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //.AddJwtBearer(options =>
-            //{
-            //    var config = builder.Configuration;
-            //    options.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuer = true,
-            //        ValidateAudience = true,
-            //        ValidateLifetime = true,
-            //        ValidateIssuerSigningKey = true,
-            //        ValidIssuer = config["Jwt:Issuer"],
-            //        ValidAudience = config["Jwt:Audience"],
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]))
-            //    };
-            //});
-
 
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddMediatR(typeof(CreateFileCommandHandler).Assembly);
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
             builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+
             builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+
             builder.Services.AddScoped<OperationExecutor>();
 
-            // Database
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("FreelanceBoard.Infrastructure")));
+                    b => b.MigrationsAssembly("FreelanceBoard.Infrastructure"))
+                );
 
-            // Identity
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
-            // JWT + Cookie Auth
             var config = builder.Configuration;
             var jwtKey = Encoding.UTF8.GetBytes(config["Jwt:Key"]);
-
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -129,10 +93,8 @@ namespace FreelanceBoard.Web
 
             builder.Services.AddAuthorization();
 
-            // Controllers
             builder.Services.AddControllers();
 
-            // Swagger + JWT config
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "FreelanceBoard API", Version = "v1" });
@@ -160,7 +122,6 @@ namespace FreelanceBoard.Web
                 });
             });
 
-            // CORS (if testing from Swagger or browser)
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", policy =>
@@ -171,27 +132,26 @@ namespace FreelanceBoard.Web
                 });
             });
 
-            var app = builder.Build();
             builder.Services.AddEndpointsApiExplorer();
+
             builder.Services.AddSwaggerGen();
 
-
-            builder.Services.AddAutoMapper(typeof(JobAutoMapperProfile).Assembly);
             builder.Services.AddScoped<IJobRepository, JobRepository>();
+
             builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+
             builder.Services.AddScoped<IContractRepository, ContractRepository>();
+
             builder.Services.AddScoped<IProposalRepository, ProposalRepository>();
+
             builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+
             builder.Services.AddScoped<IJobQuery,JobQuery>();
-            builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            builder.Services.AddMediatR(typeof(JobAutoMapperProfile).Assembly);
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
-            builder.Services.AddScoped<OperationExecutor>();
+
             builder.Services.AddValidatorsFromAssemblyContaining<CreateJobCommandValidator>();
+
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-                            .AddEntityFrameworkStores<AppDbContext>()
-                            .AddDefaultTokenProviders();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -206,6 +166,7 @@ namespace FreelanceBoard.Web
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
             app.MapControllers();
 
@@ -225,6 +186,7 @@ namespace FreelanceBoard.Web
                         $"Inner Exception: {ex.InnerException}");
                 }
             }
+
             app.Run();
         }
     }
