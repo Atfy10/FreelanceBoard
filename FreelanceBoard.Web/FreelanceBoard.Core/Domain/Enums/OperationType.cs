@@ -12,6 +12,9 @@ namespace FreelanceBoard.Core.Domain.Enums
         Update,
         Delete,
         Get,
-        GetAll
+        GetAll,
+        Login,
+        Signup,
+        Logout
     }
 }

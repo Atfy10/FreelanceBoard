@@ -16,5 +16,5 @@ namespace FreelanceBoard.Core.Dtos
 		public bool IsBanned { get; set; }
 		public string UserName { get; set; }
 
-	}
+    }
 }
