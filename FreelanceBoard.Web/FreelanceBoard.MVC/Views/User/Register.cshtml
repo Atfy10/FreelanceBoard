@@ -248,11 +248,11 @@
                                         <label for="role">Role</label>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="bi-briefcase custom-icon"></i></span>
-                                            <input name="Role" id="role" class="form-select">
-                                               @*  <option value="">Select your role</option>
+                                            <select name="Role" id="role" class="form-select">
+                                                <option value="">Select your role</option>
                                                 <option value="Client">Client</option>                   
-                                                <option value="FreeLancer">Freelancer</option> *@
-                                    @*         </input> *@
+                                                <option value="FreeLancer">Freelancer</option> 
+                                            </select> 
                                         </div>
                                             <span asp-validation-for="Role" class="text-danger"></span>
                                     </div>

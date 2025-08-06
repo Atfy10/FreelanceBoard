@@ -36,13 +36,12 @@ namespace FreelanceBoard.MVC.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                // Redirect to login page or auto-login
                 return RedirectToAction("Login", "User");
             }
             else
             {
                 var error = await response.Content.ReadAsStringAsync();
-                ModelState.AddModelError(string.Empty, error);
+                ModelState.AddModelError(string.Empty, "error");
                 return View(model);
             }
         }
@@ -85,7 +84,7 @@ namespace FreelanceBoard.MVC.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            ModelState.AddModelError("", "Invalid login attempt");
+            ModelState.AddModelError(string.Empty, "Invalid email or password");
             return View(model);
         }
 
