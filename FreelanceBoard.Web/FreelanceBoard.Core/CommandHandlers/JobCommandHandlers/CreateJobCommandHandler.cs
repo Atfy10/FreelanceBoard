@@ -35,7 +35,7 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _executor = executor ?? throw new ArgumentNullException(nameof(executor));
-            CreateOperation = OperationType.Get.ToString();
+            CreateOperation = OperationType.Add.ToString();
 
         }
 
@@ -59,6 +59,6 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
                 await _jobRepository.AddAsync(newJob);
 
                 return Result<int>.Success(newJob.Id, CreateOperation, "Job created successfully.");
-            },OperationType.Get);
+            },OperationType.Add);
     }
 }

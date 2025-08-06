@@ -50,8 +50,6 @@ namespace FreelanceBoard.Web.Controllers
             try
             {
                 var newJobId = await _mediator.Send(command);
-                if (newJobId == -1)
-                    return BadRequest("One or more skills not found.");
                 return Ok(newJobId);
             }
             catch (FluentValidation.ValidationException ex)
@@ -69,7 +67,6 @@ namespace FreelanceBoard.Web.Controllers
             try
             {
                 var success = await _mediator.Send(command);
-
                 return Ok(success);
             }
             catch (FluentValidation.ValidationException ex)
