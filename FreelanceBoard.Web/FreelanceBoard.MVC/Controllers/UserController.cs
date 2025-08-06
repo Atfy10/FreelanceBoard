@@ -1,83 +1,59 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FreelanceBoard.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FreelanceBoard.MVC.Controllers
 {
     public class UserController : Controller
     {
-        // GET: UserController
-        public ActionResult Index()
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public UserController(IHttpClientFactory httpClientFactory)
         {
-            return View();
+            _httpClientFactory = httpClientFactory;
         }
 
-        // GET: UserController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Register()
         {
-            return View();
+            return View("Register");
         }
 
-        // GET: UserController/Create
-        public ActionResult Create()
+        [HttpGet]
+        public IActionResult Login()
         {
-            return View();
+            return View(new LoginViewModel());
         }
 
         // POST: UserController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            try
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var client = _httpClientFactory.CreateClient();
+
+            var response = await client.PostAsJsonAsync("https://localhost:7029/api/Auth/login", model);
+
+            if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(Index));
+                var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
+
+                HttpContext.Session.SetString("token", result.Token); // Or store in cookie
+
+                return RedirectToAction("Index", "Home");
             }
-            catch
-            {
-                return View();
-            }
+
+            ModelState.AddModelError("", "Invalid login attempt");
+            return View(model);
         }
 
-        // GET: UserController/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Profile()
         {
-            return View();
-        }
-
-        // POST: UserController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UserController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: UserController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return View("Profile");
         }
     }
 }
