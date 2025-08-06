@@ -78,26 +78,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav align-items-center ms-lg-5">
                     <li class="nav-item">
-                        <a class="nav-link" href="/Home/Home">Homepage</a>
+                        <a class="nav-link" href="/Home">Homepage</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About Gotto</a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
-
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                            <li><a class="dropdown-item" href="/Job/JobListings">Job Listings</a></li>
-
-                            <li><a class="dropdown-item" href="/Job/JobDetails">Job Details</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
-                    </li>
+                    <li><a class="nav-link" href="/Job">Jobs</a></li>
 
                     <li class="nav-item ms-lg-auto">
                         <a class="nav-link @(isProfile ? "active-nav-btn" : "")" href="/User/Profile">Profile</a>
@@ -254,9 +238,17 @@
             </div>
         </div>
     </footer>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js/jquery.validate.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @*     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+    <!-- Bootstrap 5 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>    @await RenderSectionAsync("Scripts", required: false)
+ *@
     <!-- JAVASCRIPT FILES -->
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>

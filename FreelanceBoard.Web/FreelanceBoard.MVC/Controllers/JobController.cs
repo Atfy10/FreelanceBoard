@@ -6,15 +6,15 @@ namespace FreelanceBoard.MVC.Controllers
     {
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult JobListings()
-        {
             return View("JobListings");
         }
 
-        public IActionResult JobDetails()
+        //public IActionResult JobListings()
+        //{
+        //    return View();
+        //}
+
+        public IActionResult JobDetails(int id)
         {
             return View("JobDetails");
         }

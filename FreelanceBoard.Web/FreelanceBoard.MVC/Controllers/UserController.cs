@@ -15,6 +15,7 @@ namespace FreelanceBoard.MVC.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
+
         public IActionResult Register()
         {
             return View("Register");
@@ -29,8 +30,8 @@ namespace FreelanceBoard.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            //if (!ModelState.IsValid)
-            //    return View(model);
+            if (!ModelState.IsValid)
+                return View(model);
 
             var client = _httpClientFactory.CreateClient();
 
