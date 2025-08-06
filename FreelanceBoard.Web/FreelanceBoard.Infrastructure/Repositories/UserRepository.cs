@@ -6,42 +6,61 @@ using System.Threading.Tasks;
 using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Infrastructure.DBContext;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace FreelanceBoard.Infrastructure.Repositories
 {
-	public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
-	{
+    public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
+    {
         private readonly AppDbContext _context;
-		//private readonly IBaseRepository<ApplicationUser> _baseRepo;
-		public UserRepository( AppDbContext context) : base(context)
-		{
-			_context = context;
-		}
+        private readonly UserManager<ApplicationUser> _userManager;
+        public UserRepository(AppDbContext context, UserManager<ApplicationUser> userManager) : base(context)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
 
-		public Task<ApplicationUser?> GetByEmailAsync(string email)
-		{
-			if (string.IsNullOrWhiteSpace(email))
-				return Task.FromResult<ApplicationUser?>(null);
-			return _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-		}
+        public Task<ApplicationUser?> GetByEmailAsync(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return Task.FromResult<ApplicationUser?>(null);
 
-		public async Task<ApplicationUser?> GetUserFullProfileAsync(string userId)
-		{
-			if (string.IsNullOrWhiteSpace(userId))
-				return null;
-			return await _dbContext.Users
-				.Include(u => u.Profile)
-				.Include(u => u.Skills)
-				.Include(u => u.Projects)
-				.FirstOrDefaultAsync(u => u.Id == userId);
-		}
+            return _userManager.FindByEmailAsync(email);
+        }
 
-		//public Task AddAsync(ApplicationUser user)
-		//{
-		//	return _baseRepo.AddAsync(user);
-		//}
-	}
+        public async Task<ApplicationUser?> GetUserFullProfileAsync(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+                return null;
+            return await _dbContext.Users
+                .Include(u => u.Profile)
+                .Include(u => u.Skills)
+                .Include(u => u.Projects)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+        }
+
+        public Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
+        {
+            if (user == null || string.IsNullOrWhiteSpace(password))
+                return Task.FromResult(false);
+
+            return _userManager.CheckPasswordAsync(user, password);
+        }
+
+        public async Task<string> GetUserRolesAsync(ApplicationUser user)
+        {
+            if (user == null)
+                return "";
+
+            var roles = await _userManager.GetRolesAsync(user);
+            return roles.ToList().FirstOrDefault();
+        }
+
+        //public Task AddAsync(ApplicationUser user)
+        //{
+        //	return _baseRepo.AddAsync(user);
+        //}
+    }
 
 }

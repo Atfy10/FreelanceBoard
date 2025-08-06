@@ -37,13 +37,15 @@ namespace FreelanceBoard.Infrastructure.Configurations
 
 			builder.HasOne(j => j.User)
 				   .WithMany(u => u.Jobs)
-				   .HasForeignKey(j => j.UserId);
+				   .HasForeignKey(j => j.UserId)
+				   .OnDelete(DeleteBehavior.Restrict);
 
-			builder.HasMany(j => j.Proposals)
+            builder.HasMany(j => j.Proposals)
 				   .WithOne(p => p.Job)
-				   .HasForeignKey(p => p.JobId);
+				   .HasForeignKey(p => p.JobId)
+				   .OnDelete(DeleteBehavior.SetNull);
 
-			builder.HasMany(j => j.Skills)
+            builder.HasMany(j => j.Skills)
 				   .WithMany(s => s.Jobs)
 				   .UsingEntity(j => j.ToTable("JobSkills")); 
 		}

@@ -20,24 +20,20 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
     public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result<string>>
     {
         private readonly IUserRepository _userRepository;
-        private readonly ILogger<CreateUserCommandHandler> _logger;
         private readonly OperationExecutor _executor;
         private readonly string DeleleOperation;
 
 
-        public DeleteUserCommandHandler(IUserRepository userRepository, ILogger<CreateUserCommandHandler> logger, OperationExecutor executor)
+        public DeleteUserCommandHandler(IUserRepository userRepository, OperationExecutor executor)
         {
             _userRepository = userRepository;
-            _logger = logger;
             _executor = executor;
             DeleleOperation = OperationType.Delete.ToString();
         }
 
-        public async Task<Result<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
-        => await _executor.Execute(async () =>
+        public async Task<Result<ApplicationUser>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+            => await _executor.Execute(async () =>
             {
-                _logger.LogInformation("Starting {Operation} process...", DeleleOperation);
-
                 if (request == null)
                     throw new NullReferenceException("Update request cannot be null.");
 
@@ -49,9 +45,8 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 
                 await _userRepository.DeleteAsync(request.UserId);
 
-                _logger.LogInformation("User with ID {UserId} deleted successfully.", request.UserId);
-
-                return Result<string>.Success("", DeleleOperation, "User deleted successfully.");
+                return Result<ApplicationUser>.Success(user, DeleleOperation,
+                    $"User with ID {request.UserId} deleted successfully.");
             }, OperationType.Delete);
 
 

@@ -28,7 +28,8 @@ namespace FreelanceBoard.Infrastructure.Configurations
 
 			builder.HasOne(p => p.User)
 				   .WithOne(u => u.Profile)
-				   .HasForeignKey<Profile>(p => p.UserId);
-		}
+				   .HasForeignKey<Profile>(p => p.UserId)
+				   .OnDelete(DeleteBehavior.Cascade);
+        }
 	}
 }

@@ -37,13 +37,16 @@ namespace FreelanceBoard.Infrastructure.Configurations
 
 			builder.HasOne(p => p.Freelancer)
 				   .WithMany(u => u.Proposals)
-				   .HasForeignKey(p => p.FreelancerId);
+				   .HasForeignKey(p => p.FreelancerId)
+				   .OnDelete(DeleteBehavior.Cascade);
 
 
-			builder.HasOne(p => p.Job)
+
+            builder.HasOne(p => p.Job)
 				   .WithMany(j => j.Proposals)
-				   .HasForeignKey(p => p.JobId);
-				   
-		}
+				   .HasForeignKey(p => p.JobId)
+				   .OnDelete(DeleteBehavior.Cascade);
+
+        }
 	}
 }

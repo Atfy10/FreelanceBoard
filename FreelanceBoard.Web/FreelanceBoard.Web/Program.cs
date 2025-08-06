@@ -1,53 +1,158 @@
+
 using FluentValidation;
 using FreelanceBoard.Core;
+using FreelanceBoard.Core;
+using FreelanceBoard.Core.CommandHandlers;
 using FreelanceBoard.Core.CommandHandlers.UserCommandHandlers;
 using FreelanceBoard.Core.Commands;
 using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Helpers;
 using FreelanceBoard.Core.Interfaces;
+using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Core.Queries.Implementations;
+using FreelanceBoard.Core.MapperProfiles;
 using FreelanceBoard.Core.Queries.Interfaces;
-using FreelanceBoard.Core.Validators;
+using FreelanceBoard.Core.QueryHandlers.JobQueryHandlers;
+using FreelanceBoard.Core.Validators.JobValidators;
 using FreelanceBoard.Infrastructure.DBContext;
 using FreelanceBoard.Infrastructure.Repositories;
+using FreelanceBoard.Infrastructure.Repositories;
 using MediatR;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+using Umbraco.Core.Composing.CompositionExtensions;
 namespace FreelanceBoard.Web
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddDbContext<AppDbContext>(options => 
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-            b => b.MigrationsAssembly("FreelanceBoard.Infrastructure")));
+            builder.Services.AddMediatR(typeof(CreateFileCommandHandler).Assembly);
+
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
+            builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+
+            builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+
+            builder.Services.AddScoped<OperationExecutor>();
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly("FreelanceBoard.Infrastructure"))
+                );
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            var config = builder.Configuration;
+            var jwtKey = Encoding.UTF8.GetBytes(config["Jwt:Key"]);
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = config["Jwt:Issuer"],
+                    ValidAudience = config["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(jwtKey)
+                };
+
+                // This makes Swagger work with token stored in browser (e.g. if you set it via JS)
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Cookies.ContainsKey("jwt"))
+                        {
+                            context.Token = context.Request.Cookies["jwt"];
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+
+            builder.Services.AddAuthorization();
 
             builder.Services.AddControllers();
 
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "FreelanceBoard API", Version = "v1" });
+
+                var jwtSecurityScheme = new OpenApiSecurityScheme
+                {
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Description = "Enter your JWT token as: **Bearer your_token**",
+
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+
+                options.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    { jwtSecurityScheme, Array.Empty<string>() }
+                });
+            });
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
+
             builder.Services.AddEndpointsApiExplorer();
+
             builder.Services.AddSwaggerGen();
-	
-			builder.Services.AddMediatR(typeof(CreateUserCommandHandler).Assembly);
-            builder.Services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
-			builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-			builder.Services.AddScoped<IUserQuery, UserQuery>();
 
-			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-	        .AddEntityFrameworkStores<AppDbContext>()
-	        .AddDefaultTokenProviders();
+            builder.Services.AddScoped<IJobRepository, JobRepository>();
 
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
-			builder.Services.AddScoped<IUserRepository, UserRepository>();
-			builder.Services.AddScoped<OperationExecutor>();
+            builder.Services.AddScoped<IContractRepository, ContractRepository>();
 
-			builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            builder.Services.AddScoped<IProposalRepository, ProposalRepository>();
 
-			var app = builder.Build();
+            builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+
+            builder.Services.AddScoped<IJobQuery,JobQuery>();
+
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateJobCommandValidator>();
+
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -56,10 +161,13 @@ namespace FreelanceBoard.Web
                 app.UseSwaggerUI();
             }
 
+            app.UseStaticFiles(); // da middleware 3ashan uploading el files
+
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
+            app.UseAuthorization();
             app.MapControllers();
 
             using (var scope = app.Services.CreateScope())

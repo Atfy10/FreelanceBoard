@@ -18,6 +18,7 @@ namespace FreelanceBoard.Core
 				.ForMember(dest => dest.IsBanned, opt => opt.Ignore()); // default = false;
 			CreateMap<UpdateUserCommand, Domain.Entities.ApplicationUser>();
 			CreateMap<Domain.Entities.ApplicationUser, ApplicationUserDto>();
+			CreateMap<LoginCommand, LoginUserDto>();
 			CreateMap<ApplicationUserDto, Domain.Entities.ApplicationUser>();
 			CreateMap<UserUpdateDto, Domain.Entities.ApplicationUser>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore());

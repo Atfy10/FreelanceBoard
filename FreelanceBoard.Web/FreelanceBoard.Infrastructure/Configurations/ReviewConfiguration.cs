@@ -35,15 +35,13 @@ namespace FreelanceBoard.Infrastructure.Configurations
 			builder.HasOne(r => r.Contract)
 				   .WithMany(c => c.Reviews)
 				   .HasForeignKey(r => r.ContractId)
-				   .OnDelete(DeleteBehavior.Restrict);
+				   .OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasOne(r => r.Reviewer)
 				   .WithMany()
 				   .HasForeignKey(r => r.ReviewerId)
 				   .OnDelete(DeleteBehavior.Restrict);
 
-			//not sure if it will work [check]
-			builder.HasCheckConstraint("CK_Review_Rating", "[Rating] >= 1 AND [Rating] <= 5"); 
 		}
 	}
 }

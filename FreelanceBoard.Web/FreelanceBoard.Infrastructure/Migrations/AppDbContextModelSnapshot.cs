@@ -136,7 +136,6 @@ namespace FreelanceBoard.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PaymentNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Price")
@@ -147,8 +146,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -160,7 +158,8 @@ namespace FreelanceBoard.Infrastructure.Migrations
                         .IsUnique();
 
                     b.HasIndex("PaymentNumber")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[PaymentNumber] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -220,11 +219,9 @@ namespace FreelanceBoard.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ReceiverId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SenderId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Timestamp")
@@ -414,10 +411,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
 
                     b.HasIndex("ReviewerId");
 
-                    b.ToTable("Reviews", null, t =>
-                        {
-                            t.HasCheckConstraint("CK_Review_Rating", "[Rating] >= 1 AND [Rating] <= 5");
-                        });
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("FreelanceBoard.Core.Domain.Entities.Skill", b =>
@@ -591,13 +585,13 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("ApplicationUsersId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.Skill", null)
                         .WithMany()
                         .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -606,19 +600,18 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.Job", "Job")
                         .WithOne("Contract")
                         .HasForeignKey("FreelanceBoard.Core.Domain.Entities.Contract", "JobId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.Payement", "Payment")
                         .WithOne("Contract")
                         .HasForeignKey("FreelanceBoard.Core.Domain.Entities.Contract", "PaymentNumber")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", "User")
                         .WithMany("Contracts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Job");
@@ -644,14 +637,12 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", "Receiver")
                         .WithMany("ReceivedMessages")
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", "Sender")
                         .WithMany("SentMessages")
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Receiver");
 
@@ -663,7 +654,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", "User")
                         .WithMany("Notifications")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -674,7 +665,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", "User")
                         .WithOne("Profile")
                         .HasForeignKey("FreelanceBoard.Core.Domain.Entities.Profile", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -685,7 +676,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", "User")
                         .WithMany("Projects")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -696,13 +687,13 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", "Freelancer")
                         .WithMany("Proposals")
                         .HasForeignKey("FreelancerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.Job", "Job")
                         .WithMany("Proposals")
                         .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Freelancer");
@@ -715,7 +706,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.Contract", "Contract")
                         .WithMany("Reviews")
                         .HasForeignKey("ContractId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", "Reviewer")
@@ -734,13 +725,13 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.Job", null)
                         .WithMany()
                         .HasForeignKey("JobsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.Skill", null)
                         .WithMany()
                         .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -749,7 +740,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -758,7 +749,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -767,7 +758,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -776,13 +767,13 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -791,7 +782,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

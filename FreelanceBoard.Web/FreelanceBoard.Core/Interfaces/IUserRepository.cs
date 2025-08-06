@@ -1,16 +1,22 @@
-﻿using System;
+﻿using FreelanceBoard.Core.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FreelanceBoard.Core.Domain.Entities;
 
 namespace FreelanceBoard.Core.Interfaces
 {
 	public interface IUserRepository : IBaseRepository<ApplicationUser>
 	{
-		Task<ApplicationUser?> GetUserFullProfileAsync(string userId);
-		Task<ApplicationUser?> GetByEmailAsync(string email);
+		public Task<ApplicationUser?> GetByEmailAsync(string email);
+        Task<ApplicationUser?> GetUserFullProfileAsync(string userId);
+        public Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
+        public Task<string> GetUserRolesAsync(ApplicationUser user);
 
-	}
+
+
+
+    }
 }
