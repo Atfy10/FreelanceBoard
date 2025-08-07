@@ -17,6 +17,7 @@ namespace FreelanceBoard.Core
 				.ForMember(dest => dest.Id, opt => opt.Ignore()) // auto-generated
 				.ForMember(dest => dest.IsBanned, opt => opt.Ignore()); // default = false;
 			CreateMap<UpdateUserCommand, Domain.Entities.ApplicationUser>();
+			CreateMap<AddProjectCommand, Domain.Entities.Project>();
 			CreateMap<Domain.Entities.ApplicationUser, ApplicationUserDto>();
 			CreateMap<LoginCommand, LoginUserDto>();
 			CreateMap<ApplicationUserDto, Domain.Entities.ApplicationUser>();

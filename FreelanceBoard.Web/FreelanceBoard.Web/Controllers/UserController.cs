@@ -117,6 +117,16 @@ namespace FreelanceBoard.Web.Controllers
             return result.IsSuccess ? Ok(result) : BadRequest(result);
         }
 
+		[HttpPost("add-project")]
 
-    }
+		public async Task<IActionResult> AddProject([FromBody] AddProjectCommand command)
+		{
+			if (command == null)
+				return BadRequest(new { Message = "Command cannot be null." });
+			var result = await _mediator.Send(command);
+			return this.HandleResult(result);
+		}
+
+
+	}
 }
