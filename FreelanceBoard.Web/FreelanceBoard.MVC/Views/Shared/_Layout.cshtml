@@ -103,10 +103,11 @@
                             <a class="nav-link @(isProfile ? "active-nav-btn" : "")" href="/User/Profile">Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @((isLoggedOut || isDefaultLogin) ? "active-nav-btn" : "")" href="/User/Logout">Logout</a>
+                            <a class="nav-link @((isLoggedOut || isDefaultLogin) ? "active-nav-btn" : "")" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                            <form id="logout-form" method="post" action="/User/Logout" style="display: none;"></form>
                         </li>
-                        
                     }
+
 
                 </ul>
             </div>
