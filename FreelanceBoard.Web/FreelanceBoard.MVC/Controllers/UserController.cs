@@ -47,19 +47,29 @@ namespace FreelanceBoard.MVC.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
-			else
-			{
-				var errorContent = await response.Content.ReadAsStringAsync();
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
 
-				var apiError = JsonSerializer.Deserialize<ApiErrorResponse<bool>>(
-					errorContent,
-					new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
-				);
+                try
+                {
+                    var apiError = JsonSerializer.Deserialize<ApiErrorResponse<bool>>(
+                        errorContent,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+                    );
 
-				ModelState.AddModelError(string.Empty, apiError?.Message ?? "An unexpected error occurred.");
-				return View(model);
-			}
-		}
+                    ModelState.AddModelError(string.Empty, apiError?.Message ?? "An unexpected error occurred.");
+                }
+                catch (JsonException)
+                {
+                    // Not JSON — maybe a plain error message like "Forbidden"
+                    ModelState.AddModelError(string.Empty, $"Server error: {errorContent}");
+                }
+
+                return View(model);
+            }
+
+        }
 
         [HttpGet]
 		[AllowAnonymous]
@@ -132,7 +142,10 @@ namespace FreelanceBoard.MVC.Controllers
         [HttpGet]
 		public async Task<IActionResult> Profile()
 		{
-			var userId = HttpContext.Session.GetString("userId");
+			var token = HttpContext.Session.GetString("token");
+            TempData["token"] = token; // temp storage for one request
+
+            var userId = HttpContext.Session.GetString("userId");
 			if (string.IsNullOrEmpty(userId))
 			{
 				return RedirectToAction("Login");

@@ -1,10 +1,15 @@
-﻿using FreelanceBoard.Core.Commands.UserCommands;
+﻿using FreelanceBoard.Core.Commands;
+using FreelanceBoard.Core.Commands.UserCommands;
+using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Dtos;
 using FreelanceBoard.Core.Queries.Interfaces;
+using FreelanceBoard.Infrastructure.DBContext;
 using FreelanceBoard.Web.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FreelanceBoard.Web.Controllers
 {
@@ -14,12 +19,11 @@ namespace FreelanceBoard.Web.Controllers
 	{
 		private readonly IMediator _mediator;
 		private readonly IUserQuery _userQuery;
-
-		public UserController(IMediator mediator, IUserQuery userQuery)
+        public UserController(IMediator mediator, IUserQuery userQuery)
 		{
 			_mediator = mediator;
 			_userQuery = userQuery;
-		}
+        }
 
 		[HttpPost("change-password")]
 		public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
@@ -106,6 +110,13 @@ namespace FreelanceBoard.Web.Controllers
 			return this.HandleResult(result);
 		}
 
+        [HttpPost("ChangeProfilePicture")]
+        public async Task<IActionResult> ChangeProfilePicture([FromForm] ChangeProfilePictureCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
+        }
 
-	}
+
+    }
 }

@@ -54,6 +54,17 @@ namespace FreelanceBoard.Web
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:5030") // or "*" for any origin (not recommended for production)
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+            });
+
             var config = builder.Configuration;
             var jwtKey = Encoding.UTF8.GetBytes(config["Jwt:Key"]);
             builder.Services.AddAuthentication(options =>
@@ -163,6 +174,7 @@ namespace FreelanceBoard.Web
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
+            app.UseCors("AllowFrontend");
 
             app.UseAuthorization();
 

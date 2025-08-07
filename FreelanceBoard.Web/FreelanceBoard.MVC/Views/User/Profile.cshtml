@@ -1,5 +1,12 @@
 ﻿@model UserProfileViewModel
 
+@if (TempData["token"] != null)
+{
+    <script>
+        sessionStorage.setItem("token", "@TempData["token"]");
+    </script>
+}
+
         <style>
             .profile-section {
                 background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
@@ -376,16 +383,22 @@
                     </a>
 
                     <div class="profile-header">
-                        <div class="profile-picture-container">
-                            <img src="@(string.IsNullOrEmpty(Model.Profile?.Image) ? "/placeholder.svg?height=150&width=150&text=Profile" : "/images/" + Model.Profile.Image)" alt="Profile Picture" class="profile-picture" id="profilePicture">
-                            <div class="profile-picture-upload" onclick="document.getElementById('profilePictureInput').click()">
-                                <i class="bi-camera-fill"></i>
-                            </div>
-                            <input type="file" id="profilePictureInput" accept="image/*" style="display: none;" onchange="handleProfilePictureChange(event)">
+                    <div class="profile-picture-container">
+                        <img src="@(string.IsNullOrEmpty(Model.Profile?.Image)
+                            ? Url.Content("~/images/avatar.png")
+                            : Url.Content("https://localhost:7029" + Model.Profile.Image))"
+                            alt="Profile Picture"
+                            class="profile-picture"
+                            id="profilePicture">
+        
+                        <div class="profile-picture-upload" onclick="document.getElementById('profilePictureInput').click()">
+                            <i class="bi-camera-fill"></i>
                         </div>
-                        <h2 class="profile-username" id="displayUsername">@Model.UserName</h2>
-                        <p class="profile-role">Full Stack Developer</p> <!-- Optional: Add dynamic role -->
+
+                        <input type="file" id="profilePictureInput" accept="image/*" style="display: none;" onchange="handleProfilePictureChange(event)">
                     </div>
+                    <h2 class="profile-username" id="displayUsername">@Model.UserName</h2>
+                </div>
 
                     <!-- Basic Information -->
                     <div class="row">
@@ -539,16 +552,37 @@
     }
 }
 
-            function handleProfilePictureChange(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        document.getElementById('profilePicture').src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
+    async function handleProfilePictureChange(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("ProfilePicture", file);
+        const token = sessionStorage.getItem('token');
+        try {
+        const response = await fetch("https://localhost:7029/api/User/ChangeProfilePicture", {
+            method: "POST",
+            body: formData,
+            headers: {
+                Authorization: `Bearer ${token}`
             }
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.isSuccess) {
+            // Update the image in the browser
+            const newImageUrl = "https://localhost:7029" + result.data;
+            document.getElementById("profilePicture").src = newImageUrl;
+        } else {
+            console.error("Failed to update profile picture:", result);
+            alert("Failed to update profile picture: " + result.message);
+        }
+    } catch (error) {
+        console.error("Upload error:", error);
+        alert("Error uploading image.");
+    }
+    }
 
             function addSkill() {
                 const skillName = prompt('Enter skill name:');
