@@ -21,6 +21,17 @@ namespace FreelanceBoard.Core.Validators.JobValidators
             RuleFor(x => x.SkillNames);
             RuleFor(x => x.ProposalIds);
             RuleFor(x => x.ContractId).GreaterThan(-1);
+            RuleFor(x => x.Deadline)
+                .GreaterThan(DateTime.Now)
+                .WithMessage("Deadline must be in the future.")
+                .NotNull()
+                .WithMessage("Deadline cannot be null.");
+            RuleFor(x=> x.Category)
+                .NotEmpty()
+                .WithMessage("Category cannot be empty.")
+                .MaximumLength(50)
+                .WithMessage("Category cannot exceed 50 characters.");
+                
         }
     }
 }

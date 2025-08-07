@@ -4,6 +4,7 @@ using FreelanceBoard.Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FreelanceBoard.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250807110900_add_categories_configuration")]
+    partial class add_categories_configuration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
 
                     b.HasIndex("SkillsId");
 
-                    b.ToTable("ApplicationUserSkill", (string)null);
+                    b.ToTable("ApplicationUserSkill");
                 });
 
             modelBuilder.Entity("CategoryJob", b =>
@@ -49,7 +52,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
 
                     b.HasIndex("JobsId");
 
-                    b.ToTable("CategoryJob", (string)null);
+                    b.ToTable("CategoryJob");
                 });
 
             modelBuilder.Entity("FreelanceBoard.Core.Domain.Entities.ApplicationUser", b =>
@@ -150,7 +153,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("FreelanceBoard.Core.Domain.Entities.Contract", b =>

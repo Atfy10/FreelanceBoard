@@ -19,11 +19,13 @@ namespace FreelanceBoard.Core.Commands.JobCommands
         public decimal Price { get; set; }
         public string UserId { get; set; }
         public int ContractId { get; set; }
+        public DateTime Deadline { get; set; }
         public List<string> SkillNames { get; set; } = new List<string>();
         public List<int> ProposalIds { get; set; } = new List<int>();
 
 
-        public UpdateJobCommand(int id,string title, string description, string category, decimal price, string userId, int contractId, List<string> skillNames, List<int> proposalIds)
+        public UpdateJobCommand(int id,string title, string description, string category, decimal price, string userId, int contractId,
+            DateTime deadline,List<string> skillNames, List<int> proposalIds)
         {
             Id = id;
             Title = title;
@@ -32,6 +34,7 @@ namespace FreelanceBoard.Core.Commands.JobCommands
             Price = price;
             UserId = userId;
             ContractId = contractId;
+            Deadline = deadline;
             SkillNames = skillNames ?? new List<string>();
             ProposalIds = proposalIds ?? new List<int>();
         }

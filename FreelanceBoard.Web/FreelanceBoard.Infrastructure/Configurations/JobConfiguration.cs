@@ -24,9 +24,7 @@ namespace FreelanceBoard.Infrastructure.Configurations
 			builder.Property(j => j.Description)
 				   .IsRequired();
 
-			builder.Property(j => j.Category)
-				   .IsRequired()
-				   .HasMaxLength(50);
+
 
 			builder.Property(j => j.Price)
 				   .HasColumnType("decimal(18,2)")

@@ -16,16 +16,21 @@ namespace FreelanceBoard.Core.Commands.JobCommands
         public string Category { get; set; }
         public decimal Price { get; set; }
         public string UserId { get; set; }
+        public DateTime Deadline { get; set; }
+        public DateTime DateCreated { get; set; }
         public List<string> SkillNames { get; set; } = new List<string>();
 
 
 
-        public CreateJobCommand(string title, string description, string category, decimal price, string userId, List<string> skillNames)
+        public CreateJobCommand(string title, string description, string category, decimal price, string userId,
+            DateTime dateCreated,List<string> skillNames, DateTime deadline)
         {
             Title = title;
             Description = description;
             Category = category;
             Price = price;
+            Deadline = deadline;
+            DateCreated = dateCreated;
             UserId = userId;
             SkillNames = skillNames ?? new List<string>();
         }

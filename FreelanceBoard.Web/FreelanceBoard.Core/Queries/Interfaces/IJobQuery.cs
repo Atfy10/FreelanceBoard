@@ -12,5 +12,9 @@ namespace FreelanceBoard.Core.Queries.Interfaces
     public  interface IJobQuery
     {
         Task<Result<JobDto>> GetJobByIdAsync(int id);
+        Task<Result<IEnumerable<JobDto>>> GetAllJobsSortedDateOrBudget(bool date, bool budget);
+        Task<Result<IEnumerable<JobDto>>> GetJobsFilteredBySkills(List<string> skill);
+        Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByBudget(int min, int max);
+        Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByCategory(List<string> category);
     }
 }

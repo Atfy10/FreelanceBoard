@@ -15,7 +15,6 @@ namespace FreelanceBoard.Core.Domain.Entities
 		public string Description { get; set; }
 		public string Attachments { get; set; }
 		public string UserId { get; set; }
-
 		// Navigation property
 		public virtual ApplicationUser User { get; set; }
 	}

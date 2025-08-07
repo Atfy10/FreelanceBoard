@@ -4,6 +4,7 @@ using FreelanceBoard.Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FreelanceBoard.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250807091316_add_job_deadline_attr")]
+    partial class add_job_deadline_attr
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,22 +37,7 @@ namespace FreelanceBoard.Infrastructure.Migrations
 
                     b.HasIndex("SkillsId");
 
-                    b.ToTable("ApplicationUserSkill", (string)null);
-                });
-
-            modelBuilder.Entity("CategoryJob", b =>
-                {
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("JobsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CategoriesId", "JobsId");
-
-                    b.HasIndex("JobsId");
-
-                    b.ToTable("CategoryJob", (string)null);
+                    b.ToTable("ApplicationUserSkill");
                 });
 
             modelBuilder.Entity("FreelanceBoard.Core.Domain.Entities.ApplicationUser", b =>
@@ -136,23 +124,6 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("FreelanceBoard.Core.Domain.Entities.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories", (string)null);
-                });
-
             modelBuilder.Entity("FreelanceBoard.Core.Domain.Entities.Contract", b =>
                 {
                     b.Property<int>("Id")
@@ -206,8 +177,10 @@ namespace FreelanceBoard.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("Deadline")
                         .HasColumnType("datetime2");
@@ -624,21 +597,6 @@ namespace FreelanceBoard.Infrastructure.Migrations
                     b.HasOne("FreelanceBoard.Core.Domain.Entities.Skill", null)
                         .WithMany()
                         .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CategoryJob", b =>
-                {
-                    b.HasOne("FreelanceBoard.Core.Domain.Entities.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FreelanceBoard.Core.Domain.Entities.Job", null)
-                        .WithMany()
-                        .HasForeignKey("JobsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

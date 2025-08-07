@@ -155,42 +155,7 @@ namespace FreelanceBoard.Web
             {
                 var jobs = new List<Job>
                     {
-                        new Job
-                        {
-                            Title = "Website Redesign",
-                            Description = "Need a complete redesign of our corporate website with modern UI/UX.",
-                            Category = "Web Development",
-                            Price = 1500.00m,
-                            UserId = "1",
-                            //Skills = new List<Skill> { skills[0], skills[1] } // Web Dev, Graphic Design
-                        },
-                        new Job
-                        {
-                            Title = "Mobile App Development",
-                            Description = "Looking for an experienced developer to build a food delivery app.",
-                            Category = "Mobile Development",
-                            Price = 3000.00m,
-                            UserId = "2",
-                            //Skills = new List<Skill> { skills[2] } // Mobile App Dev
-                        },
-                        new Job
-                        {
-                            Title = "Content Creation",
-                            Description = "Need a writer to create blog posts about technology trends.",
-                            Category = "Writing",
-                            Price = 500.00m,
-                            UserId = "3",
-                            //Skills = new List<Skill> { skills[3] } // Content Writing
-                        },
-                        new Job
-                        {
-                            Title = "Social Media Campaign",
-                            Description = "Help us create and manage a social media marketing campaign.",
-                            Category = "Marketing",
-                            Price = 1200.00m,
-                            UserId = "4",
-                            //Skills = new List<Skill> { skills[4] } // Digital Marketing
-                        }
+                      
                     };
                 context.Jobs.AddRange(jobs);
                 context.SaveChanges();
