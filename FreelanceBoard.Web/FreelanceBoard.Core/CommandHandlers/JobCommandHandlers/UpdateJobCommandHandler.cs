@@ -25,17 +25,15 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
         private readonly IProposalRepository _proposalRepository;
         private readonly IMapper _mapper;
         private readonly OperationExecutor _executor;
-        private readonly ILogger<UpdateJobCommandHandler> _logger;
         private readonly string UpdateOperation;
-        public UpdateJobCommandHandler(IJobRepository jobRepository, IContractRepository contractRepository,OperationExecutor executor,
-            ISkillRepository skillRepository, IProposalRepository proposalRepository, IMapper mapper,ILogger<UpdateJobCommandHandler> logger)
+        public UpdateJobCommandHandler(IJobRepository jobRepository, IContractRepository contractRepository, OperationExecutor executor,
+            ISkillRepository skillRepository, IProposalRepository proposalRepository, IMapper mapper)
         {
             _jobRepository = jobRepository ?? throw new ArgumentNullException(nameof(jobRepository));
             _contractRepository = contractRepository ?? throw new ArgumentNullException(nameof(IContractRepository));
             _skillRepository = skillRepository ?? throw new ArgumentNullException(nameof(ISkillRepository));
             _proposalRepository = proposalRepository ?? throw new ArgumentNullException(nameof(IProposalRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _executor = executor ?? throw new ArgumentNullException(nameof(executor));
             UpdateOperation = OperationType.Update.ToString();
         }
@@ -43,14 +41,13 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
         public async Task<Result<JobDto>> Handle(UpdateJobCommand request, CancellationToken cancellationToken)
             => await _executor.Execute(async () =>
             {
-                _logger.LogInformation("Starting {Operation} process for Job ID: {JobId}", UpdateOperation, request.Id);
                 var existingJob = await _jobRepository.GetFullJobWithIdAsync(request.Id);
+
                 if (existingJob == null)
                     throw new ArgumentNullException(nameof(request.Id), "Job ID was not found");
 
-
                 Contract updatedContract = await _contractRepository.GetFullContractWithIdAsync(request.ContractId);
-                if (updatedContract == null && request.ContractId!=0)
+                if (request.ContractId != 0 && updatedContract == null)
                     throw new ArgumentNullException(nameof(request.ContractId), "Contract ID was not found");
 
 
@@ -58,14 +55,17 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
                 existingJob.Contract = updatedContract;
 
                 var updatedSkills = await _skillRepository.GetByNamesAsync(request.SkillNames);
+
                 EnsureAllFound(request.SkillNames, updatedSkills.Count, "Skills");
 
                 existingJob.Skills = updatedSkills;
 
                 var updatedProposals = await _proposalRepository.GetByIdsAsync(request.ProposalIds);
+
                 EnsureAllFound(request.ProposalIds, updatedProposals.Count, "Proposals");
-            
+
                 existingJob.Proposals = updatedProposals;
+
                 var jobDto = _mapper.Map<JobDto>(existingJob);
 
                 await _jobRepository.UpdateAsync(existingJob);

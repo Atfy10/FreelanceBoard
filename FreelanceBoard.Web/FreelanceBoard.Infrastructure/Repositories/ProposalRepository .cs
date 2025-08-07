@@ -17,8 +17,8 @@ namespace FreelanceBoard.Infrastructure.Repositories
         public async Task<List<Proposal>> GetByIdsAsync(IEnumerable<int> ids)
         {
             return await _dbContext.Proposals
-                                   .Where(p => ids.Contains(p.Id))
-                                   .ToListAsync();
+                .Where(p => ids.Contains(p.Id))
+                .ToListAsync();
         }
     }
 }

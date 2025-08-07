@@ -13,11 +13,10 @@ namespace FreelanceBoard.Infrastructure.Repositories
 {
     public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository
     {
-        private readonly AppDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public UserRepository(AppDbContext context, UserManager<ApplicationUser> userManager) : base(context)
+        public UserRepository(AppDbContext context,
+            UserManager<ApplicationUser> userManager) : base(context)
         {
-            _context = context;
             _userManager = userManager;
         }
 

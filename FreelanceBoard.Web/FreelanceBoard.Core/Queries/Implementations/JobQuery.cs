@@ -32,91 +32,83 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
 
         }
 
-
         public async Task<Result<JobDto>> GetJobByIdAsync(int id)
-        => await _executor.Execute(async () =>
-        {
-            var job = await _jobRepository.GetFullJobWithIdAsync(id);
-            if (job == null)
-                throw new ArgumentNullException(nameof(id), "Job ID was not found");
+            => await _executor.Execute(async () =>
+            {
+                var job = await _jobRepository.GetFullJobWithIdAsync(id) ??
+                    throw new KeyNotFoundException($"Job with ID {id} not found.");
 
-            var result = _mapper.Map<JobDto>(job);
+                var result = _mapper.Map<JobDto>(job);
 
-            return Result<JobDto>.Success(result, GetOperation, $"Job with ID {id} retrieved successfully.");
-        }, OperationType.Get);
+                return Result<JobDto>.Success(result, GetOperation, $"Job with ID {id} retrieved successfully.");
+            }, OperationType.Get);
 
-
-        public async Task<Result<IEnumerable<JobDto>>> GetAllJobsSortedDateOrBudget(bool date, bool budget)
+        public async Task<Result<IEnumerable<JobDto>>> GetAllJobsSorted(SortBy sortBy)
             => await _executor.Execute(async () =>
             {
                 isAscending = !isAscending;
-                if (date && budget)
-                    throw new ArgumentException("Only one sorting parameter (date or budget) must be true.");
 
-                if(!date && !budget)
-                    date = true; // Default to date sorting if both are false
-
-                var jobs = await _jobRepository.GetAllJobsSortedDateOrBudget(date, budget,isAscending);
+                var jobs = sortBy switch
+                {
+                    SortBy.Date => await _jobRepository.GetAllJobsSortByDate(isAscending),
+                    SortBy.Budget => await _jobRepository.GetAllJobsSortByBudget(isAscending),
+                    _ => throw new ArgumentException("Invalid sorting parameter specified."),
+                };
 
                 if (jobs == null || !jobs.Any())
                     throw new ArgumentNullException(nameof(jobs), "No jobs found.");
 
                 var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
+
                 return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "All jobs sorted accordingly retrieved successfully.");
             }, OperationType.Get);
-        
 
-
-        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredBySkills(List<string> skill)
-        => await _executor.Execute(async () =>
+        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredBySkills(List<string> skills)
+            => await _executor.Execute(async () =>
             {
-                if (skill == null || skill.Count == 0)
-                    throw new ArgumentNullException(nameof(skill), "Skill cannot be null or empty.");
+                if (skills == null || skills.Count == 0)
+                    throw new ArgumentNullException(nameof(skills), "Skill cannot be null or empty.");
 
-                var jobs = await _jobRepository.GetJobsFilteredSkills(skill);
+                var jobs = await _jobRepository.GetJobsFilteredSkills(skills);
 
                 if (jobs == null || !jobs.Any())
-                    throw new ArgumentNullException(nameof(jobs), "No jobs found with the specified skill.");
+                    return Result<IEnumerable<JobDto>>.Success([], GetOperation, "No jobs matched the given skills.");
 
                 var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
                 return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs filtered by skills retrieved successfully.");
             }, OperationType.Get);
 
-        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByCategory(List<string> category)
-        => await _executor.Execute(async () =>
-        {
-            if (category == null || category.Count == 0)
-                throw new ArgumentNullException(nameof(category), "Category cannot be null or empty.");
+        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByCategory(List<string> categories)
+            => await _executor.Execute(async () =>
+            {
+                if (categories == null || categories.Count == 0)
+                    throw new ArgumentNullException(nameof(categories), "Category cannot be null or empty.");
 
-            var jobs = await _jobRepository.GetJobsFilteredCategory(category);
+                var jobs = await _jobRepository.GetJobsFilteredCategory(categories);
 
-            if (jobs == null || !jobs.Any())
-                throw new ArgumentNullException(nameof(jobs), "No jobs found with specified category.");
+                if (jobs == null || !jobs.Any())
+                    return Result<IEnumerable<JobDto>>.Success([], GetOperation, "No jobs matched the given category/s.");
 
-            
-            var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
-
-            return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs filtered by category retrieved successfully");
-        }, OperationType.Get);
-
-
+                var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
+                return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs filtered by category retrieved successfully");
+            }, OperationType.Get);
 
         public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByBudget(int min, int max)
-        => await _executor.Execute(async () =>
-        {
-            if(min > max || min<0 )
-                throw new ArgumentOutOfRangeException("Invalid budget range specified. Ensure min is less than max and both are non-negative.");
+            => await _executor.Execute(async () =>
+            {
+                if (min > max || min < 0)
+                    throw new ArgumentOutOfRangeException("Invalid budget range specified. Ensure min is less than max and both are non-negative.");
 
-            var jobs = await _jobRepository.GetJobsFilteredBudget(min, max);
+                var jobs = await _jobRepository.GetJobsFilteredBudget(min, max);
 
-            if (jobs == null || !jobs.Any())
-                throw new ArgumentNullException(nameof(jobs), "No jobs found with specified budget range.");
+                if (jobs == null || !jobs.Any())
+                    return Result<IEnumerable<JobDto>>.Success([], GetOperation, "No jobs matched the given range.");
 
-            var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
-            return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs filtered by budget retrieved successfully");
-        }, OperationType.Get);
+                var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
+                return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs filtered by budget retrieved successfully");
+            }, OperationType.Get);
 
     }
 
-        
-    }
+
+}
