@@ -6,11 +6,14 @@ using System.Text.Json;
 using FreelanceBoard.MVC.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FreelanceBoard.MVC.Controllers
 {
-    public class UserController : Controller
+	[Authorize]
+
+	public class UserController : Controller
     {
 
         private readonly IHttpClientFactory _httpClientFactory;
@@ -21,13 +24,17 @@ namespace FreelanceBoard.MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register()
+		[AllowAnonymous]
+
+		public IActionResult Register()
         {
             return View("Register");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+		[AllowAnonymous]
+
+		public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -53,14 +60,17 @@ namespace FreelanceBoard.MVC.Controllers
 			}
 		}
 
-            [HttpGet]
-        public IActionResult Login()
+        [HttpGet]
+		[AllowAnonymous]
+
+		public IActionResult Login()
         {
             return View(new LoginViewModel());
         }
 
         // POST: UserController/Create
         [HttpPost]
+        [AllowAnonymous]
 		public async Task<IActionResult> Login(LoginViewModel model)
 		{
 			if (!ModelState.IsValid)

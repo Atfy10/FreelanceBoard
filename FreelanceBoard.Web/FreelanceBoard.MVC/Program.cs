@@ -14,6 +14,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LogoutPath = "/User/Logout";
         options.AccessDeniedPath = "/User/AccessDenied";
     });
+
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+	options.LoginPath = "/User/Login"; 
+});
 builder.Services.AddSession();
 
 var app = builder.Build();
@@ -27,6 +33,13 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseStatusCodePages(async context =>
+{
+	if (context.HttpContext.Response.StatusCode == 404)
+	{
+		context.HttpContext.Response.Redirect("/Home/NotFound");
+	}
+});
 app.UseAuthentication();
 app.UseAuthorization();
 
