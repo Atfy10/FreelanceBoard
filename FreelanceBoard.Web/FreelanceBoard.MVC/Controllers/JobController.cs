@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FreelanceBoard.MVC.Controllers
 {
-    public class JobController : Controller
+	[Authorize]
+
+	public class JobController : Controller
     {
         public IActionResult Index()
         {
