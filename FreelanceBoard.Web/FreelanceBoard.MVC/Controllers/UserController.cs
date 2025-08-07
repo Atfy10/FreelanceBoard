@@ -137,6 +137,8 @@ namespace FreelanceBoard.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            model.UserId = HttpContext.Session.GetString("userId");
+            ModelState.Remove(nameof(model.UserId));
             if (!ModelState.IsValid)
                 return View(model);
 
