@@ -1,4 +1,5 @@
-﻿
+﻿@model UserProfileViewModel
+
         <style>
             .profile-section {
                 background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
@@ -359,165 +360,140 @@
 }
         </style>
 
-            <section class="profile-section">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-10 col-12">
-                            <!-- Profile Header -->
-                            <div class="profile-container">
-                                <button class="edit-mode-toggle" onclick="toggleEditMode()">
-                                    <i class="bi-pencil-square me-2"></i>
-                                    <span id="edit-btn-text">Edit Profile</span>
-                                </button>
-                                <a href="/User/ChangePassword" class="change-password-link">
-                                    <i class="bi-shield-lock-fill me-2"></i>
-                                    Change Password
-                                </a>
+<section class="profile-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-12">
+                <!-- Profile Header -->
+                <div class="profile-container">
+                    <button class="edit-mode-toggle" onclick="toggleEditMode()">
+                        <i class="bi-pencil-square me-2"></i>
+                        <span id="edit-btn-text">Edit Profile</span>
+                    </button>
+                    <a href="/User/ChangePassword" class="change-password-link">
+                        <i class="bi-shield-lock-fill me-2"></i>
+                        Change Password
+                    </a>
 
-                                <div class="profile-header">
-                                    <div class="profile-picture-container">
-                                        <img src="/placeholder.svg?height=150&width=150&text=Profile" alt="Profile Picture" class="profile-picture" id="profilePicture">
-                                        <div class="profile-picture-upload" onclick="document.getElementById('profilePictureInput').click()">
-                                            <i class="bi-camera-fill"></i>
-                                        </div>
-                                        <input type="file" id="profilePictureInput" accept="image/*" style="display: none;" onchange="handleProfilePictureChange(event)">
-                                    </div>
-                                    <h2 class="profile-username" id="displayUsername">john_developer</h2>
-                                    <p class="profile-role">Full Stack Developer</p>
-                                </div>
+                    <div class="profile-header">
+                        <div class="profile-picture-container">
+                            <img src="@(string.IsNullOrEmpty(Model.Profile?.Image) ? "/placeholder.svg?height=150&width=150&text=Profile" : "/images/" + Model.Profile.Image)" alt="Profile Picture" class="profile-picture" id="profilePicture">
+                            <div class="profile-picture-upload" onclick="document.getElementById('profilePictureInput').click()">
+                                <i class="bi-camera-fill"></i>
+                            </div>
+                            <input type="file" id="profilePictureInput" accept="image/*" style="display: none;" onchange="handleProfilePictureChange(event)">
+                        </div>
+                        <h2 class="profile-username" id="displayUsername">@Model.UserName</h2>
+                        <p class="profile-role">Full Stack Developer</p> <!-- Optional: Add dynamic role -->
+                    </div>
 
-                                <!-- Basic Information -->
-                                <div class="row">
-                                    <div class="col-lg-6 col-12">
-                                        <div class="form-group">
-                                            <label for="username">Username</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="bi-person-badge"></i></span>
-                                                <input type="text" id="username" class="form-control readonly-field" value="john_developer" readonly>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6 col-12">
-                                        <div class="form-group">
-                                            <label for="phoneNumber">Phone Number</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="bi-telephone"></i></span>
-                                                <input type="tel" id="phoneNumber" class="form-control readonly-field" value="+1 (555) 123-4567" readonly>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Bio Section -->
-                                <div class="form-group">
-                                    <label for="bio">Bio</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" style="top: 20px;"><i class="bi-person-lines-fill"></i></span>
-                                        <textarea id="bio" class="form-control bio-textarea readonly-field" readonly placeholder="Tell us about yourself...">Passionate full-stack developer with 5+ years of experience in building scalable web applications. Specialized in React, Node.js, and cloud technologies. Always eager to learn new technologies and solve complex problems.</textarea>
-                                    </div>
-                                </div>
-                            
-
-
-                            <!-- Skills Section -->
-                            <div class="profile-container">
-                                <h3 class="section-title">
-                                    <i class="bi-gear-fill"></i>
-                                    Skills
-                                </h3>
-                                <div class="skills-container" id="skillsContainer">
-                                    <div class="skill-tag">
-                                        JavaScript
-                                        <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
-                                    </div>
-                                    <div class="skill-tag">
-                                        React
-                                        <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
-                                    </div>
-                                    <div class="skill-tag">
-                                        Node.js
-                                        <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
-                                    </div>
-                                    <div class="skill-tag">
-                                        Python
-                                        <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
-                                    </div>
-                                    <div class="skill-tag">
-                                        MongoDB
-                                        <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
-                                    </div>
-                                    <div class="add-skill-btn" onclick="addSkill()" style="display: none;">
-                                        <i class="bi-plus-circle me-2"></i>
-                                        Add Skill
-                                    </div>
+                    <!-- Basic Information -->
+                    <div class="row">
+                        <div class="col-lg-6 col-12">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi-person-badge"></i></span>
+                                    <input type="text" id="username" class="form-control readonly-field" value="@Model.UserName" readonly>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Projects Section -->
-                            <div class="profile-container">
-                                <h3 class="section-title">
-                                    <i class="bi-folder-fill"></i>
-                                    Projects
-                                </h3>
-                                <div class="projects-container" id="projectsContainer">
-                                    <div class="project-card">
-                                        <h4 class="project-title">E-Commerce Platform</h4>
-                                        <p class="project-description">A full-stack e-commerce solution built with React and Node.js, featuring user authentication, payment integration, and admin dashboard.</p>
-                                        <div class="project-attachment">
-                                            <i class="bi-file-earmark-code"></i>
-                                            <span>source-code.zip</span>
-                                            <button class="btn btn-sm" onclick="downloadAttachment('source-code.zip')">
-                                                <i class="bi-download"></i>
-                                            </button>
-                                        </div>
-                                        <div class="project-attachment">
-                                            <i class="bi-file-earmark-pdf"></i>
-                                            <span>project-documentation.pdf</span>
-                                            <button class="btn btn-sm" onclick="downloadAttachment('project-documentation.pdf')">
-                                                <i class="bi-download"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div class="project-card">
-                                        <h4 class="project-title">Task Management App</h4>
-                                        <p class="project-description">A collaborative task management application with real-time updates, built using React, Socket.io, and Express.js.</p>
-                                        <div class="project-attachment">
-                                            <i class="bi-github"></i>
-                                            <span>github-repository</span>
-                                            <button class="btn btn-sm" onclick="openLink('https://github.com/john/task-app')">
-                                                <i class="bi-box-arrow-up-right"></i>
-                                            </button>
-                                        </div>
-                                        <div class="project-attachment">
-                                            <i class="bi-play-circle"></i>
-                                            <span>live-demo</span>
-                                            <button class="btn btn-sm" onclick="openLink('https://taskapp-demo.com')">
-                                                <i class="bi-box-arrow-up-right"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div class="add-project-btn" onclick="addProject()" style="display: none;">
-                                        <i class="bi-plus-circle"></i>
-                                        <span>Add New Project</span>
-                                    </div>
+                        <div class="col-lg-6 col-12">
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi-telephone"></i></span>
+                                    <input type="tel" id="phoneNumber" class="form-control readonly-field" value="@Model.PhoneNumber" readonly>
                                 </div>
-                            </div>
-
-                            <!-- Save Button -->
-                            <div class="text-center">
-                                <button class="save-btn" id="saveBtn" onclick="saveProfile()" style="display: none;">
-                                    <i class="bi-check-circle me-2"></i>
-                                    Save Changes
-                                </button>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Bio Section -->
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <div class="input-group">
+                            <span class="input-group-text" style="top: 20px;"><i class="bi-person-lines-fill"></i></span>
+                            <textarea id="bio" class="form-control bio-textarea readonly-field" readonly placeholder="Tell us about yourself...">@Model.Profile?.Bio</textarea>
+                        </div>
+                    </div>
                 </div>
-            </section>
-   
+
+                <!-- Skills Section -->
+                <div class="profile-container">
+                    <h3 class="section-title">
+                        <i class="bi-gear-fill"></i>
+                        Skills
+                    </h3>
+                    <div class="skills-container" id="skillsContainer">
+                        @foreach (var skill in Model.Skills ?? new List<SkillViewModel>())
+                        {
+                            <div class="skill-tag">
+                                @skill.Name
+                                <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
+                            </div>
+                        }
+                        <div class="add-skill-btn" onclick="addSkill()" style="display: none;">
+                            <i class="bi-plus-circle me-2"></i>
+                            Add Skill
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projects Section -->
+                <div class="profile-container">
+                    <h3 class="section-title">
+                        <i class="bi-folder-fill"></i>
+                        Projects
+                    </h3>
+                    <div class="projects-container" id="projectsContainer">
+                        @foreach (var project in Model.Projects ?? new List<ProjectViewModel>())
+                        {
+                            <div class="project-card">
+                                <h4 class="project-title">@project.Title</h4>
+                                <p class="project-description">@project.Description</p>
+                                @if (!string.IsNullOrEmpty(project.Attachments))
+                                {
+                                    var attachments = project.Attachments.Split(','); // If comma-separated
+                                    foreach (var attachment in attachments)
+                                    {
+                                        var trimmed = attachment.Trim();
+                                        var isLink = trimmed.StartsWith("http");
+                                        var icon = isLink ? "bi-box-arrow-up-right" :
+                                        trimmed.EndsWith(".pdf") ? "bi-file-earmark-pdf" :
+                                        "bi-file-earmark-code";
+
+                                        <div class="project-attachment">
+                                            <i class="@icon"></i>
+                                            <span>@trimmed</span>
+                                            <button class="btn btn-sm" onclick="@(isLink ? $"openLink('{trimmed}')" : $"downloadAttachment('{trimmed}')")">
+                                                <i class="@icon"></i>
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                        <div class="add-project-btn" onclick="addProject()" style="display: none;">
+                            <i class="bi-plus-circle"></i>
+                            <span>Add New Project</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="text-center">
+                    <button class="save-btn" id="saveBtn" onclick="saveProfile()" style="display: none;">
+                        <i class="bi-check-circle me-2"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
         <script>
             let isEditMode = false;
 

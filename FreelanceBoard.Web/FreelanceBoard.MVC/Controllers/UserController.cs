@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json;
 using FreelanceBoard.MVC.Models;
@@ -50,7 +51,7 @@ namespace FreelanceBoard.MVC.Controllers
 			{
 				var errorContent = await response.Content.ReadAsStringAsync();
 
-				var apiError = JsonSerializer.Deserialize<ApiErrorResponse>(
+				var apiError = JsonSerializer.Deserialize<ApiErrorResponse<bool>>(
 					errorContent,
 					new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
 				);
@@ -123,10 +124,48 @@ namespace FreelanceBoard.MVC.Controllers
 		}
 
 
-		public IActionResult Profile()
-        {
-            return View("Profile");
-        }
+		//public IActionResult Profile()
+  //      {
+  //          return View("Profile");
+  //      }
+
+        [HttpGet]
+		public async Task<IActionResult> Profile()
+		{
+			var userId = HttpContext.Session.GetString("userId");
+			if (string.IsNullOrEmpty(userId))
+			{
+				return RedirectToAction("Login");
+			}
+
+			var client = _httpClientFactory.CreateClient();
+			var response = await client.GetAsync($"https://localhost:7029/api/User/get-full-profile/{userId}");
+
+			if (!response.IsSuccessStatusCode)
+			{
+				return View("NotFound"); 
+			}
+
+						//var content = await response.Content.ReadAsStringAsync();
+			var responseData = await response.Content.ReadAsStringAsync();
+
+
+			var options = new JsonSerializerOptions
+			{
+				PropertyNameCaseInsensitive = true
+			};
+
+			var apiResult = JsonSerializer.Deserialize<ApiErrorResponse<UserProfileViewModel>>(responseData, options);
+
+
+			if (apiResult == null || !apiResult.IsSuccess)
+			{
+				return View("NotFound");
+			}
+
+			return View("Profile",apiResult.Data);
+		}
+
 
         [HttpGet]
         public IActionResult ChangePassword()
@@ -137,7 +176,6 @@ namespace FreelanceBoard.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            model.UserId = HttpContext.Session.GetString("userId");
             ModelState.Remove(nameof(model.UserId));
             if (!ModelState.IsValid)
                 return View(model);
