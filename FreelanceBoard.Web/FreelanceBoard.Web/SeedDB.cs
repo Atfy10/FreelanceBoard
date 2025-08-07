@@ -64,8 +64,10 @@ namespace FreelanceBoard.Web
                     EmailConfirmed = true
                 }
             };
+
                 foreach (var user in users)
                     userManager.CreateAsync(user, "Password123!");
+
                 context.SaveChanges();
             }
             if (!context.Skills.Any())
@@ -78,9 +80,29 @@ namespace FreelanceBoard.Web
                         new Skill { Name = "Content Writing" },
                         new Skill { Name = "Digital Marketing" },
                         new Skill { Name = "Data Analysis" },
-                        new Skill { Name = "Video Editing" }
+                        new Skill { Name = "Video Editing" },
+                        new Skill { Name = "UI/UX Design" },
+                        new Skill { Name = "Content Writing" },
+                        new Skill { Name = "SEO Optimization" }
                     };
                 context.Skills.AddRange(skills);
+                context.SaveChanges();
+            }
+            if (!context.Categories.Any())
+            {
+                var categories = new List<Category>
+                    {
+                        new Category { Name = "Web Development" },
+                        new Category { Name = "Design & Creative" },
+                        new Category { Name = "Mobile Development" },
+                        new Category { Name = "Writing & Translation" },
+                        new Category { Name = "Digital Marketing" },
+                        new Category { Name = "Data Science & Analytics" },
+                        new Category { Name = "Video & Animation" },
+                        new Category { Name = "Writing & Translation" }
+
+                    };
+                context.Categories.AddRange(categories);
                 context.SaveChanges();
             }
             if (!context.Profiles.Any())
@@ -154,9 +176,81 @@ namespace FreelanceBoard.Web
             if (!context.Jobs.Any())
             {
                 var jobs = new List<Job>
+                {
+                    new Job
                     {
-                      
-                    };
+                        Title = "Website Redesign",
+                        Description = "Looking for a freelancer to redesign our company website with a modern look and responsive design.",
+                        Price = 1500.00m,
+                        UserId = "1",
+                        Deadline = DateTime.Now.AddDays(30),
+                        DateCreated = DateTime.Now,
+                        Skills = new List<Skill>
+                        {
+                            new Skill { Name = "Web Development" },
+                            new Skill { Name = "Graphic Design" }
+                        },
+                        Categories = new List<Category>
+                        {
+                            new Category { Name = "Web Development" }
+                        }
+                    },
+                    new Job
+                    {
+                        Title = "Mobile App Development",
+                        Description = "Need an experienced mobile app developer to create a food delivery app for both iOS and Android platforms.",
+                        Price = 3000.00m,
+                        UserId = "2",
+                        Deadline = DateTime.Now.AddDays(45),
+                        DateCreated = DateTime.Now,
+                        Skills = new List<Skill>
+                        {
+                            new Skill { Name = "Mobile App Development" },
+                            new Skill { Name = "UI/UX Design" }
+                        },
+                        Categories = new List<Category>
+                        {
+                            new Category { Name = "Mobile Development" }
+                        }
+                    },
+                    new Job
+                    {
+                        Title = "Content Writing for Tech Blog",
+                        Description = "Seeking a content writer to produce high-quality articles on the latest technology trends.",
+                        Price = 500.00m,
+                        UserId = "3",
+                        Deadline = DateTime.Now.AddDays(15),
+                        DateCreated = DateTime.Now,
+                        Skills = new List<Skill>
+                        {
+                            new Skill { Name = "Content Writing" },
+                            new Skill { Name = "SEO Optimization" }
+                        },
+                        Categories = new List<Category>
+                        {
+                            new Category { Name = "Writing & Translation" }
+                        }
+                    },
+                    new Job
+                    {
+                        Title = "Social Media Management",
+                        Description = "Looking for a freelancer to manage our social media accounts and create engaging content for 3 months.",
+                        Price = 1200.00m,
+                        UserId = "4",
+                        Deadline = DateTime.Now.AddDays(90),
+                        DateCreated = DateTime.Now,
+                        Skills = new List<Skill>
+                        {
+                            new Skill { Name = "Digital Marketing" },
+                            new Skill { Name = "Content Creation" }
+                        },
+                        Categories = new List<Category>
+                        {
+                            new Category { Name = "Writing & Translation" }
+                        }
+                    }
+                };
+
                 context.Jobs.AddRange(jobs);
                 context.SaveChanges();
             }

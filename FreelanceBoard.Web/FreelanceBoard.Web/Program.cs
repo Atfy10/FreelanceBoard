@@ -158,7 +158,7 @@ namespace FreelanceBoard.Web
                 app.UseSwaggerUI();
             }
 
-            app.UseStaticFiles(); // da middleware 3ashan uploading el files
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 

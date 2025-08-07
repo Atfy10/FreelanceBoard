@@ -20,14 +20,14 @@ namespace FreelanceBoard.Infrastructure.Repositories
             return await GetAllJobsWithDetails()
                     .FirstOrDefaultAsync(j => j.Id == jobId);
         }
-        public async Task<IEnumerable<Job?>> GetAllJobsSortByBudget(bool isAscending = true)
+        public async Task<IEnumerable<Job>> GetAllJobsSortByBudget(bool isAscending = true)
         {
             return isAscending ?
                 await GetAllJobsWithDetails()
-                .OrderByDescending(j => j.DateCreated)
+                .OrderBy(j => j.Price)
                 .ToListAsync()
                 : await GetAllJobsWithDetails()
-                .OrderBy(j => j.DateCreated)
+                .OrderByDescending(j => j.Price)
                 .ToListAsync();
         }
         public async Task<IEnumerable<Job>> GetAllJobsSortByDate(bool isAscending = true)
@@ -40,19 +40,19 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 .OrderByDescending(j => j.DateCreated)
                 .ToListAsync();
         }
-        public async Task<IEnumerable<Job>> GetJobsFilteredSkills(List<string> skills)
+        public async Task<IEnumerable<Job>?> GetJobsFilteredSkills(List<string> skills)
         {
             return await GetAllJobsWithDetails()
                 .Where(s => s.Skills.Any(sk => skills.Contains(sk.Name))).ToListAsync();
 
         }
-        public async Task<IEnumerable<Job>> GetJobsFilteredCategory(List<string> categories)
+        public async Task<IEnumerable<Job>?> GetJobsFilteredCategory(List<string> categories)
         {
 
             return await GetAllJobsWithDetails()
                 .Where(s => s.Categories.Any(sk => categories.Contains(sk.Name))).ToListAsync();
         }
-        public async Task<IEnumerable<Job?>> GetJobsFilteredBudget(int min, int max)
+        public async Task<IEnumerable<Job>?> GetJobsFilteredBudget(int min, int max)
         {
 
             return await GetAllJobsWithDetails()

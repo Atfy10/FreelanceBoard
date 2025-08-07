@@ -2,6 +2,7 @@
 using FreelanceBoard.Core.Commands;
 using FreelanceBoard.Core.Commands.JobCommands;
 using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Domain.Enums;
 using FreelanceBoard.Core.Dtos;
 using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Core.Queries;
@@ -61,9 +62,9 @@ namespace FreelanceBoard.Web.Controllers
         }
 
         [HttpGet("Sorted by date or budget")]
-        public async Task<IActionResult> GetAllJobsSortedDateOrBudget(bool date, bool budget) // Sorting by date or budget -> true means sory by descending accordingly
+        public async Task<IActionResult> GetAllJobsSortedDateOrBudget(string sortBy) // Sorting by date or budget -> true means sory by descending accordingly
         {
-            var jobs = await _jobQuery.GetAllJobsSortedDateOrBudget(date, budget);
+            var jobs = await _jobQuery.GetAllJobsSorted(Enum.Parse<SortBy>(sortBy));
             return Ok(jobs);
         }
 

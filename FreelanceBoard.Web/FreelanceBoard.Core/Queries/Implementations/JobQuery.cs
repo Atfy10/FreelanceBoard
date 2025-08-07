@@ -107,7 +107,6 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                 var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
                 return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs filtered by budget retrieved successfully");
             }, OperationType.Get);
-
     }
 
 

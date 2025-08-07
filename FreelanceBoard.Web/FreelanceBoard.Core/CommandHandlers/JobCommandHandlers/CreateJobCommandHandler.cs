@@ -44,6 +44,7 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
                     throw new ArgumentNullException(nameof(request), "CreateJobCommand request cannot be null.");
 
                 var newJob = _mapper.Map<Job>(request);
+
                 var skills = await _skillRepository.GetByNamesAsync(request.SkillNames);
 
                 if (skills.Count != request.SkillNames.Count)

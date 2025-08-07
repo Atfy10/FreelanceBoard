@@ -41,17 +41,16 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
         public async Task<Result<JobDto>> Handle(UpdateJobCommand request, CancellationToken cancellationToken)
             => await _executor.Execute(async () =>
             {
-                var existingJob = await _jobRepository.GetFullJobWithIdAsync(request.Id);
-
-                if (existingJob == null)
+                var existingJob = await _jobRepository.GetFullJobWithIdAsync(request.Id) ??
                     throw new ArgumentNullException(nameof(request.Id), "Job ID was not found");
 
                 Contract updatedContract = await _contractRepository.GetFullContractWithIdAsync(request.ContractId);
+
                 if (request.ContractId != 0 && updatedContract == null)
                     throw new ArgumentNullException(nameof(request.ContractId), "Contract ID was not found");
 
-
                 _mapper.Map(request, existingJob);
+
                 existingJob.Contract = updatedContract;
 
                 var updatedSkills = await _skillRepository.GetByNamesAsync(request.SkillNames);
