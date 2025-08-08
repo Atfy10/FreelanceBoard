@@ -1,4 +1,7 @@
 using System.Net.Http.Headers;
+using FreelanceBoard.MVC.Extensions;
+using FreelanceBoard.MVC.Services.Implementations;
+using FreelanceBoard.MVC.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +45,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 		options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 		options.SlidingExpiration = true;
 	});
+
+builder.Services.AddScoped<OperationExecutor>();
+builder.Services.AddScoped<IUserService,UserService>();
 
 
 

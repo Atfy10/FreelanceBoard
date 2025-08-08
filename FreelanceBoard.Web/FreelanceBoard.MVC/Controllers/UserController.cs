@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.IO.Pipes;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -6,6 +7,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using FreelanceBoard.MVC.Extensions;
 using FreelanceBoard.MVC.Models;
+using FreelanceBoard.MVC.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -18,12 +20,15 @@ namespace FreelanceBoard.MVC.Controllers
 	public class UserController : Controller
     {
 
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public UserController(IHttpClientFactory httpClientFactory)
+		private readonly IUserService _userService;
+		private readonly OperationExecutor _executor;
+		//private readonly IHttpClientFactory _httpClientFactory;
+		public UserController(IUserService userService, OperationExecutor executor , IHttpClientFactory httpClientFactory)
         {
-            _httpClientFactory = httpClientFactory;
-        }
+			_userService = userService;
+			_executor = executor;
+			//_httpClientFactory = httpClientFactory;
+		}
 
         [HttpGet]
 		[AllowAnonymous]
@@ -35,31 +40,23 @@ namespace FreelanceBoard.MVC.Controllers
 
         [HttpPost]
 		[AllowAnonymous]
-
 		public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
+		{
+			if (!ModelState.IsValid)
+				return View(model);
 
-			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
-			var response = await client.PostAsJsonAsync("/api/Auth/signup", model);
+			var success = await _executor.Execute(
+				() => _userService.RegisterAsync(model),
+				error => ModelState.AddModelError(string.Empty, error)
+			);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Login", "User");
-            }
-            else
-            {
-				var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool>>();
+			if (success)
+				return RedirectToAction("Login", "User");
 
-                ModelState.AddModelError(string.Empty, apiError?.Message ?? "An unexpected error occurred.");
+			return View(model);  
+		}
 
-                return View(model);
-            }
-
-        }
-
-        [HttpGet]
+		[HttpGet]
 		[AllowAnonymous]
 
 		public IActionResult Login()
@@ -67,7 +64,6 @@ namespace FreelanceBoard.MVC.Controllers
             return View(new LoginViewModel());
         }
 
-        // POST: UserController/Create
         [HttpPost]
         [AllowAnonymous]
 		public async Task<IActionResult> Login(LoginViewModel model)
@@ -75,38 +71,14 @@ namespace FreelanceBoard.MVC.Controllers
 			if (!ModelState.IsValid)
 				return View(model);
 
-			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+			var success = await _executor.Execute(
+				() => _userService.LoginAsync(model, HttpContext),
+				error => ModelState.AddModelError(string.Empty, error)
+			);
 
-			var response = await client.PostAsJsonAsync("/api/Auth/login", model);
+			if (success)
+				return RedirectToAction("Index", "Home");
 
-			if (response.IsSuccessStatusCode)
-			{
-				var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
-
-				var handler = new JwtSecurityTokenHandler();
-				var jwtToken = handler.ReadJwtToken(result.Token);
-
-				var claims = jwtToken.Claims.ToList();
-
-				// Add the JWT token itself as a claim
-				claims.Add(new Claim("access_token", result.Token));
-
-
-
-				// Extract important claims
-				//var userId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-				var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-				var principal = new ClaimsPrincipal(identity);
-
-				// Sign in with cookie auth
-				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-
-				return RedirectToAction("index", "Home");
-			}
-
-			ModelState.AddModelError(string.Empty, "Invalid email or password");
 			return View(model);
 		}
 
@@ -114,86 +86,67 @@ namespace FreelanceBoard.MVC.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Logout()
 		{
-			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+			var success = await _executor.Execute(
+				() => _userService.LogoutAsync(HttpContext),
+				error => ModelState.AddModelError(string.Empty, error)
+			);
+
 			return RedirectToAction("Login", "User");
 		}
 
 
 
-        [HttpGet]
+		[HttpGet]
 		public async Task<IActionResult> Profile()
 		{
-			//var token = HttpContext.Session.GetString("token");
-            var token= User.GetAccessToken();
-			TempData["token"] = token; 
+			UserProfileViewModel profile = null;
 
-            var userId = User.GetUserId();
-			if (string.IsNullOrEmpty(userId))
-			{
-				return RedirectToAction("Login");
-			}
+			var success = await _executor.Execute(
+				async () =>
+				{
+					profile = await _userService.GetProfileAsync(HttpContext);
+				},
+				error => ModelState.AddModelError(string.Empty, error)
+			);
 
-			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
-			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-			var response = await client.GetAsync($"/api/User/get-full-profile/{userId}");
-
-			if (!response.IsSuccessStatusCode)
-			{
-				return View("NotFound"); 
-			}
-
-			var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<UserProfileViewModel>>();
-
-			if (apiResult == null || !apiResult.IsSuccess)
-			{
+			if (!success || profile == null)
 				return View("NotFound");
-			}
 
-			return View("Profile",apiResult.Data);
+			TempData["token"] = HttpContext.Items["token"];
+
+			return View("Profile", profile);
 		}
 
 
-        [HttpGet]
+
+		[HttpGet]
         public IActionResult ChangePassword()
         {
             return View("ChangePassword");
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
-        {
-            ModelState.Remove(nameof(model.UserId));
-            if (!ModelState.IsValid)
-                return View(model);
+		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+		{
+			ModelState.Remove(nameof(model.UserId));
 
-            var token = User.GetAccessToken();
+			if (!ModelState.IsValid)
+				return View(model);
 
-			if (string.IsNullOrEmpty(token))
-            {
-                return RedirectToAction("Login", "User");
-            }
+			var success = await _executor.Execute(
+				async () =>
+				{
+					await _userService.ChangePasswordAsync(model, HttpContext);
+					TempData["Success"] = "Password changed successfully.";
+				},
+				error => ModelState.AddModelError(string.Empty, error)
+			);
 
-			var userId = User.GetUserId();
-			model.UserId = userId;
+			if (success)
+				return RedirectToAction("Login", "User");
 
-            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
-			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+			return View(model);
+		}
 
-            var response = await client.PostAsJsonAsync("/api/User/change-password", model);
-
-            if (response.IsSuccessStatusCode)
-            {
-                TempData["Success"] = "Password changed successfully.";
-                return RedirectToAction("Login", "User");
-            }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                ModelState.AddModelError("", $"Failed to change password: {errorContent}");
-                return View(model);
-            }
-        }
-
-
-    }
+	}
 }
