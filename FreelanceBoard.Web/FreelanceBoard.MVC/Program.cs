@@ -1,28 +1,57 @@
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddHttpClient();
-builder.Services.AddSession();
-
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/User/Login";
-        options.LogoutPath = "/User/Logout";
-        options.AccessDeniedPath = "/User/AccessDenied";
-    });
-
-
-builder.Services.ConfigureApplicationCookie(options =>
+builder.Services.AddControllersWithViews().AddJsonOptions(options =>
 {
-	options.LoginPath = "/User/Login"; 
+	options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+}); ;
+//builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("FreelanceApiClient", client =>
+{
+	var apiUrl = builder.Configuration["ApiClients:FreelanceApi"];
+	client.BaseAddress = new Uri(apiUrl);
+	client.DefaultRequestHeaders.Accept.Add(
+		new MediaTypeWithQualityHeaderValue("application/json")); //all requests will accept JSON responsess
 });
 
+//builder.Services.AddSession();  //removed because no need for session in this app we use JWT tokens for auth
+
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//    .AddCookie(options =>
+//    {
+//        options.LoginPath = "/User/Login";
+//        options.LogoutPath = "/User/Logout";
+//        options.AccessDeniedPath = "/User/AccessDenied";
+//    });
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+	.AddCookie(options =>
+	{
+		options.LoginPath = "/User/Login";
+		options.LogoutPath = "/User/Logout";
+		options.AccessDeniedPath = "/User/AccessDenied";
+
+		options.Cookie.HttpOnly = true;
+		options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+		options.Cookie.SameSite = SameSiteMode.Strict;
+		options.Cookie.Name = "FreelanceBoard.Auth";
+
+		options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+		options.SlidingExpiration = true;
+	});
+
+
+
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//	options.LoginPath = "/User/Login"; 
+//});
+
 var app = builder.Build();
-app.UseSession();
+//app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

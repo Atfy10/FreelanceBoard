@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json;
+using FreelanceBoard.MVC.Extensions;
 using FreelanceBoard.MVC.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -40,8 +41,8 @@ namespace FreelanceBoard.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.PostAsJsonAsync("https://localhost:7029/api/Auth/signup", model);
+			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+			var response = await client.PostAsJsonAsync("/api/Auth/signup", model);
 
             if (response.IsSuccessStatusCode)
             {
@@ -49,22 +50,9 @@ namespace FreelanceBoard.MVC.Controllers
             }
             else
             {
-                var errorContent = await response.Content.ReadAsStringAsync();
+				var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool>>();
 
-                try
-                {
-                    var apiError = JsonSerializer.Deserialize<ApiErrorResponse<bool>>(
-                        errorContent,
-                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
-                    );
-
-                    ModelState.AddModelError(string.Empty, apiError?.Message ?? "An unexpected error occurred.");
-                }
-                catch (JsonException)
-                {
-                    // Not JSON — maybe a plain error message like "Forbidden"
-                    ModelState.AddModelError(string.Empty, $"Server error: {errorContent}");
-                }
+                ModelState.AddModelError(string.Empty, apiError?.Message ?? "An unexpected error occurred.");
 
                 return View(model);
             }
@@ -87,9 +75,9 @@ namespace FreelanceBoard.MVC.Controllers
 			if (!ModelState.IsValid)
 				return View(model);
 
-			var client = _httpClientFactory.CreateClient();
+			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
 
-			var response = await client.PostAsJsonAsync("https://localhost:7029/api/Auth/login", model);
+			var response = await client.PostAsJsonAsync("/api/Auth/login", model);
 
 			if (response.IsSuccessStatusCode)
 			{
@@ -100,10 +88,13 @@ namespace FreelanceBoard.MVC.Controllers
 
 				var claims = jwtToken.Claims.ToList();
 
+				// Add the JWT token itself as a claim
+				claims.Add(new Claim("access_token", result.Token));
+
+
+
 				// Extract important claims
-				var userId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-				var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-				var userName = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+				//var userId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
 				var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 				var principal = new ClaimsPrincipal(identity);
@@ -111,11 +102,6 @@ namespace FreelanceBoard.MVC.Controllers
 				// Sign in with cookie auth
 				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-				// Store token and userId in session 
-				HttpContext.Session.SetString("token", result.Token);
-				HttpContext.Session.SetString("userId", userId ?? "");
-				HttpContext.Session.SetString("role", role ?? "");
-				HttpContext.Session.SetString("userName", userName ?? "");
 
 				return RedirectToAction("index", "Home");
 			}
@@ -129,47 +115,34 @@ namespace FreelanceBoard.MVC.Controllers
 		public async Task<IActionResult> Logout()
 		{
 			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-			HttpContext.Session.Clear();
 			return RedirectToAction("Login", "User");
 		}
 
 
-		//public IActionResult Profile()
-  //      {
-  //          return View("Profile");
-  //      }
 
         [HttpGet]
 		public async Task<IActionResult> Profile()
 		{
-			var token = HttpContext.Session.GetString("token");
-            TempData["token"] = token; // temp storage for one request
+			//var token = HttpContext.Session.GetString("token");
+            var token= User.GetAccessToken();
+			TempData["token"] = token; 
 
-            var userId = HttpContext.Session.GetString("userId");
+            var userId = User.GetUserId();
 			if (string.IsNullOrEmpty(userId))
 			{
 				return RedirectToAction("Login");
 			}
 
-			var client = _httpClientFactory.CreateClient();
-			var response = await client.GetAsync($"https://localhost:7029/api/User/get-full-profile/{userId}");
+			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+			var response = await client.GetAsync($"/api/User/get-full-profile/{userId}");
 
 			if (!response.IsSuccessStatusCode)
 			{
 				return View("NotFound"); 
 			}
 
-						//var content = await response.Content.ReadAsStringAsync();
-			var responseData = await response.Content.ReadAsStringAsync();
-
-
-			var options = new JsonSerializerOptions
-			{
-				PropertyNameCaseInsensitive = true
-			};
-
-			var apiResult = JsonSerializer.Deserialize<ApiErrorResponse<UserProfileViewModel>>(responseData, options);
-
+			var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<UserProfileViewModel>>();
 
 			if (apiResult == null || !apiResult.IsSuccess)
 			{
@@ -193,37 +166,20 @@ namespace FreelanceBoard.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var token = HttpContext.Session.GetString("token");
-            if (string.IsNullOrEmpty(token))
+            var token = User.GetAccessToken();
+
+			if (string.IsNullOrEmpty(token))
             {
                 return RedirectToAction("Login", "User");
             }
 
-            try
-            {
-                var handler = new JwtSecurityTokenHandler();
-                var jwtToken = handler.ReadJwtToken(token);
-                var userId = jwtToken.Claims.FirstOrDefault(c =>
-                    c.Type == ClaimTypes.NameIdentifier || c.Type == "userId")?.Value;
+			var userId = User.GetUserId();
+			model.UserId = userId;
 
-                if (string.IsNullOrEmpty(userId))
-                {
-                    ModelState.AddModelError("", "User ID not found in token.");
-                    return View(model);
-                }
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                model.UserId = userId;
-            }
-            catch
-            {
-                ModelState.AddModelError("", "Invalid token.");
-                return View(model);
-            }
-
-            var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await client.PostAsJsonAsync("https://localhost:7029/api/User/change-password", model);
+            var response = await client.PostAsJsonAsync("/api/User/change-password", model);
 
             if (response.IsSuccessStatusCode)
             {
