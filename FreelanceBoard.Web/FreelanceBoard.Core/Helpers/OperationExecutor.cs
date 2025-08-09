@@ -26,10 +26,9 @@ namespace FreelanceBoard.Core.Helpers
             {
                 _logger.LogInformation("Starting {Operation} operation...", opType);
                 res = await operation();
-                _logger.LogInformation("{Operation} operation completed successfully.", opType);
 
                 if (res.IsSuccess)
-                    _logger.LogInformation("Operation {Operation} success: {Message}", opType, res.Message);
+                    _logger.LogInformation("{Operation} operation completed successfully: {Message}", opType, res.Message);
                 else
                     _logger.LogWarning("Operation {Operation} failed: {Message}", opType, res.Message);
 

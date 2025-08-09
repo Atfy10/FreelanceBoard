@@ -7,74 +7,62 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddJsonOptions(options =>
-{
-	options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-}); ;
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
+
 //builder.Services.AddHttpClient();
 builder.Services.AddHttpClient("FreelanceApiClient", client =>
 {
-	var apiUrl = builder.Configuration["ApiClients:FreelanceApi"];
-	client.BaseAddress = new Uri(apiUrl);
-	client.DefaultRequestHeaders.Accept.Add(
-		new MediaTypeWithQualityHeaderValue("application/json")); //all requests will accept JSON responsess
+    var apiUrl = builder.Configuration["ApiClients:FreelanceApi"];
+    client.BaseAddress = new Uri(apiUrl);
+    client.DefaultRequestHeaders.Accept.Add(
+        new MediaTypeWithQualityHeaderValue("application/json")); //all requests will accept JSON responsess
 });
 
-//builder.Services.AddSession();  //removed because no need for session in this app we use JWT tokens for auth
-
-//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-//    .AddCookie(options =>
-//    {
-//        options.LoginPath = "/User/Login";
-//        options.LogoutPath = "/User/Logout";
-//        options.AccessDeniedPath = "/User/AccessDenied";
-//    });
-
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-	.AddCookie(options =>
-	{
-		options.LoginPath = "/User/Login";
-		options.LogoutPath = "/User/Logout";
-		options.AccessDeniedPath = "/User/AccessDenied";
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/User/Login";
+        options.LogoutPath = "/User/Logout";
+        options.AccessDeniedPath = "/User/AccessDenied";
 
-		options.Cookie.HttpOnly = true;
-		options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-		options.Cookie.SameSite = SameSiteMode.Strict;
-		options.Cookie.Name = "FreelanceBoard.Auth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.Name = "FreelanceBoard.Auth";
 
-		options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-		options.SlidingExpiration = true;
-	});
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+        options.SlidingExpiration = true;
+    });
 
 builder.Services.AddScoped<OperationExecutor>();
-builder.Services.AddScoped<IUserService,UserService>();
-
-
-
-//builder.Services.ConfigureApplicationCookie(options =>
-//{
-//	options.LoginPath = "/User/Login"; 
-//});
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
-//app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseStatusCodePages(async context =>
 {
-	if (context.HttpContext.Response.StatusCode == 404)
-	{
-		context.HttpContext.Response.Redirect("/Home/NotFound");
-	}
+    if (context.HttpContext.Response.StatusCode == 404)
+    {
+        context.HttpContext.Response.Redirect("/Home/NotFound");
+    }
 });
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(

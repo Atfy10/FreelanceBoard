@@ -209,6 +209,7 @@
                     </div>
 
                     <form asp-action="Login" asp-controller="User" method="post" class="custom-form">
+                        @Html.AntiForgeryToken()
                         <div class="form-group">
                             <label for="email">Email</label>
                             <div class="input-group">
@@ -222,7 +223,7 @@
                             <label for="password">Password</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi-lock custom-icon"></i></span>
-                                <input asp-for ="Password" class="form-control" placeholder="Enter your password" />                             
+                                <input asp-for="Password" class="form-control" placeholder="Enter your password" />
                                 <button type="button" class="password-toggle" onclick="togglePassword('Password')">
                                     <i class="bi-eye" id="Password-eye"></i>
                                 </button>

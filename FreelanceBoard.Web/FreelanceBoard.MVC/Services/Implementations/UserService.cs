@@ -9,117 +9,107 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace FreelanceBoard.MVC.Services.Implementations
 {
-	public class UserService : IUserService
-	{
-		private readonly IHttpClientFactory _httpClientFactory;
-		private readonly ILogger<UserService> _logger;
+    public class UserService : IUserService
+    {
+        private readonly IHttpClientFactory _httpClientFactory;
 
-		public UserService(IHttpClientFactory httpClientFactory, ILogger<UserService> logger)
-		{
-			_httpClientFactory = httpClientFactory;
-			_logger = logger;
-		}
+        public UserService(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+        public async Task LoginAsync(LoginViewModel model, HttpContext httpContext)
+        {
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
 
-		public async Task LoginAsync(LoginViewModel model, HttpContext httpContext)
-		{
-			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            var response = await client.PostAsJsonAsync("/api/Auth/login", model);
 
-			var response = await client.PostAsJsonAsync("/api/Auth/login", model);
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException("Invalid email or password");
 
-			if (!response.IsSuccessStatusCode)
-				throw new ApplicationException("Invalid email or password");
+            var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
 
-			var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(result?.Token);
 
-			var handler = new JwtSecurityTokenHandler();
-			var jwtToken = handler.ReadJwtToken(result.Token);
+            var claims = jwtToken.Claims.ToList();
 
-			var claims = jwtToken.Claims.ToList();
+            claims.Add(new Claim("access_token", result.Token));
 
-			// Add the JWT token itself as a claim
-			claims.Add(new Claim("access_token", result.Token));
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
 
-			var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-			var principal = new ClaimsPrincipal(identity);
+            await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+        }
+        public async Task<bool> RegisterAsync(RegisterViewModel model)
+        {
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
 
-			await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-		}
+            var response = await client.PostAsJsonAsync("/api/Auth/signup", model);
 
+            if (response.IsSuccessStatusCode)
+                return true;
 
-		public async Task<bool> RegisterAsync(RegisterViewModel model)
-		{
-			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool>>();
+            var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
 
-			var response = await client.PostAsJsonAsync("/api/Auth/signup", model);
+            throw new ApplicationException(errorMessage);
+        }
+        public async Task LogoutAsync(HttpContext httpContext)
+        {
+            await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+        public async Task<UserProfileViewModel> GetProfileAsync(HttpContext httpContext)
+        {
+            var token = httpContext.User.GetAccessToken();
 
-			if (response.IsSuccessStatusCode)
-				return true;
+            httpContext.Items["token"] = token; //
 
-			var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool>>();
-			var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
+            var userId = httpContext.User.GetUserId();
 
-			throw new ApplicationException(errorMessage); 
-		}
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new ApplicationException("User not logged in");
 
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
 
-		public async Task LogoutAsync(HttpContext httpContext)
-		{
-			await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-		}
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-		public async Task<UserProfileViewModel> GetProfileAsync(HttpContext httpContext)
-		{
-			var token = httpContext.User.GetAccessToken();
-			httpContext.Items["token"] = token; 
+            var response = await client.GetAsync($"/api/User/get-full-profile/{userId}");
 
-			var userId = httpContext.User.GetUserId();
-			if (string.IsNullOrEmpty(userId))
-			{
-				throw new ApplicationException("User not logged in");
-			}
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException("Profile not found");
 
-			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
-			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<UserProfileViewModel>>();
 
-			var response = await client.GetAsync($"/api/User/get-full-profile/{userId}");
+            if (apiResult is null || !apiResult.IsSuccess)
+                throw new ApplicationException(apiResult?.Message ?? "Profile not found");
 
-			if (!response.IsSuccessStatusCode)
-			{
-				throw new ApplicationException("Profile not found");
-			}
+            return apiResult.Data;
+        }
+        public async Task ChangePasswordAsync(ChangePasswordViewModel model, HttpContext httpContext)
+        {
+            var token = httpContext.User.GetAccessToken();
 
-			var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<UserProfileViewModel>>();
+            if (string.IsNullOrEmpty(token))
+                throw new ApplicationException("User not logged in.");
 
-			if (apiResult == null || !apiResult.IsSuccess)
-			{
-				throw new ApplicationException("Profile not found");
-			}
+            //
+            var userId = httpContext.User.GetUserId() ??
+                throw new Exception("User ID not found in claims.");
 
-			return apiResult.Data;
-		}
-		public async Task ChangePasswordAsync(ChangePasswordViewModel model, HttpContext httpContext)
-		{
-			var token = httpContext.User.GetAccessToken();
-			if (string.IsNullOrEmpty(token))
-				throw new ApplicationException("User not logged in.");
+            model.UserId = userId;
 
-			var userId = httpContext.User.GetUserId();
-			model.UserId = userId;
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
 
-			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
-			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-			var response = await client.PostAsJsonAsync("/api/User/change-password", model);
+            var response = await client.PostAsJsonAsync("/api/User/change-password", model);
 
-			if (!response.IsSuccessStatusCode)
-			{
-				var errorContent = await response.Content.ReadAsStringAsync();
-				throw new ApplicationException($"Failed to change password: password not correct");
-			}
-		}
-	}
-
-
-
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new ApplicationException($"Failed to change password: password not correct");
+            }
+        }
+    }
 }
 
