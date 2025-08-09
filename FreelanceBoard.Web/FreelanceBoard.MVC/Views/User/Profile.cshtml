@@ -447,9 +447,29 @@
                                 <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
                             </div>
                         }
-                        <div class="add-skill-btn" onclick="addSkill()" style="display: none;">
+                        <div class="add-skill-btn" onclick="openAddSkillModal()" style="display: none;">
                             <i class="bi-plus-circle me-2"></i>
                             Add Skill
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="addSkillModal" tabindex="-1" aria-labelledby="addSkillModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addSkillModalLabel">Add New Skill</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <label for="skillName">Skill Name *</label>
+                                <input type="text" id="skillName" class="form-control" placeholder="Enter skill name" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button class="btn btn-primary" onclick="saveSkill()">Save Skill</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -612,20 +632,36 @@
         }
     }
 
-    function addSkill() {
-        const skillName = prompt('Enter skill name:');
-        if (skillName && skillName.trim()) {
-            const skillsContainer = document.getElementById('skillsContainer');
-            const addBtn = skillsContainer.querySelector('.add-skill-btn');
-            const skillTag = document.createElement('div');
-            skillTag.className = 'skill-tag';
-            skillTag.innerHTML = `
-                ${skillName.trim()}
-                <button class="skill-remove" onclick="removeSkill(this)">×</button>
-            `;
-            skillsContainer.insertBefore(skillTag, addBtn);
+        function openAddSkillModal() {
+        const modal = new bootstrap.Modal(document.getElementById("addSkillModal"));
+        modal.show();
+    }
+
+    async function saveSkill() {
+        const skillName = document.getElementById("skillName").value.trim();
+
+        if (!skillName) {
+            alert("⚠️ Please enter a skill name.");
+            return;
+        }
+
+        const response = await fetch("/User/AddSkill", { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: skillName })
+        });
+
+        if (response.ok) {
+            alert("✅ Skill added successfully!");
+            bootstrap.Modal.getInstance(document.getElementById('addSkillModal')).hide();
+            location.reload(); 
+        } else {
+            alert("❌ Failed to add skill");
         }
     }
+
+
+    
 
     function removeSkill(button) {
         button.parentElement.remove();

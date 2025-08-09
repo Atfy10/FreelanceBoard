@@ -18,27 +18,27 @@ namespace FreelanceBoard.MVC.Controllers
 	[Authorize]
 
 	public class UserController : Controller
-    {
+	{
 
 		private readonly IUserService _userService;
 		private readonly OperationExecutor _executor;
 		//private readonly IHttpClientFactory _httpClientFactory;
-		public UserController(IUserService userService, OperationExecutor executor , IHttpClientFactory httpClientFactory)
-        {
+		public UserController(IUserService userService, OperationExecutor executor, IHttpClientFactory httpClientFactory)
+		{
 			_userService = userService;
 			_executor = executor;
 			//_httpClientFactory = httpClientFactory;
 		}
 
-        [HttpGet]
+		[HttpGet]
 		[AllowAnonymous]
 
 		public IActionResult Register()
-        {
-            return View("Register");
-        }
+		{
+			return View("Register");
+		}
 
-        [HttpPost]
+		[HttpPost]
 		[AllowAnonymous]
 		public async Task<IActionResult> Register(RegisterViewModel model)
 		{
@@ -53,19 +53,19 @@ namespace FreelanceBoard.MVC.Controllers
 			if (success)
 				return RedirectToAction("Login", "User");
 
-			return View(model);  
+			return View(model);
 		}
 
 		[HttpGet]
 		[AllowAnonymous]
 
 		public IActionResult Login()
-        {
-            return View(new LoginViewModel());
-        }
+		{
+			return View(new LoginViewModel());
+		}
 
-        [HttpPost]
-        [AllowAnonymous]
+		[HttpPost]
+		[AllowAnonymous]
 		public async Task<IActionResult> Login(LoginViewModel model)
 		{
 			if (!ModelState.IsValid)
@@ -120,12 +120,12 @@ namespace FreelanceBoard.MVC.Controllers
 
 
 		[HttpGet]
-        public IActionResult ChangePassword()
-        {
-            return View("ChangePassword");
-        }
+		public IActionResult ChangePassword()
+		{
+			return View("ChangePassword");
+		}
 
-        [HttpPost]
+		[HttpPost]
 		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
 		{
 			ModelState.Remove(nameof(model.UserId));
@@ -160,6 +160,22 @@ namespace FreelanceBoard.MVC.Controllers
 				error => ModelState.AddModelError(string.Empty, error)
 				);
 			return RedirectToAction("Project", "User");
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddSkill([FromBody] AddSkillViewModel request)
+		{
+			if (!ModelState.IsValid) return View(request);
+			var success = await _executor.Execute(
+				async () =>
+				{
+					await _userService.AddSkillAsync(request, HttpContext);
+				},
+				error => ModelState.AddModelError(string.Empty, error)
+			);
+			if (!success)
+				return View(request);
+			return RedirectToAction("Profile", "User");
 		}
 	}
 }

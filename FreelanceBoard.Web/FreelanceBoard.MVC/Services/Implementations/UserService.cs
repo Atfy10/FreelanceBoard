@@ -58,7 +58,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
 			var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool>>();
 			var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
 
-			throw new ApplicationException(errorMessage); 
+			throw new ApplicationException(errorMessage);
 		}
 
 
@@ -70,7 +70,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
 		public async Task<UserProfileViewModel> GetProfileAsync(HttpContext httpContext)
 		{
 			var token = httpContext.User.GetAccessToken();
-			httpContext.Items["token"] = token; 
+			httpContext.Items["token"] = token;
 
 			var userId = httpContext.User.GetUserId();
 			if (string.IsNullOrEmpty(userId))
@@ -133,9 +133,21 @@ namespace FreelanceBoard.MVC.Services.Implementations
 
 
 		}
+
+		public async Task AddSkillAsync(AddSkillViewModel model, HttpContext httpContext)
+		{
+			var token = httpContext.User.GetAccessToken();
+			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+			var response = await client.PostAsJsonAsync("/api/User/add-skill", model);
+			if (!response.IsSuccessStatusCode)
+			{
+				var errorContent = await response.Content.ReadAsStringAsync();
+				throw new ApplicationException($"Failed to add skill: {errorContent}");
+			}
+		}
+
 	}
-
-
 
 }
 
