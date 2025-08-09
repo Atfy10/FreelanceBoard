@@ -148,5 +148,18 @@ namespace FreelanceBoard.MVC.Controllers
 			return View(model);
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> AddProject([FromBody] AddProjectViewModel model)
+		{
+			if (!ModelState.IsValid) return View(model);
+			var success = await _executor.Execute(
+				async () =>
+				{
+					await _userService.AddProject(model, HttpContext);
+				},
+				error => ModelState.AddModelError(string.Empty, error)
+				);
+			return RedirectToAction("Project", "User");
+		}
 	}
 }

@@ -10,6 +10,8 @@ namespace FreelanceBoard.MVC.Services.Interfaces
 		Task<UserProfileViewModel> GetProfileAsync(HttpContext httpContext);
 		Task ChangePasswordAsync(ChangePasswordViewModel model, HttpContext httpContext);
 
+		Task AddProject(AddProjectViewModel model , HttpContext httpContext);
+
 
 	}
 }

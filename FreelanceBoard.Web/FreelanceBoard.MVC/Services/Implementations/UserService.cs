@@ -117,6 +117,22 @@ namespace FreelanceBoard.MVC.Services.Implementations
 				throw new ApplicationException($"Failed to change password: password not correct");
 			}
 		}
+
+		public async Task AddProject(AddProjectViewModel model, HttpContext httpContext)
+		{
+			var token = httpContext.User.GetAccessToken();
+			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			var response = await client.PostAsJsonAsync("/api/User/add-project", model);
+			if (!response.IsSuccessStatusCode)
+			{
+				var error = await response.Content.ReadAsStringAsync();
+				throw new ApplicationException("invalid inputs");
+			}
+
+
+		}
 	}
 
 
