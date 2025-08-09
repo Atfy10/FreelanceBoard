@@ -81,7 +81,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
 			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-			var response = await client.GetAsync($"/api/User/get-full-profile/{userId}");
+			var response = await client.GetAsync($"/api/User/full-profile/{userId}");
 
 			if (!response.IsSuccessStatusCode)
 			{

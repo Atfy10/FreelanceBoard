@@ -7,136 +7,136 @@
     </script>
 }
 
-        <style>
-            .profile-section {
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-                min-height: 100vh;
-                padding: 80px 0;
-            }
+<style>
+    .profile-section {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        min-height: 100vh;
+        padding: 80px 0;
+    }
 
-            .profile-container {
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                border-radius: 20px;
-                padding: 40px;
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-                margin-bottom: 30px;
-            }
+    .profile-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
 
-            .profile-header {
-                text-align: center;
-                margin-bottom: 40px;
-                position: relative;
-            }
+    .profile-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
 
-            .profile-picture-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 20px;
-}
+    .profile-picture-container {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
 
-.profile-picture {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid white;
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-    transition: all 0.3s ease;
-}
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        transition: all 0.3s ease;
+    }
 
-.profile-picture:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 40px rgba(99, 102, 241, 0.4);
-}
+        .profile-picture:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.4);
+        }
 
-.profile-picture-upload {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 45px;
-    height: 45px;
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border: 3px solid white;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-}
+    .profile-picture-upload {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 3px solid white;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
 
-.profile-picture-upload:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
-    background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
-}
+        .profile-picture-upload:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+        }
 
-.profile-picture-upload i {
-    color: white;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-}
+        .profile-picture-upload i {
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
 
-.profile-picture-upload:hover i {
-    transform: scale(1.1);
-}
+        .profile-picture-upload:hover i {
+            transform: scale(1.1);
+        }
 
-            .profile-username {
-                color: #6366f1;
-                font-weight: 700;
-                font-size: 2rem;
-                margin-bottom: 10px;
-            }
+    .profile-username {
+        color: #6366f1;
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
 
-            .profile-role {
-                color: #6c757d;
-                font-size: 1.1rem;
-                margin-bottom: 0;
-            }
+    .profile-role {
+        color: #6c757d;
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
 
-            .section-title {
-                color: #6366f1;
-                font-weight: 700;
-                font-size: 1.5rem;
-                margin-bottom: 20px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
+    .section-title {
+        color: #6366f1;
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-            .section-title i {
-                font-size: 1.3rem;
-            }
+        .section-title i {
+            font-size: 1.3rem;
+        }
 
-            .form-group {
-                margin-bottom: 25px;
-            }
+    .form-group {
+        margin-bottom: 25px;
+    }
 
-            .form-group label {
-                color: #6366f1;
-                font-weight: 600;
-                margin-bottom: 8px;
-                display: block;
-            }
+        .form-group label {
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
 
-            .input-group {
-                position: relative;
-            }
+    .input-group {
+        position: relative;
+    }
 
-            .input-group .form-control,
-            .input-group .form-control:focus {
-                padding-left: 50px;
-                height: 55px;
-                border: none;
-                background: rgba(255, 255, 255, 0.8);
-                border-radius: 10px;
-                font-size: 16px;
-                transition: all 0.3s ease;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            }
+        .input-group .form-control,
+        .input-group .form-control:focus {
+            padding-left: 50px;
+            height: 55px;
+            border: none;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
             .input-group .form-control:focus {
                 background: rgba(255, 255, 255, 1);
@@ -144,228 +144,279 @@
                 outline: none;
             }
 
-            .input-group-text {
-                position: absolute;
-                left: 15px;
-                top: 50%;
-                transform: translateY(-50%);
-                background: none;
-                border: none;
-                color: #6c757d;
-                z-index: 10;
-                font-size: 1.2rem;
-            }
+    .input-group-text {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #6c757d;
+        z-index: 10;
+        font-size: 1.2rem;
+    }
 
-            .bio-textarea {
-                min-height: 120px;
-                resize: vertical;
-                padding: 15px 15px 15px 50px;
-            }
+    .bio-input-group {
+        align-items: flex-start; /* Align items to the top */
+    }
 
-            .skills-container {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                margin-top: 10px;
-            }
+    .bio-icon {
+        height: auto; /* Let the icon take natural height */
+        padding-top: 15px; /* Align with textarea text */
+    }
 
-            .skill-tag {
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-                color: white;
-                padding: 8px 15px;
-                border-radius: 20px;
-                font-size: 0.9rem;
-                font-weight: 500;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                transition: all 0.3s ease;
-            }
+    .bio-textarea {
+        min-height: 120px;
+        resize: vertical;
+        padding: 15px;
+        line-height: 1.5;
+        border: none;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
 
-            .skill-tag:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
-            }
+        .bio-textarea:focus {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+            outline: none;
+        }
 
-            .skill-remove {
-                background: rgba(255, 255, 255, 0.2);
-                border: none;
-                color: white;
-                border-radius: 50%;
-                width: 20px;
-                height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                font-size: 0.8rem;
-            }
+    /* For readonly state */
+    .readonly-field {
+        background: rgba(255, 255, 255, 0.5) !important;
+        cursor: not-allowed;
+    }
 
-            .add-skill-btn {
-                background: rgba(139, 92, 246, 0.1);
-                border: 2px dashed #8b5cf6;
-                color: #6366f1;
-                padding: 8px 15px;
-                border-radius: 20px;
-                font-size: 0.9rem;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
 
-            .add-skill-btn:hover {
-                background: rgba(139, 92, 246, 0.2);
-                border-color: #6366f1;
-            }
+    .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
 
-            .projects-container {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 20px;
-                margin-top: 20px;
-            }
+    .skill-tag {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
 
-            .project-card {
-                background: rgba(255, 255, 255, 0.8);
-                border-radius: 15px;
-                padding: 20px;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease;
-                border: none;
-            }
+        .skill-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        }
 
-            .project-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
-            }
+    .skill-remove {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
 
-            .project-title {
-                color: #6366f1;
-                font-weight: 600;
-                font-size: 1.1rem;
-                margin-bottom: 10px;
-            }
+    .add-skill-btn {
+        background: rgba(139, 92, 246, 0.1);
+        border: 2px dashed #8b5cf6;
+        color: #6366f1;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
 
-            .project-description {
-                color: #6c757d;
-                font-size: 0.9rem;
-                margin-bottom: 15px;
-            }
+        .add-skill-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #6366f1;
+        }
 
-            .project-attachment {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                padding: 10px;
-                background: rgba(139, 92, 246, 0.1);
-                border-radius: 8px;
-                margin-bottom: 10px;
-                transition: all 0.3s ease;
-            }
+    .projects-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
 
-            .project-attachment:hover {
-                background: rgba(139, 92, 246, 0.2);
-            }
+    .project-card {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border: none;
+    }
 
-            .project-attachment i {
-                color: #6366f1;
-                font-size: 1.2rem;
-            }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+        }
 
-            .project-attachment span {
-                color: #6366f1;
-                font-weight: 500;
-                flex: 1;
-            }
+    .project-title {
+        color: #6366f1;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
 
-            .add-project-btn {
-                background: rgba(139, 92, 246, 0.1);
-                border: 2px dashed #8b5cf6;
-                color: #6366f1;
-                padding: 40px 20px;
-                border-radius: 15px;
-                text-align: center;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-            }
+    .project-description {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
 
-            .add-project-btn:hover {
-                background: rgba(139, 92, 246, 0.2);
-                border-color: #6366f1;
-            }
+    .project-attachment {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        background: rgba(139, 92, 246, 0.1);
+        border-radius: 8px;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        max-width: 100%;
+        cursor: pointer;
+    }
 
-            .add-project-btn i {
-                font-size: 2rem;
-                margin-bottom: 10px;
-            }
+        .project-attachment:hover {
+            background: rgba(139, 92, 246, 0.2);
+        }
 
-            .save-btn {
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-                border: none;
-                color: white;
-                padding: 15px 40px;
-                border-radius: 10px;
-                font-weight: 600;
-                font-size: 16px;
-                transition: all 0.3s ease;
-                margin-top: 30px;
-            }
+        .project-attachment i {
+            color: #6366f1;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
 
-            .save-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-                color: white;
-            }
+        .project-attachment span {
+            color: #6366f1;
+            font-weight: 500;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.85rem;
+        }
 
-            .edit-mode-toggle {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-                border: none;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 25px;
-                font-weight: 500;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
+    .add-project-btn {
+        background: rgba(139, 92, 246, 0.1);
+        border: 2px dashed #8b5cf6;
+        color: #6366f1;
+        padding: 40px 20px;
+        border-radius: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
 
-            .edit-mode-toggle:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
-            }
+        .add-project-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #6366f1;
+        }
 
-            .readonly-field {
-                background: rgba(255, 255, 255, 0.5) !important;
-                cursor: not-allowed;
-            }
+        .add-project-btn i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
 
-            .change-password-link {
-    position: absolute;
-    top: 20px;
-    right: 180px;
-    background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 14px;
-}
+    .save-btn {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        border: none;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        margin-top: 30px;
+    }
 
-.change-password-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
-    color: white;
-    text-decoration: none;
-}
-        </style>
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            color: white;
+        }
+
+    .edit-mode-toggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .edit-mode-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        }
+
+    .readonly-field {
+        background: rgba(255, 255, 255, 0.5) !important;
+        cursor: not-allowed;
+    }
+
+    .change-password-link {
+        position: absolute;
+        top: 20px;
+        right: 180px;
+        background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 14px;
+    }
+
+        .change-password-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+    .project-attachment[title]:hover:after {
+        content: attr(title);
+        position: absolute;
+        background: #333;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        z-index: 100;
+        pointer-events: none;
+    }
+</style>
 
 <section class="profile-section">
     <div class="container">
@@ -385,8 +436,8 @@
                     <div class="profile-header">
                         <div class="profile-picture-container">
                             <img src="@(string.IsNullOrEmpty(Model.Profile?.Image)
-                                                                 ? Url.Content("~/images/avatar.png")
-                                                                 : Url.Content("https://localhost:7029" + Model.Profile.Image))"
+                                                                      ? Url.Content("~/images/avatar.png")
+                                                                      : Url.Content("https://localhost:7029" + Model.Profile.Image))"
                                  alt="Profile Picture"
                                  class="profile-picture"
                                  id="profilePicture">
@@ -426,9 +477,10 @@
                     <!-- Bio Section -->
                     <div class="form-group">
                         <label for="bio">Bio</label>
-                        <div class="input-group">
-                            <span class="input-group-text" style="top: 20px;"><i class="bi-person-lines-fill"></i></span>
-                            <textarea id="bio" class="form-control bio-textarea readonly-field" readonly placeholder="Tell us about yourself...">@Model.Profile?.Bio</textarea>
+                        <div class="input-group bio-input-group">
+                            <span class="input-group-text bio-icon"><i class="bi-person-lines-fill"></i></span>
+                            <textarea id="bio" class="form-control bio-textarea readonly-field" readonly
+                                      placeholder="Tell us about yourself...">@Model.Profile?.Bio</textarea>
                         </div>
                     </div>
                 </div>
@@ -497,12 +549,9 @@
                                         trimmed.EndsWith(".pdf") ? "bi-file-earmark-pdf" :
                                         "bi-file-earmark-code";
 
-                                        <div class="project-attachment">
+                                        <div class="project-attachment" title="@trimmed" onclick="if('@isLink' === 'True') window.open('@trimmed', '_blank')">
                                             <i class="@icon"></i>
                                             <span>@trimmed</span>
-                                            <button class="btn btn-sm" onclick="@(isLink ? $"openLink('{trimmed}')" : $"downloadAttachment('{trimmed}')")">
-                                                <i class="@icon"></i>
-                                            </button>
                                         </div>
                                     }
                                 }
@@ -632,7 +681,7 @@
         }
     }
 
-        function openAddSkillModal() {
+    function openAddSkillModal() {
         const modal = new bootstrap.Modal(document.getElementById("addSkillModal"));
         modal.show();
     }
@@ -645,7 +694,7 @@
             return;
         }
 
-        const response = await fetch("/User/AddSkill", { 
+        const response = await fetch("/User/AddSkill", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name: skillName })
@@ -654,25 +703,14 @@
         if (response.ok) {
             alert("✅ Skill added successfully!");
             bootstrap.Modal.getInstance(document.getElementById('addSkillModal')).hide();
-            location.reload(); 
+            location.reload();
         } else {
             alert("❌ Failed to add skill");
         }
     }
 
-
-    
-
     function removeSkill(button) {
         button.parentElement.remove();
-    }
-
-    function downloadAttachment(filename) {
-        alert(`Downloading ${filename}...`);
-    }
-
-    function openLink(url) {
-        window.open(url, '_blank');
     }
 
     function saveProfile() {
@@ -694,7 +732,7 @@
         modal.show();
     }
 
-        async function saveProject() {
+    async function saveProject() {
         const projectData = {
             title: document.getElementById("projectTitle").value,
             description: document.getElementById("projectDescription").value,
@@ -715,5 +753,4 @@
             alert("❌ Failed to add project");
         }
     }
-
-</script>
+</script>`

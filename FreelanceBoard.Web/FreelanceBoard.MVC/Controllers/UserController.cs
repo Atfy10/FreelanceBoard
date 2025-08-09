@@ -75,7 +75,7 @@ namespace FreelanceBoard.MVC.Controllers
 				() => _userService.LoginAsync(model, HttpContext),
 				error => ModelState.AddModelError(string.Empty, error)
 			);
-
+			
 			if (success)
 				return RedirectToAction("Index", "Home");
 
