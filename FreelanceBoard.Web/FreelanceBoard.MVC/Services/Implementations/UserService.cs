@@ -139,7 +139,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
 			var token = httpContext.User.GetAccessToken();
 			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-			var response = await client.PostAsJsonAsync("/api/User/add-skill", model);
+			var response = await client.PostAsJsonAsync("/api/Skill", model);
 			if (!response.IsSuccessStatusCode)
 			{
 				var errorContent = await response.Content.ReadAsStringAsync();
