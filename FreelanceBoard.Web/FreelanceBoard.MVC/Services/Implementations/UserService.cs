@@ -73,7 +73,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync($"/api/User/get-full-profile/{userId}");
+			var response = await client.GetAsync($"/api/User/full-profile/{userId}");
 
             if (!response.IsSuccessStatusCode)
                 throw new ApplicationException("Profile not found");
@@ -104,12 +104,43 @@ namespace FreelanceBoard.MVC.Services.Implementations
 
             var response = await client.PostAsJsonAsync("/api/User/change-password", model);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                throw new ApplicationException($"Failed to change password: password not correct");
-            }
-        }
-    }
+			if (!response.IsSuccessStatusCode)
+			{
+				var errorContent = await response.Content.ReadAsStringAsync();
+				throw new ApplicationException($"Failed to change password: password not correct");
+			}
+		}
+
+		public async Task AddProject(AddProjectViewModel model, HttpContext httpContext)
+		{
+			var token = httpContext.User.GetAccessToken();
+			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+			var response = await client.PostAsJsonAsync("/api/User/add-project", model);
+			if (!response.IsSuccessStatusCode)
+			{
+				var error = await response.Content.ReadAsStringAsync();
+				throw new ApplicationException("invalid inputs");
+			}
+
+
+		}
+
+		public async Task AddSkillAsync(AddSkillViewModel model, HttpContext httpContext)
+		{
+			var token = httpContext.User.GetAccessToken();
+			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+			var response = await client.PostAsJsonAsync("/api/Skill", model);
+			if (!response.IsSuccessStatusCode)
+			{
+				var errorContent = await response.Content.ReadAsStringAsync();
+				throw new ApplicationException($"Failed to add skill: {errorContent}");
+			}
+		}
+
+	}
+
 }
 
