@@ -24,7 +24,7 @@ namespace FreelanceBoard.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
 
             var builder = WebApplication.CreateBuilder(args);
@@ -46,10 +46,10 @@ namespace FreelanceBoard.Web
             builder.Services.AddScoped<OperationExecutor>();
 
             builder.Services.AddScoped<IJwtToken, JwtToken>();
-			builder.Services.AddHttpContextAccessor();
-			builder.Services.AddScoped<IUserAccessor, UserAccessor>();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 
-			builder.Services.AddDbContext<AppDbContext>(options =>
+            builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("FreelanceBoard.Infrastructure"))
@@ -159,7 +159,7 @@ namespace FreelanceBoard.Web
 
             builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 
-            builder.Services.AddScoped<IJobQuery,JobQuery>();
+            builder.Services.AddScoped<IJobQuery, JobQuery>();
 
             builder.Services.AddValidatorsFromAssemblyContaining<CreateJobCommandValidator>();
 
@@ -185,14 +185,16 @@ namespace FreelanceBoard.Web
 
             app.MapControllers();
 
-            using (var scope = app.Services.CreateScope())
+            await using (var scope = app.Services.CreateAsyncScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
+                await dbContext.Database.MigrateAsync();
+
                 try
                 {
-                    SeedDB.Seed(dbContext, userManager);
+                    await SeedDB.SeedAsync(dbContext, userManager);
                 }
                 catch (Exception ex)
                 {
