@@ -34,7 +34,7 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 return null;
             return await _dbContext.Users
                 .Include(u => u.Profile)
-                .Include(u => u.Skills)
+                .Include(u => u.UserSkills)
                 .Include(u => u.Projects)
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }

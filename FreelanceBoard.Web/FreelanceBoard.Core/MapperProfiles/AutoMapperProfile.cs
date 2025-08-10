@@ -30,6 +30,7 @@ namespace FreelanceBoard.Core
 			CreateMap<Domain.Entities.Profile, ProfileDto>();
 			CreateMap<Domain.Entities.Skill, SkillDto>();
 			CreateMap<AddSkillCommand, Domain.Entities.Skill>();
+			CreateMap<AddUserSkillCommand, Domain.Entities.ApplicationUserSkill>();
 
 
 		}

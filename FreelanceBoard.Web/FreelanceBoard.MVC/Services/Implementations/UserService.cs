@@ -49,7 +49,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
             if (response.IsSuccessStatusCode)
                 return true;
 
-            var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool>>();
+            var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool?>>();
             var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
 
             throw new ApplicationException(errorMessage);
@@ -78,7 +78,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
             if (!response.IsSuccessStatusCode)
                 throw new ApplicationException("Profile not found");
 
-            var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<UserProfileViewModel>>();
+            var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<UserProfileViewModel?>>();
 
             if (apiResult is null || !apiResult.IsSuccess)
                 throw new ApplicationException(apiResult?.Message ?? "Profile not found");

@@ -10,5 +10,7 @@ namespace FreelanceBoard.Core.Interfaces
     public interface ISkillRepository : IBaseRepository<Skill>
     {
         Task<List<Skill>> GetByNamesAsync(IEnumerable<string> names);
-    }
+		Task<int?> GetIdByNameAsync(string name);
+
+	}
 }

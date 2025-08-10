@@ -127,7 +127,17 @@ namespace FreelanceBoard.Web.Controllers
 			return this.HandleResult(result);
 		}
 
-		
+		[HttpPost("add-skill")]
+
+		public async Task<IActionResult> AddSkill([FromBody] AddUserSkillCommand command)
+		{
+			if (command == null)
+				return BadRequest(new { Message = "Command cannot be null." });
+			var result = await _mediator.Send(command);
+			return this.HandleResult(result);
+		}
+
+
 
 
 	}
