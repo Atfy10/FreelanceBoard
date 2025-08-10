@@ -40,6 +40,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddScoped<OperationExecutor>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IJobService, JobService>();
 
 var app = builder.Build();
 

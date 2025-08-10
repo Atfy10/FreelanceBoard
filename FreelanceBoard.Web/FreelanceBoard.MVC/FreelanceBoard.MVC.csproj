@@ -10,4 +10,9 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.13.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FreelanceBoard.Core\FreelanceBoard.Core.csproj" />
+    <ProjectReference Include="..\FreelanceBoard.Infrastructure\FreelanceBoard.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

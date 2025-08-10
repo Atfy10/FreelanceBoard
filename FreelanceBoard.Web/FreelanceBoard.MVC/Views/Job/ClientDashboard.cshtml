@@ -1,4 +1,6 @@
-﻿<style>
+﻿@model List<ClientDashboardViewModel>
+
+<style>
             .dashboard-section {
                 background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
                 min-height: 100vh;
@@ -292,232 +294,132 @@
             }
         </style>
 
-<section class="dashboard-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-12 col-12">
-                <!-- Dashboard Header  -->
-                <div class="dashboard-container">
-                    <div class="dashboard-header">
-                        <h1 class="dashboard-title">My Posted Jobs</h1>
-                        <p class="dashboard-subtitle">Manage your job postings and view applications</p>
-                    </div>
-
-                    <!-- Stats Row  -->
-                    <div class="row stats-row">
-                        <div class="col-lg-3 col-md-6 col-12 mb-3">
-                            <div class="stat-card">
-                                <div class="stat-number" id="totalJobs">5</div>
-                                <div class="stat-label">Total Jobs</div>
-                            </div>
+    <section class="dashboard-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12 col-12">
+                    <!-- Dashboard Header  -->
+                    <div class="dashboard-container">
+                        <div class="dashboard-header">
+                            <h1 class="dashboard-title">My Posted Jobs</h1>
+                            <p class="dashboard-subtitle">Manage your job postings and view applications</p>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-12 mb-3">
-                            <div class="stat-card">
-                                <div class="stat-number" id="activeJobs">3</div>
-                                <div class="stat-label">Active Jobs</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-12 mb-3">
-                            <div class="stat-card">
-                                <div class="stat-number" id="totalProposals">24</div>
-                                <div class="stat-label">Total Proposals</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-12 mb-3">
-                            <div class="stat-card">
-                                <div class="stat-number" id="hiredFreelancers">2</div>
-                                <div class="stat-label">Hired</div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Create New Job Button  -->
-                    <div class="text-center">
-                        <a href="job-listings.html" class="create-job-btn">
-                            <i class="bi-plus-circle"></i>
-                            Post New Job
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Jobs List  -->
-                <div class="dashboard-container">
-                    <!-- Filter Tabs  -->
-                    <div class="filter-tabs">
-                        <button class="filter-tab active" onclick="filterJobs('all')">All Jobs</button>
-                        <button class="filter-tab" onclick="filterJobs('active')">Active</button>
-                        <button class="filter-tab" onclick="filterJobs('paused')">Paused</button>
-                        <button class="filter-tab" onclick="filterJobs('closed')">Closed</button>
-                    </div>
-
-                    <!-- Jobs Container  -->
-                    <div id="jobsContainer">
-                        <!-- Job Card 1  -->
-                        <div class="job-card" data-status="active">
-                            <div class="job-card-header">
-                                <div class="flex-grow-1">
-                                    <h3 class="job-title">Senior Full Stack Developer</h3>
-                                    <span class="job-category">Technology</span>
-                                </div>
-                                <span class="job-status status-active">Active</span>
-                            </div>
-
-                            <p class="job-description">
-                                Looking for an experienced full-stack developer to build a modern e-commerce platform using React, Node.js, and MongoDB. Must have 5+ years of experience.
-                            </p>
-
-                            <div class="job-meta">
-                                <div class="job-meta-item">
-                                    <i class="bi-cash"></i>
-                                    <span class="job-price">$75,000 - $95,000</span>
-                                </div>
-                                <div class="job-meta-item">
-                                    <i class="bi-geo-alt"></i>
-                                    <span>Remote</span>
-                                </div>
-                                <div class="job-meta-item">
-                                    <i class="bi-calendar"></i>
-                                    <span>Posted 3 days ago</span>
-                                </div>
-                                <div class="job-meta-item">
-                                    <i class="bi-eye"></i>
-                                    <span>156 `s</span>
+                        <!-- Stats Row  -->
+                        <div class="row stats-row">
+                            <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-number" id="totalJobs">5</div>
+                                    <div class="stat-label">Total Jobs</div>
                                 </div>
                             </div>
-
-                            <div class="job-actions">
-                                <a href="/Job/JobProposal" class="action-btn btn-view">
-                                    <i class="bi-people"></i>
-                                    View Proposals
-                                    <span class="proposals-count">8</span>
-                                </a>
-                                <button class="action-btn btn-edit" onclick="editJob(1)">
-                                    <i class="bi-pencil"></i>
-                                    Edit
-                                </button>
-                                <button class="action-btn btn-delete" onclick="deleteJob(1)">
-                                    <i class="bi-trash"></i>
-                                    Delete
-                                </button>
+                            <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-number" id="activeJobs">3</div>
+                                    <div class="stat-label">Active Jobs</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-number" id="totalProposals">24</div>
+                                    <div class="stat-label">Total Proposals</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                <div class="stat-card">
+                                    <div class="stat-number" id="hiredFreelancers">2</div>
+                                    <div class="stat-label">Hired</div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Job Card 2  -->
-                        <div class="job-card" data-status="active">
-                            <div class="job-card-header">
-                                <div class="flex-grow-1">
-                                    <h3 class="job-title">UI/UX Designer</h3>
-                                    <span class="job-category">Design</span>
-                                </div>
-                                <span class="job-status status-active">Active</span>
-                            </div>
-
-                            <p class="job-description">
-                                Seeking a creative UI/UX designer to redesign our mobile app interface. Experience with Figma and user research required.
-                            </p>
-
-                            <div class="job-meta">
-                                <div class="job-meta-item">
-                                    <i class="bi-cash"></i>
-                                    <span class="job-price">$45,000 - $60,000</span>
-                                </div>
-                                <div class="job-meta-item">
-                                    <i class="bi-geo-alt"></i>
-                                    <span>New York, NY</span>
-                                </div>
-                                <div class="job-meta-item">
-                                    <i class="bi-calendar"></i>
-                                    <span>Posted 1 week ago</span>
-                                </div>
-                                <div class="job-meta-item">
-                                    <i class="bi-eye"></i>
-                                    <span>89 views</span>
-                                </div>
-                            </div>
-
-                            <div class="job-actions">
-                                <a href="/Job/JobProposal" class="action-btn btn-view">
-                                    <i class="bi-people"></i>
-                                    View Proposals
-                                    <span class="proposals-count">12</span>
-                                </a>
-                                <button class="action-btn btn-edit" onclick="editJob(2)">
-                                    <i class="bi-pencil"></i>
-                                    Edit
-                                </button>
-                                <button class="action-btn btn-delete" onclick="deleteJob(2)">
-                                    <i class="bi-trash"></i>
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Job Card 3  -->
-                        <div class="job-card" data-status="paused">
-                            <div class="job-card-header">
-                                <div class="flex-grow-1">
-                                    <h3 class="job-title">Content Writer</h3>
-                                    <span class="job-category">Marketing</span>
-                                </div>
-                                <span class="job-status status-paused">Paused</span>
-                            </div>
-
-                            <p class="job-description">
-                                Looking for a skilled content writer to create blog posts and marketing materials. SEO knowledge preferred.
-                            </p>
-
-                            <div class="job-meta">
-                                <div class="job-meta-item">
-                                    <i class="bi-cash"></i>
-                                    <span class="job-price">$30,000 - $40,000</span>
-                                </div>
-                                <div class="job-meta-item">
-                                    <i class="bi-geo-alt"></i>
-                                    <span>Remote</span>
-                                </div>
-                                <div class="job-meta-item">
-                                    <i class="bi-calendar"></i>
-                                    <span>Posted 2 weeks ago</span>
-                                </div>
-                                <div class="job-meta-item">
-                                    <i class="bi-eye"></i>
-                                    <span>67 views</span>
-                                </div>
-                            </div>
-
-                            <div class="job-actions">
-                                <a href="/Job/JobProposal" class="action-btn btn-view">
-                                    <i class="bi-people"></i>
-                                    View Proposals
-                                    <span class="proposals-count">4</span>
-                                </a>
-                                <button class="action-btn btn-edit" onclick="editJob(3)">
-                                    <i class="bi-pencil"></i>
-                                    Edit
-                                </button>
-                                <button class="action-btn btn-delete" onclick="deleteJob(3)">
-                                    <i class="bi-trash"></i>
-                                    Delete
-                                </button>
-                            </div>
+                        <!-- Create New Job Button  -->
+                        <div class="text-center">
+                            <a href="job-listings.html" class="create-job-btn">
+                                <i class="bi-plus-circle"></i>
+                                Post New Job
+                            </a>
                         </div>
                     </div>
 
-                    <!-- Empty State (hidden by default)  -->
-                    <div id="emptyState" class="empty-state" style="display: none;">
-                        <i class="bi-briefcase"></i>
-                        <h4>No Jobs Found</h4>
-                        <p>You haven't posted any jobs yet. Create your first job posting to get started!</p>
-                        <a href="job-listings.html" class="create-job-btn">
-                            <i class="bi-plus-circle"></i>
-                            Post Your First Job
-                        </a>
+                    <!-- Jobs List  -->
+                    <div class="dashboard-container">
+                        <!-- Filter Tabs  -->
+                        <div class="filter-tabs">
+                            <button class="filter-tab active" onclick="filterJobs('all')">All Jobs</button>
+                            <button class="filter-tab" onclick="filterJobs('active')">Active</button>
+                            <button class="filter-tab" onclick="filterJobs('paused')">Paused</button>
+                        </div>
+
+                        <div id="jobsContainer">
+                            @if (Model.Any())
+                            {
+                                foreach (var job in Model)
+                                {
+                                    <div class="job-card" data-status="active">
+                                        <div class="job-card-header">
+                                            <div class="flex-grow-1">
+                                                <h3 class="job-title">@job.Title</h3>
+                                                <span class="job-category">
+                                                    @string.Join(", ", job.Categories.Select(c => c.Name))
+                                                </span>
+                                            </div>
+                                            <span class="job-status status-active">Active</span>
+                                        </div>
+
+                                        <p class="job-description">@job.Description</p>
+
+                                        <div class="job-meta">
+                                            <div class="job-meta-item">
+                                                <i class="bi-cash"></i>
+                                                <span class="job-price">@job.Price.ToString("C")</span>
+                                            </div>
+                                            <div class="job-meta-item">
+                                                <i class="bi-calendar"></i>
+                                                <span>Posted @job.DateCreated.ToShortDateString()</span>
+                                            </div>
+                                            <div class="job-meta-item">
+                                                <i class="bi-eye"></i>
+                                                <span>@job.Proposals.Count views</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="job-actions">
+                                            <a href="/Job/JobProposal?id=@job.Id" class="action-btn btn-view">
+                                                <i class="bi-people"></i>
+                                                View Proposals
+                                                <span class="proposals-count">@job.Proposals.Count</span>
+                                            </a>
+                                            <button class="action-btn btn-edit">
+                                                <i class="bi-pencil"></i>
+                                                Edit
+                                            </button>
+                                            <button class="action-btn btn-delete">
+                                                <i class="bi-trash"></i>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div id="emptyState" class="empty-state">
+                                    <i class="bi-briefcase"></i>
+                                    <h4>No Jobs Found</h4>
+                                    <p>You haven't posted any jobs yet. Create your first job posting to get started!</p>
+                                    <a href="/Job/Create" class="create-job-btn">
+                                        <i class="bi-plus-circle"></i>
+                                        Post Your First Job
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+    </section>
 
 <script>
     // Sample client jobs data
