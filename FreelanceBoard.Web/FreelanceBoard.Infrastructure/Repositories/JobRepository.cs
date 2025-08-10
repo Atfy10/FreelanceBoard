@@ -67,6 +67,14 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 .Include(j => j.Proposals)
                 .ThenInclude(p => p.Freelancer);
         }
+
+        public async Task<IEnumerable<Job>?> GetJobsByUserIdAsync(string userId)
+        {
+            return await GetAllJobsWithDetails()
+                .Where(j => j.UserId == userId)
+                .ToListAsync();
+        }
+
     }
 
 }

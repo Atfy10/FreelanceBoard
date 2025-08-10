@@ -88,5 +88,13 @@ namespace FreelanceBoard.Web.Controllers
             var jobs = await _jobQuery.GetJobsFilteredByBudget(min, max);
             return Ok(jobs);
         }
+
+        [HttpGet("user/{userId}/jobs")]
+        public async Task<IActionResult> GetJobsByUser(string userId)
+        {
+            var jobs = await _jobQuery.GetJobsByUserIdAsync(userId);
+            return Ok(jobs);
+        }
+
     }
 }
