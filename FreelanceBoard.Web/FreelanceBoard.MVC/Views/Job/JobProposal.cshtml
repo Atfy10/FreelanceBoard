@@ -1,4 +1,4 @@
-﻿ <style>
+﻿<style>
             .proposals-section {
                 background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
                 min-height: 100vh;
@@ -337,585 +337,551 @@
                 color: #6366f1;
                 margin-bottom: 15px;
             }
-                .job-info-header {
-                    padding: 20px;
-                }
-
-                .job-info-title {
-                    font-size: 1.5rem;
-                }
-
-                .job-info-meta {
-                    flex-direction: column;
-                    align-items: flex-start;
-                    gap: 10px;
-                }
-
-                .proposals-header {
-                    flex-direction: column;
-                    align-items: flex-start;
-                }
-
-                .freelancer-info {
-                    flex-direction: column;
-                    text-align: center;
-                }
-
-                .proposal-header {
-                    flex-direction: column;
-                    align-items: center;
-                    text-align: center;
-                }
-
-                .proposal-actions {
-                    justify-content: center;
-                }
         </style>
 
-
 <section class="proposals-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-12 col-12">
-                <!-- Job Information Header  -->
-                <div class="proposals-container">
-                    <a href="client-dashboard.html" class="back-btn">
-                        <i class="bi-arrow-left"></i>
-                        Back to My Jobs
-                    </a>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12 col-12">
+                             <!-- Job Information Header  -->
+                            <div class="proposals-container">
+                                <a href="client-dashboard.html" class="back-btn">
+                                    <i class="bi-arrow-left"></i>
+                                    Back to My Jobs
+                                </a>
 
-                    <div class="job-info-header">
-                        <h1 class="job-info-title" id="jobTitle">Senior Full Stack Developer</h1>
-                        <div class="job-info-meta">
-                            <div class="job-info-meta-item">
-                                <i class="bi-cash"></i>
-                                <span id="jobPrice">$75,000 - $95,000</span>
+                                <div class="job-info-header">
+                                    <h1 class="job-info-title" id="jobTitle">Senior Full Stack Developer</h1>
+                                    <div class="job-info-meta">
+                                        <div class="job-info-meta-item">
+                                            <i class="bi-cash"></i>
+                                            <span id="jobPrice">$75,000 - $95,000</span>
+                                        </div>
+                                        <div class="job-info-meta-item">
+                                            <i class="bi-geo-alt"></i>
+                                            <span id="jobLocation">Remote</span>
+                                        </div>
+                                        <div class="job-info-meta-item">
+                                            <i class="bi-calendar"></i>
+                                            <span id="jobPostedDate">Posted 3 days ago</span>
+                                        </div>
+                                        <div class="job-info-meta-item">
+                                            <i class="bi-eye"></i>
+                                            <span id="jobViews">156 views</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="job-info-meta-item">
-                                <i class="bi-geo-alt"></i>
-                                <span id="jobLocation">Remote</span>
-                            </div>
-                            <div class="job-info-meta-item">
-                                <i class="bi-calendar"></i>
-                                <span id="jobPostedDate">Posted 3 days ago</span>
-                            </div>
-                            <div class="job-info-meta-item">
-                                <i class="bi-eye"></i>
-                                <span id="jobViews">156 views</span>
+
+                             <!-- Proposals List  -->
+                            <div class="proposals-container">
+                                <div class="proposals-header">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <h2 class="proposals-title">Proposals</h2>
+                                        <span class="proposals-count" id="proposalsCount">8 Applications</span>
+                                    </div>
+                                    <select class="form-select sort-dropdown" id="sortProposals">
+                                        <option value="newest">Newest First</option>
+                                        <option value="oldest">Oldest First</option>
+                                        <option value="price-low">Price: Low to High</option>
+                                        <option value="price-high">Price: High to Low</option>
+                                        <option value="rating">Highest Rated</option>
+                                    </select>
+                                </div>
+
+                                 <!-- Proposals Container  -->
+                                <div id="proposalsContainer">
+                                     <!-- Proposal Card 1  -->
+                                    <div class="proposal-card" data-proposal-id="1">
+                                        <div class="proposal-header">
+                                            <div class="freelancer-info">
+                                                <img src="/placeholder.svg?height=60&width=60&text=JS" alt="John Smith" class="freelancer-avatar">
+                                                <div class="freelancer-details">
+                                                    <h4>John Smith</h4>
+                                                    <div class="freelancer-rating">
+                                                        <div class="stars">
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star-fill"></i>
+                                                        </div>
+                                                        <span>5.0 (24 reviews)</span>
+                                                    </div>
+                                                    <div class="freelancer-location">
+                                                        <i class="bi-geo-alt"></i>
+                                                        New York, USA
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="proposal-price">
+                                                <div class="price-amount">$85,000</div>
+                                                <div class="delivery-time">
+                                                    <i class="bi-clock"></i>
+                                                    2-3 months
+                                                </div>
+                                                <span class="proposal-status status-pending">Pending</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="proposal-message">
+                                            <h5>Cover Letter</h5>
+                                            <p>
+                                                Hello! I'm a senior full-stack developer with 8+ years of experience building scalable e-commerce platforms. 
+                                                I've worked extensively with React, Node.js, and MongoDB, which makes me a perfect fit for your project. 
+                                                I recently completed a similar e-commerce platform for a client that handles 10k+ daily transactions. 
+                                                I'm confident I can deliver a high-quality solution within your timeline and budget.
+                                            </p>
+                                        </div>
+
+                                        <div class="proposal-meta">
+                                            <div class="meta-item">
+                                                <i class="bi-calendar-check"></i>
+                                                <span>Applied 2 hours ago</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="bi-briefcase"></i>
+                                                <span>15 jobs completed</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="bi-award"></i>
+                                                <span>Top Rated</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="portfolio-links">
+                                            <h6>Portfolio Links:</h6>
+                                            <a href="#" class="portfolio-link" target="_blank">
+                                                <i class="bi-link-45deg"></i>
+                                                E-commerce Platform Demo
+                                            </a>
+                                            <a href="#" class="portfolio-link" target="_blank">
+                                                <i class="bi-github"></i>
+                                                GitHub Repository
+                                            </a>
+                                        </div>
+
+                                        <div class="proposal-actions">
+                                            <button class="action-btn btn-accept" onclick="acceptProposal(1)">
+                                                <i class="bi-check-circle"></i>
+                                                Accept
+                                            </button>
+                                            <button class="action-btn btn-reject" onclick="rejectProposal(1)">
+                                                <i class="bi-x-circle"></i>
+                                                Reject
+                                            </button>
+                                            <button class="action-btn btn-message" onclick="messageFreelancer(1)">
+                                                <i class="bi-chat-dots"></i>
+                                                Message
+                                            </button>
+                                            <button class="action-btn btn-view-profile" onclick="viewProfile(1)">
+                                                <i class="bi-person"></i>
+                                                View Profile
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                     <!-- Proposal Card 2  -->
+                                    <div class="proposal-card" data-proposal-id="2">
+                                        <div class="proposal-header">
+                                            <div class="freelancer-info">
+                                                <img src="/placeholder.svg?height=60&width=60&text=MJ" alt="Maria Johnson" class="freelancer-avatar">
+                                                <div class="freelancer-details">
+                                                    <h4>Maria Johnson</h4>
+                                                    <div class="freelancer-rating">
+                                                        <div class="stars">
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star-half"></i>
+                                                        </div>
+                                                        <span>4.8 (18 reviews)</span>
+                                                    </div>
+                                                    <div class="freelancer-location">
+                                                        <i class="bi-geo-alt"></i>
+                                                        London, UK
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="proposal-price">
+                                                <div class="price-amount">$78,000</div>
+                                                <div class="delivery-time">
+                                                    <i class="bi-clock"></i>
+                                                    3 months
+                                                </div>
+                                                <span class="proposal-status status-pending">Pending</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="proposal-message">
+                                            <h5>Cover Letter</h5>
+                                            <p>
+                                                Hi there! I'm a passionate full-stack developer specializing in modern web technologies. 
+                                                With 6 years of experience in React and Node.js, I've built several e-commerce solutions 
+                                                from scratch. I focus on clean code, scalable architecture, and excellent user experience. 
+                                                I'd love to discuss your project requirements in detail and provide a custom solution.
+                                            </p>
+                                        </div>
+
+                                        <div class="proposal-meta">
+                                            <div class="meta-item">
+                                                <i class="bi-calendar-check"></i>
+                                                <span>Applied 5 hours ago</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="bi-briefcase"></i>
+                                                <span>12 jobs completed</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="bi-award"></i>
+                                                <span>Rising Talent</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="portfolio-links">
+                                            <h6>Portfolio Links:</h6>
+                                            <a href="#" class="portfolio-link" target="_blank">
+                                                <i class="bi-link-45deg"></i>
+                                                Personal Portfolio
+                                            </a>
+                                            <a href="#" class="portfolio-link" target="_blank">
+                                                <i class="bi-linkedin"></i>
+                                                LinkedIn Profile
+                                            </a>
+                                        </div>
+
+                                        <div class="proposal-actions">
+                                            <button class="action-btn btn-accept" onclick="acceptProposal(2)">
+                                                <i class="bi-check-circle"></i>
+                                                Accept
+                                            </button>
+                                            <button class="action-btn btn-reject" onclick="rejectProposal(2)">
+                                                <i class="bi-x-circle"></i>
+                                                Reject
+                                            </button>
+                                            <button class="action-btn btn-message" onclick="messageFreelancer(2)">
+                                                <i class="bi-chat-dots"></i>
+                                                Message
+                                            </button>
+                                            <button class="action-btn btn-view-profile" onclick="viewProfile(2)">
+                                                <i class="bi-person"></i>
+                                                View Profile
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                     <!-- Proposal Card 3  -->
+                                    <div class="proposal-card" data-proposal-id="3">
+                                        <div class="proposal-header">
+                                            <div class="freelancer-info">
+                                                <img src="/placeholder.svg?height=60&width=60&text=DL" alt="David Lee" class="freelancer-avatar">
+                                                <div class="freelancer-details">
+                                                    <h4>David Lee</h4>
+                                                    <div class="freelancer-rating">
+                                                        <div class="stars">
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star-fill"></i>
+                                                            <i class="bi-star"></i>
+                                                        </div>
+                                                        <span>4.2 (9 reviews)</span>
+                                                    </div>
+                                                    <div class="freelancer-location">
+                                                        <i class="bi-geo-alt"></i>
+                                                        Toronto, Canada
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="proposal-price">
+                                                <div class="price-amount">$65,000</div>
+                                                <div class="delivery-time">
+                                                    <i class="bi-clock"></i>
+                                                    4 months
+                                                </div>
+                                                <span class="proposal-status status-pending">Pending</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="proposal-message">
+                                            <h5>Cover Letter</h5>
+                                            <p>
+                                                Greetings! I'm a dedicated full-stack developer with a strong background in e-commerce development. 
+                                                I have 4 years of experience working with React, Node.js, and various databases including MongoDB. 
+                                                I'm known for delivering projects on time and maintaining excellent communication throughout the process. 
+                                                I offer competitive rates and would be happy to discuss your project in more detail.
+                                            </p>
+                                        </div>
+
+                                        <div class="proposal-meta">
+                                            <div class="meta-item">
+                                                <i class="bi-calendar-check"></i>
+                                                <span>Applied 1 day ago</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="bi-briefcase"></i>
+                                                <span>8 jobs completed</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="bi-award"></i>
+                                                <span>New Freelancer</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="portfolio-links">
+                                            <h6>Portfolio Links:</h6>
+                                            <a href="#" class="portfolio-link" target="_blank">
+                                                <i class="bi-link-45deg"></i>
+                                                Recent Projects
+                                            </a>
+                                        </div>
+
+                                        <div class="proposal-actions">
+                                            <button class="action-btn btn-accept" onclick="acceptProposal(3)">
+                                                <i class="bi-check-circle"></i>
+                                                Accept
+                                            </button>
+                                            <button class="action-btn btn-reject" onclick="rejectProposal(3)">
+                                                <i class="bi-x-circle"></i>
+                                                Reject
+                                            </button>
+                                            <button class="action-btn btn-message" onclick="messageFreelancer(3)">
+                                                <i class="bi-chat-dots"></i>
+                                                Message
+                                            </button>
+                                            <button class="action-btn btn-view-profile" onclick="viewProfile(3)">
+                                                <i class="bi-person"></i>
+                                                View Profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                 <!-- Empty State (hidden by default)  -->
+                                <div id="emptyState" class="empty-state" style="display: none;">
+                                    <i class="bi-inbox"></i>
+                                    <h4>No Proposals Yet</h4>
+                                    <p>No freelancers have applied to this job yet. Share your job posting to attract more applicants!</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Proposals List  -->
-                <div class="proposals-container">
-                    <div class="proposals-header">
-                        <div class="d-flex align-items-center gap-3">
-                            <h2 class="proposals-title">Proposals</h2>
-                            <span class="proposals-count" id="proposalsCount">8 Applications</span>
-                        </div>
-                        <select class="form-select sort-dropdown" id="sortProposals">
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                            <option value="rating">Highest Rated</option>
-                        </select>
-                    </div>
-
-                    <!-- Proposals Container  -->
-                    <div id="proposalsContainer">
-                        <!-- Proposal Card 1  -->
-                        <div class="proposal-card" data-proposal-id="1">
-                            <div class="proposal-header">
-                                <div class="freelancer-info">
-                                    <img src="/placeholder.svg?height=60&width=60&text=JS" alt="John Smith" class="freelancer-avatar">
-                                    <div class="freelancer-details">
-                                        <h4>John Smith</h4>
-                                        <div class="freelancer-rating">
-                                            <div class="stars">
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star-fill"></i>
-                                            </div>
-                                            <span>5.0 (24 reviews)</span>
-                                        </div>
-                                        <div class="freelancer-location">
-                                            <i class="bi-geo-alt"></i>
-                                            New York, USA
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="proposal-price">
-                                    <div class="price-amount">$85,000</div>
-                                    <div class="delivery-time">
-                                        <i class="bi-clock"></i>
-                                        2-3 months
-                                    </div>
-                                    <span class="proposal-status status-pending">Pending</span>
-                                </div>
-                            </div>
-
-                            <div class="proposal-message">
-                                <h5>Cover Letter</h5>
-                                <p>
-                                    Hello! I'm a senior full-stack developer with 8+ years of experience building scalable e-commerce platforms.
-                                    I've worked extensively with React, Node.js, and MongoDB, which makes me a perfect fit for your project.
-                                    I recently completed a similar e-commerce platform for a client that handles 10k+ daily transactions.
-                                    I'm confident I can deliver a high-quality solution within your timeline and budget.
-                                </p>
-                            </div>
-
-                            <div class="proposal-meta">
-                                <div class="meta-item">
-                                    <i class="bi-calendar-check"></i>
-                                    <span>Applied 2 hours ago</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="bi-briefcase"></i>
-                                    <span>15 jobs completed</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="bi-award"></i>
-                                    <span>Top Rated</span>
-                                </div>
-                            </div>
-
-                            <div class="portfolio-links">
-                                <h6>Portfolio Links:</h6>
-                                <a href="#" class="portfolio-link" target="_blank">
-                                    <i class="bi-link-45deg"></i>
-                                    E-commerce Platform Demo
-                                </a>
-                                <a href="#" class="portfolio-link" target="_blank">
-                                    <i class="bi-github"></i>
-                                    GitHub Repository
-                                </a>
-                            </div>
-
-                            <div class="proposal-actions">
-                                <button class="action-btn btn-accept" onclick="acceptProposal(1)">
-                                    <i class="bi-check-circle"></i>
-                                    Accept
-                                </button>
-                                <button class="action-btn btn-reject" onclick="rejectProposal(1)">
-                                    <i class="bi-x-circle"></i>
-                                    Reject
-                                </button>
-                                <button class="action-btn btn-message" onclick="messageFreelancer(1)">
-                                    <i class="bi-chat-dots"></i>
-                                    Message
-                                </button>
-                                <button class="action-btn btn-view-profile" onclick="viewProfile(1)">
-                                    <i class="bi-person"></i>
-                                    View Profile
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Proposal Card 2  -->
-                        <div class="proposal-card" data-proposal-id="2">
-                            <div class="proposal-header">
-                                <div class="freelancer-info">
-                                    <img src="/placeholder.svg?height=60&width=60&text=MJ" alt="Maria Johnson" class="freelancer-avatar">
-                                    <div class="freelancer-details">
-                                        <h4>Maria Johnson</h4>
-                                        <div class="freelancer-rating">
-                                            <div class="stars">
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star-half"></i>
-                                            </div>
-                                            <span>4.8 (18 reviews)</span>
-                                        </div>
-                                        <div class="freelancer-location">
-                                            <i class="bi-geo-alt"></i>
-                                            London, UK
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="proposal-price">
-                                    <div class="price-amount">$78,000</div>
-                                    <div class="delivery-time">
-                                        <i class="bi-clock"></i>
-                                        3 months
-                                    </div>
-                                    <span class="proposal-status status-pending">Pending</span>
-                                </div>
-                            </div>
-
-                            <div class="proposal-message">
-                                <h5>Cover Letter</h5>
-                                <p>
-                                    Hi there! I'm a passionate full-stack developer specializing in modern web technologies.
-                                    With 6 years of experience in React and Node.js, I've built several e-commerce solutions
-                                    from scratch. I focus on clean code, scalable architecture, and excellent user experience.
-                                    I'd love to discuss your project requirements in detail and provide a custom solution.
-                                </p>
-                            </div>
-
-                            <div class="proposal-meta">
-                                <div class="meta-item">
-                                    <i class="bi-calendar-check"></i>
-                                    <span>Applied 5 hours ago</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="bi-briefcase"></i>
-                                    <span>12 jobs completed</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="bi-award"></i>
-                                    <span>Rising Talent</span>
-                                </div>
-                            </div>
-
-                            <div class="portfolio-links">
-                                <h6>Portfolio Links:</h6>
-                                <a href="#" class="portfolio-link" target="_blank">
-                                    <i class="bi-link-45deg"></i>
-                                    Personal Portfolio
-                                </a>
-                                <a href="#" class="portfolio-link" target="_blank">
-                                    <i class="bi-linkedin"></i>
-                                    LinkedIn Profile
-                                </a>
-                            </div>
-
-                            <div class="proposal-actions">
-                                <button class="action-btn btn-accept" onclick="acceptProposal(2)">
-                                    <i class="bi-check-circle"></i>
-                                    Accept
-                                </button>
-                                <button class="action-btn btn-reject" onclick="rejectProposal(2)">
-                                    <i class="bi-x-circle"></i>
-                                    Reject
-                                </button>
-                                <button class="action-btn btn-message" onclick="messageFreelancer(2)">
-                                    <i class="bi-chat-dots"></i>
-                                    Message
-                                </button>
-                                <button class="action-btn btn-view-profile" onclick="viewProfile(2)">
-                                    <i class="bi-person"></i>
-                                    View Profile
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Proposal Card 3  -->
-                        <div class="proposal-card" data-proposal-id="3">
-                            <div class="proposal-header">
-                                <div class="freelancer-info">
-                                    <img src="/placeholder.svg?height=60&width=60&text=DL" alt="David Lee" class="freelancer-avatar">
-                                    <div class="freelancer-details">
-                                        <h4>David Lee</h4>
-                                        <div class="freelancer-rating">
-                                            <div class="stars">
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star-fill"></i>
-                                                <i class="bi-star"></i>
-                                            </div>
-                                            <span>4.2 (9 reviews)</span>
-                                        </div>
-                                        <div class="freelancer-location">
-                                            <i class="bi-geo-alt"></i>
-                                            Toronto, Canada
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="proposal-price">
-                                    <div class="price-amount">$65,000</div>
-                                    <div class="delivery-time">
-                                        <i class="bi-clock"></i>
-                                        4 months
-                                    </div>
-                                    <span class="proposal-status status-pending">Pending</span>
-                                </div>
-                            </div>
-
-                            <div class="proposal-message">
-                                <h5>Cover Letter</h5>
-                                <p>
-                                    Greetings! I'm a dedicated full-stack developer with a strong background in e-commerce development.
-                                    I have 4 years of experience working with React, Node.js, and various databases including MongoDB.
-                                    I'm known for delivering projects on time and maintaining excellent communication throughout the process.
-                                    I offer competitive rates and would be happy to discuss your project in more detail.
-                                </p>
-                            </div>
-
-                            <div class="proposal-meta">
-                                <div class="meta-item">
-                                    <i class="bi-calendar-check"></i>
-                                    <span>Applied 1 day ago</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="bi-briefcase"></i>
-                                    <span>8 jobs completed</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="bi-award"></i>
-                                    <span>New Freelancer</span>
-                                </div>
-                            </div>
-
-                            <div class="portfolio-links">
-                                <h6>Portfolio Links:</h6>
-                                <a href="#" class="portfolio-link" target="_blank">
-                                    <i class="bi-link-45deg"></i>
-                                    Recent Projects
-                                </a>
-                            </div>
-
-                            <div class="proposal-actions">
-                                <button class="action-btn btn-accept" onclick="acceptProposal(3)">
-                                    <i class="bi-check-circle"></i>
-                                    Accept
-                                </button>
-                                <button class="action-btn btn-reject" onclick="rejectProposal(3)">
-                                    <i class="bi-x-circle"></i>
-                                    Reject
-                                </button>
-                                <button class="action-btn btn-message" onclick="messageFreelancer(3)">
-                                    <i class="bi-chat-dots"></i>
-                                    Message
-                                </button>
-                                <button class="action-btn btn-view-profile" onclick="viewProfile(3)">
-                                    <i class="bi-person"></i>
-                                    View Profile
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Empty State (hidden by default)  -->
-                    <div id="emptyState" class="empty-state" style="display: none;">
-                        <i class="bi-inbox"></i>
-                        <h4>No Proposals Yet</h4>
-                        <p>No freelancers have applied to this job yet. Share your job posting to attract more applicants!</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+            </section>
 
 
 <script>
-    // Sample proposals data
-    let proposals = [
-        {
-            id: 1,
-            freelancerId: "freelancer-1",
-            freelancerName: "John Smith",
-            freelancerAvatar: "/placeholder.svg?height=60&width=60&text=JS",
-            freelancerRating: 5.0,
-            freelancerReviews: 24,
-            freelancerLocation: "New York, USA",
-            price: 85000,
-            deliveryTime: "2-3 months",
-            message: "Hello! I'm a senior full-stack developer with 8+ years of experience building scalable e-commerce platforms. I've worked extensively with React, Node.js, and MongoDB, which makes me a perfect fit for your project. I recently completed a similar e-commerce platform for a client that handles 10k+ daily transactions. I'm confident I can deliver a high-quality solution within your timeline and budget.",
-            appliedDate: "2 hours ago",
-            jobsCompleted: 15,
-            badge: "Top Rated",
-            portfolioLinks: [
-                { title: "E-commerce Platform Demo", url: "#" },
-                { title: "GitHub Repository", url: "#" }
-            ],
-            status: "pending"
-        },
-        {
-            id: 2,
-            freelancerId: "freelancer-2",
-            freelancerName: "Maria Johnson",
-            freelancerAvatar: "/placeholder.svg?height=60&width=60&text=MJ",
-            freelancerRating: 4.8,
-            freelancerReviews: 18,
-            freelancerLocation: "London, UK",
-            price: 78000,
-            deliveryTime: "3 months",
-            message: "Hi there! I'm a passionate full-stack developer specializing in modern web technologies. With 6 years of experience in React and Node.js, I've built several e-commerce solutions from scratch. I focus on clean code, scalable architecture, and excellent user experience. I'd love to discuss your project requirements in detail and provide a custom solution.",
-            appliedDate: "5 hours ago",
-            jobsCompleted: 12,
-            badge: "Rising Talent",
-            portfolioLinks: [
-                { title: "Personal Portfolio", url: "#" },
-                { title: "LinkedIn Profile", url: "#" }
-            ],
-            status: "pending"
-        },
-        {
-            id: 3,
-            freelancerId: "freelancer-3",
-            freelancerName: "David Lee",
-            freelancerAvatar: "/placeholder.svg?height=60&width=60&text=DL",
-            freelancerRating: 4.2,
-            freelancerReviews: 9,
-            freelancerLocation: "Toronto, Canada",
-            price: 65000,
-            deliveryTime: "4 months",
-            message: "Greetings! I'm a dedicated full-stack developer with a strong background in e-commerce development. I have 4 years of experience working with React, Node.js, and various databases including MongoDB. I'm known for delivering projects on time and maintaining excellent communication throughout the process. I offer competitive rates and would be happy to discuss your project in more detail.",
-            appliedDate: "1 day ago",
-            jobsCompleted: 8,
-            badge: "New Freelancer",
-            portfolioLinks: [
-                { title: "Recent Projects", url: "#" }
-            ],
-            status: "pending"
-        }
-    ];
+            // Sample proposals data
+            let proposals = [
+                {
+                    id: 1,
+                    freelancerId: "freelancer-1",
+                    freelancerName: "John Smith",
+                    freelancerAvatar: "/placeholder.svg?height=60&width=60&text=JS",
+                    freelancerRating: 5.0,
+                    freelancerReviews: 24,
+                    freelancerLocation: "New York, USA",
+                    price: 85000,
+                    deliveryTime: "2-3 months",
+                    message: "Hello! I'm a senior full-stack developer with 8+ years of experience building scalable e-commerce platforms. I've worked extensively with React, Node.js, and MongoDB, which makes me a perfect fit for your project. I recently completed a similar e-commerce platform for a client that handles 10k+ daily transactions. I'm confident I can deliver a high-quality solution within your timeline and budget.",
+                    appliedDate: "2 hours ago",
+                    jobsCompleted: 15,
+                    badge: "Top Rated",
+                    portfolioLinks: [
+                        { title: "E-commerce Platform Demo", url: "#" },
+                        { title: "GitHub Repository", url: "#" }
+                    ],
+                    status: "pending"
+                },
+                {
+                    id: 2,
+                    freelancerId: "freelancer-2",
+                    freelancerName: "Maria Johnson",
+                    freelancerAvatar: "/placeholder.svg?height=60&width=60&text=MJ",
+                    freelancerRating: 4.8,
+                    freelancerReviews: 18,
+                    freelancerLocation: "London, UK",
+                    price: 78000,
+                    deliveryTime: "3 months",
+                    message: "Hi there! I'm a passionate full-stack developer specializing in modern web technologies. With 6 years of experience in React and Node.js, I've built several e-commerce solutions from scratch. I focus on clean code, scalable architecture, and excellent user experience. I'd love to discuss your project requirements in detail and provide a custom solution.",
+                    appliedDate: "5 hours ago",
+                    jobsCompleted: 12,
+                    badge: "Rising Talent",
+                    portfolioLinks: [
+                        { title: "Personal Portfolio", url: "#" },
+                        { title: "LinkedIn Profile", url: "#" }
+                    ],
+                    status: "pending"
+                },
+                {
+                    id: 3,
+                    freelancerId: "freelancer-3",
+                    freelancerName: "David Lee",
+                    freelancerAvatar: "/placeholder.svg?height=60&width=60&text=DL",
+                    freelancerRating: 4.2,
+                    freelancerReviews: 9,
+                    freelancerLocation: "Toronto, Canada",
+                    price: 65000,
+                    deliveryTime: "4 months",
+                    message: "Greetings! I'm a dedicated full-stack developer with a strong background in e-commerce development. I have 4 years of experience working with React, Node.js, and various databases including MongoDB. I'm known for delivering projects on time and maintaining excellent communication throughout the process. I offer competitive rates and would be happy to discuss your project in more detail.",
+                    appliedDate: "1 day ago",
+                    jobsCompleted: 8,
+                    badge: "New Freelancer",
+                    portfolioLinks: [
+                        { title: "Recent Projects", url: "#" }
+                    ],
+                    status: "pending"
+                }
+            ];
 
-    // Get job ID from URL parameters
-    function getJobIdFromUrl() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('jobId') || '1';
-    }
-
-    // Load job information
-    function loadJobInfo() {
-        const jobId = getJobIdFromUrl();
-
-        // Sample job data (in real app, fetch from backend)
-        const jobData = {
-            1: {
-                title: "Senior Full Stack Developer",
-                price: "$75,000 - $95,000",
-                location: "Remote",
-                postedDate: "Posted 3 days ago",
-                views: "156 views"
-            },
-            2: {
-                title: "UI/UX Designer",
-                price: "$45,000 - $60,000",
-                location: "New York, NY",
-                postedDate: "Posted 1 week ago",
-                views: "89 views"
-            },
-            3: {
-                title: "Content Writer",
-                price: "$30,000 - $40,000",
-                location: "Remote",
-                postedDate: "Posted 2 weeks ago",
-                views: "67 views"
+            // Get job ID from URL parameters
+            function getJobIdFromUrl() {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('jobId') || '1';
             }
-        };
 
-        const job = jobData[jobId];
-        if (job) {
-            document.getElementById('jobTitle').textContent = job.title;
-            document.getElementById('jobPrice').textContent = job.price;
-            document.getElementById('jobLocation').textContent = job.location;
-            document.getElementById('jobPostedDate').textContent = job.postedDate;
-            document.getElementById('jobViews').textContent = job.views;
-        }
+            // Load job information
+            function loadJobInfo() {
+                const jobId = getJobIdFromUrl();
+                
+                // Sample job data (in real app, fetch from backend)
+                const jobData = {
+                    1: {
+                        title: "Senior Full Stack Developer",
+                        price: "$75,000 - $95,000",
+                        location: "Remote",
+                        postedDate: "Posted 3 days ago",
+                        views: "156 views"
+                    },
+                    2: {
+                        title: "UI/UX Designer",
+                        price: "$45,000 - $60,000",
+                        location: "New York, NY",
+                        postedDate: "Posted 1 week ago",
+                        views: "89 views"
+                    },
+                    3: {
+                        title: "Content Writer",
+                        price: "$30,000 - $40,000",
+                        location: "Remote",
+                        postedDate: "Posted 2 weeks ago",
+                        views: "67 views"
+                    }
+                };
 
-        // Update proposals count
-        document.getElementById('proposalsCount').textContent = `${proposals.length} Applications`;
-    }
+                const job = jobData[jobId];
+                if (job) {
+                    document.getElementById('jobTitle').textContent = job.title;
+                    document.getElementById('jobPrice').textContent = job.price;
+                    document.getElementById('jobLocation').textContent = job.location;
+                    document.getElementById('jobPostedDate').textContent = job.postedDate;
+                    document.getElementById('jobViews').textContent = job.views;
+                }
 
-    // Accept proposal
-    function acceptProposal(proposalId) {
-        if (confirm('Are you sure you want to accept this proposal? This will notify the freelancer and start the project.')) {
-            const proposal = proposals.find(p => p.id === proposalId);
-            if (proposal) {
-                proposal.status = 'accepted';
-
-                // Update UI
-                const proposalCard = document.querySelector(`[data-proposal-id="${proposalId}"]`);
-                const statusElement = proposalCard.querySelector('.proposal-status');
-                statusElement.textContent = 'Accepted';
-                statusElement.className = 'proposal-status status-accepted';
-
-                // Disable action buttons
-                const actionButtons = proposalCard.querySelectorAll('.btn-accept, .btn-reject');
-                actionButtons.forEach(btn => {
-                    btn.disabled = true;
-                    btn.style.opacity = '0.5';
-                });
-
-                alert(`Proposal from ${proposal.freelancerName} has been accepted!`);
+                // Update proposals count
+                document.getElementById('proposalsCount').textContent = `${proposals.length} Applications`;
             }
-        }
-    }
 
-    // Reject proposal
-    function rejectProposal(proposalId) {
-        if (confirm('Are you sure you want to reject this proposal? This action cannot be undone.')) {
-            const proposal = proposals.find(p => p.id === proposalId);
-            if (proposal) {
-                proposal.status = 'rejected';
-
-                // Update UI
-                const proposalCard = document.querySelector(`[data-proposal-id="${proposalId}"]`);
-                const statusElement = proposalCard.querySelector('.proposal-status');
-                statusElement.textContent = 'Rejected';
-                statusElement.className = 'proposal-status status-rejected';
-
-                // Disable action buttons
-                const actionButtons = proposalCard.querySelectorAll('.btn-accept, .btn-reject');
-                actionButtons.forEach(btn => {
-                    btn.disabled = true;
-                    btn.style.opacity = '0.5';
-                });
-
-                alert(`Proposal from ${proposal.freelancerName} has been rejected.`);
+            // Accept proposal
+            function acceptProposal(proposalId) {
+                if (confirm('Are you sure you want to accept this proposal? This will notify the freelancer and start the project.')) {
+                    const proposal = proposals.find(p => p.id === proposalId);
+                    if (proposal) {
+                        proposal.status = 'accepted';
+                        
+                        // Update UI
+                        const proposalCard = document.querySelector(`[data-proposal-id="${proposalId}"]`);
+                        const statusElement = proposalCard.querySelector('.proposal-status');
+                        statusElement.textContent = 'Accepted';
+                        statusElement.className = 'proposal-status status-accepted';
+                        
+                        // Disable action buttons
+                        const actionButtons = proposalCard.querySelectorAll('.btn-accept, .btn-reject');
+                        actionButtons.forEach(btn => {
+                            btn.disabled = true;
+                            btn.style.opacity = '0.5';
+                        });
+                        
+                        alert(`Proposal from ${proposal.freelancerName} has been accepted!`);
+                    }
+                }
             }
-        }
-    }
 
-    // Message freelancer
-    function messageFreelancer(proposalId) {
-        const proposal = proposals.find(p => p.id === proposalId);
-        if (proposal) {
-            alert(`Opening message thread with ${proposal.freelancerName}...`);
-            // In real app, redirect to messaging system
-            // window.location.href = `messages.html?freelancerId=${proposal.freelancerId}`;
-        }
-    }
+            // Reject proposal
+            function rejectProposal(proposalId) {
+                if (confirm('Are you sure you want to reject this proposal? This action cannot be undone.')) {
+                    const proposal = proposals.find(p => p.id === proposalId);
+                    if (proposal) {
+                        proposal.status = 'rejected';
+                        
+                        // Update UI
+                        const proposalCard = document.querySelector(`[data-proposal-id="${proposalId}"]`);
+                        const statusElement = proposalCard.querySelector('.proposal-status');
+                        statusElement.textContent = 'Rejected';
+                        statusElement.className = 'proposal-status status-rejected';
+                        
+                        // Disable action buttons
+                        const actionButtons = proposalCard.querySelectorAll('.btn-accept, .btn-reject');
+                        actionButtons.forEach(btn => {
+                            btn.disabled = true;
+                            btn.style.opacity = '0.5';
+                        });
+                        
+                        alert(`Proposal from ${proposal.freelancerName} has been rejected.`);
+                    }
+                }
+            }
 
-    // View freelancer profile
-    function viewProfile(proposalId) {
-        const proposal = proposals.find(p => p.id === proposalId);
-        if (proposal) {
-            alert(`Opening profile for ${proposal.freelancerName}...`);
-            // In real app, redirect to freelancer profile
-            // window.location.href = `freelancer-profile.html?id=${proposal.freelancerId}`;
-        }
-    }
+            // Message freelancer
+            function messageFreelancer(proposalId) {
+                const proposal = proposals.find(p => p.id === proposalId);
+                if (proposal) {
+                    alert(`Opening message thread with ${proposal.freelancerName}...`);
+                    // In real app, redirect to messaging system
+                    // window.location.href = `messages.html?freelancerId=${proposal.freelancerId}`;
+                }
+            }
 
-    // Sort proposals
-    document.getElementById('sortProposals').addEventListener('change', function () {
-        const sortBy = this.value;
-        let sortedProposals = [...proposals];
+            // View freelancer profile
+            function viewProfile(proposalId) {
+                const proposal = proposals.find(p => p.id === proposalId);
+                if (proposal) {
+                    alert(`Opening profile for ${proposal.freelancerName}...`);
+                    // In real app, redirect to freelancer profile
+                    // window.location.href = `freelancer-profile.html?id=${proposal.freelancerId}`;
+                }
+            }
 
-        switch (sortBy) {
-            case 'newest':
-                // Sort by application date (newest first)
-                break;
-            case 'oldest':
-                // Sort by application date (oldest first)
-                break;
-            case 'price-low':
-                sortedProposals.sort((a, b) => a.price - b.price);
-                break;
-            case 'price-high':
-                sortedProposals.sort((a, b) => b.price - a.price);
-                break;
-            case 'rating':
-                sortedProposals.sort((a, b) => b.freelancerRating - a.freelancerRating);
-                break;
-        }
+            // Sort proposals
+            document.getElementById('sortProposals').addEventListener('change', function() {
+                const sortBy = this.value;
+                let sortedProposals = [...proposals];
 
-        // Re-render proposals (in a real app, you'd update the DOM)
-        console.log('Sorted proposals:', sortedProposals);
-    });
+                switch(sortBy) {
+                    case 'newest':
+                        // Sort by application date (newest first)
+                        break;
+                    case 'oldest':
+                        // Sort by application date (oldest first)
+                        break;
+                    case 'price-low':
+                        sortedProposals.sort((a, b) => a.price - b.price);
+                        break;
+                    case 'price-high':
+                        sortedProposals.sort((a, b) => b.price - a.price);
+                        break;
+                    case 'rating':
+                        sortedProposals.sort((a, b) => b.freelancerRating - a.freelancerRating);
+                        break;
+                }
 
-    // Initialize page
-    document.addEventListener('DOMContentLoaded', function () {
-        loadJobInfo();
-    });
-</script>
+                // Re-render proposals (in a real app, you'd update the DOM)
+                console.log('Sorted proposals:', sortedProposals);
+            });
+
+            // Initialize page
+            document.addEventListener('DOMContentLoaded', function() {
+                loadJobInfo();
+            });
+        </script>

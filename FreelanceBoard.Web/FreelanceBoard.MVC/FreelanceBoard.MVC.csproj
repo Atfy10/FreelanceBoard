@@ -7,23 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Job\ClientDashboard.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.13.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\Job\ClientDashboard.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Views\Job\ClientDashboard.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\Job\ClientDashboard.cshtml" />
   </ItemGroup>
 
 </Project>
