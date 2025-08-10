@@ -39,13 +39,16 @@ namespace FreelanceBoard.Core.CommandHandlers.ReviewCommandHandlers
                 throw new NullReferenceException("Create request cannot be null.");
 
             var review = _mapper.Map<Review>(request);
+
             var user = await _userRepository.GetByIdAsync(request.ReviewerId) ??
                 throw new KeyNotFoundException("Reviewer with the provided ID was not found.");
 
             var contract = await _contractRepository.GetFullContractWithIdAsync(request.ContractId) ??
                 throw new KeyNotFoundException("Contract with the provided ID was not found.");
 
-         
+            review.Reviewer = user;
+            review.Contract = contract;
+
             await _reviewRepository.AddAsync(review);
             return Result<int>.Success(review.Id, CreateOperation, "Review created successfully.");
         },OperationType.Add);

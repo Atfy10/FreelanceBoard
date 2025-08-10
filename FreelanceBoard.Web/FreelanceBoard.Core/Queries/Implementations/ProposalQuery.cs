@@ -32,7 +32,7 @@ namespace FreelanceBoard.Core.Queries.Implementations
             => await _executor.Execute(async () =>
             {
                 var proposals = await _proposalRepository.GetFullProposalWithIdAsync(id) ??
-                    throw new KeyNotFoundException("No proposals found for the provided IDs.");
+                    throw new KeyNotFoundException("No proposals found for the provided ID.");
 
                 var result = _mapper.Map<ProposalDto>(proposals);
 

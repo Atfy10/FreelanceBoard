@@ -15,6 +15,11 @@ namespace FreelanceBoard.Infrastructure.Repositories
         protected readonly AppDbContext _dbContext = dbContext
             ?? throw new ArgumentNullException(nameof(dbContext));
 
+        public async Task<TEntity> GetByIdsAsync(params int[] id)
+        {
+            return await _dbContext.Set<TEntity>().FindAsync(id);
+        }
+
         public async Task AddAsync(TEntity entity)
         {
             _dbContext.Set<TEntity>().Add(entity);

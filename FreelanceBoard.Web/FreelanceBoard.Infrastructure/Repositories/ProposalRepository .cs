@@ -14,7 +14,7 @@ namespace FreelanceBoard.Infrastructure.Repositories
     {
         public ProposalRepository(AppDbContext dbContext) : base(dbContext) { }
 
-        public async Task<List<Proposal>?> GetByIdsAsync(IEnumerable<int> ids)
+        public async Task<List<Proposal>?> GetManyByIdsAsync(params int[] ids)
         {
             return await _dbContext.Proposals
                 .Where(p => ids.Contains(p.Id))

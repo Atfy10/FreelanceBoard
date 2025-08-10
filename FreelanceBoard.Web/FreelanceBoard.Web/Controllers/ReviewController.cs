@@ -14,15 +14,14 @@ namespace FreelanceBoard.Web.Controllers
 
         public ReviewController(IReviewQuery reviewQuery, IMediator mediator)
         {
-            this._reviewQuery = reviewQuery ?? throw new ArgumentNullException(nameof(reviewQuery));
-            this._mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _reviewQuery = reviewQuery ?? throw new ArgumentNullException(nameof(reviewQuery));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
-        [HttpGet("Get Review")]
 
+        [HttpGet("Get Review")]
         public async Task<IActionResult> GetReviewById(int id)
         {
             var reviewDto = await _reviewQuery.GetReviewByIdAsync(id);
-
             return Ok(reviewDto);
         }
 

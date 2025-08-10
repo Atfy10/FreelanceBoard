@@ -9,7 +9,7 @@ namespace FreelanceBoard.Core.Interfaces
 {
     public interface IProposalRepository : IBaseRepository<Proposal>
     {
-        Task<List<Proposal>?> GetByIdsAsync(IEnumerable<int> ids);
+        Task<List<Proposal>?> GetManyByIdsAsync(params int[] ids);
 
         Task<Proposal?> GetFullProposalWithIdAsync(int id);
     }

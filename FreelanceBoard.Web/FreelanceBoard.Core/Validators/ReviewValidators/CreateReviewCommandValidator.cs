@@ -24,6 +24,8 @@ namespace FreelanceBoard.Core.Validators.ReviewValidators
                 .Equals(DateTime.Now);
 
                 RuleFor(x => x.ContractId)
+                .NotEmpty()
+                .WithMessage("Contract ID cannot be empty.")
                 .GreaterThan(0)
                 .WithMessage("Contract ID must be greater than zero.");
             RuleFor(x => x.ReviewerId)

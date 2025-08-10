@@ -18,7 +18,7 @@ namespace FreelanceBoard.Core.Validators.ProposalValidators
 
             RuleFor(x => x.Status)
                 .NotEmpty()
-                .MaximumLength(30).WithMessage("Status has to be less than 30 characters");
+                .MaximumLength(10).WithMessage("Status has to be less than 10 characters");
 
             RuleFor(x => x.Id)
                 .GreaterThan(0)

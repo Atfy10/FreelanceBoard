@@ -44,9 +44,9 @@ namespace FreelanceBoard.Core.CommandHandlers.ProposalCommandHandlers
             var proposal = await _proposalRepository.GetByIdAsync(request.Id) ??
                 throw new KeyNotFoundException("Proposal with the provided ID was not found.");
 
-            
             var updatedProposal = _mapper.Map(request, proposal);
 
+            //
             updatedProposal.Freelancer = await _userRepository.GetByIdAsync(request.FreelancerId) ??
                 throw new KeyNotFoundException("Freelancer with the provided ID was not found.");
 
