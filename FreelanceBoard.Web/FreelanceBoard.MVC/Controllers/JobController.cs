@@ -21,5 +21,15 @@ namespace FreelanceBoard.MVC.Controllers
         {
             return View("JobDetails");
         }
+
+        public IActionResult ClientDashboard()
+        {
+            return View("ClientDashboard");
+        }
+
+        public IActionResult JobProposal()
+        {
+            return View("JobProposal");
+        }
     }
 }
