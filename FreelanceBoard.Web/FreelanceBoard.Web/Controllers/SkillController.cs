@@ -13,11 +13,11 @@ namespace FreelanceBoard.Web.Controllers
 	public class SkillController : ControllerBase
 	{
 		private readonly IMediator _mediator;
-		private readonly IUserQuery _userQuery;
-		public SkillController(IMediator mediator, IUserQuery userQuery)
+		private readonly ISkillQuery _skillQuery;
+		public SkillController(IMediator mediator, ISkillQuery skillQuery)
 		{
 			_mediator = mediator;
-			_userQuery = userQuery;
+			_skillQuery = skillQuery;
 		}
 
 		[HttpPost]
@@ -28,5 +28,15 @@ namespace FreelanceBoard.Web.Controllers
 			var result = await _mediator.Send(command);
 			return this.HandleResult(result);
 		}
+
+		//get all skills
+		[HttpGet]
+		public async Task<IActionResult> GetAllSkills()
+		{
+			var result = await _skillQuery.GetAllSkillsAsync();
+			return this.HandleResult(result);
+		}
+
+
 	}
 }

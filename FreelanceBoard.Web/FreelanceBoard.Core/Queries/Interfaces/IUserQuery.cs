@@ -21,6 +21,5 @@ namespace FreelanceBoard.Core.Queries.Interfaces
 
 
 
-
 	}
 }
