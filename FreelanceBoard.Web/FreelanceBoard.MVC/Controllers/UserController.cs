@@ -140,7 +140,6 @@ namespace FreelanceBoard.MVC.Controllers
             return View(model);
         }
 
-    }
 		[HttpPost]
 		public async Task<IActionResult> AddProject([FromBody] AddProjectViewModel model)
 		{
