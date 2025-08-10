@@ -3,7 +3,10 @@
     var isProfile = path == "/User/Profile";
     var isRegister = path == "/User/Register";
     var isLogin = path == "/User/Login";
+    var isLoggedOut = path == "/User/Logout";
     bool isDefaultLogin = !isProfile && !isRegister && !isLogin;
+
+    bool isLoggedIn = User.Identity.IsAuthenticated;
 }
 <!doctype html>
 <html lang="en">
@@ -83,15 +86,27 @@
 
                     <li><a class="nav-link" href="/Job">Jobs</a></li>
 
-                    <li class="nav-item ms-lg-auto">
-                        <a class="nav-link @(isProfile ? "active-nav-btn" : "")" href="/User/Profile">Profile</a>
+                    <li class="nav-item ms-lg-auto"> 
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link @(isRegister ? "active-nav-btn" : "")" href="/User/Register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @((isLogin || isDefaultLogin) ? "active-nav-btn" : "")" href="/User/Login">Login</a>
-                    </li>
+                    @if (!isLoggedIn)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link @(isRegister ? "active-nav-btn" : "")" href="/User/Register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @((isLogin || isDefaultLogin) ? "active-nav-btn" : "")" href="/User/Login">Login</a>
+                        </li>
+                    }
+                    @if (isLoggedIn)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link @(isProfile ? "active-nav-btn" : "")" href="/User/Profile">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @((isLoggedOut || isDefaultLogin) ? "active-nav-btn" : "")" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                            <form id="logout-form" method="post" action="/User/Logout" style="display: none;"></form>
+                        </li>
+                    }
 
 
                 </ul>

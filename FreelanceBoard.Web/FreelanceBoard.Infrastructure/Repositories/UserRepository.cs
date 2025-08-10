@@ -56,12 +56,17 @@ namespace FreelanceBoard.Infrastructure.Repositories
             return roles.ToList().FirstOrDefault();
         }
 
-        public async Task<IdentityResult> CreateAsync(ApplicationUser user, string pwd, string role)
-        {
-            await _userManager.CreateAsync(user, pwd);
-            return await _userManager.AddToRoleAsync(user, role);
+		public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password, string role)
+		{
+			var result = await _userManager.CreateAsync(user, password);
 
-        }
-    }
+			if (!result.Succeeded)
+				return result;
+
+			await _userManager.AddToRoleAsync(user, role);
+
+			return result;
+		}
+	}
 
 }

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Profile = FreelanceBoard.Core.Domain.Entities.Profile;
 
 namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 {
@@ -26,10 +27,11 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
         private readonly IJwtToken _jwtToken;
 		private readonly IRoleRepository _roleRepository;
         string AddOperation;
+		private readonly IBaseRepository<Profile> _profileRepository;
 
 		public CreateUserCommandHandler(IUserRepository userRepository,
 			IMapper mapper, OperationExecutor executor, IJwtToken jwtToken,
-			IRoleRepository roleRepository)
+			IRoleRepository roleRepository , IBaseRepository<Profile> profileRepository)
 		{
 			_userRepository = userRepository;
 			_mapper = mapper;
@@ -37,23 +39,25 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 			_jwtToken = jwtToken;
 			_roleRepository = roleRepository;
             AddOperation = OperationType.Add.ToString();
-		}
+			_profileRepository = profileRepository;
+
+        }
 
 		public async Task<Result<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
 			=> await _executor.Execute(async () =>
 			{
 
-                if (request == null)
+				if (request == null)
 					throw new NullReferenceException("Create request cannot be null.");
 
 				var existingUser = await _userRepository.GetByEmailAsync(request.Email);
 
 				if (existingUser != null)
-                    throw new EmailExistException("Email is already registered");
+					throw new EmailExistException("Email is already registered");
 
-                var user = _mapper.Map<ApplicationUser>(request);
+				var user = _mapper.Map<ApplicationUser>(request);
 
-                var result = await _userRepository.CreateAsync(user, request.Password, request.Role);
+				var result = await _userRepository.CreateAsync(user, request.Password, request.Role);
 
 				if (!result.Succeeded)
 				{
@@ -61,8 +65,13 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 					throw new InvalidOperationException($"User creation failed: {errors}");
 				}
 
-                var token = _jwtToken.GenerateJwtToken(user, request.Role);
+				var token = _jwtToken.GenerateJwtToken(user, request.Role);
+				await _profileRepository.AddAsync(new Profile(){					
+					UserId = user.Id,
+					Bio = "",
+					Image = "",
 
+                });
                 return Result<string>.Success(token, AddOperation, $"User with email {request.Email} created successfully.");
 			}, OperationType.Add);
 

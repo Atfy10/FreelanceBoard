@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Data.SqlClient;
 using System.Text;
 
 namespace FreelanceBoard.Web
@@ -40,11 +41,15 @@ namespace FreelanceBoard.Web
 
             builder.Services.AddScoped(typeof(IUserQuery), typeof(UserQuery));
 
+            builder.Services.AddScoped(typeof(IUserAccessor), typeof(UserAccessor));
+
             builder.Services.AddScoped<OperationExecutor>();
 
             builder.Services.AddScoped<IJwtToken, JwtToken>();
+			builder.Services.AddHttpContextAccessor();
+			builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
+			builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("FreelanceBoard.Infrastructure"))
@@ -53,6 +58,17 @@ namespace FreelanceBoard.Web
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:5030") // or "*" for any origin (not recommended for production)
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+            });
 
             var config = builder.Configuration;
             var jwtKey = Encoding.UTF8.GetBytes(config["Jwt:Key"]);
@@ -163,6 +179,7 @@ namespace FreelanceBoard.Web
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
+            app.UseCors("AllowFrontend");
 
             app.UseAuthorization();
 

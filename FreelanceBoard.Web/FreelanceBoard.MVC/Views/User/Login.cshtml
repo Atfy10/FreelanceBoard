@@ -188,6 +188,12 @@
             box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
             outline: none;
         }
+
+    .text-danger {
+        margin-top: 4px;
+        display: block;
+        font-size: 0.875rem;
+    }
 </style>
 <section class="auth-section">
     <div class="container">
@@ -203,12 +209,14 @@
                     </div>
 
                     <form asp-action="Login" asp-controller="User" method="post" class="custom-form">
+                        @Html.AntiForgeryToken()
                         <div class="form-group">
                             <label for="email">Email</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi-person custom-icon"></i></span>
-                                <input type="email" name="Email" id="email" class="form-control" placeholder="Enter your email" required>
+                                <input asp-for="Email" class="form-control" placeholder="Enter your email">
                             </div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
@@ -216,10 +224,11 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi-lock custom-icon"></i></span>
                                 <input asp-for="Password" class="form-control" placeholder="Enter your password" />
-                                <button type="button" class="password-toggle" onclick="togglePassword('password')">
-                                    <i class="bi-eye" id="password-eye"></i>
+                                <button type="button" class="password-toggle" onclick="togglePassword('Password')">
+                                    <i class="bi-eye" id="Password-eye"></i>
                                 </button>
                             </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center">
@@ -238,9 +247,11 @@
                             Sign In
                         </button>
                     </form>
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
 
                     <div class="auth-links">
-                        <p>Don't have an account? <a href="register.html">Create one here</a></p>
+                        <p>Don't have an account? <a href="/User/Register">Create one here</a></p>
                     </div>
                 </div>
             </div>
@@ -250,16 +261,20 @@
 
 <script>
     function togglePassword(fieldId) {
-        const input = document.getElementById(fieldId);
-        const eyeIcon = document.getElementById("password-eye");
-        if (input.type === "password") {
-            input.type = "text";
-            eyeIcon.classList.remove("bi-eye");
-            eyeIcon.classList.add("bi-eye-slash");
+        const field = document.querySelector(`[asp-for="${fieldId}"]`) || document.getElementById(fieldId);
+        const eye = document.getElementById(fieldId + '-eye');
+
+        if (!field || !eye) return;
+
+        if (field.type === 'password') {
+            field.type = 'text';
+            eye.classList.remove('bi-eye');
+            eye.classList.add('bi-eye-slash');
         } else {
-            input.type = "password";
-            eyeIcon.classList.remove("bi-eye-slash");
-            eyeIcon.classList.add("bi-eye");
+            field.type = 'password';
+            eye.classList.remove('bi-eye-slash');
+            eye.classList.add('bi-eye');
         }
     }
 </script>
+

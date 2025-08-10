@@ -8,6 +8,9 @@ namespace FreelanceBoard.MVC.Controllers
         {
             return View();
         }
-        
-    }
+		public IActionResult NotFound()
+		{
+			return View("NotFound");
+		}
+	}
 }

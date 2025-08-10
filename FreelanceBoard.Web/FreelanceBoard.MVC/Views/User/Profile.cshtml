@@ -1,133 +1,142 @@
-﻿<style>
-            .profile-section {
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-                min-height: 100vh;
-                padding: 80px 0;
-            }
+﻿@model UserProfileViewModel
 
-            .profile-container {
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                border-radius: 20px;
-                padding: 40px;
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-                margin-bottom: 30px;
-            }
-
-            .profile-header {
-                text-align: center;
-                margin-bottom: 40px;
-                position: relative;
-            }
-
-            .profile-picture-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 20px;
+@if (TempData["token"] != null)
+{
+    <script>
+        sessionStorage.setItem("token", "@TempData["token"]");
+    </script>
 }
 
-.profile-picture {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid white;
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-    transition: all 0.3s ease;
-}
+<style>
+    .profile-section {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        min-height: 100vh;
+        padding: 80px 0;
+    }
 
-.profile-picture:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 40px rgba(99, 102, 241, 0.4);
-}
+    .profile-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
 
-.profile-picture-upload {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 45px;
-    height: 45px;
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border: 3px solid white;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-}
+    .profile-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
 
-.profile-picture-upload:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
-    background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
-}
+    .profile-picture-container {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
 
-.profile-picture-upload i {
-    color: white;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-}
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        transition: all 0.3s ease;
+    }
 
-.profile-picture-upload:hover i {
-    transform: scale(1.1);
-}
+        .profile-picture:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.4);
+        }
 
-            .profile-username {
-                color: #6366f1;
-                font-weight: 700;
-                font-size: 2rem;
-                margin-bottom: 10px;
-            }
+    .profile-picture-upload {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 3px solid white;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
 
-            .profile-role {
-                color: #6c757d;
-                font-size: 1.1rem;
-                margin-bottom: 0;
-            }
+        .profile-picture-upload:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+        }
 
-            .section-title {
-                color: #6366f1;
-                font-weight: 700;
-                font-size: 1.5rem;
-                margin-bottom: 20px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
+        .profile-picture-upload i {
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
 
-            .section-title i {
-                font-size: 1.3rem;
-            }
+        .profile-picture-upload:hover i {
+            transform: scale(1.1);
+        }
 
-            .form-group {
-                margin-bottom: 25px;
-            }
+    .profile-username {
+        color: #6366f1;
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
 
-            .form-group label {
-                color: #6366f1;
-                font-weight: 600;
-                margin-bottom: 8px;
-                display: block;
-            }
+    .profile-role {
+        color: #6c757d;
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
 
-            .input-group {
-                position: relative;
-            }
+    .section-title {
+        color: #6366f1;
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-            .input-group .form-control,
-            .input-group .form-control:focus {
-                padding-left: 50px;
-                height: 55px;
-                border: none;
-                background: rgba(255, 255, 255, 0.8);
-                border-radius: 10px;
-                font-size: 16px;
-                transition: all 0.3s ease;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            }
+        .section-title i {
+            font-size: 1.3rem;
+        }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+        .form-group label {
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+    .input-group {
+        position: relative;
+    }
+
+        .input-group .form-control,
+        .input-group .form-control:focus {
+            padding-left: 50px;
+            height: 55px;
+            border: none;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
             .input-group .form-control:focus {
                 background: rgba(255, 255, 255, 1);
@@ -135,854 +144,613 @@
                 outline: none;
             }
 
-            .input-group-text {
-                position: absolute;
-                left: 15px;
-                top: 50%;
-                transform: translateY(-50%);
-                background: none;
-                border: none;
-                color: #6c757d;
-                z-index: 10;
-                font-size: 1.2rem;
-            }
+    .input-group-text {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #6c757d;
+        z-index: 10;
+        font-size: 1.2rem;
+    }
 
-            .bio-textarea {
-                min-height: 120px;
-                resize: vertical;
-                padding: 15px 15px 15px 50px;
-            }
+    .bio-input-group {
+        align-items: flex-start; /* Align items to the top */
+    }
 
-            .skills-container {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                margin-top: 10px;
-            }
+    .bio-icon {
+        height: auto; /* Let the icon take natural height */
+        padding-top: 15px; /* Align with textarea text */
+    }
 
-            .skill-tag {
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-                color: white;
-                padding: 8px 15px;
-                border-radius: 20px;
-                font-size: 0.9rem;
-                font-weight: 500;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                transition: all 0.3s ease;
-            }
+    .bio-textarea {
+        min-height: 120px;
+        resize: vertical;
+        padding: 15px;
+        line-height: 1.5;
+        border: none;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
 
-            .skill-tag:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
-            }
+        .bio-textarea:focus {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+            outline: none;
+        }
 
-            .skill-remove {
-                background: rgba(255, 255, 255, 0.2);
-                border: none;
-                color: white;
-                border-radius: 50%;
-                width: 20px;
-                height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                font-size: 0.8rem;
-            }
-
-            .add-skill-btn {
-                background: rgba(139, 92, 246, 0.1);
-                border: 2px dashed #8b5cf6;
-                color: #6366f1;
-                padding: 8px 15px;
-                border-radius: 20px;
-                font-size: 0.9rem;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-
-            .add-skill-btn:hover {
-                background: rgba(139, 92, 246, 0.2);
-                border-color: #6366f1;
-            }
-
-            .projects-container {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 20px;
-                margin-top: 20px;
-            }
-
-            .project-card {
-                background: rgba(255, 255, 255, 0.8);
-                border-radius: 15px;
-                padding: 20px;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease;
-                border: none;
-            }
-
-            .project-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
-            }
-
-            .project-title {
-                color: #6366f1;
-                font-weight: 600;
-                font-size: 1.1rem;
-                margin-bottom: 10px;
-            }
-
-            .project-description {
-                color: #6c757d;
-                font-size: 0.9rem;
-                margin-bottom: 15px;
-            }
-
-            .project-attachment {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                padding: 10px;
-                background: rgba(139, 92, 246, 0.1);
-                border-radius: 8px;
-                margin-bottom: 10px;
-                transition: all 0.3s ease;
-            }
-
-            .project-attachment:hover {
-                background: rgba(139, 92, 246, 0.2);
-            }
-
-            .project-attachment i {
-                color: #6366f1;
-                font-size: 1.2rem;
-            }
-
-            .project-attachment span {
-                color: #6366f1;
-                font-weight: 500;
-                flex: 1;
-            }
-
-            .add-project-btn {
-                background: rgba(139, 92, 246, 0.1);
-                border: 2px dashed #8b5cf6;
-                color: #6366f1;
-                padding: 40px 20px;
-                border-radius: 15px;
-                text-align: center;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .add-project-btn:hover {
-                background: rgba(139, 92, 246, 0.2);
-                border-color: #6366f1;
-            }
-
-            .add-project-btn i {
-                font-size: 2rem;
-                margin-bottom: 10px;
-            }
-
-            .save-btn {
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-                border: none;
-                color: white;
-                padding: 15px 40px;
-                border-radius: 10px;
-                font-weight: 600;
-                font-size: 16px;
-                transition: all 0.3s ease;
-                margin-top: 30px;
-            }
-
-            .save-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-                color: white;
-            }
-
-            .edit-mode-toggle {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-                border: none;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 25px;
-                font-weight: 500;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-
-            .edit-mode-toggle:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
-            }
-
-            .readonly-field {
-                background: rgba(255, 255, 255, 0.5) !important;
-                cursor: not-allowed;
-            }
-
-                .projects-container {
-                    grid-template-columns: 1fr;
-                }
-
-                .profile-picture {
-                    width: 120px;
-                    height: 120px;
-                }
-            }
-
-            .password-section {
-    border-top: 2px solid rgba(139, 92, 246, 0.1);
-    padding-top: 30px;
-    margin-top: 30px;
-}
-
-.password-toggle-btn {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #6c757d;
-    cursor: pointer;
-    z-index: 10;
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
-}
-
-.password-toggle-btn:hover {
-    color: #6366f1;
-}
-
-.password-strength {
-    margin-top: 8px;
-    height: 4px;
-    background: rgba(139, 92, 246, 0.1);
-    border-radius: 2px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.password-strength-bar {
-    height: 100%;
-    transition: all 0.3s ease;
-    border-radius: 2px;
-}
-
-.strength-weak { background: #ef4444; width: 25%; }
-.strength-fair { background: #f59e0b; width: 50%; }
-.strength-good { background: #10b981; width: 75%; }
-.strength-strong { background: #6366f1; width: 100%; }
-
-.password-requirements {
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: #6c757d;
-}
-
-.requirement {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-    transition: color 0.3s ease;
-}
-
-.requirement.met {
-    color: #10b981;
-}
-
-.requirement i {
-    font-size: 0.8rem;
-}
-
-.change-password-btn {
-    background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-    border: none;
-    color: white;
-    padding: 12px 30px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    margin-top: 20px;
-}
-
-.change-password-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3);
-    color: white;
-}
-
-.change-password-btn:disabled {
-    background: #6c757d;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-        </style>
+    /* For readonly state */
+    .readonly-field {
+        background: rgba(255, 255, 255, 0.5) !important;
+        cursor: not-allowed;
+    }
 
 
-    <section class="profile-section">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-10 col-12">
-                            <!-- Profile Header -->
-                            <div class="profile-container">
-                                <button class="edit-mode-toggle" onclick="toggleEditMode()">
-                                    <i class="bi-pencil-square me-2"></i>
-                                    <span id="edit-btn-text">Edit Profile</span>
-                                </button>
+    .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
 
-                                <div class="profile-header">
-                                    <div class="profile-picture-container">
-                                        <img src="/placeholder.svg?height=150&width=150&text=Profile" alt="Profile Picture" class="profile-picture" id="profilePicture">
-                                        <div class="profile-picture-upload" onclick="document.getElementById('profilePictureInput').click()">
-                                            <i class="bi-camera-fill"></i>
-                                        </div>
-                                        <input type="file" id="profilePictureInput" accept="image/*" style="display: none;" onchange="handleProfilePictureChange(event)">
-                                    </div>
-                                    <h2 class="profile-username" id="displayUsername">john_developer</h2>
-                                    <p class="profile-role">Full Stack Developer</p>
-                                </div>
+    .skill-tag {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
 
-                                <!-- Basic Information -->
-                                <div class="row">
-                                    <div class="col-lg-6 col-12">
-                                        <div class="form-group">
-                                            <label for="username">Username</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="bi-person-badge"></i></span>
-                                                <input type="text" id="username" class="form-control readonly-field" value="john_developer" readonly>
-                                            </div>
-                                        </div>
-                                    </div>
+        .skill-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        }
 
-                                    <div class="col-lg-6 col-12">
-                                        <div class="form-group">
-                                            <label for="phoneNumber">Phone Number</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="bi-telephone"></i></span>
-                                                <input type="tel" id="phoneNumber" class="form-control readonly-field" value="+1 (555) 123-4567" readonly>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+    .skill-remove {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
 
-                                <!-- Bio Section -->
-                                <div class="form-group">
-                                    <label for="bio">Bio</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" style="top: 20px;"><i class="bi-person-lines-fill"></i></span>
-                                        <textarea id="bio" class="form-control bio-textarea readonly-field" readonly placeholder="Tell us about yourself...">Passionate full-stack developer with 5+ years of experience in building scalable web applications. Specialized in React, Node.js, and cloud technologies. Always eager to learn new technologies and solve complex problems.</textarea>
-                                    </div>
-                                </div>
-                            
-<!-- Change Password Section -->
-<div class="password-section" id="passwordSection" style="display: none;">
-    <h4 class="section-title">
-        <i class="bi-shield-lock-fill"></i>
-        Change Password
-    </h4>
-    
-    <div class="row">
-        <div class="col-12">
-            <div class="form-group">
-                <label for="currentPassword">Current Password</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi-lock-fill"></i></span>
-                    <input type="password" id="currentPassword" class="form-control" placeholder="Enter your current password">
-                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('currentPassword')">
-                        <i class="bi-eye" id="currentPassword-eye"></i>
+    .add-skill-btn {
+        background: rgba(139, 92, 246, 0.1);
+        border: 2px dashed #8b5cf6;
+        color: #6366f1;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .add-skill-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #6366f1;
+        }
+
+    .projects-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .project-card {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+        }
+
+    .project-title {
+        color: #6366f1;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .project-description {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+
+    .project-attachment {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        background: rgba(139, 92, 246, 0.1);
+        border-radius: 8px;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        max-width: 100%;
+        cursor: pointer;
+    }
+
+        .project-attachment:hover {
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .project-attachment i {
+            color: #6366f1;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .project-attachment span {
+            color: #6366f1;
+            font-weight: 500;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.85rem;
+        }
+
+    .add-project-btn {
+        background: rgba(139, 92, 246, 0.1);
+        border: 2px dashed #8b5cf6;
+        color: #6366f1;
+        padding: 40px 20px;
+        border-radius: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .add-project-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #6366f1;
+        }
+
+        .add-project-btn i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+    .save-btn {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        border: none;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        margin-top: 30px;
+    }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            color: white;
+        }
+
+    .edit-mode-toggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .edit-mode-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        }
+
+    .readonly-field {
+        background: rgba(255, 255, 255, 0.5) !important;
+        cursor: not-allowed;
+    }
+
+    .change-password-link {
+        position: absolute;
+        top: 20px;
+        right: 180px;
+        background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 14px;
+    }
+
+        .change-password-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+    .project-attachment[title]:hover:after {
+        content: attr(title);
+        position: absolute;
+        background: #333;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        z-index: 100;
+        pointer-events: none;
+    }
+</style>
+
+<section class="profile-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-12">
+                <!-- Profile Header -->
+                <div class="profile-container">
+                    <button class="edit-mode-toggle" onclick="toggleEditMode()">
+                        <i class="bi-pencil-square me-2"></i>
+                        <span id="edit-btn-text">Edit Profile</span>
                     </button>
-                </div>
-            </div>
-        </div>
-    </div>
+                    <a href="/User/ChangePassword" class="change-password-link">
+                        <i class="bi-shield-lock-fill me-2"></i>
+                        Change Password
+                    </a>
 
-    <div class="row">
-        <div class="col-lg-6 col-12">
-            <div class="form-group">
-                <label for="newPassword">New Password</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi-key-fill"></i></span>
-                    <input type="password" id="newPassword" class="form-control" placeholder="Enter new password" oninput="checkPasswordStrength()">
-                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('newPassword')">
-                        <i class="bi-eye" id="newPassword-eye"></i>
-                    </button>
-                </div>
-                <div class="password-strength" id="passwordStrength">
-                    <div class="password-strength-bar" id="passwordStrengthBar"></div>
-                </div>
-                <div class="password-requirements" id="passwordRequirements">
-                    <div class="requirement" id="req-length">
-                        <i class="bi-x-circle"></i>
-                        <span>At least 8 characters</span>
-                    </div>
-                    <div class="requirement" id="req-uppercase">
-                        <i class="bi-x-circle"></i>
-                        <span>One uppercase letter</span>
-                    </div>
-                    <div class="requirement" id="req-lowercase">
-                        <i class="bi-x-circle"></i>
-                        <span>One lowercase letter</span>
-                    </div>
-                    <div class="requirement" id="req-number">
-                        <i class="bi-x-circle"></i>
-                        <span>One number</span>
-                    </div>
-                    <div class="requirement" id="req-special">
-                        <i class="bi-x-circle"></i>
-                        <span>One special character</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <div class="profile-header">
+                        <div class="profile-picture-container">
+                            <img src="@(string.IsNullOrEmpty(Model.Profile?.Image)
+                                                                      ? Url.Content("~/images/avatar.png")
+                                                                      : Url.Content("https://localhost:7029" + Model.Profile.Image))"
+                                 alt="Profile Picture"
+                                 class="profile-picture"
+                                 id="profilePicture">
 
-        <div class="col-lg-6 col-12">
-            <div class="form-group">
-                <label for="confirmNewPassword">Confirm New Password</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi-key-fill"></i></span>
-                    <input type="password" id="confirmNewPassword" class="form-control" placeholder="Confirm new password" oninput="checkPasswordMatch()">
-                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('confirmNewPassword')">
-                        <i class="bi-eye" id="confirmNewPassword-eye"></i>
-                    </button>
-                </div>
-                <div id="passwordMatchMessage" style="margin-top: 8px; font-size: 0.85rem;"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="text-center">
-        <button class="change-password-btn" id="changePasswordBtn" onclick="changePassword()" disabled>
-            <i class="bi-shield-check me-2"></i>
-            Update Password
-        </button>
-    </div>
-</div>
-
-                            <!-- Skills Section -->
-                            <div class="profile-container">
-                                <h3 class="section-title">
-                                    <i class="bi-gear-fill"></i>
-                                    Skills
-                                </h3>
-                                <div class="skills-container" id="skillsContainer">
-                                    <div class="skill-tag">
-                                        JavaScript
-                                        <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
-                                    </div>
-                                    <div class="skill-tag">
-                                        React
-                                        <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
-                                    </div>
-                                    <div class="skill-tag">
-                                        Node.js
-                                        <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
-                                    </div>
-                                    <div class="skill-tag">
-                                        Python
-                                        <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
-                                    </div>
-                                    <div class="skill-tag">
-                                        MongoDB
-                                        <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
-                                    </div>
-                                    <div class="add-skill-btn" onclick="addSkill()" style="display: none;">
-                                        <i class="bi-plus-circle me-2"></i>
-                                        Add Skill
-                                    </div>
-                                </div>
+                            <div class="profile-picture-upload" onclick="document.getElementById('profilePictureInput').click()">
+                                <i class="bi-camera-fill"></i>
                             </div>
 
-                            <!-- Projects Section -->
-                            <div class="profile-container">
-                                <h3 class="section-title">
-                                    <i class="bi-folder-fill"></i>
-                                    Projects
-                                </h3>
-                                <div class="projects-container" id="projectsContainer">
-                                    <div class="project-card">
-                                        <h4 class="project-title">E-Commerce Platform</h4>
-                                        <p class="project-description">A full-stack e-commerce solution built with React and Node.js, featuring user authentication, payment integration, and admin dashboard.</p>
-                                        <div class="project-attachment">
-                                            <i class="bi-file-earmark-code"></i>
-                                            <span>source-code.zip</span>
-                                            <button class="btn btn-sm" onclick="downloadAttachment('source-code.zip')">
-                                                <i class="bi-download"></i>
-                                            </button>
-                                        </div>
-                                        <div class="project-attachment">
-                                            <i class="bi-file-earmark-pdf"></i>
-                                            <span>project-documentation.pdf</span>
-                                            <button class="btn btn-sm" onclick="downloadAttachment('project-documentation.pdf')">
-                                                <i class="bi-download"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                            <input type="file" id="profilePictureInput" accept="image/*" style="display: none;" onchange="handleProfilePictureChange(event)">
+                        </div>
+                        <h2 class="profile-username" id="displayUsername">@Model.UserName</h2>
+                    </div>
 
-                                    <div class="project-card">
-                                        <h4 class="project-title">Task Management App</h4>
-                                        <p class="project-description">A collaborative task management application with real-time updates, built using React, Socket.io, and Express.js.</p>
-                                        <div class="project-attachment">
-                                            <i class="bi-github"></i>
-                                            <span>github-repository</span>
-                                            <button class="btn btn-sm" onclick="openLink('https://github.com/john/task-app')">
-                                                <i class="bi-box-arrow-up-right"></i>
-                                            </button>
-                                        </div>
-                                        <div class="project-attachment">
-                                            <i class="bi-play-circle"></i>
-                                            <span>live-demo</span>
-                                            <button class="btn btn-sm" onclick="openLink('https://taskapp-demo.com')">
-                                                <i class="bi-box-arrow-up-right"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div class="add-project-btn" onclick="addProject()" style="display: none;">
-                                        <i class="bi-plus-circle"></i>
-                                        <span>Add New Project</span>
-                                    </div>
+                    <!-- Basic Information -->
+                    <div class="row">
+                        <div class="col-lg-6 col-12">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi-person-badge"></i></span>
+                                    <input type="text" id="username" class="form-control readonly-field" value="@Model.UserName" readonly>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Save Button -->
-                            <div class="text-center">
-                                <button class="save-btn" id="saveBtn" onclick="saveProfile()" style="display: none;">
-                                    <i class="bi-check-circle me-2"></i>
-                                    Save Changes
-                                </button>
+                        <div class="col-lg-6 col-12">
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi-telephone"></i></span>
+                                    <input type="tel" id="phoneNumber" class="form-control readonly-field" value="@Model.PhoneNumber" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bio Section -->
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <div class="input-group bio-input-group">
+                            <span class="input-group-text bio-icon"><i class="bi-person-lines-fill"></i></span>
+                            <textarea id="bio" class="form-control bio-textarea readonly-field" readonly
+                                      placeholder="Tell us about yourself...">@Model.Profile?.Bio</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Section -->
+                <div class="profile-container">
+                    <h3 class="section-title">
+                        <i class="bi-gear-fill"></i>
+                        Skills
+                    </h3>
+                    <div class="skills-container" id="skillsContainer">
+                        @foreach (var skill in Model.Skills ?? new List<SkillViewModel>())
+                        {
+                            <div class="skill-tag">
+                                @skill.Name
+                                <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
+                            </div>
+                        }
+                        <div class="add-skill-btn" onclick="openAddSkillModal()" style="display: none;">
+                            <i class="bi-plus-circle me-2"></i>
+                            Add Skill
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="addSkillModal" tabindex="-1" aria-labelledby="addSkillModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addSkillModalLabel">Add New Skill</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <label for="skillName">Skill Name *</label>
+                                <input type="text" id="skillName" class="form-control" placeholder="Enter skill name" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button class="btn btn-primary" onclick="saveSkill()">Save Skill</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
-        </main>
 
-        <!-- JAVASCRIPT FILES -->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/owl.carousel.min.js"></script>
-        <script src="js/counter.js"></script>
-        <script src="js/custom.js"></script>
+                <!-- Projects Section -->
+                <div class="profile-container">
+                    <h3 class="section-title">
+                        <i class="bi-folder-fill"></i>
+                        Projects
+                    </h3>
+                    <div class="projects-container" id="projectsContainer">
+                        @foreach (var project in Model.Projects ?? new List<ProjectViewModel>())
+                        {
+                            <div class="project-card">
+                                <h4 class="project-title">@project.Title</h4>
+                                <p class="project-description">@project.Description</p>
+                                @if (!string.IsNullOrEmpty(project.Attachments))
+                                {
+                                    var attachments = project.Attachments.Split(',');
+                                    foreach (var attachment in attachments)
+                                    {
+                                        var trimmed = attachment.Trim();
+                                        var isLink = trimmed.StartsWith("http");
+                                        var icon = isLink ? "bi-box-arrow-up-right" :
+                                        trimmed.EndsWith(".pdf") ? "bi-file-earmark-pdf" :
+                                        "bi-file-earmark-code";
 
-        <script>
-            let isEditMode = false;
-
-            function toggleEditMode() {
-    isEditMode = !isEditMode;
-    const editBtn = document.getElementById('edit-btn-text');
-    const saveBtn = document.getElementById('saveBtn');
-    const passwordSection = document.getElementById('passwordSection');
-    const readonlyFields = document.querySelectorAll('.readonly-field');
-    const skillRemoveBtns = document.querySelectorAll('.skill-remove');
-    const addSkillBtn = document.querySelector('.add-skill-btn');
-    const addProjectBtn = document.querySelector('.add-project-btn');
-
-    if (isEditMode) {
-        editBtn.textContent = 'Cancel Edit';
-        saveBtn.style.display = 'inline-block';
-        passwordSection.style.display = 'block';
-        addSkillBtn.style.display = 'flex';
-        addProjectBtn.style.display = 'flex';
-        
-        readonlyFields.forEach(field => {
-            if (field.id !== 'username') { // Keep username readonly
-                field.removeAttribute('readonly');
-                field.classList.remove('readonly-field');
-            }
-        });
-
-        skillRemoveBtns.forEach(btn => {
-            btn.style.display = 'flex';
-        });
-    } else {
-        editBtn.textContent = 'Edit Profile';
-        saveBtn.style.display = 'none';
-        passwordSection.style.display = 'none';
-        addSkillBtn.style.display = 'none';
-        addProjectBtn.style.display = 'none';
-        
-        // Clear password fields when exiting edit mode
-        document.getElementById('currentPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmNewPassword').value = '';
-        document.getElementById('passwordMatchMessage').innerHTML = '';
-        resetPasswordRequirements();
-        
-        readonlyFields.forEach(field => {
-            field.setAttribute('readonly', true);
-            field.classList.add('readonly-field');
-        });
-
-        skillRemoveBtns.forEach(btn => {
-            btn.style.display = 'none';
-        });
-    }
-}
-
-            function handleProfilePictureChange(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        document.getElementById('profilePicture').src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-
-            function addSkill() {
-                const skillName = prompt('Enter skill name:');
-                if (skillName && skillName.trim()) {
-                    const skillsContainer = document.getElementById('skillsContainer');
-                    const addBtn = skillsContainer.querySelector('.add-skill-btn');
-                    
-                    const skillTag = document.createElement('div');
-                    skillTag.className = 'skill-tag';
-                    skillTag.innerHTML = `
-                        ${skillName.trim()}
-                        <button class="skill-remove" onclick="removeSkill(this)">×</button>
-                    `;
-                    
-                    skillsContainer.insertBefore(skillTag, addBtn);
-                }
-            }
-
-            function removeSkill(button) {
-                button.parentElement.remove();
-            }
-
-            function addProject() {
-                const projectTitle = prompt('Enter project title:');
-                if (projectTitle && projectTitle.trim()) {
-                    const projectDescription = prompt('Enter project description:');
-                    if (projectDescription && projectDescription.trim()) {
-                        const projectsContainer = document.getElementById('projectsContainer');
-                        const addBtn = projectsContainer.querySelector('.add-project-btn');
-                        
-                        const projectCard = document.createElement('div');
-                        projectCard.className = 'project-card';
-                        projectCard.innerHTML = `
-                            <h4 class="project-title">${projectTitle.trim()}</h4>
-                            <p class="project-description">${projectDescription.trim()}</p>
-                            <div class="project-attachment">
-                                <i class="bi-file-earmark"></i>
-                                <span>No attachments yet</span>
-                                <button class="btn btn-sm" onclick="addAttachment(this)">
-                                    <i class="bi-plus"></i>
-                                </button>
+                                        <div class="project-attachment" title="@trimmed" onclick="if('@isLink' === 'True') window.open('@trimmed', '_blank')">
+                                            <i class="@icon"></i>
+                                            <span>@trimmed</span>
+                                        </div>
+                                    }
+                                }
                             </div>
-                        `;
-                        
-                        projectsContainer.insertBefore(projectCard, addBtn);
-                    }
+                        }
+
+                        <!-- New Add Project Button (hidden until edit mode) -->
+                        <div class="add-project-btn" onclick="openAddProjectModal()" style="display: none;">
+                            <i class="bi-plus-circle"></i>
+                            <span>Add New Project</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="text-center">
+                    <button class="save-btn" id="saveBtn" onclick="saveProfile()" style="display: none;">
+                        <i class="bi-check-circle me-2"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Add Project Modal -->
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProjectModalLabel">
+                    <i class="bi-plus-circle me-2"></i> Add New Project
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addProjectForm">
+                    <div class="mb-3">
+                        <label for="projectTitle" class="form-label">Title *</label>
+                        <input type="text" class="form-control" id="projectTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="projectDescription" class="form-label">Description *</label>
+                        <textarea class="form-control" id="projectDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="projectAttachments" class="form-label">Attachments</label>
+                        <input type="text" class="form-control" id="projectAttachments" placeholder="URLs or filenames">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveProject()">
+                    <i class="bi-check-circle me-2"></i> Save Project
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let isEditMode = false;
+
+    function toggleEditMode() {
+        isEditMode = !isEditMode;
+        const editBtn = document.getElementById('edit-btn-text');
+        const saveBtn = document.getElementById('saveBtn');
+        const readonlyFields = document.querySelectorAll('.readonly-field');
+        const skillRemoveBtns = document.querySelectorAll('.skill-remove');
+        const addSkillBtn = document.querySelector('.add-skill-btn');
+        const addProjectBtn = document.querySelector('.add-project-btn');
+
+        if (isEditMode) {
+            editBtn.textContent = 'Cancel Edit';
+            saveBtn.style.display = 'inline-block';
+            addSkillBtn.style.display = 'flex';
+            addProjectBtn.style.display = 'flex';
+
+            readonlyFields.forEach(field => {
+                if (field.id !== 'username') {
+                    field.removeAttribute('readonly');
+                    field.classList.remove('readonly-field');
                 }
-            }
+            });
 
-            function downloadAttachment(filename) {
-                alert(`Downloading ${filename}...`);
-                // Implement actual download logic here
-            }
-
-            function openLink(url) {
-                window.open(url, '_blank');
-            }
-
-            function addAttachment(button) {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = '*/*';
-                input.onchange = function(e) {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const attachment = button.parentElement;
-                        attachment.innerHTML = `
-                            <i class="bi-file-earmark"></i>
-                            <span>${file.name}</span>
-                            <button class="btn btn-sm" onclick="downloadAttachment('${file.name}')">
-                                <i class="bi-download"></i>
-                            </button>
-                        `;
-                    }
-                };
-                input.click();
-            }
-
-            function saveProfile() {
-                // Collect all form data
-                const profileData = {
-                    username: document.getElementById('username').value,
-                    phoneNumber: document.getElementById('phoneNumber').value,
-                    bio: document.getElementById('bio').value,
-                    skills: Array.from(document.querySelectorAll('.skill-tag')).map(tag => 
-                        tag.textContent.replace('×', '').trim()
-                    ).filter(skill => skill !== 'Add Skill')
-                };
-
-                console.log('Saving profile:', profileData);
-                alert('Profile saved successfully!');
-                
-                // Exit edit mode
-                toggleEditMode();
-            }
-        
-function togglePasswordVisibility(fieldId) {
-    const field = document.getElementById(fieldId);
-    const eye = document.getElementById(fieldId + '-eye');
-    
-    if (field.type === 'password') {
-        field.type = 'text';
-        eye.className = 'bi-eye-slash';
-    } else {
-        field.type = 'password';
-        eye.className = 'bi-eye';
-    }
-}
-
-function checkPasswordStrength() {
-    const password = document.getElementById('newPassword').value;
-    const strengthBar = document.getElementById('passwordStrengthBar');
-    const requirements = {
-        length: password.length >= 8,
-        uppercase: /[A-Z]/.test(password),
-        lowercase: /[a-z]/.test(password),
-        number: /\d/.test(password),
-        special: /[!#$%^&*(),.?":{}|<>]/.test(password)
-    };
-
-    // Update requirement indicators
-    Object.keys(requirements).forEach(req => {
-        const element = document.getElementById(`req-${req}`);
-        const icon = element.querySelector('i');
-        
-        if (requirements[req]) {
-            element.classList.add('met');
-            icon.className = 'bi-check-circle-fill';
+            skillRemoveBtns.forEach(btn => btn.style.display = 'flex');
         } else {
-            element.classList.remove('met');
-            icon.className = 'bi-x-circle';
+            editBtn.textContent = 'Edit Profile';
+            saveBtn.style.display = 'none';
+            addSkillBtn.style.display = 'none';
+            addProjectBtn.style.display = 'none';
+
+            readonlyFields.forEach(field => {
+                field.setAttribute('readonly', true);
+                field.classList.add('readonly-field');
+            });
+
+            skillRemoveBtns.forEach(btn => btn.style.display = 'none');
         }
-    });
-
-    // Calculate strength
-    const metRequirements = Object.values(requirements).filter(Boolean).length;
-    let strengthClass = '';
-    
-    if (metRequirements <= 2) {
-        strengthClass = 'strength-weak';
-    } else if (metRequirements === 3) {
-        strengthClass = 'strength-fair';
-    } else if (metRequirements === 4) {
-        strengthClass = 'strength-good';
-    } else if (metRequirements === 5) {
-        strengthClass = 'strength-strong';
     }
 
-    strengthBar.className = `password-strength-bar ${strengthClass}`;
-    
-    // Check if passwords match when new password changes
-    checkPasswordMatch();
-}
+    async function handleProfilePictureChange(event) {
+        const file = event.target.files[0];
+        if (!file) return;
 
-function checkPasswordMatch() {
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmNewPassword').value;
-    const messageDiv = document.getElementById('passwordMatchMessage');
-    const changeBtn = document.getElementById('changePasswordBtn');
-    
-    if (confirmPassword === '') {
-        messageDiv.innerHTML = '';
-        changeBtn.disabled = true;
-        return;
-    }
-    
-    if (newPassword === confirmPassword) {
-        messageDiv.innerHTML = '<span style="color: #10b981;"><i class="bi-check-circle-fill me-1"></i>Passwords match</span>';
-        
-        // Check if all requirements are met
-        const allRequirementsMet = document.querySelectorAll('.requirement.met').length === 5;
-        const currentPasswordFilled = document.getElementById('currentPassword').value.length > 0;
-        
-        changeBtn.disabled = !(allRequirementsMet && currentPasswordFilled);
-    } else {
-        messageDiv.innerHTML = '<span style="color: #ef4444;"><i class="bi-x-circle-fill me-1"></i>Passwords do not match</span>';
-        changeBtn.disabled = true;
-    }
-}
+        const formData = new FormData();
+        formData.append("ProfilePicture", file);
+        const token = sessionStorage.getItem('token');
+        try {
+            const response = await fetch("https://localhost:7029/api/User/ChangeProfilePicture", {
+                method: "POST",
+                body: formData,
+                headers: { Authorization: `Bearer ${token}` }
+            });
 
-function resetPasswordRequirements() {
-    const requirements = document.querySelectorAll('.requirement');
-    const strengthBar = document.getElementById('passwordStrengthBar');
-    
-    requirements.forEach(req => {
-        req.classList.remove('met');
-        req.querySelector('i').className = 'bi-x-circle';
-    });
-    
-    strengthBar.className = 'password-strength-bar';
-    document.getElementById('changePasswordBtn').disabled = true;
-}
+            const result = await response.json();
 
-function changePassword() {
-    const currentPassword = document.getElementById('currentPassword').value;
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmNewPassword').value;
-    
-    // Basic validation
-    if (!currentPassword) {
-        alert('Please enter your current password');
-        return;
+            if (response.ok && result.isSuccess) {
+                document.getElementById("profilePicture").src = "https://localhost:7029" + result.data;
+            } else {
+                alert("Failed to update profile picture: " + result.message);
+            }
+        } catch {
+            alert("Error uploading image.");
+        }
     }
-    
-    if (newPassword !== confirmPassword) {
-        alert('New passwords do not match');
-        return;
-    }
-    
-    // Check password strength
-    const allRequirementsMet = document.querySelectorAll('.requirement.met').length === 5;
-    if (!allRequirementsMet) {
-        alert('Please ensure your new password meets all requirements');
-        return;
-    }
-    
-    // Simulate password change (replace with actual API call)
-    console.log('Changing password...');
-    
-    // Show success message
-    alert('Password changed successfully!');
-    
-    // Clear password fields
-    document.getElementById('currentPassword').value = '';
-    document.getElementById('newPassword').value = '';
-    document.getElementById('confirmNewPassword').value = '';
-    document.getElementById('passwordMatchMessage').innerHTML = '';
-    resetPasswordRequirements();
-}
 
-// Add event listener for current password field
-document.addEventListener('DOMContentLoaded', function() {
-    const currentPasswordField = document.getElementById('currentPassword');
-    if (currentPasswordField) {
-        currentPasswordField.addEventListener('input', checkPasswordMatch);
+    function openAddSkillModal() {
+        const modal = new bootstrap.Modal(document.getElementById("addSkillModal"));
+        modal.show();
     }
-});
-</script>
+
+    async function saveSkill() {
+        const skillName = document.getElementById("skillName").value.trim();
+
+        if (!skillName) {
+            alert("⚠️ Please enter a skill name.");
+            return;
+        }
+
+        const response = await fetch("/User/AddSkill", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: skillName })
+        });
+
+        if (response.ok) {
+            alert("✅ Skill added successfully!");
+            bootstrap.Modal.getInstance(document.getElementById('addSkillModal')).hide();
+            location.reload();
+        } else {
+            alert("❌ Failed to add skill");
+        }
+    }
+
+    function removeSkill(button) {
+        button.parentElement.remove();
+    }
+
+    function saveProfile() {
+        const profileData = {
+            username: document.getElementById('username').value,
+            phoneNumber: document.getElementById('phoneNumber').value,
+            bio: document.getElementById('bio').value,
+            skills: Array.from(document.querySelectorAll('.skill-tag')).map(tag =>
+                tag.textContent.replace('×', '').trim()
+            ).filter(skill => skill !== 'Add Skill')
+        };
+        console.log('Saving profile:', profileData);
+        alert('Profile saved successfully!');
+        toggleEditMode();
+    }
+
+    function openAddProjectModal() {
+        const modal = new bootstrap.Modal(document.getElementById('addProjectModal'));
+        modal.show();
+    }
+
+    async function saveProject() {
+        const projectData = {
+            title: document.getElementById("projectTitle").value,
+            description: document.getElementById("projectDescription").value,
+            attachments: document.getElementById("projectAttachments").value
+        };
+
+        const response = await fetch("/User/AddProject", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(projectData)
+        });
+
+        if (response.ok) {
+            alert("✅ Project added successfully!");
+            bootstrap.Modal.getInstance(document.getElementById('addProjectModal')).hide();
+            location.reload();
+        } else {
+            alert("❌ Failed to add project");
+        }
+    }
+</script>`

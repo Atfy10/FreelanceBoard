@@ -1,10 +1,15 @@
-﻿using FreelanceBoard.Core.Commands.UserCommands;
+﻿using FreelanceBoard.Core.Commands;
+using FreelanceBoard.Core.Commands.UserCommands;
+using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Dtos;
 using FreelanceBoard.Core.Queries.Interfaces;
+using FreelanceBoard.Infrastructure.DBContext;
 using FreelanceBoard.Web.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FreelanceBoard.Web.Controllers
 {
@@ -14,12 +19,11 @@ namespace FreelanceBoard.Web.Controllers
 	{
 		private readonly IMediator _mediator;
 		private readonly IUserQuery _userQuery;
-
-		public UserController(IMediator mediator, IUserQuery userQuery)
+        public UserController(IMediator mediator, IUserQuery userQuery)
 		{
 			_mediator = mediator;
 			_userQuery = userQuery;
-		}
+        }
 
 		[HttpPost("change-password")]
 		public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
@@ -28,21 +32,21 @@ namespace FreelanceBoard.Web.Controllers
 			return this.HandleResult(result);
 		}
 
-		[HttpDelete("delete")]
+		[HttpDelete]
 		public async Task<IActionResult> DeleteUser(DeleteUserCommand command)
 		{
 			var result = await _mediator.Send(command);
 			return this.HandleResult(result, 204);
 		}
 
-		[HttpPut("update")]
+		[HttpPut]
 		public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
 		{
 			var result = await _mediator.Send(command);
 			return this.HandleResult(result);
 		}
 
-		[HttpGet("get-by-id/{id}")]
+		[HttpGet("/{id}")]
 		public async Task<IActionResult> GetUserById(string id)
 		{
 			if (string.IsNullOrWhiteSpace(id))
@@ -52,14 +56,14 @@ namespace FreelanceBoard.Web.Controllers
 			return this.HandleResult(result);
 		}
 
-		[HttpGet("get-all")]
+		[HttpGet("all")]
 		public async Task<IActionResult> GetAllUsers()
 		{
 			var result = await _userQuery.GetAllUsersAsync();
 			return this.HandleResult(result);
 		}
 
-		[HttpGet("get-all-banned")]
+		[HttpGet("all-banned")]
 		public async Task<IActionResult> GetAllBannedUsers()
 		{
 			var result = await _userQuery.GetAllBannedUsersAsync();
@@ -76,7 +80,7 @@ namespace FreelanceBoard.Web.Controllers
 			return this.HandleResult(result);
 		}
 
-		[HttpGet("get-with-projects/{id}")]
+		[HttpGet("with-projects/{id}")]
 		public async Task<IActionResult> GetUserWithProjects(string id)
 		{
 			if (string.IsNullOrWhiteSpace(id))
@@ -86,7 +90,7 @@ namespace FreelanceBoard.Web.Controllers
 			return this.HandleResult(result);
 		}
 
-		[HttpGet("get-with-skills/{id}")]
+		[HttpGet("with-skills/{id}")]
 		public async Task<IActionResult> GetUserWithSkills(string id)
 		{
 			if (string.IsNullOrWhiteSpace(id))
@@ -96,7 +100,7 @@ namespace FreelanceBoard.Web.Controllers
 			return this.HandleResult(result);
 		}
 
-		[HttpGet("get-full-profile/{id}")]
+		[HttpGet("full-profile/{id}")]
 		public async Task<IActionResult> GetUserFullProfile(string id)
 		{
 			if (string.IsNullOrWhiteSpace(id))
@@ -105,6 +109,25 @@ namespace FreelanceBoard.Web.Controllers
 			var result = await _userQuery.GetUserFullProfileAsync(id);
 			return this.HandleResult(result);
 		}
+
+        [HttpPost("ChangeProfilePicture")]
+        public async Task<IActionResult> ChangeProfilePicture([FromForm] ChangeProfilePictureCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return result.IsSuccess ? Ok(result) : BadRequest(result);
+        }
+
+		[HttpPost("add-project")]
+
+		public async Task<IActionResult> AddProject([FromBody] AddProjectCommand command)
+		{
+			if (command == null)
+				return BadRequest(new { Message = "Command cannot be null." });
+			var result = await _mediator.Send(command);
+			return this.HandleResult(result);
+		}
+
+		
 
 
 	}

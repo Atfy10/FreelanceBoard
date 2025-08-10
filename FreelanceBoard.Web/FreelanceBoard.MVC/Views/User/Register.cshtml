@@ -1,4 +1,6 @@
-﻿<style>
+﻿@model RegisterViewModel
+
+<style>
     .auth-section {
         background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
         min-height: 100vh;
@@ -184,15 +186,16 @@
                                     <p>Join Gotto and start your career journey today</p>
                                 </div>
 
-                                <form class="custom-form" action="#" method="post" role="form">
+                                <form asp-action="Register" asp-controller="User" method="post">
                                     <div class="row">
                                         <div class="col-lg-6 col-12">
                                             <div class="form-group">
                                                 <label for="firstName">First Name</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="bi-person custom-icon"></i></span>
-                                                    <input type="text" name="firstName" id="firstName" class="form-control" placeholder="Enter your first name" required>
+                                                    <input asp-for="FirstName" class="form-control" placeholder="Enter your first name" />
                                                 </div>
+                                                    <span asp-validation-for="FirstName" class="text-danger"></span>
                                             </div>
                                         </div>
 
@@ -201,8 +204,9 @@
                                                 <label for="lastName">Last Name</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="bi-person custom-icon"></i></span>
-                                                    <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Enter your last name" required>
+                                                    <input asp-for="LastName" class="form-control" placeholder="Enter your last name">
                                                 </div>
+                                                    <span asp-validation-for="LastName" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -211,8 +215,9 @@
                                         <label for="username">Username</label>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="bi-person-badge custom-icon"></i></span>
-                                            <input type="text" name="username" id="username" class="form-control" placeholder="Choose a username" required>
+                                            <input asp-for="UserName" class="form-control" placeholder="Choose a username">
                                         </div>
+                                            <span asp-validation-for="UserName" class="text-danger"></span>
                                     </div>
 
                                     <div class="row">
@@ -221,8 +226,9 @@
                                                 <label for="email">Email Address</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="bi-envelope custom-icon"></i></span>
-                                                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+                                                    <input asp-for="Email" class="form-control" placeholder="Enter your email">
                                                 </div>
+                                                    <span asp-validation-for="Email" class="text-danger"></span>
                                             </div>
                                         </div>
 
@@ -231,8 +237,9 @@
                                                 <label for="phone">Phone Number</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="bi-telephone custom-icon"></i></span>
-                                                    <input type="tel" name="phone" id="phone" class="form-control" placeholder="Enter your phone number" required>
+                                                    <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number">
                                                 </div>
+                                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -241,14 +248,13 @@
                                         <label for="role">Role</label>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="bi-briefcase custom-icon"></i></span>
-                                            <select name="role" id="role" class="form-select" required>
+                                            <select name="Role" id="role" class="form-select">
                                                 <option value="">Select your role</option>
-                                                <option value="job-seeker">Job Seeker</option>
-                                                <option value="employer">Employer</option>
-                                                <option value="recruiter">Recruiter</option>
-                                                <option value="freelancer">Freelancer</option>
-                                            </select>
+                                                <option value="Client">Client</option>                   
+                                                <option value="FreeLancer">Freelancer</option> 
+                                            </select> 
                                         </div>
+                                            <span asp-validation-for="Role" class="text-danger"></span>
                                     </div>
 
                                     <div class="row">
@@ -257,11 +263,12 @@
                                                 <label for="password">Password</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="bi-lock custom-icon"></i></span>
-                                                    <input type="password" name="password" id="password" class="form-control" placeholder="Create a password" required>
+                                                    <input asp-for="Password" class="form-control" placeholder="Create a password">
                                                     <button type="button" class="password-toggle" onclick="togglePassword('password')">
                                                         <i class="bi-eye" id="password-eye"></i>
                                                     </button>
                                                 </div>
+                                                    <span asp-validation-for="Password" class="text-danger"></span>
                                             </div>
                                         </div>
 
@@ -270,13 +277,15 @@
                                                 <label for="confirmPassword">Confirm Password</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="bi-lock custom-icon"></i></span>
-                                                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                                                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm your password">
                                                     <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
                                                         <i class="bi-eye" id="confirmPassword-eye"></i>
                                                     </button>
                                                 </div>
+                                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                             </div>
                                         </div>
+                                                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                                     </div>
 
                                     <div class="form-check">
@@ -301,29 +310,41 @@
             </section>
 
 
-        <script>
-            function togglePassword(fieldId) {
-                const field = document.getElementById(fieldId);
-                const eye = document.getElementById(fieldId + '-eye');
-                
-                if (field.type === 'password') {
-                    field.type = 'text';
-                    eye.className = 'bi-eye-slash';
-                } else {
-                    field.type = 'password';
-                    eye.className = 'bi-eye';
-                }
-            }
+<script>
+    function togglePassword(fieldKey) {
+        // Get the eye icon using its known ID
+        const eye = document.getElementById(fieldKey + '-eye');
 
-            // Form validation
-            document.querySelector('form').addEventListener('submit', function(e) {
-                const password = document.getElementById('password').value;
-                const confirmPassword = document.getElementById('confirmPassword').value;
-                
-                if (password !== confirmPassword) {
-                    e.preventDefault();
-                    alert('Passwords do not match!');
-                    return false;
-                }
-            });
-        </script>
+        // Find the input field by traversing the DOM from the button
+        const button = event.currentTarget;
+        const inputGroup = button.closest('.input-group');
+        const input = inputGroup.querySelector('input');
+
+        if (!input || !eye) return;
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            eye.className = 'bi-eye-slash';
+        } else {
+            input.type = 'password';
+            eye.className = 'bi-eye';
+        }
+    }
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const passwordInput = document.querySelector('input[asp-for="Password"]');
+        const confirmPasswordInput = document.querySelector('input[asp-for="ConfirmPassword"]');
+
+        if (!passwordInput || !confirmPasswordInput) return;
+
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert('Passwords do not match!');
+        }
+    });
+</script>
+
