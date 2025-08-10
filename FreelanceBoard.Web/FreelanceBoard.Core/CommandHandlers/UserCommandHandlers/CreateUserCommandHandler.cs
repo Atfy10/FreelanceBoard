@@ -25,19 +25,17 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 		private readonly IUserRepository _userRepository;
         private readonly OperationExecutor _executor;
         private readonly IJwtToken _jwtToken;
-		private readonly IRoleRepository _roleRepository;
         string AddOperation;
 		private readonly IBaseRepository<Profile> _profileRepository;
 
 		public CreateUserCommandHandler(IUserRepository userRepository,
 			IMapper mapper, OperationExecutor executor, IJwtToken jwtToken,
-			IRoleRepository roleRepository , IBaseRepository<Profile> profileRepository)
+			IBaseRepository<Profile> profileRepository)
 		{
 			_userRepository = userRepository;
 			_mapper = mapper;
 			_executor = executor;
 			_jwtToken = jwtToken;
-			_roleRepository = roleRepository;
             AddOperation = OperationType.Add.ToString();
 			_profileRepository = profileRepository;
 
@@ -46,7 +44,6 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 		public async Task<Result<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
 			=> await _executor.Execute(async () =>
 			{
-
 				if (request == null)
 					throw new NullReferenceException("Create request cannot be null.");
 
@@ -66,15 +63,16 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 				}
 
 				var token = _jwtToken.GenerateJwtToken(user, request.Role);
+
 				await _profileRepository.AddAsync(new Profile(){					
 					UserId = user.Id,
 					Bio = "",
-					Image = "",
-
+					Image = ""
                 });
-                return Result<string>.Success(token, AddOperation, $"User with email {request.Email} created successfully.");
-			}, OperationType.Add);
 
+                return Result<string>.Success(token, AddOperation,
+					$"User with email {request.Email} created successfully.");
+			}, OperationType.Add);
     }
 }
 
