@@ -14,11 +14,19 @@ namespace FreelanceBoard.Infrastructure.Repositories
     {
         public ProposalRepository(AppDbContext dbContext) : base(dbContext) { }
 
-        public async Task<List<Proposal>> GetByIdsAsync(IEnumerable<int> ids)
+        public async Task<List<Proposal>?> GetByIdsAsync(IEnumerable<int> ids)
         {
             return await _dbContext.Proposals
                 .Where(p => ids.Contains(p.Id))
                 .ToListAsync();
+        }
+
+        public async Task<Proposal?> GetFullProposalWithIdAsync(int id)
+        {
+            return await _dbContext.Proposals
+                .Include(p => p.Job)
+                .Include(p => p.Freelancer)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

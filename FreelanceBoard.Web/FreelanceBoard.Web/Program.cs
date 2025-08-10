@@ -8,6 +8,8 @@ using FreelanceBoard.Core.Queries.Implementations;
 using FreelanceBoard.Core.Queries.Interfaces;
 using FreelanceBoard.Core.QueryHandlers.JobQueryHandlers;
 using FreelanceBoard.Core.Validators.JobValidators;
+using FreelanceBoard.Core.Validators.ProposalValidators;
+using FreelanceBoard.Core.Validators.ReviewValidators;
 using FreelanceBoard.Infrastructure.DBContext;
 using FreelanceBoard.Infrastructure.Implementations;
 using FreelanceBoard.Infrastructure.Repositories;
@@ -143,7 +145,17 @@ namespace FreelanceBoard.Web
 
             builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 
-            builder.Services.AddScoped<IJobQuery,JobQuery>();
+            builder.Services.AddScoped<IJobQuery, JobQuery>();
+
+            builder.Services.AddScoped<IProposalQuery, ProposalQuery>();
+
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+
+            builder.Services.AddScoped<IReviewQuery, ReviewQuery>();
+
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateProposalCommandValidator>();
+
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateReviewCommandValidator>();
 
             builder.Services.AddValidatorsFromAssemblyContaining<CreateJobCommandValidator>();
 

@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Core.Interfaces
 {
-    public interface IProposalRepository : IBaseRepository<Proposal>
+    public interface IReviewRepository : IBaseRepository<Review>
     {
-        Task<List<Proposal>?> GetByIdsAsync(IEnumerable<int> ids);
-
-        Task<Proposal?> GetFullProposalWithIdAsync(int id);
+        Task<Review?> GetFullReviewById(int id);
     }
 }
