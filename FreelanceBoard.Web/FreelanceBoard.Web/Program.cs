@@ -23,7 +23,7 @@ namespace FreelanceBoard.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
 
             var builder = WebApplication.CreateBuilder(args);
@@ -168,22 +168,15 @@ namespace FreelanceBoard.Web
 
             app.MapControllers();
 
-            using (var scope = app.Services.CreateScope())
+            await using (var scope = app.Services.CreateAsyncScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-                try
-                {
-                    SeedDB.Seed(dbContext, userManager);
-                }
-                catch (Exception ex)
-                {
-                    // Log the exception (you can use a logging framework here)
-                    Console.WriteLine($"Seed failed: {ex.Message}." +
-                        $"Inner Exception: {ex.InnerException}");
-                }
+                await dbContext.Database.MigrateAsync();            // make sure DB/tables exist
+                await SeedDB.SeedAsync(dbContext, userManager);     // ? await the seeder
             }
+
 
             app.Run();
         }
