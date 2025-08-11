@@ -10,5 +10,6 @@ namespace FreelanceBoard.Core.Interfaces
     public interface IProposalRepository : IBaseRepository<Proposal>
     {
         Task<List<Proposal>> GetByIdsAsync(IEnumerable<int> ids);
+        Task<IEnumerable<Proposal>> GetProposalsByJobIdAsync(int jobId);
     }
 }
