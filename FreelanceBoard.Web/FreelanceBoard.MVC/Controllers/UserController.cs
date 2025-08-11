@@ -192,10 +192,20 @@ namespace FreelanceBoard.MVC.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileViewModel model)
+        public async Task<IActionResult> UpdateProfile([FromBody] UserProfileViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-            var success = await _executor.Execute(
+			ModelState.Remove(nameof(model.IsBanned));
+			ModelState.Remove(nameof(model.Skills));
+            ModelState.Remove(nameof(model.Projects));
+            ModelState.Remove(nameof(model.Profile));
+            ModelState.Remove(nameof(model.Id));
+            ModelState.Remove(nameof(model.FirstName));
+            ModelState.Remove(nameof(model.LastName));
+            ModelState.Remove(nameof(model.Email));
+
+
+
+			var success = await _executor.Execute(
                 async () =>
                 {
                     await _userService.UpdateProfileAsync(model, HttpContext);

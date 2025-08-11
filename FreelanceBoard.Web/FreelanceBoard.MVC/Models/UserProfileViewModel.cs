@@ -1,4 +1,6 @@
-﻿namespace FreelanceBoard.MVC.Models
+﻿using System.ComponentModel;
+
+namespace FreelanceBoard.MVC.Models
 {
 	public class UserProfileViewModel
 	{
@@ -9,6 +11,8 @@
 		public string Email { get; set; }
 		public string PhoneNumber { get; set; }
 		public bool IsBanned { get; set; }
+
+		public string Bio { get; set; }
 
 		public ProfileViewModel Profile { get; set; }
 		public List<SkillViewModel> Skills { get; set; }

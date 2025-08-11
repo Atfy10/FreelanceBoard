@@ -157,7 +157,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
             }
 		}
 
-        public async Task UpdateProfileAsync(UpdateProfileViewModel model, HttpContext httpContext)
+        public async Task UpdateProfileAsync(UserProfileViewModel model, HttpContext httpContext)
         {
             var token = httpContext.User.GetAccessToken();
             var userId = httpContext.User.GetUserId();
