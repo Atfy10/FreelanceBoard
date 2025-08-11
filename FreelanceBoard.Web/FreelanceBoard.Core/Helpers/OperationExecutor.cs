@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,6 +58,11 @@ namespace FreelanceBoard.Core.Helpers
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex, "Database error occurred during {Operation}", opType);
+                return Result<T>.Failure(opType.ToString(), "A database error occurred: " + ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogError(ex, "Validation error occurred during {Operation}", opType);
                 return Result<T>.Failure(opType.ToString(), "A database error occurred: " + ex.Message);
             }
             catch (EmailNotFoundException ex)

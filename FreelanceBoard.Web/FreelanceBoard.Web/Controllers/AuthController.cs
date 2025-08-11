@@ -17,17 +17,9 @@ namespace FreelanceBoard.Web.Controllers
     public class AuthController : ControllerBase
     {
         IMediator _mediator;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IConfiguration _config;
 
-        public AuthController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, IConfiguration config,
-            IMediator mediator)
+        public AuthController(IMediator mediator)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _config = config;
             _mediator = mediator;
         }
 

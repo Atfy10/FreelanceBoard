@@ -15,6 +15,7 @@ namespace FreelanceBoard.Core.Domain.Enums
         GetAll,
         Login,
         Signup,
-        Logout
+        Logout,
+        Validation
     }
 }

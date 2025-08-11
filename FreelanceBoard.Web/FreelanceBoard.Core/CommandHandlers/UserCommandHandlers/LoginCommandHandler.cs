@@ -38,7 +38,7 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
                     throw new NullReferenceException("Login request cannot be null.");
 
                 var user = await _userRepository.GetByEmailAsync(request.Email) ??
-                throw new KeyNotFoundException($"User with email {request.Email} not found.");
+                    throw new KeyNotFoundException($"User with email {request.Email} not found.");
 
                 var isValidPassword = await _userRepository.CheckPasswordAsync(user, request.Password);
 
