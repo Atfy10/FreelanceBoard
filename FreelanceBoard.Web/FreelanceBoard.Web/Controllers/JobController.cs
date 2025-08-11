@@ -28,7 +28,7 @@ namespace FreelanceBoard.Web.Controllers
         }
 
 
-        [HttpGet("Get job")]
+        [HttpGet("get-job")]
         public async Task<IActionResult> GetJobById(int id)
         {
             var jobDto = await _jobQuery.GetJobByIdAsync(id);
@@ -37,7 +37,7 @@ namespace FreelanceBoard.Web.Controllers
 
 
 
-        [HttpDelete("Delete job")]
+        [HttpDelete("delete-job")]
         public async Task<IActionResult> DeleteJob(int id)
         {
             var deleted = await _mediator.Send(new DeleteJobCommand(id));
@@ -45,7 +45,7 @@ namespace FreelanceBoard.Web.Controllers
         }
 
 
-        [HttpPost("Create job")]
+        [HttpPost("create-job")]
         public async Task<IActionResult> CreateJob(CreateJobCommand command)
         {
             var newJobId = await _mediator.Send(command);
@@ -54,38 +54,38 @@ namespace FreelanceBoard.Web.Controllers
 
 
 
-        [HttpPut("Update job")]
+        [HttpPut("update-job")]
         public async Task<IActionResult> UpdateJob(UpdateJobCommand command)
         {
             var success = await _mediator.Send(command);
             return Ok(success);
         }
 
-        [HttpGet("Sorted by date or budget")]
-        public async Task<IActionResult> GetAllJobsSortedDateOrBudget(string sortBy) // Sorting by date or budget -> true means sory by descending accordingly
+        [HttpGet("sorty-by")]
+        public async Task<IActionResult> GetAllJobsSortedDateOrBudget(string field, int page,bool sortAscendingly)
         {
-            var jobs = await _jobQuery.GetAllJobsSorted(Enum.Parse<SortBy>(sortBy));
+            var jobs = await _jobQuery.GetAllJobsSorted(Enum.Parse<SortBy>(field), page,sortAscendingly);
             return Ok(jobs);
         }
 
-        [HttpGet("FilterSkills")]
-        public async Task<IActionResult> GetJobsFilteredSkills([FromQuery] List<string> skill)
+        [HttpGet("filter-by-skills")]
+        public async Task<IActionResult> GetJobsFilteredSkills([FromQuery] List<string> skill, int page)
         {
-            var jobs = await _jobQuery.GetJobsFilteredBySkills(skill);
+            var jobs = await _jobQuery.GetJobsFilteredBySkills(skill, page);
             return Ok(jobs);
         }
 
-        [HttpGet("FilterCategory")]
-        public async Task<IActionResult> GetJobsFilteredCategory([FromQuery] List<string> category)
+        [HttpGet("filter-by-category")]
+        public async Task<IActionResult> GetJobsFilteredCategory([FromQuery] List<string> category, int page)
         {
-            var jobs = await _jobQuery.GetJobsFilteredByCategory(category);
+            var jobs = await _jobQuery.GetJobsFilteredByCategory(category,page);
             return Ok(jobs);
         }
 
-        [HttpGet("FilterBudget")]
-        public async Task<IActionResult> GetJobsFilteredBudget(int min, int max)
+        [HttpGet("filter-by-budget")]
+        public async Task<IActionResult> GetJobsFilteredBudget(int min, int max, int page)
         {
-            var jobs = await _jobQuery.GetJobsFilteredByBudget(min, max);
+            var jobs = await _jobQuery.GetJobsFilteredByBudget(min, max,page);
             return Ok(jobs);
         }
     }
