@@ -1,5 +1,7 @@
 ﻿@model UserProfileViewModel
 
+
+
 @if (TempData["token"] != null)
 {
     <script>
@@ -438,6 +440,7 @@
                         <i class="bi-shield-lock-fill me-2"></i>
                         Change Password
                     </a>
+                   
 
                     <div class="profile-header">
                         <div class="profile-picture-container">
@@ -452,6 +455,7 @@
                                 <i class="bi-camera-fill"></i>
                             </div>
 
+
                             <input type="file" id="profilePictureInput" accept="image/*" style="display: none;" onchange="handleProfilePictureChange(event)">
                         </div>
                         <h2 class="profile-username" id="displayUsername">@Model.UserName</h2>
@@ -465,6 +469,16 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi-person-badge"></i></span>
                                     <input type="text" id="username" class="form-control readonly-field" value="@Model.UserName">
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                    <div asp-validation-summary="ModelOnly"></div>
+
+                                    @if (TempData["ErrorMessage"] != null)
+                                    {
+                                        <div class="alert alert-danger">
+                                            @TempData["ErrorMessage"]
+                                        </div>
+                                    }
+
                                 </div>
                             </div>
                         </div>
@@ -474,6 +488,8 @@
                             <div class="form-group">
                                 <label for="phoneNumber">Phone Number</label>
                                 <div class="input-group">
+                                    <div asp-validation-summary="ModelOnly"></div>
+
                                     <span class="input-group-text"><i class="bi-telephone"></i></span>
                                     <input type="tel" id="phoneNumber" class="form-control readonly-field" value="@Model.PhoneNumber" readonly>
                                 </div>
@@ -488,6 +504,8 @@
                             <span class="input-group-text bio-icon"><i class="bi-person-lines-fill"></i></span>
                             <textarea id="bio" class="form-control bio-textarea readonly-field" readonly
                                       placeholder="Tell us about yourself...">@Model.Profile?.Bio</textarea>
+                            <div asp-validation-summary="ModelOnly"></div>
+
                         </div>
                     </div>
                 </div>
@@ -498,6 +516,8 @@
                         <i class="bi-gear-fill"></i>
                         Skills
                     </h3>
+                    <div asp-validation-summary="ModelOnly"></div>
+
                     <div class="skills-container" id="skillsContainer">
                         @foreach (var skill in Model.Skills ?? new List<SkillViewModel>())
                         {

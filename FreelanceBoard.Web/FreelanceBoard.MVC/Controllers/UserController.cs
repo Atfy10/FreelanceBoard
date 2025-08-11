@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FreelanceBoard.MVC.Controllers
 {
@@ -203,6 +204,12 @@ namespace FreelanceBoard.MVC.Controllers
             ModelState.Remove(nameof(model.LastName));
             ModelState.Remove(nameof(model.Email));
 
+            if (!ModelState.IsValid)
+            {
+				return View("Profile", model);
+			}
+			TempData["ErrorMessage"] = "cry";
+
 
 
 			var success = await _executor.Execute(
@@ -210,10 +217,17 @@ namespace FreelanceBoard.MVC.Controllers
                 {
                     await _userService.UpdateProfileAsync(model, HttpContext);
                 },
-                error => ModelState.AddModelError(string.Empty, error)
-            );
+                error => {
+                    ModelState.AddModelError(string.Empty, error)
+                    ;
+					TempData["ErrorMessage"] = error;
+
+				}
+			);
             if (!success)
-                return View("Profile",model);
+            {
+				return View("Profile", model);
+            }
             return RedirectToAction("Profile", "User");
 
         }

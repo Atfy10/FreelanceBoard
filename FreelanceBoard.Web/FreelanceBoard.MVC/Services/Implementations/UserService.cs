@@ -166,8 +166,14 @@ namespace FreelanceBoard.MVC.Services.Implementations
             var client = _httpClientFactory.CreateClient("FreelanceApiClient");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await client.PutAsJsonAsync("/api/User/update-profile", model);
-            if (!response.IsSuccessStatusCode)
-                throw new ApplicationException("Failed to update profile");
+
+			if (response.IsSuccessStatusCode)
+				return;
+
+			var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool?>>();
+			var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
+
+			throw new ApplicationException(errorMessage);
 		}
 
 	}
