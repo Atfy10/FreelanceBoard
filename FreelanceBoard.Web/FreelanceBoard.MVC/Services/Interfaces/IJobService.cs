@@ -5,6 +5,6 @@ namespace FreelanceBoard.MVC.Services.Interfaces
     public interface IJobService
     {
         Task<List<ClientDashboardViewModel>> GetAllJobsAsync(HttpContext httpContext);
-
+        Task<List<JobViewModel>> GetAllJobsSortedAsync(HttpContext httpContext, string sortBy);
     }
 }
