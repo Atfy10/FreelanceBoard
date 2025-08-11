@@ -454,6 +454,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-12">
+
+                <div id="messageContainer" class="mt-3" style="display:none;">
+                    <div id="messageContent" class="alert" role="alert"></div>
+                </div>
+
+
                 <!-- Profile Header -->
                 <div class="profile-container">
                     <button class="edit-mode-toggle" onclick="toggleEditMode()">
@@ -669,6 +675,23 @@
         };
     }
 
+        function showMessage(message, type = "success") {
+        const container = document.getElementById("messageContainer");
+        const content = document.getElementById("messageContent");
+
+        // Reset classes and set type
+        content.className = "alert alert-" + type;
+        content.textContent = message;
+
+        // Show message
+        container.style.display = "block";
+
+        // Auto-hide after 4 seconds
+        setTimeout(() => {
+            container.style.display = "none";
+        }, 4000);
+    }
+
     function setupPhoneNumberValidation() {
         const phoneInput = document.getElementById('phoneNumber');
         phoneInput.addEventListener('input', function(e) {
@@ -740,14 +763,14 @@
         if (response.ok) {
             // Remove project card from DOM
             button.closest('.project-card').remove();
-            alert('✅ Project deleted successfully!');
-        } else {
+            showMessage('✅ Project deleted successfully!', 'success');
+            } else {
             const error = await response.text();
-            alert('❌ Failed to delete project: ' + error);
+            showMessage('❌ Failed to delete project: ' + error);
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('❌ Error deleting project');
+            showMessage('❌ Error deleting project');
     }
 }
 
@@ -772,10 +795,10 @@
             if (response.ok && result.isSuccess) {
                 document.getElementById("profilePicture").src = "https://localhost:7029" + result.data;
             } else {
-                alert("Failed to update profile picture: " + result.message);
+                    showMessage("Failed to update profile picture: " + result.message);
             }
         } catch {
-            alert("Error uploading image.");
+                showMessage("Error uploading image.");
         }
     }
 
@@ -804,11 +827,11 @@
                     select.appendChild(option);
                 });
             } else {
-                alert("❌ Failed to load skills");
+                    showMessage("❌ Failed to load skills");
             }
         } catch (error) {
             console.error("Error fetching skills:", error);
-            alert("❌ Error loading skills");
+                showMessage("❌ Error loading skills");
         }
 
         modal.show();
@@ -821,7 +844,7 @@
         const selectedName = skillSelect.options[skillSelect.selectedIndex]?.text;
 
         if (!selectedId) {
-            alert("⚠️ Please select a skill.");
+                showMessage("⚠️ Please select a skill.");
             return;
         }
 
@@ -832,9 +855,10 @@
         });
 
         if (response.ok) {
-            alert("✅ Skill added successfully!");
             bootstrap.Modal.getInstance(document.getElementById('addSkillModal')).hide();
             location.reload();
+                            showMessage("✅ Skill added successfully!");
+
         } else {
             alert("❌ Failed to add skill");
         }
@@ -852,9 +876,9 @@
         if (response.ok) {
             // remove from DOM only if server success
             button.parentElement.remove();
-            alert(`✅ Skill "${skillName}" removed successfully!`);
+                showMessage(`✅ Skill "${skillName}" removed successfully!`);
         } else {
-            alert(`❌ Failed to remove skill "${skillName}"`);
+                showMessage(`❌ Failed to remove skill "${skillName}"`);
         }
     }
 
@@ -880,12 +904,12 @@
 
         // Validate inputs
         if (!profileData.userName) {
-            alert('Username is required');
+                showMessage('Username is required');
             return;
         }
 
         if (!profileData.phoneNumber || profileData.phoneNumber.length < 10 || profileData.phoneNumber.length > 15) {
-            alert('Please enter a valid phone number (10-15 digits)');
+                showMessage('Please enter a valid phone number (10-15 digits)');
             return;
         }
 
@@ -906,11 +930,11 @@
                 location.reload();
             } else {
                 const error = await response.text();
-                alert("Failed to update profile: " + error);
+                    showMessage("Failed to update profile: " + error);
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while updating profile');
+                showMessage('An error occurred while updating profile');
         } finally {
             // Reset save button
             const saveBtn = document.getElementById('saveBtn');
@@ -941,9 +965,10 @@
         });
 
         if (response.ok) {
-            alert("✅ Project added successfully!");
             bootstrap.Modal.getInstance(document.getElementById('addProjectModal')).hide();
             location.reload();
+           showMessage("✅ Project added successfully!");
+
         } else {
             alert("❌ Failed to add project");
         }
