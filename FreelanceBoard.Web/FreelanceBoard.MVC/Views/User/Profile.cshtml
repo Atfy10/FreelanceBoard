@@ -625,11 +625,16 @@
 </div>
 
 <script>
-        let isEditMode = false;
-    let originalValues = {};
+            // Store original values when page loads
+        let originalValues = {};
+    let isEditMode = false;
 
-    // Store original values when page loads
-        function storeOriginalValues() {
+    document.addEventListener('DOMContentLoaded', function() {
+        storeOriginalValues();
+        setupPhoneNumberValidation();
+    });
+
+    function storeOriginalValues() {
         originalValues = {
             username: document.getElementById('username').value,
             phoneNumber: document.getElementById('phoneNumber').value,
@@ -637,8 +642,13 @@
         };
     }
 
-    // Call this when page loads
-    document.addEventListener('DOMContentLoaded', storeOriginalValues);
+    function setupPhoneNumberValidation() {
+        const phoneInput = document.getElementById('phoneNumber');
+        phoneInput.addEventListener('input', function(e) {
+            // Remove any non-numeric characters
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
 
     function toggleEditMode() {
         isEditMode = !isEditMode;
@@ -656,14 +666,11 @@
             addSkillBtn.style.display = 'flex';
             addProjectBtn.style.display = 'flex';
 
-            // Enable editing for all fields 
+            // Enable editing for all fields
             inputFields.forEach(field => {
-            field.removeAttribute('readonly');
-            field.classList.remove('readonly-field');
-        
+                field.removeAttribute('readonly');
+                field.classList.remove('readonly-field');
             });
-
-
 
             skillRemoveBtns.forEach(btn => btn.style.display = 'flex');
         } else {
@@ -674,21 +681,20 @@
             addProjectBtn.style.display = 'none';
 
             // Restore original values
+            document.getElementById('username').value = originalValues.username;
             document.getElementById('phoneNumber').value = originalValues.phoneNumber;
             document.getElementById('bio').value = originalValues.bio;
-            document.getElementById('username').value = originalValues.username;
-
 
             // Disable all fields
             inputFields.forEach(field => {
-            field.setAttribute('readonly', true);
-            field.classList.add('readonly-field');
-        
+                field.setAttribute('readonly', true);
+                field.classList.add('readonly-field');
             });
 
             skillRemoveBtns.forEach(btn => btn.style.display = 'none');
         }
     }
+
 
 
     async function handleProfilePictureChange(event) {
@@ -809,36 +815,56 @@
     //     alert('Profile saved successfully!');
     //     toggleEditMode();
     // }
-        async function saveProfile() {
-        try {
-            const profileData = {
-            username: document.getElementById('username').value,
-            phoneNumber: document.getElementById('phoneNumber').value,
-            bio: document.getElementById('bio').value
+                async function saveProfile() {
+        const profileData = {
+            userName: document.getElementById('username').value.trim(),
+            phoneNumber: document.getElementById('phoneNumber').value.trim(),
+            bio: document.getElementById('bio').value.trim()
         };
+
+        // Validate inputs
+        if (!profileData.userName) {
+            alert('Username is required');
+            return;
+        }
+
+        if (!profileData.phoneNumber || profileData.phoneNumber.length < 10 || profileData.phoneNumber.length > 15) {
+            alert('Please enter a valid phone number (10-15 digits)');
+            return;
+        }
+
+        try {
+            // Show loading state
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+            saveBtn.disabled = true;
 
             const response = await fetch("/User/UpdateProfile", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${sessionStorage.getItem('token')}`
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(profileData)
             });
 
             if (response.ok) {
-                // Update original values after successful save
-                storeOriginalValues();
-                toggleEditMode(); // Exit edit mode
-                alert('Profile saved successfully!');
+                // Success - refresh the page to get updated data
+                location.reload();
             } else {
-                alert('Failed to save profile');
+                const error = await response.text();
+                alert("Failed to update profile: " + error);
             }
         } catch (error) {
-            console.error('Error saving profile:', error);
-            alert('Error saving profile');
+            console.error('Error:', error);
+            alert('An error occurred while updating profile');
+        } finally {
+            // Reset save button
+            const saveBtn = document.getElementById('saveBtn');
+            if (saveBtn) {
+                saveBtn.innerHTML = '<i class="bi-check-circle me-2"></i> Save Changes';
+                saveBtn.disabled = false;
+            }
         }
     }
+
 
     function openAddProjectModal() {
         const modal = new bootstrap.Modal(document.getElementById('addProjectModal'));

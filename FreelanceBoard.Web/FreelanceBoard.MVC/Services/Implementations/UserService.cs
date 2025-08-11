@@ -157,6 +157,19 @@ namespace FreelanceBoard.MVC.Services.Implementations
             }
 		}
 
+        public async Task UpdateProfileAsync(UpdateProfileViewModel model, HttpContext httpContext)
+        {
+            var token = httpContext.User.GetAccessToken();
+            var userId = httpContext.User.GetUserId();
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new ApplicationException("User not logged in");
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await client.PutAsJsonAsync("/api/User/update-profile", model);
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException("Failed to update profile");
+		}
+
 	}
 
 }

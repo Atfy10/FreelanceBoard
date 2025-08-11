@@ -42,6 +42,10 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 				throw new UnauthorizedAccessException("User is not authenticated.");
 			var user = await _userRepository.GetByIdAsync(userId) ??
 					 throw new KeyNotFoundException($"User with ID {userId} not found.");
+			if (await _userRepository.UsernameExistsAsync(request.UserName, userId))
+				throw new InvalidOperationException($"Username {request.UserName} is already taken.");
+			if (await _userRepository.PhoneNumberExistsAsync(request.PhoneNumber, userId))
+				throw new InvalidOperationException($"Phone number {request.PhoneNumber} is already in use.");
 			user.PhoneNumber = request.PhoneNumber;
 			user.UserName = request.UserName;
 			var profile = await _profileRepository.GetByIdAsync(userId) ??

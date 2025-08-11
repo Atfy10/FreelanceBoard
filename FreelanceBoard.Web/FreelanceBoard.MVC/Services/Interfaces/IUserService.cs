@@ -16,6 +16,11 @@ namespace FreelanceBoard.MVC.Services.Interfaces
 
 		Task RemoveSkillAsync(RemoveSkillViewModel model, HttpContext httpContext);
 
+		Task UpdateProfileAsync(UpdateProfileViewModel model, HttpContext httpContext);
+
+		
+
+
 
 	}
 }

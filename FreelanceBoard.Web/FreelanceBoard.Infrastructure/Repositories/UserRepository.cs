@@ -67,6 +67,18 @@ namespace FreelanceBoard.Infrastructure.Repositories
 
 			return result;
 		}
+
+		public async Task<bool> UsernameExistsAsync(string username, string excludeUserId = null)
+		{
+			return await _dbContext.Users
+		.AnyAsync(u => u.UserName == username && (excludeUserId == null || u.Id != excludeUserId));
+		}
+
+		public async Task<bool> PhoneNumberExistsAsync(string phoneNumber, string excludeUserId = null)
+		{
+			return await _dbContext.Users
+					.AnyAsync(u => u.PhoneNumber == phoneNumber && (excludeUserId == null || u.Id != excludeUserId));
+		}
 	}
 
 }
