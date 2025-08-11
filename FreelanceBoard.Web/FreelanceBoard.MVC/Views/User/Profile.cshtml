@@ -684,7 +684,7 @@
         }
     }
 
-        async function openAddSkillModal() {
+            async function openAddSkillModal() {
         const modal = new bootstrap.Modal(document.getElementById("addSkillModal"));
 
         try {
@@ -695,7 +695,14 @@
                 const select = document.getElementById("skillSelect");
                 select.innerHTML = '<option value="">-- Choose a skill --</option>';
 
-                result.data.forEach(skill => {
+                // Get user's current skills from Razor into JS
+                const userSkills = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Skills?.Select(s => s.Name) ?? new List<string>()));
+
+                // Filter out skills the user already has
+                const filteredSkills = result.data.filter(skill => !userSkills.includes(skill.name));
+
+                // Populate only the filtered skills
+                filteredSkills.forEach(skill => {
                     const option = document.createElement("option");
                     option.value = skill.id;
                     option.textContent = skill.name;
@@ -711,6 +718,7 @@
 
         modal.show();
     }
+
 
         async function saveSkill() {
         const skillSelect = document.getElementById("skillSelect");
