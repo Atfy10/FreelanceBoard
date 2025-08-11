@@ -147,6 +147,15 @@ namespace FreelanceBoard.Web.Controllers
 			return this.HandleResult(result);
 		}
 
+		[HttpPut("update-profile")]
+		public async Task<IActionResult> UpdateProfile(UpdateUserProfileCommand command)
+		{
+			if (command == null)
+				return BadRequest(new { Message = "Command cannot be null." });
+			var result = await _mediator.Send(command);
+			return this.HandleResult(result);
+		}
+
 
 
 

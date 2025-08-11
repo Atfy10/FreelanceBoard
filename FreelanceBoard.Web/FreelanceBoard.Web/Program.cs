@@ -162,8 +162,10 @@ namespace FreelanceBoard.Web
             builder.Services.AddScoped<IJobQuery, JobQuery>();
             builder.Services.AddScoped<ISkillQuery, SkillQuery>();
             builder.Services.AddScoped<IProposalQuery, ProposalQuery>();
+            builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 
-            builder.Services.AddValidatorsFromAssemblyContaining<CreateJobCommandValidator>();
+
+			builder.Services.AddValidatorsFromAssemblyContaining<CreateJobCommandValidator>();
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
