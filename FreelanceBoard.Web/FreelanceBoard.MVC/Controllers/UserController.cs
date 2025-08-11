@@ -158,6 +158,7 @@ namespace FreelanceBoard.MVC.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddSkill([FromBody] AddSkillViewModel request)
 		{
+			ModelState.Remove(nameof(request.userId));
 			if (!ModelState.IsValid) return View(request);
 			var success = await _executor.Execute(
 				async () =>

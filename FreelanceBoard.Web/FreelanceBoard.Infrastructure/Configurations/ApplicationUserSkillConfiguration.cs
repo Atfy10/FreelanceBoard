@@ -26,6 +26,8 @@ namespace FreelanceBoard.Infrastructure.Configurations
 				   .WithMany(s => s.UserSkills)
 				   .HasForeignKey(e => e.SkillsId);
 
+
+
 		}
 	}
 }

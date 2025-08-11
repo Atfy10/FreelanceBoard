@@ -130,9 +130,11 @@ namespace FreelanceBoard.MVC.Services.Implementations
 		public async Task AddSkillAsync(AddSkillViewModel model, HttpContext httpContext)
 		{
 			var token = httpContext.User.GetAccessToken();
+            var userId = httpContext.User.GetUserId();
+            model.userId = userId;
 			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-			var response = await client.PostAsJsonAsync("/api/Skill", model);
+			var response = await client.PostAsJsonAsync("/api/User/add-skill", model);
 			if (!response.IsSuccessStatusCode)
 			{
 				var errorContent = await response.Content.ReadAsStringAsync();

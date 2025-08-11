@@ -515,8 +515,10 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <label for="skillName">Skill Name *</label>
-                                <input type="text" id="skillName" class="form-control" placeholder="Enter skill name" required>
+                                <label for="skillSelect">Select Skill *</label>
+                                <select id="skillSelect" class="form-control" required>
+                                    <option value="">-- Choose a skill --</option>
+                                </select>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -681,23 +683,48 @@
         }
     }
 
-    function openAddSkillModal() {
+        async function openAddSkillModal() {
         const modal = new bootstrap.Modal(document.getElementById("addSkillModal"));
+
+        try {
+            const response = await fetch("https://localhost:7029/api/Skill");
+            const result = await response.json();
+
+            if (result.isSuccess && Array.isArray(result.data)) {
+                const select = document.getElementById("skillSelect");
+                select.innerHTML = '<option value="">-- Choose a skill --</option>';
+
+                result.data.forEach(skill => {
+                    const option = document.createElement("option");
+                    option.value = skill.id;
+                    option.textContent = skill.name;
+                    select.appendChild(option);
+                });
+            } else {
+                alert("❌ Failed to load skills");
+            }
+        } catch (error) {
+            console.error("Error fetching skills:", error);
+            alert("❌ Error loading skills");
+        }
+
         modal.show();
     }
 
-    async function saveSkill() {
-        const skillName = document.getElementById("skillName").value.trim();
+        async function saveSkill() {
+        const skillSelect = document.getElementById("skillSelect");
+        const selectedId = skillSelect.value;
+        const selectedName = skillSelect.options[skillSelect.selectedIndex]?.text;
 
-        if (!skillName) {
-            alert("⚠️ Please enter a skill name.");
+        if (!selectedId) {
+            alert("⚠️ Please select a skill.");
             return;
         }
 
         const response = await fetch("/User/AddSkill", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: skillName })
+            body: JSON.stringify({ skillName: selectedName }) 
         });
 
         if (response.ok) {
