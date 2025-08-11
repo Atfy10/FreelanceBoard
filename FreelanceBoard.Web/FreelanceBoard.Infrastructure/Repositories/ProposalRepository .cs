@@ -20,5 +20,14 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 .Where(p => ids.Contains(p.Id))
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Proposal>> GetProposalsByJobIdAsync(int jobId)
+        {
+            return await _dbContext.Proposals
+                .Where(p => p.JobId == jobId)
+                .Include(p => p.Freelancer) // include freelancer details for display
+                .Include(p => p.Job) // optional: include job info if needed
+                .ToListAsync();
+        }
     }
 }
