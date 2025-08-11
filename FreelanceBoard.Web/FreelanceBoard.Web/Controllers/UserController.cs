@@ -156,6 +156,16 @@ namespace FreelanceBoard.Web.Controllers
 			return this.HandleResult(result);
 		}
 
+		[HttpDelete("delete-project/{projectId}")]
+		public async Task<IActionResult> DeleteProject(int projectId)
+		{
+			if (projectId <= 0)
+				return BadRequest(new { Message = "Project ID cannot be null or empty." });
+			var command = new DeleteProjectCommand { ProjectId = projectId };
+			var result = await _mediator.Send(command);
+			return this.HandleResult(result, 204);
+		}
+
 
 
 
