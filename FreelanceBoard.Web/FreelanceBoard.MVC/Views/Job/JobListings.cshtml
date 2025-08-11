@@ -1,6 +1,9 @@
 ﻿@using FreelanceBoard.MVC.Extensions
 
-
+@model List<JobViewModel>
+@{
+    var totalJobs = Model?.Count;
+}
 
 <style>
     .create-job-btn {
@@ -290,8 +293,6 @@
             }
         </style>
 
-
-
             <header class="site-header">
                 <div class="section-overlay"></div>
                 <div class="container">
@@ -300,7 +301,7 @@
                             <h1 class="text-white">Job Listings</h1>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb justify-content-center">
-                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="/Home">Home</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Job listings</li>
                                 </ol>
                             </nav>
@@ -389,7 +390,7 @@
     <div class="container">
         <div class="row align-items-center mb-4">
             <div class="col-lg-6 col-12">
-                <h3>Results of 30-65 of 1500 jobs</h3>
+                <h3>Results of @totalJobs jobs</h3>
             </div>
             <div class="col-lg-6 col-12 d-flex justify-content-end">
                 @if (User.IsInRole("Client"))
@@ -401,96 +402,64 @@
                 }
             </div>
         </div>
-        
-        <div class="row align-items-center mb-4">
-            <div class="col-lg-8 col-12 d-flex align-items-center">
-                <p class="mb-0 me-3">Sort by:</p>
-                <div class="dropdown dropdown-sorting me-4">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownSortingButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Newest Jobs
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownSortingButton">
-                        <li><a class="dropdown-item" href="#">Latest Jobs</a></li>
-                        <li><a class="dropdown-item" href="#">Highest Salary Jobs</a></li>
-                        <li><a class="dropdown-item" href="#">Internship Jobs</a></li>
-                    </ul>
-                </div>
-                <div class="d-flex">
-                    <a href="#" class="sorting-icon active bi-list me-2"></a>
-                    <a href="#" class="sorting-icon bi-grid"></a>
-                </div>
-            </div>
+
+        <!-- Sorting buttons -->
+        <div class="mb-4">
+            <a href="@Url.Action("JobListings", new { sortBy = "Date" })" class="btn btn-primary me-2">Sort by Date</a>
+            <a href="@Url.Action("JobListings", new { sortBy = "Budget" })" class="btn btn-secondary">Sort by Budget</a>
         </div>
 
         <!-- Job Cards Row -->
         <div class="row">
-            <!-- Job Card 1 -->
-            <div class="col-lg-4 col-md-6 col-12 mb-4">
-                <div class="job-thumb job-thumb-box">
-                    <div class="job-actions">
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <button class="action-btn edit-btn" onclick="editJob(1)" title="Edit Job">
-                                <i class="bi-pencil-square"></i>
-                            </button>
-                            <button class="action-btn delete-btn" onclick="deleteJob(1)" title="Delete Job">
-                                <i class="bi-trash"></i>
-                            </button>
-                        }
-                    </div>
-                    <div class="job-image-box-wrap">
-                        <a href="job-details.html">
-                            <img src="images/jobs/portrait-woman-customer-service-worker.jpg" class="job-image img-fluid" alt="">
-                        </a>
-                        <div class="job-image-box-wrap-info d-flex align-items-center">
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge badge-level">Senior</a>
-                            </p>
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge">Contract</a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="job-body">
-                        <h4 class="job-title">
-                            <a href="job-details.html" class="job-title-link">Customer Support</a>
-                        </h4>
-                        <div class="d-flex align-items-center">
-                            <div class="job-image-wrap d-flex align-items-center bg-white shadow-lg mt-2 mb-4">
-                                <img src="images/logos/microsoft.png" class="job-image me-3 img-fluid" alt="">
-                                <p class="mb-0">Microsoft</p>
-                            </div>
-                            <a href="#" class="bi-bookmark ms-auto me-2">
-                            </a>
-                            <a href="#" class="bi-heart">
-                            </a>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <p class="job-location">
-                                <i class="custom-icon bi-geo-alt me-1"></i>
-                                Paris, French
-                            </p>
-                            <p class="job-date">
-                                <i class="custom-icon bi-clock me-1"></i>
-                                10 days ago
-                            </p>
-                        </div>
-                        <div class="d-flex align-items-center border-top pt-3">
-                            <p class="job-price mb-0">
-                                <i class="custom-icon bi-cash me-1"></i>
-                                $45k - 50k
-                            </p>
-                            @if (User.IsInRole("Freelancer"))
+            @foreach (var job in Model)
+            {
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                    <div class="job-thumb job-thumb-box">
+                        <div class="job-actions">
+                            @if (User.IsInRole("Admin"))
                             {
-                                <button class="custom-btn btn ms-auto" onclick="openApplyModal(1)">Apply now</button>
+                                <button class="action-btn edit-btn" onclick="editJob(@job.Id)" title="Edit Job">
+                                    <i class="bi-pencil-square"></i>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteJob(@job.Id)" title="Delete Job">
+                                    <i class="bi-trash"></i>
+                                </button>
                             }
-                            else{
-                                <button class="custom-btn btn ms-auto" onclick="">View Job</button>
-                            }
+                        </div>
+
+                        <div class="job-body">
+                            <h4 class="job-title">
+                                <a href="@Url.Action("JobDetails", "Job", new { id = job.Id })" class="job-title-link">@job.Title</a>
+                            </h4>
+                            <div class="d-flex align-items-center">
+                                <p class="job-location">
+                                    <i class="custom-icon bi-code-slash me-1"></i>
+                                    @job.skillNames.FirstOrDefault()
+                                </p>
+
+                                <p class="job-date">
+                                    <i class="custom-icon bi-clock me-1"></i>
+                                    @job.PostedDate.ToString("MMM dd, yyyy")
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center border-top pt-3">
+                                <p class="job-price mb-0">
+                                    <i class="custom-icon bi-cash me-1"></i>
+                                    $@job.Price
+                                </p>
+                                @if (User.IsInRole("Freelancer"))
+                                {
+                                    <button class="custom-btn btn ms-auto" onclick="openApplyModal(@job.Id)">Apply now</button>
+                                }
+                                else
+                                {
+                                    <button class="custom-btn btn ms-auto" onclick="location.href='@Url.Action("JobDetails", "Job", new { id = job.Id })'">View Job</button>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>           
+            }
         </div>
 
         <!-- Pagination -->
@@ -747,36 +716,6 @@
         </div>
 
         <script>
-            // Sample job data (in real app, this would come from your backend)
-            let jobs = [
-                {
-                    id: 1,
-                    title: "Customer Support",
-                    description: "Provide excellent customer service and support to our clients. Handle inquiries, resolve issues, and maintain customer satisfaction.",
-                    category: "Customer Support",
-                    price: 47500,
-                    skills: ["Communication", "Problem Solving", "CRM Software"]
-                },
-                {
-                    id: 2,
-                    title: "Language Teacher",
-                    description: "Teach English to students of various levels. Create engaging lesson plans and help students improve their language skills.",
-                    category: "Education",
-                    price: 85000,
-                    skills: ["Teaching", "English", "Curriculum Development"]
-                },
-                {
-                    id: 3,
-                    title: "Sound Engineer",
-                    description: "Work with audio equipment and software to record, mix, and master audio content for various media projects.",
-                    category: "Technology",
-                    price: 20000,
-                    skills: ["Audio Engineering", "Pro Tools", "Music Production"]
-                }
-            ];
-
-            let currentJobId = null;
-            let currentSkills = [];
 
             // Skills management
             document.getElementById('skillInput').addEventListener('keypress', function(e) {
