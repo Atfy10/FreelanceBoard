@@ -18,28 +18,28 @@ namespace FreelanceBoard.Web.Controllers
             _proposalQuery = proposalQuery ?? throw new ArgumentNullException(nameof(proposalQuery));
         }
 
-        [HttpGet("Get Proposal")]
+        [HttpGet("get-proposal")]
         public async Task<IActionResult> GetProposalById(int id)
         {
             var proposalDto = await _proposalQuery.GetProposalByIdAsync(id);
             return Ok(proposalDto);
         }
 
-        [HttpDelete("Delete Proposal")]
+        [HttpDelete("delete-proposal")]
         public async Task<IActionResult> DeleteProposal(int id)
         {
             var deleted = await _mediator.Send(new DeleteProposalCommand(id));
             return Ok(deleted);
         }
 
-        [HttpPost("Create Proposal")]
+        [HttpPost("create-proposal")]
         public async Task<IActionResult> CreateProposal(CreateProposalCommand command)
         {
             var newProposalId = await _mediator.Send(command);
             return Ok(newProposalId);
         }
 
-        [HttpPut("Update Proposal")]
+        [HttpPut("update-proposal")]
         public async Task<IActionResult> UpdateProposal(UpdateProposalCommand command)
         {
             var success = await _mediator.Send(command);
