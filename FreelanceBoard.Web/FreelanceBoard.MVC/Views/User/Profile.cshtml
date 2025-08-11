@@ -14,6 +14,13 @@
         padding: 80px 0;
     }
 
+    .readonly-field {
+        background-color: #f5f5f5 !important;
+        cursor: not-allowed !important;
+        pointer-events: none !important;
+        user-select: none !important;
+    }
+
     .profile-container {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
@@ -457,10 +464,11 @@
                                 <label for="username">Username</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi-person-badge"></i></span>
-                                    <input type="text" id="username" class="form-control readonly-field" value="@Model.UserName" readonly>
+                                    <input type="text" id="username" class="form-control readonly-field" value="@Model.UserName">
                                 </div>
                             </div>
                         </div>
+
 
                         <div class="col-lg-6 col-12">
                             <div class="form-group">
@@ -617,45 +625,71 @@
 </div>
 
 <script>
-    let isEditMode = false;
+        let isEditMode = false;
+    let originalValues = {};
+
+    // Store original values when page loads
+        function storeOriginalValues() {
+        originalValues = {
+            username: document.getElementById('username').value,
+            phoneNumber: document.getElementById('phoneNumber').value,
+            bio: document.getElementById('bio').value
+        };
+    }
+
+    // Call this when page loads
+    document.addEventListener('DOMContentLoaded', storeOriginalValues);
 
     function toggleEditMode() {
         isEditMode = !isEditMode;
         const editBtn = document.getElementById('edit-btn-text');
         const saveBtn = document.getElementById('saveBtn');
-        const readonlyFields = document.querySelectorAll('.readonly-field');
+        const inputFields = document.querySelectorAll('input, textarea');
         const skillRemoveBtns = document.querySelectorAll('.skill-remove');
         const addSkillBtn = document.querySelector('.add-skill-btn');
         const addProjectBtn = document.querySelector('.add-project-btn');
 
         if (isEditMode) {
+            // Enter edit mode
             editBtn.textContent = 'Cancel Edit';
             saveBtn.style.display = 'inline-block';
             addSkillBtn.style.display = 'flex';
             addProjectBtn.style.display = 'flex';
 
-            readonlyFields.forEach(field => {
-                if (field.id !== 'username') {
-                    field.removeAttribute('readonly');
-                    field.classList.remove('readonly-field');
-                }
+            // Enable editing for all fields 
+            inputFields.forEach(field => {
+            field.removeAttribute('readonly');
+            field.classList.remove('readonly-field');
+        
             });
+
+
 
             skillRemoveBtns.forEach(btn => btn.style.display = 'flex');
         } else {
+            // Cancel edit mode - restore original values
             editBtn.textContent = 'Edit Profile';
             saveBtn.style.display = 'none';
             addSkillBtn.style.display = 'none';
             addProjectBtn.style.display = 'none';
 
-            readonlyFields.forEach(field => {
-                field.setAttribute('readonly', true);
-                field.classList.add('readonly-field');
+            // Restore original values
+            document.getElementById('phoneNumber').value = originalValues.phoneNumber;
+            document.getElementById('bio').value = originalValues.bio;
+            document.getElementById('username').value = originalValues.username;
+
+
+            // Disable all fields
+            inputFields.forEach(field => {
+            field.setAttribute('readonly', true);
+            field.classList.add('readonly-field');
+        
             });
 
             skillRemoveBtns.forEach(btn => btn.style.display = 'none');
         }
     }
+
 
     async function handleProfilePictureChange(event) {
         const file = event.target.files[0];
@@ -762,18 +796,48 @@
         }
     }
 
-    function saveProfile() {
-        const profileData = {
+    // function saveProfile() {
+    //     const profileData = {
+    //         username: document.getElementById('username').value,
+    //         phoneNumber: document.getElementById('phoneNumber').value,
+    //         bio: document.getElementById('bio').value,
+    //         skills: Array.from(document.querySelectorAll('.skill-tag')).map(tag =>
+    //             tag.textContent.replace('×', '').trim()
+    //         ).filter(skill => skill !== 'Add Skill')
+    //     };
+    //     console.log('Saving profile:', profileData);
+    //     alert('Profile saved successfully!');
+    //     toggleEditMode();
+    // }
+        async function saveProfile() {
+        try {
+            const profileData = {
             username: document.getElementById('username').value,
             phoneNumber: document.getElementById('phoneNumber').value,
-            bio: document.getElementById('bio').value,
-            skills: Array.from(document.querySelectorAll('.skill-tag')).map(tag =>
-                tag.textContent.replace('×', '').trim()
-            ).filter(skill => skill !== 'Add Skill')
+            bio: document.getElementById('bio').value
         };
-        console.log('Saving profile:', profileData);
-        alert('Profile saved successfully!');
-        toggleEditMode();
+
+            const response = await fetch("/User/UpdateProfile", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${sessionStorage.getItem('token')}`
+                },
+                body: JSON.stringify(profileData)
+            });
+
+            if (response.ok) {
+                // Update original values after successful save
+                storeOriginalValues();
+                toggleEditMode(); // Exit edit mode
+                alert('Profile saved successfully!');
+            } else {
+                alert('Failed to save profile');
+            }
+        } catch (error) {
+            console.error('Error saving profile:', error);
+            alert('Error saving profile');
+        }
     }
 
     function openAddProjectModal() {
