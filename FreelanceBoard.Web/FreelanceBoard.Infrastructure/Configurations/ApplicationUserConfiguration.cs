@@ -30,7 +30,9 @@ namespace FreelanceBoard.Infrastructure.Configurations
 
 			builder.HasIndex(u => u.Email).IsUnique();
 
-			builder.Property(u => u.IsBanned)
+			builder.HasIndex(u=>u.PhoneNumber).IsUnique();
+
+            builder.Property(u => u.IsBanned)
 				   .HasDefaultValue(false);
 		}
 	}

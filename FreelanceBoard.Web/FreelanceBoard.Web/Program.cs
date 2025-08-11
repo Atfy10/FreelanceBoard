@@ -8,6 +8,8 @@ using FreelanceBoard.Core.Queries.Implementations;
 using FreelanceBoard.Core.Queries.Interfaces;
 using FreelanceBoard.Core.QueryHandlers.JobQueryHandlers;
 using FreelanceBoard.Core.Validators.JobValidators;
+using FreelanceBoard.Core.Validators.ProposalValidators;
+using FreelanceBoard.Core.Validators.ReviewValidators;
 using FreelanceBoard.Infrastructure.DBContext;
 using FreelanceBoard.Infrastructure.Implementations;
 using FreelanceBoard.Infrastructure.Repositories;
@@ -161,6 +163,16 @@ namespace FreelanceBoard.Web
 
             builder.Services.AddScoped<IJobQuery, JobQuery>();
 
+            builder.Services.AddScoped<IProposalQuery, ProposalQuery>();
+
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+
+            builder.Services.AddScoped<IReviewQuery, ReviewQuery>();
+
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateProposalCommandValidator>();
+
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateReviewCommandValidator>();
+
             builder.Services.AddValidatorsFromAssemblyContaining<CreateJobCommandValidator>();
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -189,6 +201,10 @@ namespace FreelanceBoard.Web
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                await dbContext.Database.MigrateAsync();            // make sure DB/tables exist
+                await SeedDB.SeedAsync(dbContext, userManager);     // ? await the seeder
+            }
 
                 await dbContext.Database.MigrateAsync();
 

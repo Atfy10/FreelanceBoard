@@ -59,7 +59,7 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
 
                 existingJob.Skills = updatedSkills;
 
-                var updatedProposals = await _proposalRepository.GetByIdsAsync(request.ProposalIds);
+                var updatedProposals = await _proposalRepository.GetManyByIdsAsync(request.ProposalIds.ToArray());
 
                 EnsureAllFound(request.ProposalIds, updatedProposals.Count, "Proposals");
 

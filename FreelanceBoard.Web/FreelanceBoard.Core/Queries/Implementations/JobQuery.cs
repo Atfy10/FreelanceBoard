@@ -6,6 +6,7 @@ using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Core.Queries.Implementations;
 using FreelanceBoard.Core.Queries.Interfaces;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
         private readonly IMapper _mapper;
         private readonly OperationExecutor _executor;
         private readonly string GetOperation;
-        private static bool isAscending = true;
+        private const int PAGESIZE = 5;
 
         public JobQuery(IJobRepository jobRepo, IMapper mapper, OperationExecutor executor)
         {
@@ -43,15 +44,14 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                 return Result<JobDto>.Success(result, GetOperation, $"Job with ID {id} retrieved successfully.");
             }, OperationType.Get);
 
-        public async Task<Result<IEnumerable<JobDto>>> GetAllJobsSorted(SortBy sortBy)
+        public async Task<Result<IEnumerable<JobDto>>> GetAllJobsSorted(SortBy sortBy, int page, bool sortAscendingly)
             => await _executor.Execute(async () =>
             {
-                isAscending = !isAscending;
 
                 var jobs = sortBy switch
                 {
-                    SortBy.Date => await _jobRepository.GetAllJobsSortByDate(isAscending),
-                    SortBy.Budget => await _jobRepository.GetAllJobsSortByBudget(isAscending),
+                    SortBy.Date => await _jobRepository.GetAllJobsSortByDate(sortAscendingly),
+                    SortBy.Budget => await _jobRepository.GetAllJobsSortByBudget(sortAscendingly),
                     _ => throw new ArgumentException("Invalid sorting parameter specified."),
                 };
 
@@ -59,11 +59,11 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                     throw new ArgumentNullException(nameof(jobs), "No jobs found.");
 
                 var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
-
-                return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "All jobs sorted accordingly retrieved successfully.");
+                var resultPaginated = Page(result, page, PAGESIZE);
+                return Result<IEnumerable<JobDto>>.Success(resultPaginated, GetOperation, "All jobs sorted accordingly retrieved successfully.");
             }, OperationType.Get);
 
-        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredBySkills(List<string> skills)
+        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredBySkills(List<string> skills, int page)
             => await _executor.Execute(async () =>
             {
                 if (skills == null || skills.Count == 0)
@@ -75,10 +75,11 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                     return Result<IEnumerable<JobDto>>.Success([], GetOperation, "No jobs matched the given skills.");
 
                 var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
-                return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs filtered by skills retrieved successfully.");
+                var resultPaginated = Page(result, page, PAGESIZE);
+                return Result<IEnumerable<JobDto>>.Success(resultPaginated, GetOperation, "Jobs filtered by skills retrieved successfully.");
             }, OperationType.Get);
 
-        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByCategory(List<string> categories)
+        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByCategory(List<string> categories,int page)
             => await _executor.Execute(async () =>
             {
                 if (categories == null || categories.Count == 0)
@@ -90,10 +91,13 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                     return Result<IEnumerable<JobDto>>.Success([], GetOperation, "No jobs matched the given category/s.");
 
                 var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
-                return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs filtered by category retrieved successfully");
+
+                var resultPaginated = Page(result, page, PAGESIZE);
+
+                return Result<IEnumerable<JobDto>>.Success(resultPaginated, GetOperation, "Jobs filtered by category retrieved successfully");
             }, OperationType.Get);
 
-        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByBudget(int min, int max)
+        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByBudget(int min, int max, int page)
             => await _executor.Execute(async () =>
             {
                 if (min > max || min < 0)
@@ -105,9 +109,19 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                     return Result<IEnumerable<JobDto>>.Success([], GetOperation, "No jobs matched the given range.");
 
                 var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
-                return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs filtered by budget retrieved successfully");
+                var resultPaginated = Page(result, page, PAGESIZE);
+                return Result<IEnumerable<JobDto>>.Success(resultPaginated, GetOperation, "Jobs filtered by budget retrieved successfully");
             }, OperationType.Get);
+
+
+
+        private static IEnumerable<T> Page<T>(IEnumerable<T> source, int page, int pageSize)
+        {
+            if (source is null) return Enumerable.Empty<T>();
+            page = Math.Max(1, page);
+            pageSize = Math.Clamp(pageSize, 1, 50);
+            var skip = (page - 1) * pageSize;
+            return source.Skip(skip).Take(pageSize);
+        }
     }
-
-
 }
