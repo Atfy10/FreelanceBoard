@@ -29,5 +29,13 @@ namespace FreelanceBoard.Infrastructure.Repositories
 				.FirstOrDefaultAsync();
 		}
 
+		public async Task<ApplicationUserSkill?> GetUserSkillAsync(string userId, int skillId)
+		{
+			return await _dbContext.Set<ApplicationUserSkill>()
+			.FirstOrDefaultAsync(us =>
+			us.ApplicationUsersId == userId &&
+			us.SkillsId == skillId);
+
+		}
 	}
 }

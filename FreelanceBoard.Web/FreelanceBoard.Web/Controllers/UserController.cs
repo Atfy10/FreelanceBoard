@@ -137,6 +137,16 @@ namespace FreelanceBoard.Web.Controllers
 			return this.HandleResult(result);
 		}
 
+		//make delete user skill endpoint
+		[HttpDelete("remove-skill")]
+		public async Task<IActionResult> RemoveSkill([FromBody] RemoveUserSkillCommand command)
+		{
+			if (command == null)
+				return BadRequest(new { Message = "Command cannot be null." });
+			var result = await _mediator.Send(command);
+			return this.HandleResult(result);
+		}
+
 
 
 

@@ -15,5 +15,7 @@ namespace FreelanceBoard.Core.Interfaces
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(int id);
         Task DeleteAsync(string id);
-    }
+		Task DeleteAsync(TEntity entity);
+
+	}
 }

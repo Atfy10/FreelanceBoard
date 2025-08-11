@@ -1,12 +1,13 @@
-﻿using FreelanceBoard.Core.Interfaces;
-using FreelanceBoard.Infrastructure.DBContext;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using FreelanceBoard.Core.Interfaces;
+using FreelanceBoard.Infrastructure.DBContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace FreelanceBoard.Infrastructure.Repositories
 {
@@ -35,7 +36,13 @@ namespace FreelanceBoard.Infrastructure.Repositories
             await SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+		public async Task DeleteAsync(TEntity entity)
+		{
+			_dbContext.Set<TEntity>().Remove(entity);
+			await _dbContext.SaveChangesAsync();
+		}
+
+		public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbContext.Set<TEntity>().ToListAsync();
         }

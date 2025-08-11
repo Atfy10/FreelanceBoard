@@ -11,6 +11,8 @@ namespace FreelanceBoard.Core.Interfaces
     {
         Task<List<Skill>> GetByNamesAsync(IEnumerable<string> names);
 		Task<int?> GetIdByNameAsync(string name);
+		Task<ApplicationUserSkill?> GetUserSkillAsync(string userId, int skillId);
+
 
 	}
 }
