@@ -22,13 +22,14 @@ namespace FreelanceBoard.MVC.Controllers
 
         private readonly IUserService _userService;
         private readonly OperationExecutor _executor;
-        //private readonly IHttpClientFactory _httpClientFactory;
-        public UserController(IUserService userService, OperationExecutor executor,
+		private readonly IHttpClientFactory _httpClientFactory;
+		public UserController(IUserService userService, OperationExecutor executor,
             IHttpClientFactory httpClientFactory)
         {
             _userService = userService;
             _executor = executor;
-        }
+            _httpClientFactory = httpClientFactory;
+		}
 
         [HttpGet]
         [AllowAnonymous]
@@ -171,5 +172,23 @@ namespace FreelanceBoard.MVC.Controllers
 				return View(request);
 			return RedirectToAction("Profile", "User");
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> RemoveSkill([FromBody] RemoveSkillViewModel model)
+		{
+            ModelState.Remove(nameof(model.UserId));
+			if (!ModelState.IsValid) return View(model);
+            var success = await _executor.Execute(
+                async () =>
+                {
+                    await _userService.RemoveSkillAsync(model, HttpContext);
+                },
+                error => ModelState.AddModelError(string.Empty, error)
+            );
+            if (!success)
+                return View(model);
+            return RedirectToAction("Profile", "User");
+		}
+
 	}
 }

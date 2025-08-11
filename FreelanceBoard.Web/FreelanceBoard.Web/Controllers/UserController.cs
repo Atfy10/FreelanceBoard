@@ -138,7 +138,7 @@ namespace FreelanceBoard.Web.Controllers
 		}
 
 		//make delete user skill endpoint
-		[HttpDelete("remove-skill")]
+		[HttpPost("remove-skill")]
 		public async Task<IActionResult> RemoveSkill([FromBody] RemoveUserSkillCommand command)
 		{
 			if (command == null)

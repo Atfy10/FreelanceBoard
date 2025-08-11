@@ -142,6 +142,21 @@ namespace FreelanceBoard.MVC.Services.Implementations
 			}
 		}
 
+
+        public async Task RemoveSkillAsync(RemoveSkillViewModel model, HttpContext httpContext)
+        {
+            var token = httpContext.User.GetAccessToken();
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            model.UserId = httpContext.User.GetUserId();
+			var response = await client.PostAsJsonAsync("/api/User/remove-skill", model);
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new ApplicationException($"Failed to remove skill: {errorContent}");
+            }
+		}
+
 	}
 
 }

@@ -496,7 +496,7 @@
                         {
                             <div class="skill-tag">
                                 @skill.Name
-                                <button class="skill-remove" onclick="removeSkill(this)" style="display: none;">×</button>
+                                <button class="skill-remove" onclick="removeSkill('@skill.Name', this)" style="display: none;">×</button>
                             </div>
                         }
                         <div class="add-skill-btn" onclick="openAddSkillModal()" style="display: none;">
@@ -504,6 +504,7 @@
                             Add Skill
                         </div>
                     </div>
+
                 </div>
 
                 <!-- Modal -->
@@ -736,8 +737,22 @@
         }
     }
 
-    function removeSkill(button) {
-        button.parentElement.remove();
+        async function removeSkill(skillName, button) {
+        if (!confirm(`Are you sure you want to remove "${skillName}"?`)) return;
+
+        const response = await fetch("/User/RemoveSkill", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ skillName: skillName }) // send skill name to backend
+        });
+
+        if (response.ok) {
+            // remove from DOM only if server success
+            button.parentElement.remove();
+            alert(`✅ Skill "${skillName}" removed successfully!`);
+        } else {
+            alert(`❌ Failed to remove skill "${skillName}"`);
+        }
     }
 
     function saveProfile() {
