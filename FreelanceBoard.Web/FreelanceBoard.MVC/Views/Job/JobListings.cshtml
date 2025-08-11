@@ -392,10 +392,13 @@
                 <h3>Results of 30-65 of 1500 jobs</h3>
             </div>
             <div class="col-lg-6 col-12 d-flex justify-content-end">
-                <button class="create-job-btn" data-bs-toggle="modal" data-bs-target="#createJobModal">
-                    <i class="bi-plus-circle"></i>
-                    Create New Job
-                </button>
+                @if (User.IsInRole("Client"))
+                {
+                    <button class="create-job-btn" data-bs-toggle="modal" data-bs-target="#createJobModal">
+                        <i class="bi-plus-circle"></i>
+                        Create New Job
+                    </button>
+                }
             </div>
         </div>
         
@@ -425,12 +428,15 @@
             <div class="col-lg-4 col-md-6 col-12 mb-4">
                 <div class="job-thumb job-thumb-box">
                     <div class="job-actions">
-                        <button class="action-btn edit-btn" onclick="editJob(1)" title="Edit Job">
-                            <i class="bi-pencil-square"></i>
-                        </button>
-                        <button class="action-btn delete-btn" onclick="deleteJob(1)" title="Delete Job">
-                            <i class="bi-trash"></i>
-                        </button>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <button class="action-btn edit-btn" onclick="editJob(1)" title="Edit Job">
+                                <i class="bi-pencil-square"></i>
+                            </button>
+                            <button class="action-btn delete-btn" onclick="deleteJob(1)" title="Delete Job">
+                                <i class="bi-trash"></i>
+                            </button>
+                        }
                     </div>
                     <div class="job-image-box-wrap">
                         <a href="job-details.html">
@@ -474,129 +480,17 @@
                                 <i class="custom-icon bi-cash me-1"></i>
                                 $45k - 50k
                             </p>
-                            <button class="custom-btn btn ms-auto" onclick="openApplyModal(1)">Apply now</button>
+                            @if (User.IsInRole("Freelancer"))
+                            {
+                                <button class="custom-btn btn ms-auto" onclick="openApplyModal(1)">Apply now</button>
+                            }
+                            else{
+                                <button class="custom-btn btn ms-auto" onclick="">View Job</button>
+                            }
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Job Card 2 -->
-            <div class="col-lg-4 col-md-6 col-12 mb-4">
-                <div class="job-thumb job-thumb-box">
-                    <div class="job-actions">
-                        <button class="action-btn edit-btn" onclick="editJob(2)" title="Edit Job">
-                            <i class="bi-pencil-square"></i>
-                        </button>
-                        <button class="action-btn delete-btn" onclick="deleteJob(2)" title="Delete Job">
-                            <i class="bi-trash"></i>
-                        </button>
-                    </div>
-                    <div class="job-image-box-wrap">
-                        <a href="job-details.html">
-                            <img src="images/jobs/young-woman-teaching-english-lessons.jpg" class="job-image img-fluid" alt="">
-                        </a>
-                        <div class="job-image-box-wrap-info d-flex align-items-center">
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge badge-level">Junior</a>
-                            </p>
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge">Freelance</a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="job-body">
-                        <h4 class="job-title">
-                            <a href="job-details.html" class="job-title-link">Language Teacher</a>
-                        </h4>
-                        <div class="d-flex align-items-center">
-                            <div class="job-image-wrap d-flex align-items-center bg-white shadow-lg mt-2 mb-4">
-                                <img src="images/logos/dropbox.png" class="job-image me-3 img-fluid" alt="">
-                                <p class="mb-0">Dropbox</p>
-                            </div>
-                            <a href="#" class="bi-bookmark ms-auto me-2">
-                            </a>
-                            <a href="#" class="bi-heart">
-                            </a>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <p class="job-location">
-                                <i class="custom-icon bi-geo-alt me-1"></i>
-                                Paris, French
-                            </p>
-                            <p class="job-date">
-                                <i class="custom-icon bi-clock me-1"></i>
-                                30 minutes ago
-                            </p>
-                        </div>
-                        <div class="d-flex align-items-center border-top pt-3">
-                            <p class="job-price mb-0">
-                                <i class="custom-icon bi-cash me-1"></i>
-                                $85k
-                            </p>
-                            <button class="custom-btn btn ms-auto" onclick="openApplyModal(2)">Apply now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Job Card 3 -->
-            <div class="col-lg-4 col-md-6 col-12 mb-4">
-                <div class="job-thumb job-thumb-box">
-                    <div class="job-actions">
-                        <button class="action-btn edit-btn" onclick="editJob(3)" title="Edit Job">
-                            <i class="bi-pencil-square"></i>
-                        </button>
-                        <button class="action-btn delete-btn" onclick="deleteJob(3)" title="Delete Job">
-                            <i class="bi-trash"></i>
-                        </button>
-                    </div>
-                    <div class="job-image-box-wrap">
-                        <a href="job-details.html">
-                            <img src="images/jobs/sound-engineer-working-studio-with-equipment.jpg" class="job-image img-fluid" alt="">
-                        </a>
-                        <div class="job-image-box-wrap-info d-flex align-items-center">
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge badge-level">Junior</a>
-                            </p>
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge">Remote</a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="job-body">
-                        <h4 class="job-title">
-                            <a href="job-details.html" class="job-title-link">Sound Engineer</a>
-                        </h4>
-                        <div class="d-flex align-items-center">
-                            <div class="job-image-wrap d-flex align-items-center bg-white shadow-lg mt-2 mb-4">
-                                <img src="images/logos/soundcloud.png" class="job-image me-3 img-fluid" alt="">
-                                <p class="mb-0">Soundcloud</p>
-                            </div>
-                            <a href="#" class="bi-bookmark ms-auto me-2">
-                            </a>
-                            <a href="#" class="bi-heart">
-                            </a>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <p class="job-location">
-                                <i class="custom-icon bi-geo-alt me-1"></i>
-                                Singapore
-                            </p>
-                            <p class="job-date">
-                                <i class="custom-icon bi-clock me-1"></i>
-                                8 hours ago
-                            </p>
-                        </div>
-                        <div class="d-flex align-items-center border-top pt-3">
-                            <p class="job-price mb-0">
-                                <i class="custom-icon bi-cash me-1"></i>
-                                $20k
-                            </p>
-                            <button class="custom-btn btn ms-auto" onclick="openApplyModal(3)">Apply now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </div>           
         </div>
 
         <!-- Pagination -->

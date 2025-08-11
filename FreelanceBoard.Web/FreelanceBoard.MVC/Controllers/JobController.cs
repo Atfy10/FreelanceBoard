@@ -21,6 +21,8 @@ namespace FreelanceBoard.MVC.Controllers
             _jobService = userService;
             _executor = executor;
         }
+
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View("JobListings");
@@ -49,11 +51,6 @@ namespace FreelanceBoard.MVC.Controllers
                 return View("NotFound");
 
             return View("ClientDashboard", job);
-        }
-
-        public IActionResult JobProposal()
-        {
-            return View("JobProposal");
         }
     }
 }
