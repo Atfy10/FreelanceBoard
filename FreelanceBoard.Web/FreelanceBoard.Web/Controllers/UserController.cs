@@ -103,8 +103,6 @@ namespace FreelanceBoard.Web.Controllers
 		[HttpGet("full-profile/{id}")]
 		public async Task<IActionResult> GetUserFullProfile(string id)
 		{
-			if (string.IsNullOrWhiteSpace(id))
-				return BadRequest(new { Message = "User ID cannot be null or empty." });
 
 			var result = await _userQuery.GetUserFullProfileAsync(id);
 			return this.HandleResult(result);
@@ -159,8 +157,6 @@ namespace FreelanceBoard.Web.Controllers
 		[HttpDelete("delete-project/{projectId}")]
 		public async Task<IActionResult> DeleteProject(int projectId)
 		{
-			if (projectId <= 0)
-				return BadRequest(new { Message = "Project ID cannot be null or empty." });
 			var command = new DeleteProjectCommand { ProjectId = projectId };
 			var result = await _mediator.Send(command);
 			return this.HandleResult(result, 204);

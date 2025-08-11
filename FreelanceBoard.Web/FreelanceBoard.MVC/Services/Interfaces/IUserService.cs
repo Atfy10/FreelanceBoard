@@ -18,7 +18,9 @@ namespace FreelanceBoard.MVC.Services.Interfaces
 
 		Task UpdateProfileAsync(UserProfileViewModel model, HttpContext httpContext);
 
-		
+		Task DeleteProjectAsync(int projectId, HttpContext httpContext);
+
+
 
 
 

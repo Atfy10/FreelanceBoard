@@ -217,5 +217,21 @@ namespace FreelanceBoard.MVC.Controllers
             return RedirectToAction("Profile", "User");
 
         }
-    }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProject(int projectId)
+        {
+            var success = await _executor.Execute(
+                async () =>
+                {
+                    await _userService.DeleteProjectAsync(projectId, HttpContext);
+                },
+                error => ModelState.AddModelError(string.Empty, error)
+            );
+            if (!success)
+                return View("Profile");
+			return NoContent(); 
+		}
+	}
+
 }
