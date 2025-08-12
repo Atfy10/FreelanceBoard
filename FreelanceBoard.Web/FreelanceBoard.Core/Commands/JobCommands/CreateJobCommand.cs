@@ -11,19 +11,17 @@ namespace FreelanceBoard.Core.Commands.JobCommands
 {
     public class CreateJobCommand : IRequest<Result<int>>
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Category { get; set; }
-        public decimal Price { get; set; }
-        public string UserId { get; set; }
-        public DateTime Deadline { get; set; }
-        public DateTime DateCreated { get; set; }
-        public List<string> SkillNames { get; set; } = new List<string>();
-
-
+        public string Title { get; }
+        public string Description { get; }
+        public string Category { get; }
+        public decimal Price { get; }
+        public string UserId { get; }
+        public DateTime Deadline { get; }
+        public DateTime DateCreated { get; }
+        public List<string> SkillNames { get; } = [];
 
         public CreateJobCommand(string title, string description, string category, decimal price, string userId,
-            DateTime dateCreated,List<string> skillNames, DateTime deadline)
+            DateTime dateCreated, List<string> skillNames, DateTime deadline)
         {
             Title = title;
             Description = description;
@@ -32,7 +30,7 @@ namespace FreelanceBoard.Core.Commands.JobCommands
             Deadline = deadline;
             DateCreated = dateCreated;
             UserId = userId;
-            SkillNames = skillNames ?? new List<string>();
+            SkillNames = skillNames ?? [];
         }
 
     }

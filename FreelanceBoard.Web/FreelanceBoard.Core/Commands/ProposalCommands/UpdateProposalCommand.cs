@@ -11,20 +11,19 @@ namespace FreelanceBoard.Core.Commands.ProposalCommands
 {
     public class UpdateProposalCommand : IRequest<Result<ProposalDto>>
     {
-        public int Id { get; set; }
-        public string Message { get; set; }
-        public string Status { get; set; }
-        public decimal Price { get; set; }
-        public string FreelancerId { get; set; }
+        public int Id { get; }
+        public string Message { get; }
+        public string Status { get; }
+        public decimal Price { get; }
+        public string FreelancerId { get; }
 
-        public UpdateProposalCommand(int id,string message, string status, decimal price, string freelancerId)
+        public UpdateProposalCommand(int id, string message, string status, decimal price, string freelancerId)
         {
             Id = id;
             Message = message;
             Status = status;
             Price = price;
             FreelancerId = freelancerId;
-
         }
     }
 }

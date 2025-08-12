@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FreelanceBoard.Core.Domain.Enums;
 using FreelanceBoard.Core.Dtos.JobDtos;
+using FreelanceBoard.Core.Exceptions;
 using FreelanceBoard.Core.Helpers;
 using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Core.Queries.Implementations;
@@ -44,9 +45,11 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                 return Result<JobDto>.Success(result, GetOperation, $"Job with ID {id} retrieved successfully.");
             }, OperationType.Get);
 
-        public async Task<Result<IEnumerable<JobDto>>> GetAllJobsSorted(SortBy sortBy, int page, bool sortAscendingly)
+        public async Task<Result<IEnumerable<JobDto>>> GetAllJobsSorted(string field, int page, bool sortAscendingly)
             => await _executor.Execute(async () =>
             {
+                if (!Enum.TryParse(field, true, out SortBy sortBy))
+                    throw new InvalidSortChoiceException($"Invalid sort field specified: {field}. Valid options are 'Date' or 'Budget'.");
 
                 var jobs = sortBy switch
                 {
@@ -79,7 +82,7 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                 return Result<IEnumerable<JobDto>>.Success(resultPaginated, GetOperation, "Jobs filtered by skills retrieved successfully.");
             }, OperationType.Get);
 
-        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByCategory(List<string> categories,int page)
+        public async Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByCategory(List<string> categories, int page)
             => await _executor.Execute(async () =>
             {
                 if (categories == null || categories.Count == 0)
@@ -88,7 +91,7 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                 var jobs = await _jobRepository.GetJobsFilteredCategory(categories);
 
                 if (jobs == null || !jobs.Any())
-                    return Result<IEnumerable<JobDto>>.Success([], GetOperation, "No jobs matched the given category/s.");
+                    return Result<IEnumerable<JobDto>>.Failure(GetOperation, "No jobs matched the given category/s.");
 
                 var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
 

@@ -15,6 +15,6 @@ namespace FreelanceBoard.Core.Interfaces
 
     public interface IContractRepository
     {
-        Task<Contract> GetFullContractWithIdAsync(int contractId);
+        Task<Contract?> GetFullContractWithIdAsync(int contractId);
     }
 }

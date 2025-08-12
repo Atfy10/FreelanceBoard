@@ -30,43 +30,42 @@ namespace FreelanceBoard.Infrastructure.Repositories
 
         public async Task<ApplicationUser?> GetUserFullProfileAsync(string userId)
         {
-            if (string.IsNullOrWhiteSpace(userId))
-                return null;
             return await _dbContext.Users
                 .Include(u => u.Profile)
                 .Include(u => u.Skills)
                 .Include(u => u.Projects)
-                .FirstOrDefaultAsync(u => u.Id == userId);
+                .FirstOrDefaultAsync(u => u.Id == userId) ??
+                 throw new KeyNotFoundException($"User with ID {userId} not found.");
         }
 
-        public Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
+        public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
         {
-            if (user == null || string.IsNullOrWhiteSpace(password))
-                return Task.FromResult(false);
+            if (user is null || string.IsNullOrWhiteSpace(password))
+                return false;
 
-            return _userManager.CheckPasswordAsync(user, password);
+            return await _userManager.CheckPasswordAsync(user, password);
         }
 
         public async Task<string> GetUserRolesAsync(ApplicationUser user)
         {
-            if (user == null)
+            if (user is null)
                 return "";
 
-            var roles = await _userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(user) ??
+                throw new KeyNotFoundException($"User with ID {user.Id} not found or has no roles.");
             return roles.ToList().FirstOrDefault();
         }
 
-		public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password, string role)
-		{
-			var result = await _userManager.CreateAsync(user, password);
+        public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password, string role)
+        {
+            var result = await _userManager.CreateAsync(user, password);
 
-			if (!result.Succeeded)
-				return result;
+            if (!result.Succeeded)
+                return result;
 
-			await _userManager.AddToRoleAsync(user, role);
-
-			return result;
-		}
-	}
+            await _userManager.AddToRoleAsync(user, role);
+            return result;
+        }
+    }
 
 }

@@ -48,7 +48,9 @@ namespace FreelanceBoard.Web
             builder.Services.AddScoped<OperationExecutor>();
 
             builder.Services.AddScoped<IJwtToken, JwtToken>();
+
             builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
@@ -73,7 +75,9 @@ namespace FreelanceBoard.Web
             });
 
             var config = builder.Configuration;
+
             var jwtKey = Encoding.UTF8.GetBytes(config["Jwt:Key"]);
+
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -171,9 +175,9 @@ namespace FreelanceBoard.Web
 
             builder.Services.AddValidatorsFromAssemblyContaining<CreateProposalCommandValidator>();
 
-            builder.Services.AddValidatorsFromAssemblyContaining<CreateReviewCommandValidator>();
+            //builder.Services.AddValidatorsFromAssemblyContaining<CreateReviewCommandValidator>();
 
-            builder.Services.AddValidatorsFromAssemblyContaining<CreateJobCommandValidator>();
+            //builder.Services.AddValidatorsFromAssemblyContaining<CreateJobCommandValidator>();
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
@@ -191,6 +195,7 @@ namespace FreelanceBoard.Web
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
+
             app.UseCors("AllowFrontend");
 
             app.UseAuthorization();
@@ -201,10 +206,6 @@ namespace FreelanceBoard.Web
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-                await dbContext.Database.MigrateAsync();            // make sure DB/tables exist
-                await SeedDB.SeedAsync(dbContext, userManager);     // ? await the seeder
-            }
 
                 await dbContext.Database.MigrateAsync();
 

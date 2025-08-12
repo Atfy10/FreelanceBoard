@@ -34,7 +34,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
                     throw new ValidationException(failures);
             }
 
-            return Result<bool>.Failure(OperationType.Validation.ToString(),
+            return Result<bool>.Success(true, OperationType.Validation.ToString(),
                 "Validation failed");
         }, OperationType.Validation);
 

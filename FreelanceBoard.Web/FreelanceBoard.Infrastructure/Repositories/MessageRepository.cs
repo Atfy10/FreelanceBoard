@@ -9,26 +9,21 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Infrastructure.Repositories
 {
-    public class MessageRepository : BaseRepository<Message>,IMessageRepository
+    public class MessageRepository : BaseRepository<Message>, IMessageRepository
     {
         public MessageRepository(AppDbContext dbContext) : base(dbContext)
         { }
         public async Task DeleteMessageId(string messageId)
         {
-            var message = await _dbContext.Messages.FindAsync(messageId);
-            if (message != null)
+            var message = await _dbContext.Messages.FindAsync(messageId) ??
+                throw new KeyNotFoundException($"Message with ID {messageId} not found.");
+
+            if (message.SenderId is null && message.ReceiverId is null)
             {
-                if (message.SenderId == null && message.ReceiverId == null)
-                {
-                    _dbContext.Messages.Remove(message);
-                    await _dbContext.SaveChangesAsync();
-                }
-                
+                _dbContext.Messages.Remove(message);
+                await _dbContext.SaveChangesAsync();
             }
-            throw new KeyNotFoundException($"Message with ID {messageId} not found.");
-
-
         }
- 
+
     }
 }

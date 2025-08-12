@@ -26,6 +26,7 @@ namespace FreelanceBoard.Core.Helpers
             try
             {
                 _logger.LogInformation("Starting {Operation} operation...", opType);
+
                 res = await operation();
 
                 if (res.IsSuccess)
@@ -38,48 +39,54 @@ namespace FreelanceBoard.Core.Helpers
             catch (ArgumentNullException ex)
             {
                 _logger.LogError(ex, "Argument null error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "An arg was null: " + ex.Message);
+                return Result<T>.Failure(opType.ToString(), "Some required information was missing. Please check and try again.");
             }
             catch (NullReferenceException ex)
             {
                 _logger.LogError(ex, "Null reference error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "A null reference was encountered: " + ex.Message);
+                return Result<T>.Failure(opType.ToString(), "Something went wrong while processing your request. Please try again.");
             }
             catch (InvalidOperationException ex)
             {
                 _logger.LogError(ex, "Invalid operation error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "An invalid operation was attempted: " + ex.Message);
+                return Result<T>.Failure(opType.ToString(), "The action you tried isn’t allowed in the current state.");
             }
             catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex, "Key not found error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "The key is not found: " + ex.Message);
+                return Result<T>.Failure(opType.ToString(), "We couldn’t find the requested item.");
             }
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex, "Database error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "A database error occurred: " + ex.Message);
+                return Result<T>.Failure(opType.ToString(), "There was a problem saving your changes. Please try again later.");
             }
             catch (ValidationException ex)
             {
                 _logger.LogError(ex, "Validation error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "A database error occurred: " + ex.Message);
+                return Result<T>.Failure(opType.ToString(), "Some information you entered isn’t valid. Please review and try again.");
+            }
+            catch (InvalidSortChoiceException ex)
+            {
+                _logger.LogError(ex, "Invalid sort choice error occurred during {Operation}", opType);
+                return Result<T>.Failure(opType.ToString(), "The sort option you selected isn’t available.");
             }
             catch (EmailNotFoundException ex)
             {
                 _logger.LogError(ex, "Email not found error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "Email not found: " + ex.Message);
+                return Result<T>.Failure(opType.ToString(), "We couldn’t find an account with that email.");
             }
             catch (EmailExistException ex)
             {
-                _logger.LogError(ex, "Email already exist error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "Email is exist: " + ex.Message);
+                _logger.LogError(ex, "Email already exists error occurred during {Operation}", opType);
+                return Result<T>.Failure(opType.ToString(), "That email address is already in use.");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unexpected error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "An unexpected error occurred: " + ex.Message);
+                return Result<T>.Failure(opType.ToString(), "An unexpected error occurred. Please try again later.");
             }
+
         }
     }
 }

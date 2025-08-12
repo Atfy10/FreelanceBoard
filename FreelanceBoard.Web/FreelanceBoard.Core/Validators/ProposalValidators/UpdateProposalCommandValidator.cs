@@ -11,19 +11,23 @@ namespace FreelanceBoard.Core.Validators.ProposalValidators
     {
         public UpdateProposalCommandValidator()
         {
-            RuleFor(x => x.Message).NotEmpty();
-            RuleFor(x => x.Price).GreaterThan(0);
+            RuleFor(x => x.Message)
+                .NotEmpty().WithMessage("Message is required.")
+                .Must(m => !string.IsNullOrWhiteSpace(m))
+                    .WithMessage("Message cannot be whitespace only.");
+
+            RuleFor(x => x.Price)
+                .GreaterThan(0).WithMessage("Price must be greater than zero.");
+
             RuleFor(x => x.FreelancerId)
-                .NotEmpty().WithMessage("Freelancer id must not be empty");
+                .NotEmpty().WithMessage("Freelancer ID is required.");
 
             RuleFor(x => x.Status)
-                .NotEmpty()
-                .MaximumLength(10).WithMessage("Status has to be less than 10 characters");
+                .NotEmpty().WithMessage("Status is required.")
+                .MaximumLength(10).WithMessage("Status cannot exceed 10 characters.");
 
             RuleFor(x => x.Id)
-                .GreaterThan(0)
-                .NotEmpty().WithMessage("Proposal id must not be empty and greater than 0");
-
+                .NotEmpty().WithMessage("Proposal ID is required.");
         }
     }
 }

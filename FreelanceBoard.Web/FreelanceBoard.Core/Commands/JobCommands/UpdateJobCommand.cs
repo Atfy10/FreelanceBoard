@@ -12,20 +12,19 @@ namespace FreelanceBoard.Core.Commands.JobCommands
 {
     public class UpdateJobCommand : IRequest<Result<JobDto>>
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Category { get; set; }
-        public decimal Price { get; set; }
-        public string UserId { get; set; }
-        public int ContractId { get; set; }
-        public DateTime Deadline { get; set; }
-        public List<string> SkillNames { get; set; } = new List<string>();
-        public List<int> ProposalIds { get; set; } = new List<int>();
+        public int Id { get; }
+        public string Title { get; }
+        public string Description { get; }
+        public string Category { get; }
+        public decimal Price { get; }
+        public string UserId { get; }
+        public int ContractId { get; }
+        public DateTime Deadline { get; }
+        public List<string> SkillNames { get; } = [];
+        public List<int> ProposalIds { get; } = [];
 
-
-        public UpdateJobCommand(int id,string title, string description, string category, decimal price, string userId, int contractId,
-            DateTime deadline,List<string> skillNames, List<int> proposalIds)
+        public UpdateJobCommand(int id, string title, string description, string category, decimal price, string userId, int contractId,
+            DateTime deadline, List<string> skillNames, List<int> proposalIds)
         {
             Id = id;
             Title = title;
@@ -35,8 +34,8 @@ namespace FreelanceBoard.Core.Commands.JobCommands
             UserId = userId;
             ContractId = contractId;
             Deadline = deadline;
-            SkillNames = skillNames ?? new List<string>();
-            ProposalIds = proposalIds ?? new List<int>();
+            SkillNames = skillNames ?? [];
+            ProposalIds = proposalIds ?? [];
         }
     }
 }

@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace FreelanceBoard.Infrastructure.Repositories
 {
-    public class ContractRepository : BaseRepository<Job>,IContractRepository
+    public class ContractRepository : BaseRepository<Job>, IContractRepository
     {
         public ContractRepository(AppDbContext dbContext) : base(dbContext)
         { }
-        public async Task<Contract> GetFullContractWithIdAsync(int contractId)
+        public async Task<Contract?> GetFullContractWithIdAsync(int contractId)
         {
             return await _dbContext.Contracts
-                          .Include(c => c.Job)
-                          .Include(c => c.Reviews)
-                          .Include(c => c.Payment)
-                          .FirstOrDefaultAsync(c => c.Id == contractId);
+                .Include(c => c.Job)
+                .Include(c => c.Reviews)
+                .Include(c => c.Payment)
+                .FirstOrDefaultAsync(c => c.Id == contractId);
         }
     }
 }

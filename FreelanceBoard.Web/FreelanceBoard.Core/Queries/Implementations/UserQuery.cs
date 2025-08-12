@@ -57,7 +57,6 @@ namespace FreelanceBoard.Core.Queries.Implementations
                 return Result<IEnumerable<ApplicationUserDto>>
                 .Success(bannedUserDtos, GetALLOperation, "Banned Users retreived successfully");
             }, OperationType.GetAll);
-
         public async Task<Result<IEnumerable<ApplicationUserDto>>> GetAllUsersAsync()
             => await _executor.Execute(async () =>
             {
@@ -71,7 +70,6 @@ namespace FreelanceBoard.Core.Queries.Implementations
                 var userDtos = _mapper.Map<IEnumerable<ApplicationUserDto>>(allUsers);
                 return Result<IEnumerable<ApplicationUserDto>>.Success(userDtos, GetALLOperation, "Users retrieved successfully ");
             }, OperationType.GetAll);
-
         public async Task<Result<ApplicationUserDto>> GetUserByIdAsync(string id)
             => await _executor.Execute(async () =>
             {
@@ -89,8 +87,6 @@ namespace FreelanceBoard.Core.Queries.Implementations
                 return Result<ApplicationUserDto>.Success(userDto, OperationType.Get.ToString(),
                     "User Retrieved successfully");
             }, OperationType.Get);
-
-
         public async Task<Result<ApplicationUserFullProfileDto>> GetUserFullProfileAsync(string id)
             => await _executor.Execute(async () =>
             {
@@ -109,8 +105,6 @@ namespace FreelanceBoard.Core.Queries.Implementations
                 return Result<ApplicationUserFullProfileDto>.Success(userProfileDto,
                     GetOperation, "Retrieved full profile for user .");
             }, OperationType.Get);
-
-
         public async Task<Result<UserWithProjectsDto>> GetUserWithProjectsAsync(string id)
             => await _executor.Execute(async () =>
             {
@@ -135,7 +129,6 @@ namespace FreelanceBoard.Core.Queries.Implementations
                 return Result<UserWithProjectsDto>.Success(userWithProjectsDto, GetOperation,
                     "Retrieved user with projects");
             }, OperationType.Get);
-
         public async Task<Result<UserWithSkillsDto>> GetUserWithSkillsAsync(string id)
             => await _executor.Execute(async () =>
             {
@@ -158,7 +151,6 @@ namespace FreelanceBoard.Core.Queries.Implementations
 
                 return Result<UserWithSkillsDto>.Success(userWithSkillsDto, GetOperation);
             }, OperationType.Get);
-
         public async Task<Result<IEnumerable<ApplicationUserDto>>> SearchUsersByNameAsync(string name)
             => await _executor.Execute(async () =>
             {
@@ -186,15 +178,11 @@ namespace FreelanceBoard.Core.Queries.Implementations
             }, OperationType.Get);
 
 
-
-
         /*************Helper Methods**************/
         bool IsExistingName(string name, ApplicationUser u) =>
             (!string.IsNullOrEmpty(u.FirstName) && u.FirstName.Contains(name, StringComparison.OrdinalIgnoreCase)) ||
             (!string.IsNullOrEmpty(u.LastName) && u.LastName.Contains(name, StringComparison.OrdinalIgnoreCase)) ||
             (!string.IsNullOrEmpty(u.UserName) && u.UserName.Contains(name, StringComparison.OrdinalIgnoreCase));
-
-
     }
 }
 

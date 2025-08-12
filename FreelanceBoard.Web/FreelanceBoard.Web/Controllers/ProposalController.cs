@@ -7,7 +7,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace FreelanceBoard.Web.Controllers
 {
     [ApiController]
-    [Route("api/proposals")]
+    [Route("api/[controller]")]
     public class ProposalController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -15,31 +15,32 @@ namespace FreelanceBoard.Web.Controllers
         public ProposalController(IMediator mediator, IProposalQuery proposalQuery)
         {
             _mediator = mediator;
-            _proposalQuery = proposalQuery ?? throw new ArgumentNullException(nameof(proposalQuery));
+            _proposalQuery = proposalQuery ?? 
+                throw new ArgumentNullException(nameof(proposalQuery));
         }
 
-        [HttpGet("get-proposal")]
+        [HttpGet("get")]
         public async Task<IActionResult> GetProposalById(int id)
         {
             var proposalDto = await _proposalQuery.GetProposalByIdAsync(id);
             return Ok(proposalDto);
         }
 
-        [HttpDelete("delete-proposal")]
+        [HttpDelete("delete")]
         public async Task<IActionResult> DeleteProposal(int id)
         {
             var deleted = await _mediator.Send(new DeleteProposalCommand(id));
             return Ok(deleted);
         }
 
-        [HttpPost("create-proposal")]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateProposal(CreateProposalCommand command)
         {
             var newProposalId = await _mediator.Send(command);
             return Ok(newProposalId);
         }
 
-        [HttpPut("update-proposal")]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateProposal(UpdateProposalCommand command)
         {
             var success = await _mediator.Send(command);

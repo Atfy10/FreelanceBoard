@@ -7,7 +7,7 @@ namespace FreelanceBoard.Web.Controllers
     [Route("api/[controller]")]
     public class RoleController : ControllerBase
     {
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<IActionResult> CreateRole()
         {
             return Ok();

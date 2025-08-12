@@ -12,26 +12,33 @@ namespace FreelanceBoard.Core.Validators.JobValidators
     {
         public CreateJobCommandValidator()
         {
-            RuleFor(x => x.Title).NotEmpty().MaximumLength(100);
-            RuleFor(x => x.Description).NotEmpty();
-            RuleFor(x => x.Category).NotEmpty().MaximumLength(50);
-            RuleFor(x => x.Price).GreaterThan(0).NotNull();
-            RuleFor(x => x.UserId).NotEmpty().MaximumLength(100).NotNull();
-            RuleFor(x => x.SkillNames).NotEmpty();
-            RuleFor(x => x.Deadline)
-                .GreaterThan(x=> x.DateCreated)
-                .WithMessage("Deadline must be in the future.")
-                .NotNull()
-                .WithMessage("Deadline cannot be null.");
-            RuleFor(x => x.DateCreated.Date)
-                .Equal(DateTime.Now.Date)
-                .WithMessage("DateCreated must be the same day you published.")
-                .NotNull();
+            RuleFor(x => x.Title)
+                .NotEmpty().WithMessage("Title is required.")
+                .MaximumLength(100).WithMessage("Title cannot exceed 100 characters.");
+
+            RuleFor(x => x.Description)
+                .NotEmpty().WithMessage("Description is required.");
+
             RuleFor(x => x.Category)
-                .NotEmpty()
-                .WithMessage("Category cannot be empty.")
-                .MaximumLength(50)
-                .WithMessage("Category cannot exceed 50 characters.");
+                .NotEmpty().WithMessage("Category is required.")
+                .MaximumLength(50).WithMessage("Category cannot exceed 50 characters.");
+
+            RuleFor(x => x.Price)
+                .GreaterThan(0).WithMessage("Price must be greater than zero.");
+
+            RuleFor(x => x.UserId)
+                .NotEmpty().WithMessage("User ID is required.");
+
+            RuleFor(x => x.SkillNames)
+                .NotEmpty().WithMessage("At least one skill is required.");
+
+            RuleFor(x => x.Deadline)
+                .GreaterThan(x => x.DateCreated.AddHours(12))
+                .WithMessage("Deadline must be after the creation date with minimum 12 hours.");
+
+            RuleFor(x => x.DateCreated)
+                .Must(date => date.Date == DateTime.UtcNow.Date)
+                .WithMessage("DateCreated must be today.");
         }
     }
 }

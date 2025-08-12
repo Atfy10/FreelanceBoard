@@ -8,9 +8,9 @@ namespace FreelanceBoard.Core.Interfaces
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {
-        Task<TEntity> GetByIdsAsync(params int[] id);
-        Task<TEntity> GetByIdAsync(int id);
-        Task<TEntity> GetByIdAsync(string id);
+        Task<TEntity?> GetByIdsAsync(params object[] id);
+        Task<TEntity?> GetByIdAsync(int id);
+        Task<TEntity?> GetByIdAsync(string id);
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);

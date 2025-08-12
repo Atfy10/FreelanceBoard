@@ -29,106 +29,84 @@ namespace FreelanceBoard.Web.Controllers
 		public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
 		{
 			var result = await _mediator.Send(command);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
-		[HttpDelete]
+		[HttpDelete("delete")]
 		public async Task<IActionResult> DeleteUser(DeleteUserCommand command)
 		{
 			var result = await _mediator.Send(command);
 			return this.HandleResult(result, 204);
 		}
 
-		[HttpPut]
+		[HttpPut("update")]
 		public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
 		{
 			var result = await _mediator.Send(command);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
-		[HttpGet("/{id}")]
+		[HttpGet("get/{id}")]
 		public async Task<IActionResult> GetUserById(string id)
 		{
-			if (string.IsNullOrWhiteSpace(id))
-				return BadRequest(new { Message = "User ID cannot be null or empty." });
-
 			var result = await _userQuery.GetUserByIdAsync(id);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
-		[HttpGet("all")]
+		[HttpGet("get-all")]
 		public async Task<IActionResult> GetAllUsers()
 		{
 			var result = await _userQuery.GetAllUsersAsync();
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
-		[HttpGet("all-banned")]
+		[HttpGet("get-all-banned")]
 		public async Task<IActionResult> GetAllBannedUsers()
 		{
 			var result = await _userQuery.GetAllBannedUsersAsync();
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
-		[HttpGet("search-by-name/{name}")]
+		[HttpGet("get-search-by-name/{name}")]
 		public async Task<IActionResult> SearchUsersByName(string name)
 		{
-			if (string.IsNullOrWhiteSpace(name))
-				return BadRequest(new { Message = "Name cannot be null or empty." });
-
 			var result = await _userQuery.SearchUsersByNameAsync(name);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
-		[HttpGet("with-projects/{id}")]
+		[HttpGet("get-with-projects/{id}")]
 		public async Task<IActionResult> GetUserWithProjects(string id)
 		{
-			if (string.IsNullOrWhiteSpace(id))
-				return BadRequest(new { Message = "User ID cannot be null or empty." });
-
 			var result = await _userQuery.GetUserWithProjectsAsync(id);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
-		[HttpGet("with-skills/{id}")]
+		[HttpGet("get-with-skills/{id}")]
 		public async Task<IActionResult> GetUserWithSkills(string id)
 		{
-			if (string.IsNullOrWhiteSpace(id))
-				return BadRequest(new { Message = "User ID cannot be null or empty." });
-
 			var result = await _userQuery.GetUserWithSkillsAsync(id);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
-		[HttpGet("full-profile/{id}")]
+		[HttpGet("get-full-profile/{id}")]
 		public async Task<IActionResult> GetUserFullProfile(string id)
 		{
-			if (string.IsNullOrWhiteSpace(id))
-				return BadRequest(new { Message = "User ID cannot be null or empty." });
-
 			var result = await _userQuery.GetUserFullProfileAsync(id);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
-        [HttpPost("ChangeProfilePicture")]
+        [HttpPost("change-profile-picture")]
         public async Task<IActionResult> ChangeProfilePicture([FromForm] ChangeProfilePictureCommand command)
         {
             var result = await _mediator.Send(command);
-            return result.IsSuccess ? Ok(result) : BadRequest(result);
+            return Ok(result);
         }
 
 		[HttpPost("add-project")]
-
-		public async Task<IActionResult> AddProject([FromBody] AddProjectCommand command)
+		public async Task<IActionResult> AddUserProject([FromBody] AddProjectCommand command)
 		{
-			if (command == null)
-				return BadRequest(new { Message = "Command cannot be null." });
 			var result = await _mediator.Send(command);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
-
-		
-
-
 	}
 }

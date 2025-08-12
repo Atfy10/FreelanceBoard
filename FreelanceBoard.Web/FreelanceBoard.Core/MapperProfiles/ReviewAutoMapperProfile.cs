@@ -14,20 +14,23 @@ namespace FreelanceBoard.Core.MapperProfiles
     {
         public ReviewAutoMapperProfile()
         {
+            // From command → entity (ignore navigation props to prevent EF overwrite issues)
             CreateMap<CreateReviewCommand, Review>()
                 .ForMember(dest => dest.Contract, opt => opt.Ignore())
                 .ForMember(dest => dest.Reviewer, opt => opt.Ignore());
 
+            // From entity → DTO
             CreateMap<Review, ReviewDto>()
-                .ForMember(dest => dest.Contract, src => src.MapFrom(r => r.Contract))
-                .ForMember(dest => dest.Reviewer, src => src.MapFrom(r => r.Reviewer));
+                .ForMember(dest => dest.Contract, opt => opt.MapFrom(src => src.Contract))
+                .ForMember(dest => dest.Reviewer, opt => opt.MapFrom(src => src.Reviewer));
 
+            // Related entity → DTO
             CreateMap<Contract, ContractDto>()
-                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(c => c.StartDate))
-                .ForMember(dest => dest.EndDate, opt => opt.MapFrom(c => c.EndDate))
-                .ForMember(dest => dest.Price, opt => opt.MapFrom(c => c.Price))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(c => c.Status))
-                .ForMember(dest => dest.PaymentNumber, opt => opt.MapFrom(c => c.PaymentNumber));
+                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
+                .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.PaymentNumber, opt => opt.MapFrom(src => src.PaymentNumber));
 
             CreateMap<ApplicationUser, ApplicationUserDto>();
         }

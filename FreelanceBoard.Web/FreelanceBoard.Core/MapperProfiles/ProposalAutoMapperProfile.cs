@@ -14,18 +14,22 @@ namespace FreelanceBoard.Core.MapperProfiles
     {
         public ProposalAutoMapperProfile() 
         {
+            // Create
             CreateMap<CreateProposalCommand, Proposal>()
                 .ForMember(dest => dest.Freelancer, opt => opt.Ignore())
                 .ForMember(dest => dest.Job, opt => opt.Ignore());
 
-
-
+            // Update (with null-check safety)
             CreateMap<UpdateProposalCommand, Proposal>()
                 .ForMember(dest => dest.Freelancer, opt => opt.Ignore())
                 .ForMember(dest => dest.Job, opt => opt.Ignore())
-                .ForMember(dest => dest.JobId, opt => opt.Ignore());
+                .ForMember(dest => dest.JobId, opt => opt.Ignore()) // Usually can't change Job after creation
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
 
-            CreateMap<DeleteProposalCommand, Proposal>();
+            // Delete — usually only maps ID
+            CreateMap<DeleteProposalCommand, Proposal>()
+                .ForMember(dest => dest.Freelancer, opt => opt.Ignore())
+                .ForMember(dest => dest.Job, opt => opt.Ignore());
         }
     }
 }

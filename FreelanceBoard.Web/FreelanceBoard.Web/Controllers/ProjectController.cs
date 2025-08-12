@@ -10,33 +10,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FreelanceBoard.Web.Controllers
 {
+    [Authorize]
+    [Route("api/[controller]")]
     public class ProjectController : ControllerBase
     {
 
-        private readonly AppDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMediator _mediator;
-        public ProjectController(AppDbContext context, UserManager<ApplicationUser> userManager, IMediator mediator)
+        public ProjectController(IMediator mediator)
         {
-            _context = context;
-            _userManager = userManager;
             _mediator = mediator;
         }
 
-        [Authorize]
-        [HttpPost]
-        [Route("api/projects")]
+        [HttpPost("add")]
         public async Task<IActionResult> CreateProject([FromForm] CreateFileCommand request)
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            request.UserId = userId;
             var result = await _mediator.Send(request);
-            if (result.IsSuccess)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest("No file provided.");
+            return Ok(result);
         }
 
 

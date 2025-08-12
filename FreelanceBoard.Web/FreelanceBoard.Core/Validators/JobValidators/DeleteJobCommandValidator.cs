@@ -12,8 +12,8 @@ namespace FreelanceBoard.Core.Validators.JobValidators
     {
         public DeleteJobCommandValidator()
         {
-            RuleFor(x => x.JobId).GreaterThan(0).NotEmpty()
-                .WithMessage("Job id must not be empty and greater than 0");
+            RuleFor(x => x.JobId)
+                .NotEmpty().WithMessage("Job ID is required.");
         }
     }
 }

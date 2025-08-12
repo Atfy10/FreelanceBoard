@@ -20,7 +20,6 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 .Where(p => ids.Contains(p.Id))
                 .ToListAsync();
         }
-
         public async Task<Proposal?> GetFullProposalWithIdAsync(int id)
         {
             return await _dbContext.Proposals

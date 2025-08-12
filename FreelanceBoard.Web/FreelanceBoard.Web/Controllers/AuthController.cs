@@ -41,7 +41,11 @@ namespace FreelanceBoard.Web.Controllers
         public async Task<IActionResult> SignUp(CreateUserCommand command)
         {
             var result = await _mediator.Send(command);
-            return this.HandleResult(result, 201);
+
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
 

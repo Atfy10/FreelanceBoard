@@ -13,38 +13,34 @@ using Profile = AutoMapper.Profile;
 
 namespace FreelanceBoard.Core.MapperProfiles
 {
-    public class JobAutoMapperProfile  : Profile
+    public class JobAutoMapperProfile : Profile
     {
         public JobAutoMapperProfile()
         {
-
+            // CreateJobCommand → Job
             CreateMap<CreateJobCommand, Job>()
                 .ForMember(dest => dest.Skills, opt => opt.Ignore())
                 .ForMember(dest => dest.Proposals, opt => opt.Ignore())
                 .ForMember(dest => dest.Contract, opt => opt.Ignore())
                 .ForMember(dest => dest.Categories, opt => opt.Ignore());
 
+            // UpdateJobCommand → Job (Partial Update Support)
             CreateMap<UpdateJobCommand, Job>()
                 .ForMember(dest => dest.Skills, opt => opt.Ignore())
                 .ForMember(dest => dest.Proposals, opt => opt.Ignore())
                 .ForMember(dest => dest.Contract, opt => opt.Ignore())
-                .ForMember(dest => dest.Categories, opt => opt.Ignore());
+                .ForMember(dest => dest.Categories, opt => opt.Ignore())
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
 
+            // Job → JobDto
             CreateMap<Job, JobDto>()
-            .ForMember(d => d.SkillNames,
-                        o => o.MapFrom(src => src.Skills.Select(s => s.Name)))
-            .ForMember(d => d.Proposals,
-                        o => o.MapFrom(src => src.Proposals))
-            .ForMember(d => d.Categories,
-                        o => o.MapFrom(src => src.Categories.Select(c => c.Name)));
+                .ForMember(d => d.SkillNames, o => o.MapFrom(src => src.Skills.Select(s => s.Name)))
+                .ForMember(d => d.Proposals, o => o.MapFrom(src => src.Proposals))
+                .ForMember(d => d.Categories, o => o.MapFrom(src => src.Categories.Select(c => c.Name)));
 
-           
-
+            // Proposal → ProposalDto
             CreateMap<Proposal, ProposalDto>()
-                .ForMember(d => d.FreelancerName,
-                            o => o.MapFrom(src => src.Freelancer.UserName));
-
-
+                .ForMember(d => d.FreelancerName, o => o.MapFrom(src => src.Freelancer.UserName));
         }
     }
 }

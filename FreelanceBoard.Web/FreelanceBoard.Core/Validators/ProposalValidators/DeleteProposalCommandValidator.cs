@@ -12,8 +12,8 @@ namespace FreelanceBoard.Core.Validators.ProposalValidators
     {
         public DeleteProposalCommandValidator()
         {
-            RuleFor(x => x.ProposalId).GreaterThan(0).NotEmpty().
-                WithMessage("Proposal id must not be empty and greater than 0");
+            RuleFor(x => x.ProposalId)
+                .GreaterThan(0).NotEmpty().WithMessage("Proposal id must not be empty and greater than 0");
         }
     }
 }

@@ -23,7 +23,6 @@ namespace FreelanceBoard.Core.Queries.Implementations
         private readonly OperationExecutor _executor;
         private readonly string GetOperation;
 
-
         public ReviewQuery(IReviewRepository reviewRepository, IMapper mapper, ILogger<UserQuery> logger, OperationExecutor executor)
         {
             _reviewRepository = reviewRepository ?? throw new ArgumentNullException(nameof(reviewRepository));
@@ -32,7 +31,6 @@ namespace FreelanceBoard.Core.Queries.Implementations
             _executor = executor ?? throw new ArgumentNullException(nameof(executor));
             GetOperation = OperationType.Get.ToString();
         }
-
         public async Task<Result<ReviewDto>> GetReviewByIdAsync(int id)
            => await _executor.Execute(async () =>
            {

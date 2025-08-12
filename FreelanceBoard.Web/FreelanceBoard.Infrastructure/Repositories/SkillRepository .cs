@@ -17,8 +17,8 @@ namespace FreelanceBoard.Infrastructure.Repositories
         public async Task<List<Skill>> GetByNamesAsync(IEnumerable<string> names)
         {
             return await _dbContext.Skills
-                                   .Where(s => names.Contains(s.Name))
-                                   .ToListAsync();
+                .Where(s => names.Contains(s.Name))
+                .ToListAsync();
         }
     }
 }

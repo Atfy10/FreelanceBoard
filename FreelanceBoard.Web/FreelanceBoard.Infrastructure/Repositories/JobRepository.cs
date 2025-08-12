@@ -18,7 +18,7 @@ namespace FreelanceBoard.Infrastructure.Repositories
         public async Task<Job?> GetFullJobWithIdAsync(int jobId)
         {
             return await GetAllJobsWithDetails()
-                    .FirstOrDefaultAsync(j => j.Id == jobId);
+                .FirstOrDefaultAsync(j => j.Id == jobId);
         }
         public async Task<IEnumerable<Job>> GetAllJobsSortByBudget(bool isAscending = true)
         {
@@ -44,21 +44,19 @@ namespace FreelanceBoard.Infrastructure.Repositories
         {
             return await GetAllJobsWithDetails()
                 .Where(s => s.Skills.Any(sk => skills.Contains(sk.Name))).ToListAsync();
-
         }
         public async Task<IEnumerable<Job>?> GetJobsFilteredCategory(List<string> categories)
         {
-
             return await GetAllJobsWithDetails()
                 .Where(s => s.Categories.Any(sk => categories.Contains(sk.Name))).ToListAsync();
         }
         public async Task<IEnumerable<Job>?> GetJobsFilteredBudget(int min, int max)
         {
-
             return await GetAllJobsWithDetails()
                 .Where(i => i.Price >= min && i.Price <= max)
                 .ToListAsync();
         }
+
         private IQueryable<Job> GetAllJobsWithDetails()
         {
             return _dbContext.Jobs

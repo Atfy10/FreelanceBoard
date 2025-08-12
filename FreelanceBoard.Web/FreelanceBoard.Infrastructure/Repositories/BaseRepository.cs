@@ -15,7 +15,7 @@ namespace FreelanceBoard.Infrastructure.Repositories
         protected readonly AppDbContext _dbContext = dbContext
             ?? throw new ArgumentNullException(nameof(dbContext));
 
-        public async Task<TEntity> GetByIdsAsync(params int[] id)
+        public async Task<TEntity?> GetByIdsAsync(params object[] id)
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }
@@ -28,14 +28,18 @@ namespace FreelanceBoard.Infrastructure.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await _dbContext.Set<TEntity>().FindAsync(id);
+            var entity = await _dbContext.Set<TEntity>().FindAsync(id) ??
+                throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID '{id}' not found.");
+
             _dbContext.Set<TEntity>().Remove(entity);
             await SaveChangesAsync();
         }
 
         public async Task DeleteAsync(string id)
         {
-            var entity = await _dbContext.Set<TEntity>().FindAsync(id);
+            var entity = await _dbContext.Set<TEntity>().FindAsync(id) ??
+                throw new KeyNotFoundException($"{typeof(TEntity).Name} with ID '{id}' not found.");
+
             _dbContext.Set<TEntity>().Remove(entity);
             await SaveChangesAsync();
         }
@@ -45,12 +49,12 @@ namespace FreelanceBoard.Infrastructure.Repositories
             return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity?> GetByIdAsync(int id)
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<TEntity> GetByIdAsync(string id)
+        public async Task<TEntity?> GetByIdAsync(string id)
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }

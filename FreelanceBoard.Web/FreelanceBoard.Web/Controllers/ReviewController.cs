@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FreelanceBoard.Web.Controllers
 {
     [ApiController]
-    [Route("api/reviews")]
+    [Route("api/[controller]")]
     public class ReviewController : ControllerBase
     {
         private readonly IReviewQuery _reviewQuery;
@@ -18,14 +18,14 @@ namespace FreelanceBoard.Web.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        [HttpGet("Get Review")]
+        [HttpGet("get")]
         public async Task<IActionResult> GetReviewById(int id)
         {
             var reviewDto = await _reviewQuery.GetReviewByIdAsync(id);
             return Ok(reviewDto);
         }
 
-        [HttpPost("Create Review")]
+        [HttpPost("add")]
         public async Task<IActionResult> CreateReview(CreateReviewCommand command)
         {
             var newReviewId = await _mediator.Send(command);

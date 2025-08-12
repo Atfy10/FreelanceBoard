@@ -26,8 +26,6 @@ namespace FreelanceBoard.Core.Queries.Implementations
             _executor = executor ?? throw new ArgumentNullException(nameof(executor));
             GetOperation = OperationType.Get.ToString();
         }
-
-
         public async Task<Result<ProposalDto>> GetProposalByIdAsync(int id)
             => await _executor.Execute(async () =>
             {

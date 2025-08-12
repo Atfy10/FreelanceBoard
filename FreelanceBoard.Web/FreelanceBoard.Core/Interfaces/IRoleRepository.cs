@@ -20,6 +20,6 @@ namespace FreelanceBoard.Core.Interfaces
         /// </summary>
         /// <param name="roleName">The name of the role to create.</param>
         /// <returns>The created role's ID.</returns>
-        Task<string> CreateRoleAsync(string roleName);
+        Task<string?> CreateRoleAsync(string roleName);
     }
 }

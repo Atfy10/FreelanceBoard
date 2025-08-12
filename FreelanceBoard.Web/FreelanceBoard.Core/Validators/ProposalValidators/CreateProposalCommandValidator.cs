@@ -10,18 +10,26 @@ namespace FreelanceBoard.Core.Validators.ProposalValidators
 {
     public class CreateProposalCommandValidator : AbstractValidator<CreateProposalCommand>
     {
-        public CreateProposalCommandValidator() 
+        public CreateProposalCommandValidator()
         {
-            RuleFor(x => x.Message).NotEmpty();
-            RuleFor(x => x.Price).GreaterThan(0);
+            RuleFor(x => x.Message)
+                .NotEmpty().WithMessage("Message is required.")
+                .Must(m => !string.IsNullOrWhiteSpace(m))
+                    .WithMessage("Message cannot be whitespace only.");
+
+            RuleFor(x => x.Price)
+                .GreaterThan(0).WithMessage("Price must be greater than zero.");
+
             RuleFor(x => x.FreelancerId)
-                .NotEmpty()
-                .WithMessage("FreeLancer id must not be empty")
-                .GreaterThan(0)
-                .WithMessage("Id must be greater than 0");
-            RuleFor(x => x.Status).NotEmpty().MaximumLength(10).WithMessage("Status has to be less than 10 characters");
-            RuleFor(x => x.JobId).NotEmpty().WithMessage("Job id must not be empty").
-                GreaterThan(0).WithMessage("Id mus be greater than 0");
+                .NotEmpty().WithMessage("Freelancer ID is required.");
+
+            RuleFor(x => x.Status)
+                .NotEmpty().WithMessage("Status is required.")
+                .MaximumLength(10).WithMessage("Status cannot exceed 10 characters.");
+
+            RuleFor(x => x.JobId)
+                .NotEmpty().WithMessage("Job ID is required.")
+                .GreaterThan(0).WithMessage("Job ID must be greater than zero.");
         }
     }
 }
