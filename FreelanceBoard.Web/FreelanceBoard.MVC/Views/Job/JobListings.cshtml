@@ -317,23 +317,12 @@
                             <form class="custom-form hero-form" action="#" method="get" role="form">
                                 <h3 class="text-white mb-3">Search your dream job</h3>
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <div class="input-group">
-                                            <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon"></i></span>
-                                            <input type="text" name="job-title" id="job-title" class="form-control" placeholder="Job Title" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <div class="input-group">
-                                            <span class="input-group-text" id="basic-addon1"><i class="bi-geo-alt custom-icon"></i></span>
-                                            <input type="text" name="job-location" id="job-location" class="form-control" placeholder="Location" required>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="input-group">
                                             <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon"></i></span>
                                             <select class="form-select form-control" name="job-salary" id="job-salary" aria-label="Default select example">
-                                                <option selected>Salary Range</option>
+                                                <option selected>Price Range</option>
                                                 <option value="1">$300k - $500k</option>
                                                 <option value="2">$10000k - $45000k</option>
                                             </select>
@@ -343,7 +332,7 @@
                                         <div class="input-group">
                                             <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
                                             <select class="form-select form-control" name="job-level" id="job-level" aria-label="Default select example">
-                                                <option selected>Level</option>
+                                                <option selected>Category</option>
                                                 <option value="1">Internship</option>
                                                 <option value="2">Junior</option>
                                                 <option value="2">Senior</option>
@@ -352,9 +341,9 @@
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="input-group">
-                                            <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
+                                <span class="input-group-text" id="basic-addon1"><i class="custom-icon bi-code-slash me-1"></i></span>
                                             <select class="form-select form-control" name="job-remote" id="job-remote" aria-label="Default select example">
-                                                <option selected>Remote</option>
+                                                <option selected>Skills</option>
                                                 <option value="1">Full Time</option>
                                                 <option value="2">Contract</option>
                                                 <option value="2">Part Time</option>
@@ -367,14 +356,6 @@
                                         </button>
                                     </div>
                                     <div class="col-12">
-                                        <div class="d-flex flex-wrap align-items-center mt-4 mt-lg-0">
-                                            <span class="text-white mb-lg-0 mb-md-0 me-2">Popular keywords:</span>
-                                            <div>
-                                                <a href="job-listings.html" class="badge">Web design</a>
-                                                <a href="job-listings.html" class="badge">Marketing</a>
-                                                <a href="job-listings.html" class="badge">Customer support</a>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -408,6 +389,12 @@
             <a href="@Url.Action("JobListings", new { sortBy = "Date" })" class="btn btn-primary me-2">Sort by Date</a>
             <a href="@Url.Action("JobListings", new { sortBy = "Budget" })" class="btn btn-secondary">Sort by Budget</a>
         </div>
+
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="sortOrderSwitch" checked>
+            <label class="form-check-label" for="sortOrderSwitch">Ascending</label>
+        </div>
+        <br />
 
         <!-- Job Cards Row -->
         <div class="row">
@@ -498,8 +485,7 @@
         </div>
     </div>
 </section>
-@if (!User.Identity.IsAuthenticated)
-{
+
     <section class="cta-section">
         <div class="section-overlay"></div>
                 <div class="container">
@@ -510,14 +496,17 @@
                         </div>
                         <div class="col-lg-4 col-12 ms-auto">
                             <div class="custom-border-btn-wrap d-flex align-items-center mt-lg-4 mt-2">
+                                @if (!User.Identity.IsAuthenticated)
+                                {
                                 <a href="#" class="custom-btn custom-border-btn btn me-4">Create an account</a>
                                 <a href="#" class="custom-link">Post a job</a>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-}
+
         <!-- Create/Edit Job Modal -->
         <div class="modal fade" id="createJobModal" tabindex="-1" aria-labelledby="createJobModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -715,21 +704,24 @@
                 </div>
             </div>
         </div>
-@if (User.Identity.IsAuthenticated)
-{
-    <div class="footer-top-line"></div>
-}
-<style>
-    .footer-top-line {
-        height: 4px; /* Increased height for better visibility */
-        background-color: #D65F35; /* Gradient color */
-        margin-bottom: 20px; /* Space between the line and footer content */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow effect */
-        border-radius: 5px; /* Rounded corners */
-    }
-</style>
 
         <script>
+            const sortSwitch = document.getElementById("sortOrderSwitch");
+            const url = new URL(window.location.href);
+            const currentOrder = url.searchParams.get("order");
+
+            // Set the switch position based on the query string
+            if (currentOrder === "asc") {
+                sortSwitch.checked = true;
+            } else if (currentOrder === "desc") {
+                sortSwitch.checked = false;
+            }
+
+            sortSwitch.addEventListener("change", function () {
+                const isAscending = this.checked;
+                url.searchParams.set("order", isAscending ? "asc" : "desc");
+                window.location.href = url.toString();
+            });
 
             // Skills management
             document.getElementById('skillInput').addEventListener('keypress', function(e) {

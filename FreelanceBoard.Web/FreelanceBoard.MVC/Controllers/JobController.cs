@@ -65,5 +65,11 @@ namespace FreelanceBoard.MVC.Controllers
             return View(job);
         }
 
+        //This is for the Freelancers only
+        public IActionResult MyJobApplication()
+        {
+            return View("MyJobApplication");
+        }
+
     }
 }

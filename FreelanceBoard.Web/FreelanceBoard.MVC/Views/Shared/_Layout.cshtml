@@ -86,7 +86,15 @@
 
                     <li><a class="nav-link" href="/Job/JobListings">Jobs</a></li>
 
-                    <li><a class="nav-link" href="/Job/ClientDashboard">Dashboard</a></li>
+                    @if (User.IsInRole("Client"))
+                    {
+                        <li><a class="nav-link" href="/Job/ClientDashboard">Dashboard</a></li>
+                    }
+
+                    @if (User.IsInRole("Freelancer"))
+                    {
+                        <li><a class="nav-link" href="/Job/MyJobApplication">My Applications</a></li>
+                    }
 
                     <li class="nav-item ms-lg-auto"> 
                     </li>
