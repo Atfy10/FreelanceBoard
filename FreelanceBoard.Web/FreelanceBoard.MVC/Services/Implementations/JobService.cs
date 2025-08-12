@@ -1,6 +1,8 @@
 ﻿using FreelanceBoard.MVC.Extensions;
 using FreelanceBoard.MVC.Models;
 using FreelanceBoard.MVC.Services.Interfaces;
+using Newtonsoft.Json;
+using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace FreelanceBoard.MVC.Services.Implementations
@@ -50,6 +52,22 @@ namespace FreelanceBoard.MVC.Services.Implementations
             return apiResult?.Data ?? new List<JobViewModel>();
         }
 
+
+        public async Task<JobViewModel> GetJobByIdAsync(HttpContext httpContext, int id)
+        {
+            var token = httpContext.User.GetAccessToken();
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.GetAsync($"/api/jobs/Get job?id={id}");
+
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException($"Failed to fetch job with ID {id}");
+
+            var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<JobViewModel>>();
+
+            return apiResult?.Data ?? new JobViewModel();
+        }
 
     }
 

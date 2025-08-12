@@ -54,5 +54,16 @@ namespace FreelanceBoard.MVC.Controllers
 
         }
 
+        [AllowAnonymous]
+        public async Task<IActionResult> JobDetails(int id)
+        {
+            var job = await _jobService.GetJobByIdAsync(HttpContext, id);
+
+            if (job == null || job.Id == 0)
+                return View("Error", $"Job with ID {id} not found.");
+
+            return View(job);
+        }
+
     }
 }

@@ -498,9 +498,10 @@
         </div>
     </div>
 </section>
-
-            <section class="cta-section">
-                <div class="section-overlay"></div>
+@if (!User.Identity.IsAuthenticated)
+{
+    <section class="cta-section">
+        <div class="section-overlay"></div>
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 col-10">
@@ -516,7 +517,7 @@
                     </div>
                 </div>
             </section>
-
+}
         <!-- Create/Edit Job Modal -->
         <div class="modal fade" id="createJobModal" tabindex="-1" aria-labelledby="createJobModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -714,6 +715,19 @@
                 </div>
             </div>
         </div>
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="footer-top-line"></div>
+}
+<style>
+    .footer-top-line {
+        height: 4px; /* Increased height for better visibility */
+        background-color: #D65F35; /* Gradient color */
+        margin-bottom: 20px; /* Space between the line and footer content */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        border-radius: 5px; /* Rounded corners */
+    }
+</style>
 
         <script>
 
