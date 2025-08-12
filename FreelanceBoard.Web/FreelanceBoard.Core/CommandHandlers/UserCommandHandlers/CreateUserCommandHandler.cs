@@ -19,60 +19,73 @@ using Profile = FreelanceBoard.Core.Domain.Entities.Profile;
 namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 {
 
-	public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<string>>
-	{
-		private readonly IMapper _mapper;
-		private readonly IUserRepository _userRepository;
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<string>>
+    {
+        private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
         private readonly OperationExecutor _executor;
         private readonly IJwtToken _jwtToken;
         string AddOperation;
-		private readonly IBaseRepository<Profile> _profileRepository;
+        private readonly IBaseRepository<Profile> _profileRepository;
 
-		public CreateUserCommandHandler(IUserRepository userRepository,
-			IMapper mapper, OperationExecutor executor, IJwtToken jwtToken,
-			IBaseRepository<Profile> profileRepository)
-		{
-			_userRepository = userRepository;
-			_mapper = mapper;
-			_executor = executor;
-			_jwtToken = jwtToken;
+        public CreateUserCommandHandler(IUserRepository userRepository,
+            IMapper mapper, OperationExecutor executor, IJwtToken jwtToken,
+            IBaseRepository<Profile> profileRepository)
+        {
+            _userRepository = userRepository;
+            _mapper = mapper;
+            _executor = executor;
+            _jwtToken = jwtToken;
             AddOperation = OperationType.Add.ToString();
-			_profileRepository = profileRepository;
+            _profileRepository = profileRepository;
 
         }
 
-		public async Task<Result<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
-			=> await _executor.Execute(async () =>
-			{
-				if (request == null)
-					throw new NullReferenceException("Create request cannot be null.");
+        public async Task<Result<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+            => await _executor.Execute(async () =>
+            {
+                if (request == null)
+                    throw new NullReferenceException("Create request cannot be null.");
+                var userEmail = request.Email;
+                var userName = request.UserName;
+                var phoneNumber = request.PhoneNumber;
 
-				var existingUser = await _userRepository.GetByEmailAsync(request.Email);
+                var existingUserEmail = await _userRepository.GetByEmailAsync(userEmail);
 
-				if (existingUser != null)
-					throw new EmailExistException("Email is already registered");
+                if (existingUserEmail != null)
+                    throw new EmailExistException("Email is already registered");
 
-				var user = _mapper.Map<ApplicationUser>(request);
+                var existingUsername = await _userRepository.UsernameExistsAsync(userName);
+                if (existingUsername)
+                    throw new UserNameExistException($"User with '{userName}' is already exist.");
 
-				var result = await _userRepository.CreateAsync(user, request.Password, request.Role);
+                var existingUserPhone = await _userRepository.PhoneNumberExistsAsync(phoneNumber);
+                if (existingUserPhone)
+                    throw new PhoneExistException("User phone number is already exist.");
 
-				if (!result.Succeeded)
-				{
-					var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-					throw new InvalidOperationException($"User creation failed: {errors}");
-				}
 
-				var token = _jwtToken.GenerateJwtToken(user, request.Role);
+                var user = _mapper.Map<ApplicationUser>(request);
 
-				await _profileRepository.AddAsync(new Profile(){					
-					UserId = user.Id,
-					Bio = "",
-					Image = ""
+                var result = await _userRepository.CreateAsync(user, request.Password, request.Role);
+
+                if (!result.Succeeded)
+                {
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new InvalidOperationException($"User creation failed: {errors}");
+                }
+
+                var token = _jwtToken.GenerateJwtToken(user, request.Role);
+
+                await _profileRepository.AddAsync(new Profile()
+                {
+                    UserId = user.Id,
+                    Bio = "",
+                    Image = ""
                 });
 
                 return Result<string>.Success(token, AddOperation,
-					$"User with email {request.Email} created successfully.");
-			}, OperationType.Add);
+                    $"User with email {request.Email} created successfully.");
+            }, OperationType.Add);
     }
 }
 
