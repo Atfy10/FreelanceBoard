@@ -56,7 +56,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
             var client = _httpClientFactory.CreateClient("FreelanceApiClient");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync($"/api/job/get/{id}");
+            var response = await client.GetAsync($"/api/job/get?id={id}");
 
             if (!response.IsSuccessStatusCode)
                 throw new ApplicationException($"Failed to fetch job with ID {id}");
