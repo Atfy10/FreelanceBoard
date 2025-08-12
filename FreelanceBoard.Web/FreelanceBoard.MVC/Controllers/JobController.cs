@@ -11,9 +11,9 @@ using System.Security.Claims;
 
 namespace FreelanceBoard.MVC.Controllers
 {
-	[Authorize]
+    [Authorize]
 
-	public class JobController : Controller
+    public class JobController : Controller
     {
         private readonly IJobService _jobService;
         private readonly OperationExecutor _executor;
@@ -24,14 +24,14 @@ namespace FreelanceBoard.MVC.Controllers
         }
         public async Task<IActionResult> ClientDashboard()
         {
-            List<ClientDashboardViewModel> job = null;
+            List<ClientDashboardViewModel> job = [];
             var success = await _executor.Execute(
                 async () =>
                 { job = await _jobService.GetAllJobsAsync(HttpContext); },
                 error => ModelState.AddModelError(string.Empty, error)
             );
 
-            if (!success || job == null)
+            if (!success)
                 return View("NotFound");
 
             return View("ClientDashboard", job);
@@ -40,14 +40,14 @@ namespace FreelanceBoard.MVC.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> JobListings(string sortBy = "Date")
         {
-            List<JobViewModel> job = null;
+            List<JobViewModel> job = [];
             var success = await _executor.Execute(
             async () =>
                 { job = await _jobService.GetAllJobsSortedAsync(HttpContext, sortBy); },
                 error => ModelState.AddModelError(string.Empty, error)
             );
 
-            if (!success || job == null)
+            if (!success)
                 return View("NotFound");
 
             return View("JobListings", job);

@@ -50,7 +50,7 @@ namespace FreelanceBoard.Core.Queries.Implementations
                 var proposals = await _proposalRepository.GetManyByIdsAsync(jobId);
 
                 if (proposals == null || proposals.Count == 0)
-                    return Result<IEnumerable<ProposalDto>>.Failure(GetOperation, "No proposals found for this job.");
+                    return Result<IEnumerable<ProposalDto>>.Success([], GetOperation, "No proposals found for this job.");
 
                 var result = _mapper.Map<IEnumerable<ProposalDto>>(proposals);
                 return Result<IEnumerable<ProposalDto>>.Success(result, GetOperation, "Proposals retrieved successfully.");

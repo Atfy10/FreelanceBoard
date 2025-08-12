@@ -12,6 +12,7 @@ using System.Security.Claims;
 using System.Text;
 namespace FreelanceBoard.Web.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
@@ -47,8 +48,6 @@ namespace FreelanceBoard.Web.Controllers
 
             return Ok(result);
         }
-
-
     }
 
 }

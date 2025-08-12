@@ -1,5 +1,7 @@
-﻿@model List<ProposalViewModel>
-
+﻿@model JobProposalsViewModel
+@{
+    var daysAgo = (DateTime.Now - Model.JobDateCreated).Days;
+}
 <style>
             .proposals-section {
                 background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
@@ -353,23 +355,15 @@
                                 </a>
 
                                 <div class="job-info-header">
-                                    <h1 class="job-info-title" id="jobTitle">Senior Full Stack Developer</h1>
+                                    <h1 class="job-info-title" id="jobTitle">@Model.JobTitle</h1>
                                     <div class="job-info-meta">
                                         <div class="job-info-meta-item">
                                             <i class="bi-cash"></i>
-                                            <span id="jobPrice">$75,000 - $95,000</span>
-                                        </div>
-                                        <div class="job-info-meta-item">
-                                            <i class="bi-geo-alt"></i>
-                                            <span id="jobLocation">Remote</span>
+                                            <span id="jobPrice">@Model.JobPrice</span>
                                         </div>
                                         <div class="job-info-meta-item">
                                             <i class="bi-calendar"></i>
-                                            <span id="jobPostedDate">Posted 3 days ago</span>
-                                        </div>
-                                        <div class="job-info-meta-item">
-                                            <i class="bi-eye"></i>
-                                            <span id="jobViews">156 views</span>
+                                            <span id="jobPostedDate">Posted @daysAgo days ago</span>
                                         </div>
                                     </div>
                                 </div>
@@ -393,7 +387,7 @@
 
                                  <!-- Proposals Container  -->
                                 <div id="proposalsContainer">
-                        @foreach (var proposal in Model)
+                        @foreach (var proposal in Model.Proposals)
                         {
                             <div class="proposal-card" data-proposal-id="@proposal.Id">
                                 <div class="proposal-header">

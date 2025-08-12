@@ -18,7 +18,7 @@ namespace FreelanceBoard.MVC.Controllers
         }
         public async Task<IActionResult> JobProposal(int id)
         {
-            List<ProposalViewModel> job = null;
+            JobProposalsViewModel job = default!;
             var success = await _executor.Execute(
                 async () =>
                 { job = await _proposalService.GetProposalsByJobIdAsync(id, HttpContext); },
@@ -28,7 +28,7 @@ namespace FreelanceBoard.MVC.Controllers
             if (!success || job == null)
                 return View("NotFound");
 
-            return View("JobProposal",job);
+            return View("JobProposal", job);
         }
     }
 }

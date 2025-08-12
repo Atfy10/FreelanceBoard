@@ -15,23 +15,34 @@ namespace FreelanceBoard.MVC.Services.Implementations
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<List<ProposalViewModel>> GetProposalsByJobIdAsync(int id, HttpContext httpContext)
+        //public async Task<List<ProposalViewModel>> GetProposalsByJobIdAsync(int id, HttpContext httpContext)
+        public async Task<JobProposalsViewModel> GetProposalsByJobIdAsync(int id, HttpContext httpContext)
         {
             var token = httpContext.User.GetAccessToken();
             var client = _httpClientFactory.CreateClient("FreelanceApiClient");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync($"/api/Proposal/job/{id}/proposals");
+            var proposalResponse = await client.GetAsync($"/api/Proposal/job/{id}/proposals");
+            var jobResponse = await client.GetAsync($"/api/job/get?id={id}");
 
-            if (!response.IsSuccessStatusCode)
+            if (!proposalResponse.IsSuccessStatusCode)
                 throw new ApplicationException("Failed to fetch proposals");
 
-            var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<List<ProposalViewModel>>>();
+            if (!jobResponse.IsSuccessStatusCode)
+                throw new ApplicationException("Failed to fetch job");
+
+            var apiResult = await proposalResponse.Content.ReadFromJsonAsync<ApiErrorResponse<List<ProposalViewModel>>>();
+            var jobApiResult = await jobResponse.Content.ReadFromJsonAsync<ApiErrorResponse<JobViewModel>>();
 
             if (apiResult is null || !apiResult.IsSuccess)
                 throw new ApplicationException(apiResult?.Message ?? "No proposals found");
 
-            return apiResult.Data;
+            var jobProposals = new JobProposalsViewModel();
+            jobProposals.Proposals = apiResult.Data;
+            jobProposals.JobPrice = jobApiResult.Data.Price;
+            jobProposals.JobTitle = jobApiResult.Data.Title;
+            jobProposals.JobDateCreated = jobApiResult.Data.PostedDate;
+            return jobProposals;
         }
     }
 }
