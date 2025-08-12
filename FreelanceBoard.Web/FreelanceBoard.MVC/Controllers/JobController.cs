@@ -71,5 +71,12 @@ namespace FreelanceBoard.MVC.Controllers
             return View("MyJobApplication");
         }
 
-    }
+        [HttpGet]
+        public IActionResult CreateJob()
+        {
+			var model = new JobCreateViewModel();
+			return View(model);
+		}
+
+	}
 }
