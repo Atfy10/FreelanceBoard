@@ -36,6 +36,11 @@ namespace FreelanceBoard.Core.Helpers
 
                 return res;
             }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                _logger.LogError(ex, "Argument out of range error occurred during {Operation}", opType);
+                return Result<T>.Failure(opType.ToString(), "The provided value is out of the acceptable range. Please check and try again.");
+            }
             catch (ArgumentNullException ex)
             {
                 _logger.LogError(ex, "Argument null error occurred during {Operation}", opType);

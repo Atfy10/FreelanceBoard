@@ -28,22 +28,30 @@ namespace FreelanceBoard.Core.Queries.Implementations
             GetOperation = OperationType.Get.ToString();
         }
         public async Task<Result<ProposalDto>> GetProposalByIdAsync(int id)
+            => await _executor.Execute(async () =>
+            {
+                if (id <= 0)
+                    throw new ArgumentOutOfRangeException(nameof(id), "Proposal ID must be greater than zero.");
+
+                var proposal = await _proposalRepository.GetFullProposalWithIdAsync(id) ??
+                    throw new KeyNotFoundException("No proposal found for the provided ID.");
+
+                var result = _mapper.Map<ProposalDto>(proposal);
+                return Result<ProposalDto>.Success(result, GetOperation, "Proposal retrieved successfully.");
+            }, OperationType.Get);
+
 
         public async Task<Result<IEnumerable<ProposalDto>>> GetProposalsByJobIdAsync(int jobId)
             => await _executor.Execute(async () =>
             {
-                var proposals = await _proposalRepository.GetFullProposalWithIdAsync(id) ??
-                    throw new KeyNotFoundException("No proposals found for the provided ID.");
                 if (jobId <= 0)
                     throw new ArgumentOutOfRangeException(nameof(jobId), "Job ID must be greater than zero.");
 
-                var proposals = await _proposalRepository.GetProposalsByJobIdAsync(jobId);
+                var proposals = await _proposalRepository.GetManyByIdsAsync(jobId);
 
-                var result = _mapper.Map<ProposalDto>(proposals);
-                if (proposals == null || !proposals.Any())
-                    return Result<IEnumerable<ProposalDto>>.Success([], GetOperation, "No proposals found for this job.");
+                if (proposals == null || proposals.Count == 0)
+                    return Result<IEnumerable<ProposalDto>>.Failure(GetOperation, "No proposals found for this job.");
 
-                return Result<ProposalDto>.Success(result, GetOperation, "Proposals retrieved successfully.");
                 var result = _mapper.Map<IEnumerable<ProposalDto>>(proposals);
                 return Result<IEnumerable<ProposalDto>>.Success(result, GetOperation, "Proposals retrieved successfully.");
             }, OperationType.Get);

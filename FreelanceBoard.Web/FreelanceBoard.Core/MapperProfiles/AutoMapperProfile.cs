@@ -57,6 +57,9 @@ namespace FreelanceBoard.Core
 
             // AddSkillCommand → Skill
             CreateMap<AddSkillCommand, Domain.Entities.Skill>();
+
+            // AddUserSkillCommand → Skill
+            CreateMap<AddUserSkillCommand, Domain.Entities.Skill>();
         }
     }
 }

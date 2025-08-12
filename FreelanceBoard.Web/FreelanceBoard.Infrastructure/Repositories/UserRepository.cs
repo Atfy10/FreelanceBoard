@@ -34,7 +34,8 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 .Include(u => u.Profile)
                 .Include(u => u.UserSkills).ThenInclude(us => us.Skill)
 				.Include(u => u.Projects)
-                .FirstOrDefaultAsync(u => u.Id == userId);
+                .FirstOrDefaultAsync(u => u.Id == userId) ??
+                throw new KeyNotFoundException($"User with ID {userId} not found.");
         }
 
         public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)

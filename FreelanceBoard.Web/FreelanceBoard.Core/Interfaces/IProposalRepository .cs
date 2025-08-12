@@ -1,4 +1,6 @@
 ﻿using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Dtos.JobDtos;
+using FreelanceBoard.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -25,34 +25,33 @@ namespace FreelanceBoard.Web.Controllers
             var proposalDto = await _proposalQuery.GetProposalByIdAsync(id);
             return Ok(proposalDto);
         }
-
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteProposal(int id)
-        public ProposalController(IProposalQuery proposalQuery)
         {
             var deleted = await _mediator.Send(new DeleteProposalCommand(id));
             return Ok(deleted);
-            _proposalQuery = proposalQuery;
         }
-
         [HttpPost("create")]
         public async Task<IActionResult> CreateProposal(CreateProposalCommand command)
-        [HttpGet("job/{jobId}/proposals")]
-        public async Task<IActionResult> GetProposalsByJobId(int jobId)
         {
             var newProposalId = await _mediator.Send(command);
             return Ok(newProposalId);
+
         }
+        [HttpGet("job/{jobId}/proposals")]
+        public async Task<IActionResult> GetProposalsByJobId(int jobId)
+        {
             if (jobId <= 0)
                 return BadRequest("Invalid job ID.");
 
+            var proposals = await _proposalQuery.GetProposalsByJobIdAsync(jobId);
+            return Ok(proposals);
+        }
         [HttpPut("update")]
         public async Task<IActionResult> UpdateProposal(UpdateProposalCommand command)
         {
             var success = await _mediator.Send(command);
             return Ok(success);
-            var proposals = await _proposalQuery.GetProposalsByJobIdAsync(jobId);
-            return Ok(proposals);
         }
     }
 }

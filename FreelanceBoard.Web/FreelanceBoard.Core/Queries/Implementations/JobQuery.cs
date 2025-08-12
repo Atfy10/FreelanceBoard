@@ -131,8 +131,6 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                 return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs for the user retrieved successfully.");
             }, OperationType.Get);
 
-    }
-
 
         private static IEnumerable<T> Page<T>(IEnumerable<T> source, int page, int pageSize)
         {
