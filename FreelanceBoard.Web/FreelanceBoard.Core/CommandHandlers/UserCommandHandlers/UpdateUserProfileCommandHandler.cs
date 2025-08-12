@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FreelanceBoard.Core.Commands.UserCommands;
 using FreelanceBoard.Core.Domain.Enums;
 using FreelanceBoard.Core.Dtos;
+using FreelanceBoard.Core.Exceptions;
 using FreelanceBoard.Core.Helpers;
 using FreelanceBoard.Core.Interfaces;
 using MediatR;
@@ -43,9 +44,9 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 			var user = await _userRepository.GetByIdAsync(userId) ??
 					 throw new KeyNotFoundException($"User with ID {userId} not found.");
 			if (await _userRepository.UsernameExistsAsync(request.UserName, userId))
-				throw new InvalidOperationException($"Username {request.UserName} is already taken.");
+				throw new UserNameExistException($"Username {request.UserName} is already taken.");
 			if (await _userRepository.PhoneNumberExistsAsync(request.PhoneNumber, userId))
-				throw new InvalidOperationException($"Phone number {request.PhoneNumber} is already in use.");
+				throw new PhoneExistException($"Phone number {request.PhoneNumber} is already in use.");
 			user.PhoneNumber = request.PhoneNumber;
 			user.UserName = request.UserName;
 			var profile = await _profileRepository.GetByIdAsync(userId) ??
