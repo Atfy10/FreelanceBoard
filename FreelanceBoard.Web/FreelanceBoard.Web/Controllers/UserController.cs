@@ -106,7 +106,49 @@ namespace FreelanceBoard.Web.Controllers
 		public async Task<IActionResult> AddUserProject([FromBody] AddProjectCommand command)
 		{
 			var result = await _mediator.Send(command);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
+
+		[HttpPost("add-skill")]
+
+		public async Task<IActionResult> AddSkill([FromBody] AddUserSkillCommand command)
+		{
+			if (command == null)
+				return BadRequest(new { Message = "Command cannot be null." });
+			var result = await _mediator.Send(command);
+			return this.HandleResult(result);
+		}
+
+		//make delete user skill endpoint
+		[HttpPost("remove-skill")]
+		public async Task<IActionResult> RemoveSkill([FromBody] RemoveUserSkillCommand command)
+		{
+			if (command == null)
+				return BadRequest(new { Message = "Command cannot be null." });
+			var result = await _mediator.Send(command);
+			return this.HandleResult(result);
+		}
+
+		[HttpPut("update-profile")]
+		public async Task<IActionResult> UpdateProfile(UpdateUserProfileCommand command)
+		{
+			if (command == null)
+				return BadRequest(new { Message = "Command cannot be null." });
+			var result = await _mediator.Send(command);
+			return this.HandleResult(result);
+		}
+
+		[HttpDelete("delete-project/{projectId}")]
+		public async Task<IActionResult> DeleteProject(int projectId)
+		{
+			var command = new DeleteProjectCommand { ProjectId = projectId };
+			var result = await _mediator.Send(command);
+			return this.HandleResult(result, 204);
+		}
+
+
+
+
+
 	}
 }

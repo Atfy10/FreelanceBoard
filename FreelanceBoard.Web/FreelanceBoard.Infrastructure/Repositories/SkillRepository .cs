@@ -20,5 +20,22 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 .Where(s => names.Contains(s.Name))
                 .ToListAsync();
         }
-    }
+
+		public async Task<int?> GetIdByNameAsync(string name)
+		{
+			return await _dbContext.Skills
+				.Where(s => s.Name == name)
+				.Select(s => (int?)s.Id)
+				.FirstOrDefaultAsync();
+		}
+
+		public async Task<ApplicationUserSkill?> GetUserSkillAsync(string userId, int skillId)
+		{
+			return await _dbContext.Set<ApplicationUserSkill>()
+			.FirstOrDefaultAsync(us =>
+			us.ApplicationUsersId == userId &&
+			us.SkillsId == skillId);
+
+		}
+	}
 }

@@ -32,10 +32,9 @@ namespace FreelanceBoard.Infrastructure.Repositories
         {
             return await _dbContext.Users
                 .Include(u => u.Profile)
-                .Include(u => u.Skills)
-                .Include(u => u.Projects)
-                .FirstOrDefaultAsync(u => u.Id == userId) ??
-                 throw new KeyNotFoundException($"User with ID {userId} not found.");
+                .Include(u => u.UserSkills).ThenInclude(us => us.Skill)
+				.Include(u => u.Projects)
+                .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
         public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
@@ -63,9 +62,22 @@ namespace FreelanceBoard.Infrastructure.Repositories
             if (!result.Succeeded)
                 return result;
 
-            await _userManager.AddToRoleAsync(user, role);
-            return result;
-        }
-    }
+			await _userManager.AddToRoleAsync(user, role);
+
+			return result;
+		}
+
+		public async Task<bool> UsernameExistsAsync(string username, string excludeUserId = null)
+		{
+			return await _dbContext.Users
+		.AnyAsync(u => u.UserName == username && (excludeUserId == null || u.Id != excludeUserId));
+		}
+
+		public async Task<bool> PhoneNumberExistsAsync(string phoneNumber, string excludeUserId = null)
+		{
+			return await _dbContext.Users
+					.AnyAsync(u => u.PhoneNumber == phoneNumber && (excludeUserId == null || u.Id != excludeUserId));
+		}
+	}
 
 }

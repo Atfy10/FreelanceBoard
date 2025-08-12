@@ -81,7 +81,24 @@ namespace FreelanceBoard.Core.Helpers
                 _logger.LogError(ex, "Email already exists error occurred during {Operation}", opType);
                 return Result<T>.Failure(opType.ToString(), "That email address is already in use.");
             }
-            catch (Exception ex)
+            catch (PhoneExistException ex)
+            {
+                _logger.LogError(ex, "Phone already exist error occurred during {Operation}", opType);
+                return Result<T>.Failure(opType.ToString(), "Phone is exist: " + ex.Message);
+            }
+            catch (UserNameExistException ex)
+            {
+                _logger.LogError(ex, "Username already exist error occurred during {Operation}", opType);
+                return Result<T>.Failure(opType.ToString(), "Username is exist: " + ex.Message);
+			}
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogError(ex, "Unauthorized access error occurred during {Operation}", opType);
+                return Result<T>.Failure(opType.ToString(), "Unauthorized access: " + ex.Message);
+            }
+            
+
+			catch (Exception ex)
             {
                 _logger.LogError(ex, "Unexpected error occurred during {Operation}", opType);
                 return Result<T>.Failure(opType.ToString(), "An unexpected error occurred. Please try again later.");

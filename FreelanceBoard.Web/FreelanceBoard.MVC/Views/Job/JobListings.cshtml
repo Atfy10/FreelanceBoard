@@ -1,6 +1,9 @@
 ﻿@using FreelanceBoard.MVC.Extensions
 
-
+@model List<JobViewModel>
+@{
+    var totalJobs = Model?.Count;
+}
 
 <style>
     .create-job-btn {
@@ -290,8 +293,6 @@
             }
         </style>
 
-
-
             <header class="site-header">
                 <div class="section-overlay"></div>
                 <div class="container">
@@ -300,7 +301,7 @@
                             <h1 class="text-white">Job Listings</h1>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb justify-content-center">
-                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="/Home">Home</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Job listings</li>
                                 </ol>
                             </nav>
@@ -316,23 +317,12 @@
                             <form class="custom-form hero-form" action="#" method="get" role="form">
                                 <h3 class="text-white mb-3">Search your dream job</h3>
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <div class="input-group">
-                                            <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon"></i></span>
-                                            <input type="text" name="job-title" id="job-title" class="form-control" placeholder="Job Title" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <div class="input-group">
-                                            <span class="input-group-text" id="basic-addon1"><i class="bi-geo-alt custom-icon"></i></span>
-                                            <input type="text" name="job-location" id="job-location" class="form-control" placeholder="Location" required>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="input-group">
                                             <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon"></i></span>
                                             <select class="form-select form-control" name="job-salary" id="job-salary" aria-label="Default select example">
-                                                <option selected>Salary Range</option>
+                                                <option selected>Price Range</option>
                                                 <option value="1">$300k - $500k</option>
                                                 <option value="2">$10000k - $45000k</option>
                                             </select>
@@ -342,7 +332,7 @@
                                         <div class="input-group">
                                             <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
                                             <select class="form-select form-control" name="job-level" id="job-level" aria-label="Default select example">
-                                                <option selected>Level</option>
+                                                <option selected>Category</option>
                                                 <option value="1">Internship</option>
                                                 <option value="2">Junior</option>
                                                 <option value="2">Senior</option>
@@ -351,9 +341,9 @@
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="input-group">
-                                            <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
+                                <span class="input-group-text" id="basic-addon1"><i class="custom-icon bi-code-slash me-1"></i></span>
                                             <select class="form-select form-control" name="job-remote" id="job-remote" aria-label="Default select example">
-                                                <option selected>Remote</option>
+                                                <option selected>Skills</option>
                                                 <option value="1">Full Time</option>
                                                 <option value="2">Contract</option>
                                                 <option value="2">Part Time</option>
@@ -366,14 +356,6 @@
                                         </button>
                                     </div>
                                     <div class="col-12">
-                                        <div class="d-flex flex-wrap align-items-center mt-4 mt-lg-0">
-                                            <span class="text-white mb-lg-0 mb-md-0 me-2">Popular keywords:</span>
-                                            <div>
-                                                <a href="job-listings.html" class="badge">Web design</a>
-                                                <a href="job-listings.html" class="badge">Marketing</a>
-                                                <a href="job-listings.html" class="badge">Customer support</a>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -389,214 +371,82 @@
     <div class="container">
         <div class="row align-items-center mb-4">
             <div class="col-lg-6 col-12">
-                <h3>Results of 30-65 of 1500 jobs</h3>
+                <h3>Results of @totalJobs jobs</h3>
             </div>
             <div class="col-lg-6 col-12 d-flex justify-content-end">
-                <button class="create-job-btn" data-bs-toggle="modal" data-bs-target="#createJobModal">
-                    <i class="bi-plus-circle"></i>
-                    Create New Job
-                </button>
-            </div>
-        </div>
-        
-        <div class="row align-items-center mb-4">
-            <div class="col-lg-8 col-12 d-flex align-items-center">
-                <p class="mb-0 me-3">Sort by:</p>
-                <div class="dropdown dropdown-sorting me-4">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownSortingButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Newest Jobs
+                @if (User.IsInRole("Client"))
+                {
+                    <button class="create-job-btn" data-bs-toggle="modal" data-bs-target="#createJobModal">
+                        <i class="bi-plus-circle"></i>
+                        Create New Job
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownSortingButton">
-                        <li><a class="dropdown-item" href="#">Latest Jobs</a></li>
-                        <li><a class="dropdown-item" href="#">Highest Salary Jobs</a></li>
-                        <li><a class="dropdown-item" href="#">Internship Jobs</a></li>
-                    </ul>
-                </div>
-                <div class="d-flex">
-                    <a href="#" class="sorting-icon active bi-list me-2"></a>
-                    <a href="#" class="sorting-icon bi-grid"></a>
-                </div>
+                }
             </div>
         </div>
+
+        <!-- Sorting buttons -->
+        <div class="mb-4">
+            <a href="@Url.Action("JobListings", new { sortBy = "Date" })" class="btn btn-primary me-2">Sort by Date</a>
+            <a href="@Url.Action("JobListings", new { sortBy = "Budget" })" class="btn btn-secondary">Sort by Budget</a>
+        </div>
+
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="sortOrderSwitch" checked>
+            <label class="form-check-label" for="sortOrderSwitch">Ascending</label>
+        </div>
+        <br />
 
         <!-- Job Cards Row -->
         <div class="row">
-            <!-- Job Card 1 -->
-            <div class="col-lg-4 col-md-6 col-12 mb-4">
-                <div class="job-thumb job-thumb-box">
-                    <div class="job-actions">
-                        <button class="action-btn edit-btn" onclick="editJob(1)" title="Edit Job">
-                            <i class="bi-pencil-square"></i>
-                        </button>
-                        <button class="action-btn delete-btn" onclick="deleteJob(1)" title="Delete Job">
-                            <i class="bi-trash"></i>
-                        </button>
-                    </div>
-                    <div class="job-image-box-wrap">
-                        <a href="job-details.html">
-                            <img src="images/jobs/portrait-woman-customer-service-worker.jpg" class="job-image img-fluid" alt="">
-                        </a>
-                        <div class="job-image-box-wrap-info d-flex align-items-center">
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge badge-level">Senior</a>
-                            </p>
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge">Contract</a>
-                            </p>
+            @foreach (var job in Model)
+            {
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                    <div class="job-thumb job-thumb-box">
+                        <div class="job-actions">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <button class="action-btn edit-btn" onclick="editJob(@job.Id)" title="Edit Job">
+                                    <i class="bi-pencil-square"></i>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteJob(@job.Id)" title="Delete Job">
+                                    <i class="bi-trash"></i>
+                                </button>
+                            }
                         </div>
-                    </div>
-                    <div class="job-body">
-                        <h4 class="job-title">
-                            <a href="job-details.html" class="job-title-link">Customer Support</a>
-                        </h4>
-                        <div class="d-flex align-items-center">
-                            <div class="job-image-wrap d-flex align-items-center bg-white shadow-lg mt-2 mb-4">
-                                <img src="images/logos/microsoft.png" class="job-image me-3 img-fluid" alt="">
-                                <p class="mb-0">Microsoft</p>
-                            </div>
-                            <a href="#" class="bi-bookmark ms-auto me-2">
-                            </a>
-                            <a href="#" class="bi-heart">
-                            </a>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <p class="job-location">
-                                <i class="custom-icon bi-geo-alt me-1"></i>
-                                Paris, French
-                            </p>
-                            <p class="job-date">
-                                <i class="custom-icon bi-clock me-1"></i>
-                                10 days ago
-                            </p>
-                        </div>
-                        <div class="d-flex align-items-center border-top pt-3">
-                            <p class="job-price mb-0">
-                                <i class="custom-icon bi-cash me-1"></i>
-                                $45k - 50k
-                            </p>
-                            <button class="custom-btn btn ms-auto" onclick="openApplyModal(1)">Apply now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Job Card 2 -->
-            <div class="col-lg-4 col-md-6 col-12 mb-4">
-                <div class="job-thumb job-thumb-box">
-                    <div class="job-actions">
-                        <button class="action-btn edit-btn" onclick="editJob(2)" title="Edit Job">
-                            <i class="bi-pencil-square"></i>
-                        </button>
-                        <button class="action-btn delete-btn" onclick="deleteJob(2)" title="Delete Job">
-                            <i class="bi-trash"></i>
-                        </button>
-                    </div>
-                    <div class="job-image-box-wrap">
-                        <a href="job-details.html">
-                            <img src="images/jobs/young-woman-teaching-english-lessons.jpg" class="job-image img-fluid" alt="">
-                        </a>
-                        <div class="job-image-box-wrap-info d-flex align-items-center">
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge badge-level">Junior</a>
-                            </p>
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge">Freelance</a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="job-body">
-                        <h4 class="job-title">
-                            <a href="job-details.html" class="job-title-link">Language Teacher</a>
-                        </h4>
-                        <div class="d-flex align-items-center">
-                            <div class="job-image-wrap d-flex align-items-center bg-white shadow-lg mt-2 mb-4">
-                                <img src="images/logos/dropbox.png" class="job-image me-3 img-fluid" alt="">
-                                <p class="mb-0">Dropbox</p>
-                            </div>
-                            <a href="#" class="bi-bookmark ms-auto me-2">
-                            </a>
-                            <a href="#" class="bi-heart">
-                            </a>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <p class="job-location">
-                                <i class="custom-icon bi-geo-alt me-1"></i>
-                                Paris, French
-                            </p>
-                            <p class="job-date">
-                                <i class="custom-icon bi-clock me-1"></i>
-                                30 minutes ago
-                            </p>
-                        </div>
-                        <div class="d-flex align-items-center border-top pt-3">
-                            <p class="job-price mb-0">
-                                <i class="custom-icon bi-cash me-1"></i>
-                                $85k
-                            </p>
-                            <button class="custom-btn btn ms-auto" onclick="openApplyModal(2)">Apply now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        <div class="job-body">
+                            <h4 class="job-title">
+                                <a href="@Url.Action("JobDetails", "Job", new { id = job.Id })" class="job-title-link">@job.Title</a>
+                            </h4>
+                            <div class="d-flex align-items-center">
+                                <p class="job-location">
+                                    <i class="custom-icon bi-code-slash me-1"></i>
+                                    @job.skillNames.FirstOrDefault()
+                                </p>
 
-            <!-- Job Card 3 -->
-            <div class="col-lg-4 col-md-6 col-12 mb-4">
-                <div class="job-thumb job-thumb-box">
-                    <div class="job-actions">
-                        <button class="action-btn edit-btn" onclick="editJob(3)" title="Edit Job">
-                            <i class="bi-pencil-square"></i>
-                        </button>
-                        <button class="action-btn delete-btn" onclick="deleteJob(3)" title="Delete Job">
-                            <i class="bi-trash"></i>
-                        </button>
-                    </div>
-                    <div class="job-image-box-wrap">
-                        <a href="job-details.html">
-                            <img src="images/jobs/sound-engineer-working-studio-with-equipment.jpg" class="job-image img-fluid" alt="">
-                        </a>
-                        <div class="job-image-box-wrap-info d-flex align-items-center">
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge badge-level">Junior</a>
-                            </p>
-                            <p class="mb-0">
-                                <a href="job-listings.html" class="badge">Remote</a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="job-body">
-                        <h4 class="job-title">
-                            <a href="job-details.html" class="job-title-link">Sound Engineer</a>
-                        </h4>
-                        <div class="d-flex align-items-center">
-                            <div class="job-image-wrap d-flex align-items-center bg-white shadow-lg mt-2 mb-4">
-                                <img src="images/logos/soundcloud.png" class="job-image me-3 img-fluid" alt="">
-                                <p class="mb-0">Soundcloud</p>
+                                <p class="job-date">
+                                    <i class="custom-icon bi-clock me-1"></i>
+                                    @job.PostedDate.ToString("MMM dd, yyyy")
+                                </p>
                             </div>
-                            <a href="#" class="bi-bookmark ms-auto me-2">
-                            </a>
-                            <a href="#" class="bi-heart">
-                            </a>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <p class="job-location">
-                                <i class="custom-icon bi-geo-alt me-1"></i>
-                                Singapore
-                            </p>
-                            <p class="job-date">
-                                <i class="custom-icon bi-clock me-1"></i>
-                                8 hours ago
-                            </p>
-                        </div>
-                        <div class="d-flex align-items-center border-top pt-3">
-                            <p class="job-price mb-0">
-                                <i class="custom-icon bi-cash me-1"></i>
-                                $20k
-                            </p>
-                            <button class="custom-btn btn ms-auto" onclick="openApplyModal(3)">Apply now</button>
+                            <div class="d-flex align-items-center border-top pt-3">
+                                <p class="job-price mb-0">
+                                    <i class="custom-icon bi-cash me-1"></i>
+                                    $@job.Price
+                                </p>
+                                @if (User.IsInRole("Freelancer"))
+                                {
+                                    <button class="custom-btn btn ms-auto" onclick="openApplyModal(@job.Id)">Apply now</button>
+                                }
+                                else
+                                {
+                                    <button class="custom-btn btn ms-auto" onclick="location.href='@Url.Action("JobDetails", "Job", new { id = job.Id })'">View Job</button>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
 
         <!-- Pagination -->
@@ -636,8 +486,8 @@
     </div>
 </section>
 
-            <section class="cta-section">
-                <div class="section-overlay"></div>
+    <section class="cta-section">
+        <div class="section-overlay"></div>
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 col-10">
@@ -646,8 +496,11 @@
                         </div>
                         <div class="col-lg-4 col-12 ms-auto">
                             <div class="custom-border-btn-wrap d-flex align-items-center mt-lg-4 mt-2">
+                                @if (!User.Identity.IsAuthenticated)
+                                {
                                 <a href="#" class="custom-btn custom-border-btn btn me-4">Create an account</a>
                                 <a href="#" class="custom-link">Post a job</a>
+                                }
                             </div>
                         </div>
                     </div>
@@ -853,36 +706,22 @@
         </div>
 
         <script>
-            // Sample job data (in real app, this would come from your backend)
-            let jobs = [
-                {
-                    id: 1,
-                    title: "Customer Support",
-                    description: "Provide excellent customer service and support to our clients. Handle inquiries, resolve issues, and maintain customer satisfaction.",
-                    category: "Customer Support",
-                    price: 47500,
-                    skills: ["Communication", "Problem Solving", "CRM Software"]
-                },
-                {
-                    id: 2,
-                    title: "Language Teacher",
-                    description: "Teach English to students of various levels. Create engaging lesson plans and help students improve their language skills.",
-                    category: "Education",
-                    price: 85000,
-                    skills: ["Teaching", "English", "Curriculum Development"]
-                },
-                {
-                    id: 3,
-                    title: "Sound Engineer",
-                    description: "Work with audio equipment and software to record, mix, and master audio content for various media projects.",
-                    category: "Technology",
-                    price: 20000,
-                    skills: ["Audio Engineering", "Pro Tools", "Music Production"]
-                }
-            ];
+            const sortSwitch = document.getElementById("sortOrderSwitch");
+            const url = new URL(window.location.href);
+            const currentOrder = url.searchParams.get("order");
 
-            let currentJobId = null;
-            let currentSkills = [];
+            // Set the switch position based on the query string
+            if (currentOrder === "asc") {
+                sortSwitch.checked = true;
+            } else if (currentOrder === "desc") {
+                sortSwitch.checked = false;
+            }
+
+            sortSwitch.addEventListener("change", function () {
+                const isAscending = this.checked;
+                url.searchParams.set("order", isAscending ? "asc" : "desc");
+                window.location.href = url.toString();
+            });
 
             // Skills management
             document.getElementById('skillInput').addEventListener('keypress', function(e) {

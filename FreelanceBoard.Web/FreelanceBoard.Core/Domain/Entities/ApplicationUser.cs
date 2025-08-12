@@ -25,8 +25,11 @@ namespace FreelanceBoard.Core.Domain.Entities
         public virtual ICollection<Message> SentMessages { get; set; } = [];
         public virtual ICollection<Message> ReceivedMessages { get; set; } = [];
         public virtual ICollection<Project> Projects { get; set; } = [];
-        public virtual ICollection<Skill> Skills { get; set; } = [];
 
-    }
+		//public ICollection<Skill> Skills { get; set; } = [];
+
+		public ICollection<ApplicationUserSkill> UserSkills { get; set; }
+
+	}
 
 }

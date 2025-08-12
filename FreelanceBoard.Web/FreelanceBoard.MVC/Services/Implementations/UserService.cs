@@ -83,7 +83,9 @@ namespace FreelanceBoard.MVC.Services.Implementations
             if (apiResult is null || !apiResult.IsSuccess)
                 throw new ApplicationException(apiResult?.Message ?? "Profile not found");
 
-            return apiResult.Data;
+            apiResult.Data.Role = httpContext.User.GetRole();
+
+			return apiResult.Data;
         }
         public async Task ChangePasswordAsync(ChangePasswordViewModel model, HttpContext httpContext)
         {
@@ -130,9 +132,11 @@ namespace FreelanceBoard.MVC.Services.Implementations
 		public async Task AddSkillAsync(AddSkillViewModel model, HttpContext httpContext)
 		{
 			var token = httpContext.User.GetAccessToken();
+            var userId = httpContext.User.GetUserId();
+            model.userId = userId;
 			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-			var response = await client.PostAsJsonAsync("/api/Skill", model);
+			var response = await client.PostAsJsonAsync("/api/User/add-skill", model);
 			if (!response.IsSuccessStatusCode)
 			{
 				var errorContent = await response.Content.ReadAsStringAsync();
@@ -140,6 +144,47 @@ namespace FreelanceBoard.MVC.Services.Implementations
 			}
 		}
 
+
+        public async Task RemoveSkillAsync(RemoveSkillViewModel model, HttpContext httpContext)
+        {
+            var token = httpContext.User.GetAccessToken();
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            model.UserId = httpContext.User.GetUserId();
+			var response = await client.PostAsJsonAsync("/api/User/remove-skill", model);
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new ApplicationException($"Failed to remove skill: {errorContent}");
+            }
+		}
+
+        public async Task UpdateProfileAsync(UserProfileViewModel model, HttpContext httpContext)
+        {
+            var token = httpContext.User.GetAccessToken();
+            var userId = httpContext.User.GetUserId();
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new ApplicationException("User not logged in");
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await client.PutAsJsonAsync("/api/User/update-profile", model);
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException("Failed to update profile");
+		}
+
+
+        public async Task DeleteProjectAsync(int projectId, HttpContext httpContext)
+        {
+            var token = httpContext.User.GetAccessToken();
+            var userId = httpContext.User.GetUserId();
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new ApplicationException("User not logged in");
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await client.DeleteAsync($"/api/User/delete-project/{projectId}");
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException("Failed to delete project");
+		}
 	}
 
 }

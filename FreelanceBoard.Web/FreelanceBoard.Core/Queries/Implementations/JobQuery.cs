@@ -116,6 +116,22 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                 return Result<IEnumerable<JobDto>>.Success(resultPaginated, GetOperation, "Jobs filtered by budget retrieved successfully");
             }, OperationType.Get);
 
+        public async Task<Result<IEnumerable<JobDto>>> GetJobsByUserIdAsync(string userId)
+            => await _executor.Execute(async () =>
+            {
+                if (string.IsNullOrWhiteSpace(userId))
+                    throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty.");
+
+                var jobs = await _jobRepository.GetJobsByUserIdAsync(userId);
+
+                if (jobs == null || !jobs.Any())
+                    return Result<IEnumerable<JobDto>>.Success([], GetOperation, "No jobs found for this user.");
+
+                var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
+                return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs for the user retrieved successfully.");
+            }, OperationType.Get);
+
+    }
 
 
         private static IEnumerable<T> Page<T>(IEnumerable<T> source, int page, int pageSize)

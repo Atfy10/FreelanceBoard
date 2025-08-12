@@ -98,9 +98,17 @@ namespace FreelanceBoard.Core.Queries.Implementations
                 var user = await _userRepository.GetUserFullProfileAsync(id) ??
                     throw new KeyNotFoundException($"User with ID {id} not found.");
 
-                var userProfileDto = _mapper.Map<ApplicationUserFullProfileDto>(user);
+                var userSkills = user.UserSkills?.Select(us => us.Skill).ToList() ?? [];
 
-                _logger.LogInformation("Retrieved full profile for user with ID {UserId}.", id);
+
+
+				var userProfileDto = _mapper.Map<ApplicationUserFullProfileDto>(user);
+
+                var mappedUserSkill= _mapper.Map<List<SkillDto>>(userSkills);
+				userProfileDto.Skills = mappedUserSkill;
+
+
+				_logger.LogInformation("Retrieved full profile for user with ID {UserId}.", id);
 
                 return Result<ApplicationUserFullProfileDto>.Success(userProfileDto,
                     GetOperation, "Retrieved full profile for user .");

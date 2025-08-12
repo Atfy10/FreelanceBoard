@@ -22,12 +22,13 @@ namespace FreelanceBoard.MVC.Controllers
 
         private readonly IUserService _userService;
         private readonly OperationExecutor _executor;
-        //private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientFactory _httpClientFactory;
         public UserController(IUserService userService, OperationExecutor executor,
             IHttpClientFactory httpClientFactory)
         {
             _userService = userService;
             _executor = executor;
+            _httpClientFactory = httpClientFactory;
         }
 
         [HttpGet]
@@ -140,34 +141,98 @@ namespace FreelanceBoard.MVC.Controllers
             return View(model);
         }
 
-		[HttpPost]
-		public async Task<IActionResult> AddProject([FromBody] AddProjectViewModel model)
-		{
-			if (!ModelState.IsValid) return View(model);
-			var success = await _executor.Execute(
-				async () =>
-				{
-					await _userService.AddProject(model, HttpContext);
-				},
-				error => ModelState.AddModelError(string.Empty, error)
-				);
-			return RedirectToAction("Project", "User");
-		}
 
-		[HttpPost]
-		public async Task<IActionResult> AddSkill([FromBody] AddSkillViewModel request)
-		{
-			if (!ModelState.IsValid) return View(request);
+        [HttpPost]
+        public async Task<IActionResult> AddProject([FromBody] AddProjectViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+            var success = await _executor.Execute(
+                async () =>
+                {
+                    await _userService.AddProject(model, HttpContext);
+                },
+                error => ModelState.AddModelError(string.Empty, error)
+                );
+            return RedirectToAction("Project", "User");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddSkill([FromBody] AddSkillViewModel request)
+        {
+            ModelState.Remove(nameof(request.userId));
+            if (!ModelState.IsValid) return View(request);
+            var success = await _executor.Execute(
+                async () =>
+                {
+                    await _userService.AddSkillAsync(request, HttpContext);
+                },
+                error => ModelState.AddModelError(string.Empty, error)
+            );
+            if (!success)
+                return View("Profile",request);
+            return RedirectToAction("Profile", "User");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveSkill([FromBody] RemoveSkillViewModel model)
+        {
+            ModelState.Remove(nameof(model.UserId));
+            if (!ModelState.IsValid) return View(model);
+            var success = await _executor.Execute(
+                async () =>
+                {
+                    await _userService.RemoveSkillAsync(model, HttpContext);
+                },
+                error => ModelState.AddModelError(string.Empty, error)
+            );
+            if (!success)
+                return View("Profile",model);
+            return RedirectToAction("Profile", "User");
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> UpdateProfile([FromBody] UserProfileViewModel model)
+        {
+			ModelState.Remove(nameof(model.IsBanned));
+			ModelState.Remove(nameof(model.Skills));
+            ModelState.Remove(nameof(model.Projects));
+            ModelState.Remove(nameof(model.Profile));
+            ModelState.Remove(nameof(model.Id));
+            ModelState.Remove(nameof(model.FirstName));
+            ModelState.Remove(nameof(model.LastName));
+            ModelState.Remove(nameof(model.Email));
+            ModelState.Remove(nameof(model.Role));
+
+
+
 			var success = await _executor.Execute(
-				async () =>
-				{
-					await _userService.AddSkillAsync(request, HttpContext);
-				},
-				error => ModelState.AddModelError(string.Empty, error)
-			);
-			if (!success)
-				return View(request);
-			return RedirectToAction("Profile", "User");
+                async () =>
+                {
+                    await _userService.UpdateProfileAsync(model, HttpContext);
+                },
+                error => ModelState.AddModelError(string.Empty, error)
+            );
+            if (!success)
+                return View("Profile",model);
+            return RedirectToAction("Profile", "User");
+
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProject(int projectId)
+        {
+            var success = await _executor.Execute(
+                async () =>
+                {
+                    await _userService.DeleteProjectAsync(projectId, HttpContext);
+                },
+                error => ModelState.AddModelError(string.Empty, error)
+            );
+            if (!success)
+                return View("Profile");
+			return NoContent(); 
 		}
 	}
+
 }

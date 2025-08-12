@@ -50,7 +50,8 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 
                 var userDto = _mapper.Map<LoginUserDto>(request);
 
-                userDto.Token = _jwtToken.GenerateJwtToken(user, "Admin");
+
+                userDto.Token = _jwtToken.GenerateJwtToken(user, role);
 
                 return Result<LoginUserDto>.Success(userDto, LoginOperation, "Login successful.");
             }, OperationType.Login);

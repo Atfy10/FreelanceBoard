@@ -13,7 +13,10 @@ namespace FreelanceBoard.Core.Domain.Entities
 		public string Name { get; set; }
 
 		// Navigation properties
-		public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; } = [];
+		//public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; } = [];
+
+		public ICollection<ApplicationUserSkill> UserSkills { get; set; }
+
 		public virtual ICollection<Job> Jobs { get; set; } = [];
 	}
 

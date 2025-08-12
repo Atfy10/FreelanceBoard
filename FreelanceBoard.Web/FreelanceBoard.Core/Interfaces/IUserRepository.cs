@@ -25,5 +25,9 @@ namespace FreelanceBoard.Core.Interfaces
         /// <returns></returns>
         public Task<IdentityResult> CreateAsync(ApplicationUser user, string pwd, string role);
 
-    }
+		Task<bool> UsernameExistsAsync(string username, string excludeUserId = null);
+		Task<bool> PhoneNumberExistsAsync(string phoneNumber, string excludeUserId = null);
+
+
+	}
 }

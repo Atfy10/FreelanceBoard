@@ -166,6 +166,10 @@ namespace FreelanceBoard.Web
             builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 
             builder.Services.AddScoped<IJobQuery, JobQuery>();
+            builder.Services.AddScoped<ISkillQuery, SkillQuery>();
+            builder.Services.AddScoped<IProposalQuery, ProposalQuery>();
+            builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+
 
             builder.Services.AddScoped<IProposalQuery, ProposalQuery>();
 
