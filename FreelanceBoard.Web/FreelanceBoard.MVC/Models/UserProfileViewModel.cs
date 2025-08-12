@@ -13,7 +13,8 @@ namespace FreelanceBoard.MVC.Models
 		public bool IsBanned { get; set; }
 
 		public string Bio { get; set; }
-
+		
+		public string Role { get; set; }
 		public ProfileViewModel Profile { get; set; }
 		public List<SkillViewModel> Skills { get; set; }
 		public List<ProjectViewModel> Projects { get; set; }

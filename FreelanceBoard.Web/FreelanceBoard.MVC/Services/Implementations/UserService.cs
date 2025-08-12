@@ -83,7 +83,9 @@ namespace FreelanceBoard.MVC.Services.Implementations
             if (apiResult is null || !apiResult.IsSuccess)
                 throw new ApplicationException(apiResult?.Message ?? "Profile not found");
 
-            return apiResult.Data;
+            apiResult.Data.Role = httpContext.User.GetRole();
+
+			return apiResult.Data;
         }
         public async Task ChangePasswordAsync(ChangePasswordViewModel model, HttpContext httpContext)
         {

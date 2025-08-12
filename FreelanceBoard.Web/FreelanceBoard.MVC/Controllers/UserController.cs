@@ -202,6 +202,7 @@ namespace FreelanceBoard.MVC.Controllers
             ModelState.Remove(nameof(model.FirstName));
             ModelState.Remove(nameof(model.LastName));
             ModelState.Remove(nameof(model.Email));
+            ModelState.Remove(nameof(model.Role));
 
 
 
