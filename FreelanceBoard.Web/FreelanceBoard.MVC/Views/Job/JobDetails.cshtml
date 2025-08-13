@@ -56,11 +56,13 @@
                             }
                         </ul>
                     }
+                    
+                    
 
                     <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
                         @if (User.IsInRole("Freelancer"))
                         {
-                            <a href="@Url.Action("Apply", "Jobs", new { id = Model?.Id })" class="custom-btn btn btn-primary mt-2">Apply Now</a>
+                            <a href="@Url.Action("CreateProposal", "Proposal", new { id = Model?.Id })" class="custom-btn btn btn-primary mt-2">Apply Now</a>
                         }
                         <div class="job-detail-share d-flex align-items-center ms-auto mt-2">
                             <p class="mb-0 me-lg-4 me-3">Share:</p>
