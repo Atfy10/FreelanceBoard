@@ -76,6 +76,7 @@
         transition: all 0.3s ease;
         width: 100%;
         margin-top: 20px;
+		margin-bottom: 30px;
     }
 
         .submit-btn:hover {
@@ -187,6 +188,8 @@
                             <i class="bi-send me-2"></i>
                             Submit Proposal
                         </button>
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                     </form>
                 </div>
             </div>

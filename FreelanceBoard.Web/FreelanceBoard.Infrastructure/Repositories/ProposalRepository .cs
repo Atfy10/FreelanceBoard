@@ -49,5 +49,12 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-    }
+
+		public async Task<bool> GetProposalByJobIdAndFreelancerIdAsync(int jobId, string freelancerId)
+		{
+            return await _dbContext.Proposals
+                .AnyAsync(p => p.JobId == jobId && p.FreelancerId == freelancerId);
+
+		}
+	}
 }

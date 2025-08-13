@@ -63,9 +63,9 @@ namespace FreelanceBoard.MVC.Controllers
             );
 
             if (!success || proposalId == 0)
-                return View("NotFound");
+                return View(model);
 
-            return RedirectToAction("MyJobApplication");
+            return RedirectToAction("FreelancerProposals");
 
         }
 

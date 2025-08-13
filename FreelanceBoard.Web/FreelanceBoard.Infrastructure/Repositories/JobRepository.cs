@@ -77,6 +77,10 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-	}
+        public async Task<bool> JobExistsAsync(int jobId)
+        {
+            return await _dbContext.Jobs.AnyAsync(j => j.Id == jobId);
 
+        }
+    }
 }
