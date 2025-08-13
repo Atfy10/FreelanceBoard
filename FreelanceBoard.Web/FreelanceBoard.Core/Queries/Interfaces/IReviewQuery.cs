@@ -11,5 +11,6 @@ namespace FreelanceBoard.Core.Queries.Interfaces
     public interface IReviewQuery
     {
         Task<Result<ReviewDto>> GetReviewByIdAsync(int id);
+        Task<Result<ReviewDto[]>> GetTopThreeReviewsAsync();
     }
 }

@@ -486,8 +486,8 @@
                     <div class="profile-header">
                         <div class="profile-picture-container">
                             <img src="@(string.IsNullOrEmpty(Model.Profile?.Image)
-                                                                                                                                        ? Url.Content("~/images/avatar.png")
-                                                                                                                                        : Url.Content("https://localhost:7029" + Model.Profile.Image))"
+                                                                                                                                                                                                                                                                                                             ? Url.Content("~/images/avatar.png")
+                                                                                                                                                                                                                                                                                                             : Url.Content("https://localhost:7029" + Model.Profile.Image))"
                                  alt="Profile Picture"
                                  class="profile-picture"
                                  id="profilePicture">
@@ -546,90 +546,90 @@
                     </button>
                 </div>
 
-                <!-- Skills Section -->
-                <div class="profile-container">
-                    <h3 class="section-title">
-                        <i class="bi-gear-fill"></i>
-                        Skills
-                    </h3>
-                    <div class="skills-container" id="skillsContainer">
-                        @foreach (var skill in Model.Skills ?? new List<SkillViewModel>())
-                        {
-                            <div class="skill-tag">
-                                @skill.Name
-                                <button class="skill-remove" onclick="removeSkill('@skill.Name', this)" style="display: none;">×</button>
+                    <!-- Skills Section -->
+                    <div class="profile-container">
+                        <h3 class="section-title">
+                            <i class="bi-gear-fill"></i>
+                            Skills
+                        </h3>
+                        <div class="skills-container" id="skillsContainer">
+                            @foreach (var skill in Model.Skills ?? new List<SkillViewModel>())
+                            {
+                                <div class="skill-tag">
+                                    @skill.Name
+                                    <button class="skill-remove" onclick="removeSkill('@skill.Name', this)" style="display: none;">×</button>
+                                </div>
+                            }
+                            <div class="add-skill-btn" onclick="openAddSkillModal()" style="display: none;">
+                                <i class="bi-plus-circle me-2"></i>
+                                Add Skill
                             </div>
-                        }
-                        <div class="add-skill-btn" onclick="openAddSkillModal()" style="display: none;">
-                            <i class="bi-plus-circle me-2"></i>
-                            Add Skill
+                        </div>
+
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="addSkillModal" tabindex="-1" aria-labelledby="addSkillModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addSkillModalLabel">Add New Skill</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <label for="skillSelect">Select Skill *</label>
+                                    <select id="skillSelect" class="form-control" required>
+                                        <option value="">-- Choose a skill --</option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" onclick="saveSkill()">Save Skill</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                </div>
-
-                <!-- Modal -->
-                <div class="modal fade" id="addSkillModal" tabindex="-1" aria-labelledby="addSkillModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addSkillModalLabel">Add New Skill</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <label for="skillSelect">Select Skill *</label>
-                                <select id="skillSelect" class="form-control" required>
-                                    <option value="">-- Choose a skill --</option>
-                                </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button class="btn btn-primary" onclick="saveSkill()">Save Skill</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Projects Section -->
-                <div class="profile-container">
-                    <h3 class="section-title">
-                        <i class="bi-folder-fill"></i>
-                        Projects
-                    </h3>
-                    <div class="projects-container" id="projectsContainer">
-                        @foreach (var project in Model.Projects ?? new List<ProjectViewModel>())
-                        {
-                            <div class="project-card">
-                                <h4 class="project-title">@project.Title</h4>
-                                <button class="project-remove" onclick="removeProject('@project.Id', this)" style="display: none;">×</button>
-                                <p class="project-description">@project.Description</p>
-                                @if (!string.IsNullOrEmpty(project.Attachments))
-                                {
-                                    var attachments = project.Attachments.Split(',');
-                                    foreach (var attachment in attachments)
+                    <!-- Projects Section -->
+                    <div class="profile-container">
+                        <h3 class="section-title">
+                            <i class="bi-folder-fill"></i>
+                            Projects
+                        </h3>
+                        <div class="projects-container" id="projectsContainer">
+                            @foreach (var project in Model.Projects ?? new List<ProjectViewModel>())
+                            {
+                                <div class="project-card">
+                                    <h4 class="project-title">@project.Title</h4>
+                                    <button class="project-remove" onclick="removeProject('@project.Id', this)" style="display: none;">×</button>
+                                    <p class="project-description">@project.Description</p>
+                                    @if (!string.IsNullOrEmpty(project.Attachments))
                                     {
-                                        var trimmed = attachment.Trim();
-                                        var isLink = trimmed.StartsWith("http");
-                                        var icon = isLink ? "bi-box-arrow-up-right" :
-                                        trimmed.EndsWith(".pdf") ? "bi-file-earmark-pdf" :
-                                        "bi-file-earmark-code";
+                                        var attachments = project.Attachments.Split(',');
+                                        foreach (var attachment in attachments)
+                                        {
+                                            var trimmed = attachment.Trim();
+                                            var isLink = trimmed.StartsWith("http");
+                                            var icon = isLink ? "bi-box-arrow-up-right" :
+                                            trimmed.EndsWith(".pdf") ? "bi-file-earmark-pdf" :
+                                            "bi-file-earmark-code";
 
-                                        <div class="project-attachment" title="@trimmed" onclick="if('@isLink' === 'True') window.open('@trimmed', '_blank')">
-                                            <i class="@icon"></i>
-                                            <span>@trimmed</span>
-                                        </div>
+                                            <div class="project-attachment" title="@trimmed" onclick="if('@isLink' === 'True') window.open('@trimmed', '_blank')">
+                                                <i class="@icon"></i>
+                                                <span>@trimmed</span>
+                                            </div>
+                                        }
                                     }
-                                }
+                                </div>
+                            }
+                            <!-- Add Project Button -->
+                            <div class="add-project-btn" onclick="openAddProjectModal()" style="display: none;">
+                                <i class="bi-plus-circle"></i>
+                                <span>Add New Project</span>
                             </div>
-                        }
-                        <!-- Add Project Button -->
-                        <div class="add-project-btn" onclick="openAddProjectModal()" style="display: none;">
-                            <i class="bi-plus-circle"></i>
-                            <span>Add New Project</span>
                         </div>
                     </div>
-                </div>
-
+                
 
 
             </div>
@@ -645,41 +645,43 @@
     </div>
 }
 
-<!-- Add Project Modal -->
-<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addProjectModalLabel">
-                    <i class="bi-plus-circle me-2"></i> Add New Project
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addProjectForm">
-                    <div class="mb-3">
-                        <label for="projectTitle" class="form-label">Title *</label>
-                        <input type="text" class="form-control" id="projectTitle" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="projectDescription" class="form-label">Description *</label>
-                        <textarea class="form-control" id="projectDescription" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="projectAttachments" class="form-label">Attachments</label>
-                        <input type="text" class="form-control" id="projectAttachments" placeholder="URLs or filenames">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveProject()">
-                    <i class="bi-check-circle me-2"></i> Save Project
-                </button>
+    <!-- Add Project Modal -->
+    <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProjectModalLabel">
+                        <i class="bi-plus-circle me-2"></i> Add New Project
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProjectForm">
+                        <div class="mb-3">
+                            <label for="projectTitle" class="form-label">Title *</label>
+                            <input type="text" class="form-control" id="projectTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectDescription" class="form-label">Description *</label>
+                            <textarea class="form-control" id="projectDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="projectAttachments" class="form-label">Attachments</label>
+                            <input type="text" class="form-control" id="projectAttachments" placeholder="URLs or filenames">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProject()">
+                        <i class="bi-check-circle me-2"></i> Save Project
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+
 
 <script>
                 // Store original values when page loads
@@ -732,10 +734,10 @@
             const editBtn = document.getElementById('edit-btn-text');
             const saveBtn = document.getElementById('saveBtn');
             const inputFields = document.querySelectorAll('input, textarea');
-            const skillRemoveBtns = document.querySelectorAll('.skill-remove');
-            const addSkillBtn = document.querySelector('.add-skill-btn');
-            const addProjectBtn = document.querySelector('.add-project-btn');
-            const projectRemoveBtns = document.querySelectorAll('.project-remove');
+                const skillRemoveBtns = document.querySelectorAll('.skill-remove');
+                const addSkillBtn = document.querySelector('.add-skill-btn');
+                const addProjectBtn = document.querySelector('.add-project-btn');
+                const projectRemoveBtns = document.querySelectorAll('.project-remove');
 
             if (isEditMode) {
                 // Enter edit mode

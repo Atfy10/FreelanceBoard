@@ -30,10 +30,27 @@ namespace FreelanceBoard.Core.Helpers
                 res = await operation();
 
                 if (res.IsSuccess)
+                {
                     _logger.LogInformation("{Operation} operation completed successfully: {Message}", opType, res.Message);
+                    res.StatusCode = opType switch
+                    {
+                        OperationType.Add => 201,
+                        OperationType.Update => 200,
+                        OperationType.Delete => 204,
+                        _ => 200
+                    };
+                }
                 else
+                {
                     _logger.LogWarning("Operation {Operation} failed: {Message}", opType, res.Message);
-
+                    res.StatusCode = opType switch
+                    {
+                        OperationType.Add => 400,
+                        OperationType.Update => 400,
+                        OperationType.Delete => 404,
+                        _ => 500
+                    };
+                }
                 return res;
             }
             catch (ArgumentOutOfRangeException ex)
@@ -101,8 +118,6 @@ namespace FreelanceBoard.Core.Helpers
                 _logger.LogError(ex, "Unauthorized access error occurred during {Operation}", opType);
                 return Result<T>.Failure(opType.ToString(), "Unauthorized access: " + ex.Message);
             }
-
-
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unexpected error occurred during {Operation}", opType);

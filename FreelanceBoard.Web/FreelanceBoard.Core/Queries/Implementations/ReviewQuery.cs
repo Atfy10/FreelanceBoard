@@ -41,5 +41,14 @@ namespace FreelanceBoard.Core.Queries.Implementations
                return Result<ReviewDto>.Success(result, GetOperation, "Review retrieved successfully.");
            }, OperationType.Get);
 
+        public async Task<Result<ReviewDto[]>> GetTopThreeReviewsAsync()
+           => await _executor.Execute(async () =>
+           {
+               var reviews = await _reviewRepository.GetTopThreeReviewsAsync() ??
+                   throw new KeyNotFoundException("No reviews found.");
+
+               var result = _mapper.Map<ReviewDto[]>(reviews);
+               return Result<ReviewDto[]>.Success(result, GetOperation, "Review retrieved successfully.");
+           }, OperationType.Get);
     }
 }

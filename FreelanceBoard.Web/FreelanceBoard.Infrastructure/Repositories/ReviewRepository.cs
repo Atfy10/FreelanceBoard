@@ -21,5 +21,16 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 .Include(c => c.Reviewer)
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
+
+        public async Task<Review[]> GetTopThreeReviewsAsync()
+        {
+            return await _dbContext.Reviews
+                .Include(r => r.Contract)
+                .ThenInclude(c => c.Job)
+                .Include(c => c.Reviewer)
+                .OrderByDescending(r => r.Rating)
+                .Take(3)
+                .ToArrayAsync();
+        }
     }
 }

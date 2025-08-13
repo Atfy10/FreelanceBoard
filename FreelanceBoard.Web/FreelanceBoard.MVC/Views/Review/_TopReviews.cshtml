@@ -1,0 +1,32 @@
+﻿@model List<ReviewViewModel>
+
+
+
+@foreach (var review in Model)
+{
+    <div class="reviews-thumb">
+
+        <div class="reviews-info d-flex align-items-center">
+            <img src="images/avatar/portrait-charming-middle-aged-attractive-woman-with-blonde-hair.jpg" class="avatar-image img-fluid" alt="">
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap w-100 ms-3">
+                <p class="mb-0">
+                    <strong>@review.Reviewer.UserName</strong>
+                </p>
+
+                <div class="reviews-icons">
+                    @for (int i = 1; i <= review.Rating; i++)
+                    {
+                        <i class="bi-star-fill"></i>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="reviews-body">
+            <img src="images/left-quote.png" class="quote-icon img-fluid" alt="">
+
+            <h4 class="reviews-title">@review.Feedback</h4>
+        </div>
+    </div>
+}

@@ -10,5 +10,6 @@ namespace FreelanceBoard.Core.Interfaces
     public interface IReviewRepository : IBaseRepository<Review>
     {
         Task<Review?> GetFullReviewById(int id);
+        Task<Review[]> GetTopThreeReviewsAsync();
     }
 }

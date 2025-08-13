@@ -42,6 +42,7 @@ builder.Services.AddScoped<OperationExecutor>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJobService, JobService>();
 builder.Services.AddScoped<IProposalService, ProposalService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 
 var app = builder.Build();

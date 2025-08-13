@@ -11,6 +11,7 @@ namespace FreelanceBoard.Core.Helpers
         public bool IsSuccess { get; protected set; }
         public string OperationType { get; protected set; }
         public string Message { get; protected set; }
+        public int StatusCode { get; set; }
 
         protected ResultBase(bool isSuccess, string operationType, string message)
         {

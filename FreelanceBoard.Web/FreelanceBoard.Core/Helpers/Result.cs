@@ -17,27 +17,15 @@ namespace FreelanceBoard.Core.Helpers
         {
             Data = data;
         }
-        public static Result<EType> Success(EType data, string operation, string message = "Operation done successfully")
-            => new Result<EType>(true, data, operation, message);
-        //      {
-        //          return new Result<EType>
-        //          {
-        //              IsSuccess = true,
-        //              Data = data,
-        //              Operation = operation,
-        //              Message = message
-        //          };
-        //}
 
-        public static Result<EType> Failure(string operation, string message)
-            => new Result<EType>(false, default!, operation, message);
-        //{
-        //return new Result<EType>
-        //    {
-        //        IsSuccess = false,
-        //        Operation = operation,
-        //        Message = message
-        //    };
+        public static Result<EType> Success(EType data, string operation, string message = "Operation done successfully")
+            => new(true, data, operation, message);
+
+        public static Result<EType> Failure(string operation, string message, int statusCode = 500)
+            => new(false, default!, operation, message)
+            {
+                StatusCode = statusCode
+            };
     }
 
     public class Result : ResultBase

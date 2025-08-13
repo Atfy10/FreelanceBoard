@@ -31,5 +31,12 @@ namespace FreelanceBoard.Web.Controllers
             var newReviewId = await _mediator.Send(command);
             return Ok(newReviewId);
         }
+
+        [HttpGet("get-top-three")]
+        public async Task<IActionResult> GetTopThreeReviews()
+        {
+            var reviews = await _reviewQuery.GetTopThreeReviewsAsync();
+            return Ok(reviews);
+        }
     }
 }
