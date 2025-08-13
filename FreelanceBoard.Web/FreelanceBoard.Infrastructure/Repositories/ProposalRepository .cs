@@ -36,5 +36,18 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 .Include(p => p.Job) // optional: include job info if needed
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Proposal>> GetProposalsByFreelancerIdAsync(string freelancerId)
+        {
+            if (string.IsNullOrWhiteSpace(freelancerId))
+                throw new ArgumentNullException(nameof(freelancerId), "Freelancer ID cannot be null or empty.");
+
+            return await _dbContext.Proposals
+                .Where(p => p.FreelancerId == freelancerId)
+                .Include(p => p.Freelancer) // include freelancer details
+                .Include(p => p.Job)        // include job details if needed
+                .ToListAsync();
+        }
+
     }
 }

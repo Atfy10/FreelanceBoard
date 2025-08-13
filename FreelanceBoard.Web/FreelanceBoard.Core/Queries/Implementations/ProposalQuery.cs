@@ -55,5 +55,21 @@ namespace FreelanceBoard.Core.Queries.Implementations
                 var result = _mapper.Map<IEnumerable<ProposalDto>>(proposals);
                 return Result<IEnumerable<ProposalDto>>.Success(result, GetOperation, "Proposals retrieved successfully.");
             }, OperationType.Get);
+
+        public async Task<Result<IEnumerable<ProposalDto>>> GetProposalsByFreelancerIdAsync(string freelancerId)
+            => await _executor.Execute(async () =>
+            {
+                if (string.IsNullOrWhiteSpace(freelancerId))
+                    throw new ArgumentNullException(nameof(freelancerId), "Freelancer ID cannot be null or empty.");
+
+                var proposals = await _proposalRepository.GetProposalsByFreelancerIdAsync(freelancerId);
+
+                if (proposals == null || !proposals.Any())
+                    return Result<IEnumerable<ProposalDto>>.Success([], GetOperation, "No proposals found for this freelancer.");
+
+                var result = _mapper.Map<IEnumerable<ProposalDto>>(proposals);
+                return Result<IEnumerable<ProposalDto>>.Success(result, GetOperation, "Proposals retrieved successfully.");
+            }, OperationType.Get);
+
     }
 }
