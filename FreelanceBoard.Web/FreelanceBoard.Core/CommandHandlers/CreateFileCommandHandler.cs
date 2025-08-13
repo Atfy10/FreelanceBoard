@@ -20,12 +20,14 @@ namespace FreelanceBoard.Core.CommandHandlers
     {
         private readonly IMapper mapper;
         private readonly IBaseRepository<Project> baseRepository;
+        private readonly IUserAccessor _userAccessor;
         OperationExecutor _executor;
-        public CreateFileCommandHandler(IMapper mapper, IBaseRepository<Project> baseRepository, OperationExecutor executor)
+        public CreateFileCommandHandler(IMapper mapper, IBaseRepository<Project> baseRepository, OperationExecutor executor, IUserAccessor userAccessor)
         {
             this.mapper = mapper;
             this.baseRepository = baseRepository;
             _executor = executor;
+            _userAccessor = userAccessor;
         }
         public async Task<Result<bool>> Handle(CreateFileCommand request, CancellationToken cancellationToken)
             => await _executor.Execute(async () =>
@@ -41,8 +43,10 @@ namespace FreelanceBoard.Core.CommandHandlers
                         await request.File.CopyToAsync(stream);
                     }
 
+                    var userId = _userAccessor.GetUserId();
                     var mapProject = mapper.Map<Project>(request);
                     mapProject.Attachments = filePath;
+                    mapProject.UserId = userId;
                     await baseRepository.AddAsync(mapProject);
 
                     return Result<bool>.Success(true, OperationType.Add.ToString());

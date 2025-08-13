@@ -72,6 +72,11 @@ namespace FreelanceBoard.Infrastructure.Repositories
             await SaveChangesAsync();
         }
 
+        public async Task<bool> UserExistsAsync(string userId)
+        {
+            return await _dbContext.Users.AnyAsync(u => u.Id == userId);
+        }
+
         private async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();

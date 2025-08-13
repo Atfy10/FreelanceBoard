@@ -15,13 +15,13 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 {
 	public class AddSkillCommandHandler : IRequestHandler<AddSkillCommand, Result<int>>
 	{
-		private readonly IBaseRepository<Skill> _skillRepository;
+		private readonly ISkillRepository _skillRepository;
 		private readonly IMapper _mapper;
 		private readonly OperationExecutor _executor;
 		private readonly string AddOperation;
 
 		public AddSkillCommandHandler(
-		IBaseRepository<Skill> skillRepository,
+        ISkillRepository skillRepository,
 		IMapper mapper,
 		OperationExecutor executor
 		)
@@ -38,7 +38,16 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 			{
 				if (request == null)
 					throw new NullReferenceException("Add request cannot be null.");
-				var skill = _mapper.Map<Skill>(request);
+
+                var existingSkills = await _skillRepository.GetByNamesAsync(new List<string> { request.Name });
+
+                if (existingSkills.Any())
+                {
+                    var existingSkill = existingSkills.First();
+                    return Result<int>.Failure(AddOperation,$"Skill '{request.Name}' already exists");
+                }
+
+                var skill = _mapper.Map<Skill>(request);
 				await _skillRepository.AddAsync(skill);
 				return Result<int>.Success(skill.Id, AddOperation,
 					$"Skill with ID {skill.Id} added successfully.");

@@ -26,6 +26,7 @@ public class ChangeProfilePictureCommandHandler : IRequestHandler<ChangeProfileP
     public async Task<Result<string>> Handle(ChangeProfilePictureCommand request, CancellationToken cancellationToken)
         => await _executor.Execute(async () =>
         {
+
             var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(userId))

@@ -19,18 +19,16 @@ namespace FreelanceBoard.Core.Queries.Implementations
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger<UserQuery> _logger;
         private readonly OperationExecutor _executor;
 
         private readonly string GetOperation;
         private readonly string GetALLOperation;
 
 
-        public UserQuery(IUserRepository userRepository, IMapper mapper, ILogger<UserQuery> logger, OperationExecutor executor)
+        public UserQuery(IUserRepository userRepository, IMapper mapper, OperationExecutor executor)
         {
             _userRepository = userRepository;
             _mapper = mapper;
-            _logger = logger;
             _executor = executor;
             GetOperation = OperationType.Get.ToString();
             GetALLOperation = OperationType.GetAll.ToString();
@@ -39,18 +37,17 @@ namespace FreelanceBoard.Core.Queries.Implementations
         public async Task<Result<IEnumerable<ApplicationUserDto>>> GetAllBannedUsersAsync()
             => await _executor.Execute(async () =>
             {
-                _logger.LogInformation("Retrieving all banned users");
+
                 var allUsers = await _userRepository.GetAllAsync();
                 var bannedUsers = allUsers.Where(u => u.IsBanned).ToList();
 
                 if (bannedUsers.Count == 0)
                 {
-                    _logger.LogInformation("No banned users found.");
                     return Result<IEnumerable<ApplicationUserDto>>.
                     Success([], GetALLOperation, "No banned users found.");
                 }
 
-                _logger.LogInformation("Retrieved {Count} banned users.", bannedUsers.Count);
+
 
                 var bannedUserDtos = _mapper.Map<IEnumerable<ApplicationUserDto>>(bannedUsers);
 
@@ -60,11 +57,10 @@ namespace FreelanceBoard.Core.Queries.Implementations
         public async Task<Result<IEnumerable<ApplicationUserDto>>> GetAllUsersAsync()
             => await _executor.Execute(async () =>
             {
-                _logger.LogInformation("Retrieving all users");
+
                 var allUsers = await _userRepository.GetAllAsync();
                 if (!allUsers.Any())
                 {
-                    _logger.LogInformation("No users found.");
                     return Result<IEnumerable<ApplicationUserDto>>.Success(Enumerable.Empty<ApplicationUserDto>(), GetALLOperation, "No users found.");
                 }
                 var userDtos = _mapper.Map<IEnumerable<ApplicationUserDto>>(allUsers);
@@ -73,7 +69,7 @@ namespace FreelanceBoard.Core.Queries.Implementations
         public async Task<Result<ApplicationUserDto>> GetUserByIdAsync(string id)
             => await _executor.Execute(async () =>
             {
-                _logger.LogInformation("Retrieving user by Id");
+
 
                 if (string.IsNullOrWhiteSpace(id))
                     throw new ArgumentNullException(nameof(id),
@@ -90,7 +86,7 @@ namespace FreelanceBoard.Core.Queries.Implementations
         public async Task<Result<ApplicationUserFullProfileDto>> GetUserFullProfileAsync(string id)
             => await _executor.Execute(async () =>
             {
-                _logger.LogInformation("Retrieving full profile for user with ID {UserId}", id);
+
                 if (string.IsNullOrWhiteSpace(id))
                     throw new ArgumentNullException(nameof(id),
                         "User ID cannot be null or empty.");
@@ -108,7 +104,7 @@ namespace FreelanceBoard.Core.Queries.Implementations
 				userProfileDto.Skills = mappedUserSkill;
 
 
-				_logger.LogInformation("Retrieved full profile for user with ID {UserId}.", id);
+
 
                 return Result<ApplicationUserFullProfileDto>.Success(userProfileDto,
                     GetOperation, "Retrieved full profile for user .");
@@ -116,7 +112,7 @@ namespace FreelanceBoard.Core.Queries.Implementations
         public async Task<Result<UserWithProjectsDto>> GetUserWithProjectsAsync(string id)
             => await _executor.Execute(async () =>
             {
-                _logger.LogInformation("Retrieving user with projects for user ID {UserId}", id);
+
 
                 if (string.IsNullOrWhiteSpace(id))
                     throw new ArgumentNullException(nameof(id), "User ID must be provided.");
@@ -128,11 +124,10 @@ namespace FreelanceBoard.Core.Queries.Implementations
 
                 if (userWithProjectsDto.Projects == null)
                 {
-                    _logger.LogInformation("User with ID {UserId} has no projects.", id);
                     userWithProjectsDto.Projects = [];
                 }
 
-                _logger.LogInformation("Retrieved user with projects for user ID {UserId}.", id);
+
 
                 return Result<UserWithProjectsDto>.Success(userWithProjectsDto, GetOperation,
                     "Retrieved user with projects");
@@ -140,7 +135,7 @@ namespace FreelanceBoard.Core.Queries.Implementations
         public async Task<Result<UserWithSkillsDto>> GetUserWithSkillsAsync(string id)
             => await _executor.Execute(async () =>
             {
-                _logger.LogInformation("Retrieving user with skills for user ID {UserId}", id);
+
                 if (string.IsNullOrWhiteSpace(id))
                     throw new ArgumentNullException(nameof(id), "User ID must be provided.");
 
@@ -151,18 +146,18 @@ namespace FreelanceBoard.Core.Queries.Implementations
 
                 if (userWithSkillsDto.Skills == null)
                 {
-                    _logger.LogInformation("User with ID {UserId} has no skills.", id);
+
                     userWithSkillsDto.Skills = [];
                 }
 
-                _logger.LogInformation("Retrieved user with skills for user ID {UserId}.", id);
+
 
                 return Result<UserWithSkillsDto>.Success(userWithSkillsDto, GetOperation);
             }, OperationType.Get);
         public async Task<Result<IEnumerable<ApplicationUserDto>>> SearchUsersByNameAsync(string name)
             => await _executor.Execute(async () =>
             {
-                _logger.LogInformation("Searching users by name: {Name}", name);
+
                 if (string.IsNullOrWhiteSpace(name))
                     throw new ArgumentNullException(nameof(name), "User name must be provided.");
 
@@ -172,13 +167,10 @@ namespace FreelanceBoard.Core.Queries.Implementations
 
                 if (matchedUsers.Count == 0)
                 {
-                    _logger.LogInformation("No users found matching search term '{SearchTerm}'.", name);
                     return Result<IEnumerable<ApplicationUserDto>>
                     .Success(Enumerable.Empty<ApplicationUserDto>(), GetOperation);
                 }
 
-                _logger.LogInformation("Found {Count} users matching search term '{SearchTerm}'.",
-                    matchedUsers.Count, name);
 
                 var userDtos = _mapper.Map<IEnumerable<ApplicationUserDto>>(matchedUsers);
 

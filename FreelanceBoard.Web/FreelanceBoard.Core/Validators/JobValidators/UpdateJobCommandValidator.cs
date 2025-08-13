@@ -14,7 +14,7 @@ namespace FreelanceBoard.Core.Validators.JobValidators
         public UpdateJobCommandValidator()
         {
             RuleFor(x => x.Id)
-                .NotEmpty().WithMessage("Job ID is required.");
+                .NotEmpty().WithMessage("Job ID is required.").GreaterThan(0);
 
             RuleFor(x => x.Title)
                 .NotEmpty().MaximumLength(100);
@@ -38,8 +38,9 @@ namespace FreelanceBoard.Core.Validators.JobValidators
 
             RuleForEach(x => x.ProposalIds);
 
-            RuleFor(x => x.ContractId);
+            RuleFor(x => x.ContractId).GreaterThan(0).WithMessage("Contract id must be greater than 0 and not empty");
 
+            
             RuleFor(x => x.Deadline)
                 .GreaterThan(DateTime.Now)
                 .WithMessage("Deadline must be in the future.")

@@ -22,6 +22,9 @@ namespace FreelanceBoard.MVC.Controllers
             _jobService = userService;
             _executor = executor;
         }
+
+        [Authorize(Roles = "Client")]
+        [HttpGet]
         public async Task<IActionResult> ClientDashboard()
         {
             List<ClientDashboardViewModel> job = [];
@@ -38,6 +41,7 @@ namespace FreelanceBoard.MVC.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public async Task<IActionResult> JobListings(string sortBy = "Date", bool isAscending = true, int page = 1)
         {
             List<JobViewModel> job = [];
@@ -55,6 +59,7 @@ namespace FreelanceBoard.MVC.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public async Task<IActionResult> JobDetails(int id)
         {
             var job = await _jobService.GetJobByIdAsync(HttpContext, id);
@@ -65,13 +70,15 @@ namespace FreelanceBoard.MVC.Controllers
             return View(job);
         }
 
-        //This is for the Freelancers only
+        [Authorize(Roles = "Freelancer")]
+        [HttpGet]
         public IActionResult MyJobApplication()
         {
             return View("MyJobApplication");
         }
 
         [HttpGet]
+        [Authorize(Roles = "Client")]
         public IActionResult CreateJob()
         {
 			var model = new JobCreateViewModel();

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FreelanceBoard.Core.Domain.Enums;
 using FreelanceBoard.Core.Helpers;
 using MediatR;
 

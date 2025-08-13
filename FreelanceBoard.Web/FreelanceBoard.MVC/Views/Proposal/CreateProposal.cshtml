@@ -1,0 +1,212 @@
+﻿@model FreelanceBoard.MVC.Models.CreateProposalViewModel
+
+@{
+    ViewData["Title"] = "Create Proposal";
+}
+
+<style>
+    .create-proposal-section {
+        padding: 60px 0;
+    }
+
+    .proposal-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .proposal-header {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+        .proposal-header h2 {
+            color: #6366f1;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .proposal-header p {
+            color: #6b7280;
+        }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+        .form-group label {
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+    .form-control, .form-select {
+        border: none;
+        background: rgba(139, 92, 246, 0.1);
+        border-radius: 10px;
+        padding: 12px 15px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+        .form-control:focus, .form-select:focus {
+            background: rgba(139, 92, 246, 0.15);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+            border: none;
+            outline: none;
+        }
+
+    textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        border: none;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+    .job-info-box {
+        background: rgba(139, 92, 246, 0.05);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+
+        .job-info-box h4 {
+            color: #6366f1;
+            margin-bottom: 15px;
+        }
+
+    .job-info-item {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .job-info-label {
+        font-weight: 600;
+        color: #6366f1;
+        min-width: 120px;
+    }
+
+    .job-info-value {
+        color: #4b5563;
+    }
+
+    .input-group-text {
+        background: rgba(139, 92, 246, 0.1);
+        border: none;
+        color: #6366f1;
+        font-weight: 600;
+    }
+
+    .input-group .form-control {
+        border-radius: 0 10px 10px 0 !important;
+    }
+
+    .input-group .input-group-text {
+        border-radius: 10px 0 0 10px !important;
+    }
+</style>
+
+<section class="site-header">
+    <div class="section-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-12 text-center">
+                <h1 class="text-white">Submit Proposal</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a href="/Home">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/Job">Jobs</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Submit Proposal</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="create-proposal-section section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10 col-12">
+                <div class="proposal-card">
+                    <div class="proposal-header">
+                        <h2>Submit Your Proposal</h2>
+                        <p>Fill out the form below to submit your proposal for this job</p>
+                    </div>
+
+                    <div class="job-info-box">
+                        <h4>Job Information</h4>
+                        <div class="job-info-item">
+                            <span class="job-info-label">Job ID:</span>
+                            <span class="job-info-value">@Model.JobId</span>
+                        </div>
+                        <!-- You can add more job details here if available -->
+                    </div>
+
+                    <form asp-action="CreateProposalPost" asp-controller="Proposal" method="post">
+                        <input type="hidden" asp-for="JobId" />
+                        <input type="hidden" asp-for="FreelancerId" />
+                        <input type="hidden" asp-for="Status" value="Pending" />
+
+                        <div class="form-group">
+                            <label asp-for="Message">Proposal Message *</label>
+                            <textarea asp-for="Message" class="form-control" placeholder="Describe your approach to this project, your relevant experience, and why you're the best fit..."></textarea>
+                            <span asp-validation-for="Message" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Price">Your Proposed Price *</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input asp-for="Price" type="number" class="form-control" placeholder="Enter your proposed price" step="1" min="1">
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <i class="bi-send me-2"></i>
+                            Submit Proposal
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // You can add any custom JavaScript here if needed
+        document.addEventListener('DOMContentLoaded', function() {
+            // Example: Auto-fill the freelancer ID if not already set
+            if (!document.getElementById('FreelancerId').value) {
+                // In a real app, you would get this from your authentication system
+                // document.getElementById('FreelancerId').value = currentUserId;
+            }
+        });
+    </script>
+}

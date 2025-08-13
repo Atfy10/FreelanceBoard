@@ -75,7 +75,9 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                 var jobs = await _jobRepository.GetJobsFilteredSkills(skills);
 
                 if (jobs == null || !jobs.Any())
-                    return Result<IEnumerable<JobDto>>.Success([], GetOperation, "No jobs matched the given skills.");
+                return Result<IEnumerable<JobDto>>.Success(
+                       Enumerable.Empty<JobDto>(),GetOperation,
+                       $"No jobs matched ALL specified skills: {string.Join(", ", skills)}");
 
                 var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
                 var resultPaginated = Page(result, page, PAGESIZE);
@@ -91,7 +93,11 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                 var jobs = await _jobRepository.GetJobsFilteredCategory(categories);
 
                 if (jobs == null || !jobs.Any())
-                    return Result<IEnumerable<JobDto>>.Failure(GetOperation, "No jobs matched the given category/s.");
+                    return Result<IEnumerable<JobDto>>.Success(
+                           Enumerable.Empty<JobDto>(),
+                           GetOperation,
+                           $"No jobs matched ALL specified categories: {string.Join(", ", categories)}");
+
 
                 var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
 
@@ -125,7 +131,7 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
                 var jobs = await _jobRepository.GetJobsByUserIdAsync(userId);
 
                 if (jobs == null || !jobs.Any())
-                    return Result<IEnumerable<JobDto>>.Success([], GetOperation, "No jobs found for this user.");
+                    return Result<IEnumerable<JobDto>>.Failure(GetOperation, "No jobs found for this user.");
 
                 var result = _mapper.Map<IEnumerable<JobDto>>(jobs);
                 return Result<IEnumerable<JobDto>>.Success(result, GetOperation, "Jobs for the user retrieved successfully.");
@@ -135,6 +141,9 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
         private static IEnumerable<T> Page<T>(IEnumerable<T> source, int page, int pageSize)
         {
             if (source is null) return Enumerable.Empty<T>();
+            if (page < 1)
+                throw new ArgumentOutOfRangeException(nameof(page), "page id cannot be less than 1");
+
             page = Math.Max(1, page);
             pageSize = Math.Clamp(pageSize, 1, 50);
             var skip = (page - 1) * pageSize;

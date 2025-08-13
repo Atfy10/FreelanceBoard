@@ -12,10 +12,20 @@ namespace FreelanceBoard.Core.Validators
 	{
 		public AddSkillValidator()
 		{
-			RuleFor(x => x.Name)
-				.NotEmpty().WithMessage("Skill name is required.")
-				.MaximumLength(50).WithMessage("Skill name cannot exceed 50 characters.");
+            RuleFor(x => x.Name)
+                .NotEmpty().WithMessage("Skill name is required.")
+                .MaximumLength(50).WithMessage("Skill name cannot exceed 50 characters.")
+                .Must(BeAValidSkillName).WithMessage("Skill cannot fully be a number");
 		}
 
-	}
+
+        private bool BeAValidSkillName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+
+            // Check if all characters are digits
+            return !name.All(char.IsDigit);
+        }
+    }
 }

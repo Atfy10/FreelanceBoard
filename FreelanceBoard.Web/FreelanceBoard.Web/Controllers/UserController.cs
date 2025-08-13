@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace FreelanceBoard.Web.Controllers
 {
@@ -36,7 +37,7 @@ namespace FreelanceBoard.Web.Controllers
 		public async Task<IActionResult> DeleteUser(DeleteUserCommand command)
 		{
 			var result = await _mediator.Send(command);
-			return this.HandleResult(result, 204);
+			return Ok(result);
 		}
 
 		[HttpPut("update")]
@@ -106,7 +107,7 @@ namespace FreelanceBoard.Web.Controllers
 		public async Task<IActionResult> AddUserProject([FromBody] AddProjectCommand command)
 		{
 			var result = await _mediator.Send(command);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
 		[HttpPost("add-skill")]
@@ -115,7 +116,7 @@ namespace FreelanceBoard.Web.Controllers
 			if (command == null)
 				return BadRequest(new { Message = "Command cannot be null." });
 			var result = await _mediator.Send(command);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
 		//make delete user skill endpoint
@@ -125,7 +126,7 @@ namespace FreelanceBoard.Web.Controllers
 			if (command == null)
 				return BadRequest(new { Message = "Command cannot be null." });
 			var result = await _mediator.Send(command);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
 		[HttpPut("update-profile")]
@@ -134,7 +135,7 @@ namespace FreelanceBoard.Web.Controllers
 			if (command == null)
 				return BadRequest(new { Message = "Command cannot be null." });
 			var result = await _mediator.Send(command);
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
 		[HttpDelete("delete-project/{projectId}")]
@@ -142,7 +143,7 @@ namespace FreelanceBoard.Web.Controllers
 		{
 			var command = new DeleteProjectCommand { ProjectId = projectId };
 			var result = await _mediator.Send(command);
-			return this.HandleResult(result, 204);
+			return Ok(result);
 		}
 	}
 }
