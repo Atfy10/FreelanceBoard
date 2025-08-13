@@ -1,8 +1,9 @@
-﻿using FreelanceBoard.Core.Queries.Interfaces;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
+using FreelanceBoard.Core.Queries.Interfaces;
 using FreelanceBoard.MVC.Extensions;
 using FreelanceBoard.MVC.Models;
 using FreelanceBoard.MVC.Services.Interfaces;
-using System.Net.Http.Headers;
 
 namespace FreelanceBoard.MVC.Services.Implementations
 {
@@ -64,28 +65,33 @@ namespace FreelanceBoard.MVC.Services.Implementations
             return apiResult.Data;
         }
 
-        public async Task<int> CreateProposalAsync(CreateProposalViewModel model, HttpContext httpContext)
-        {
-            var token = httpContext.User.GetAccessToken();
-            if (string.IsNullOrEmpty(token))
-                throw new ApplicationException("User not logged in.");
+		public async Task<int> CreateProposalAsync(CreateProposalViewModel model, HttpContext httpContext)
+		{
+			var token = httpContext.User.GetAccessToken();
+			if (string.IsNullOrEmpty(token))
+				throw new ApplicationException("User not logged in.");
 
-            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.PostAsJsonAsync("/api/Proposal/create", model);
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse<CreateProposalViewModel>>();
-                throw new ApplicationException($"Failed to create proposal: {error.Message}");
-            }
+			var response = await client.PostAsJsonAsync("/api/Proposal/create", model);
 
-            var newId = await response.Content.ReadFromJsonAsync<ApiErrorResponse<int>>();
-            if (newId.Data <= 0)
-                throw new ApplicationException("Proposal creation returned an invalid ID.");
+			// Deserialize once as ApiErrorResponse<int>
+			var apiResponse = await response.Content.ReadFromJsonAsync<ApiErrorResponse<int>>(
+				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            return newId.Data;
-        }
+			if (!response.IsSuccessStatusCode || apiResponse == null || !apiResponse.IsSuccess)
+			{
+				var errorMessage = apiResponse?.Message ?? "An unexpected error occurred.";
+				throw new ApplicationException(errorMessage);
+			}
 
-    }
+			if (apiResponse.Data <= 0)
+				throw new ApplicationException("Proposal creation returned an invalid ID.");
+
+			return apiResponse.Data;
+		}
+
+
+	}
 }

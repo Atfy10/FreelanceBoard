@@ -35,9 +35,13 @@ namespace FreelanceBoard.Web.Controllers
         public async Task<IActionResult> CreateProposal(CreateProposalCommand command)
         {
             var newProposalId = await _mediator.Send(command);
-            return Ok(newProposalId);
 
-        }
+			if (newProposalId.IsSuccess)
+			{
+				return Ok(newProposalId);
+			}
+			return BadRequest(newProposalId);
+		}
         [HttpGet("job/{jobId}/proposals")]
         public async Task<IActionResult> GetProposalsByJobId(int jobId)
         {
