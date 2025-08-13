@@ -79,37 +79,28 @@ namespace FreelanceBoard.MVC.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> CreateJob([FromBody] JobCreateViewModel model)
+		public async Task<IActionResult> CreateJob(JobCreateViewModel model)
 		{
+			ModelState.Remove(nameof(model.UserId));
+
 			if (!ModelState.IsValid)
 			{
-				return BadRequest(new { success = false, message = "Invalid data provided" });
+                return View(model);
 			}
 
-			string errorMessage = string.Empty;
+			model.UserId = User.GetUserId();
+
 
 			var success = await _executor.Execute(
 				async () => await _jobService.CreateJobAsync(model, HttpContext),
-				error =>
-				{
-					errorMessage = error;
-				}
+				error => ModelState.AddModelError(string.Empty, error)
 			);
 
 			if (!success)
 			{
-				return BadRequest(new
-				{
-					success = false,
-					message = errorMessage ?? "Error occurred while creating job"
-				});
+                return View(model);
 			}
-
-			return Ok(new
-			{
-				success = true,
-				message = "Job created successfully"
-			});
+            return RedirectToAction("ClientDashboard", "Job");
 		}
 
 

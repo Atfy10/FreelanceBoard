@@ -208,10 +208,14 @@
 </style>
 
 
+
 <section class="job-section">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-12 col-12">
+                <div id="messageContainer" class="mt-3" style="display:none;">
+                    <div id="messageContent" class="alert" role="alert"></div>
+                </div>
                 <div class="job-form-container">
                     <div class="job-form-header">
                         <div class="logo-container">
@@ -221,59 +225,57 @@
                         <p>Post your opportunity and find the perfect candidate</p>
                     </div>
 
-                    <form id="jobForm">
-                        @Html.AntiForgeryToken()
-
+                    <form asp-action="CreateJob" asp-controller="Job" method="post" id="jobForm">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <label for="Title">Job Title *</label>
+                                    <label asp-for="Title"></label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi-card-heading"></i></span>
-                                        <input type="text" id="Title" name="Title" class="form-control" placeholder="Enter job title" required>
+                                        <input asp-for="Title" class="form-control" placeholder="Enter job title">
                                     </div>
-                                    <span class="text-danger" id="titleError"></span>
+                                    <span asp-validation-for="Title" class="text-danger d-block mt-1"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="Category">Category *</label>
+                                    <label asp-for="Category"></label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi-tag"></i></span>
-                                        <select id="Category" name="Category" class="form-select" required>
-                                            <option value="">Loading categories...</option>
+                                        <select asp-for="Category" class="form-select">
+                                            <option value="">Select Category</option>
                                         </select>
                                     </div>
-                                    <span class="text-danger" id="categoryError"></span>
+                                    <span asp-validation-for="Category" class="text-danger d-block mt-1"></span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="Description">Job Description *</label>
-                            <textarea id="Description" name="Description" class="form-control" rows="6" placeholder="Describe the job requirements" required></textarea>
-                            <span class="text-danger" id="descriptionError"></span>
+                            <label asp-for="Description"></label>
+                            <textarea asp-for="Description" class="form-control" rows="6" placeholder="Describe the job requirements"></textarea>
+                            <span asp-validation-for="Description" class="text-danger d-block mt-1"></span>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="Price">Budget *</label>
+                                    <label asp-for="Price"></label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi-cash"></i></span>
-                                        <input type="number" id="Price" name="Price" class="form-control" placeholder="Enter amount" step="0.01" min="0" required>
+                                        <input asp-for="Price" class="form-control" placeholder="Enter amount" step="0.01" min="0">
                                     </div>
-                                    <span class="text-danger" id="priceError"></span>
+                                    <span asp-validation-for="Price" class="text-danger d-block mt-1"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="Deadline">Application Deadline *</label>
+                                    <label asp-for="Deadline"></label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi-calendar"></i></span>
-                                        <input type="date" id="Deadline" name="Deadline" class="form-control" required>
+                                        <input asp-for="Deadline" class="form-control" type="date">
                                     </div>
-                                    <span class="text-danger" id="deadlineError"></span>
+                                    <span asp-validation-for="Deadline" class="text-danger d-block mt-1"></span>
                                 </div>
                             </div>
                         </div>
@@ -290,7 +292,8 @@
                                 </button>
                             </div>
                             <div class="skills-input-container" id="skillsContainer"></div>
-                            <input type="hidden" id="skillNamesInput" name="SkillNames" value="">
+                            <input type="hidden" asp-for="SkillNames" id="skillNamesInput" value="">
+                            <span asp-validation-for="SkillNames" class="text-danger d-block mt-1"></span>
                         </div>
 
                         <button type="submit" class="job-btn">
@@ -311,12 +314,16 @@
     let allCategories = [];
 
     // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        fetchCategories();
-        fetchSkills();
-        setupDatePicker();
-        setupFormSubmit();
-    });
+
+
+    // Initialize skills from model if they exist
+    function initializeSkills() {
+        const skillNamesInput = document.getElementById('skillNamesInput');
+        if (skillNamesInput.value) {
+            selectedSkills = skillNamesInput.value.split(',');
+            renderSkills();
+        }
+    }
 
     // Fetch categories from API
     async function fetchCategories() {
@@ -351,17 +358,23 @@
     }
 
     // Set minimum date to tomorrow
-    function setupDatePicker() {
+        function setupDatePicker() {
         const today = new Date();
         const tomorrow = new Date(today);
         tomorrow.setDate(today.getDate() + 1);
-        document.getElementById('Deadline').min = tomorrow.toISOString().split('T')[0];
-        document.getElementById('Deadline').value = tomorrow.toISOString().split('T')[0];
+
+        const deadlineInput = document.getElementById('Deadline');
+        deadlineInput.min = tomorrow.toISOString().split('T')[0];
+
+        // Always set default value to tomorrow (overriding any existing value)
+        deadlineInput.value = tomorrow.toISOString().split('T')[0];
     }
 
     // Populate category dropdown
     function populateCategoryDropdown() {
         const select = document.getElementById('Category');
+
+        // Remove existing options
         select.innerHTML = '<option value="">Select Category</option>';
 
         allCategories.forEach(category => {
@@ -371,6 +384,7 @@
             select.appendChild(option);
         });
     }
+
 
     // Populate skills dropdown
     function populateSkillsDropdown() {
@@ -391,7 +405,7 @@
     }
 
     // Add skill to selected list
-    function addSkill(skillName) {
+        function addSkill(skillName) {
         if (!selectedSkills.includes(skillName)) {
             selectedSkills.push(skillName);
             renderSkills();
@@ -401,12 +415,13 @@
     }
 
     // Remove skill from selected list
-    function removeSkill(skillName) {
+        function removeSkill(skillName) {
         selectedSkills = selectedSkills.filter(skill => skill !== skillName);
         renderSkills();
         populateSkillsDropdown();
         updateSkillsInput();
     }
+
 
     // Render selected skills
     function renderSkills() {
@@ -425,79 +440,45 @@
     }
 
     // Update hidden input with selected skills
-    function updateSkillsInput() {
-        document.getElementById('skillNamesInput').value = selectedSkills.join(',');
-    }
+        function updateSkillsInput() {
+        const skillNamesInput = document.getElementById('skillNamesInput');
+        skillNamesInput.value = selectedSkills.join(',');
 
-    // Setup form submission
-    function setupFormSubmit() {
-        const form = document.getElementById('jobForm');
-        const addSkillBtn = document.getElementById('addSkillBtn');
+        // Get the validation message element
+        const validationMessage = document.querySelector('[data-valmsg-for="SkillNames"]');
 
-        // Add skill button handler
-        addSkillBtn.addEventListener('click', function() {
-            const select = document.getElementById('skillsDropdown');
-            const selectedOption = select.options[select.selectedIndex];
-
-            if (selectedOption.value) {
-                const skillName = selectedOption.getAttribute('data-name');
-                addSkill(skillName);
+        if (selectedSkills.length < 1) {
+            if (validationMessage) {
+                validationMessage.textContent = 'At least one skill is required';
+                validationMessage.style.display = 'block';
             }
-        });
-
-        // Form submit handler
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            // Validate form
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            try {
-                // Get form data
-                const formData = {
-                    title: document.getElementById('Title').value,
-                    description: document.getElementById('Description').value,
-                    category: document.getElementById('Category').value,
-                    price: parseFloat(document.getElementById('Price').value),
-                    userId: '@User.GetUserId()',
-                    deadline: document.getElementById('Deadline').value,
-                    skillNames: selectedSkills
-                };
-
-
-                // Show loading state
-                const submitBtn = document.querySelector('.job-btn');
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Creating Job...';
-
-                // Submit to server
-                const response = await fetch('/Job/CreateJob', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const result = await response.json();
-
-               if (response.ok && result.success) {
-            alert(result.message);
-            window.location.href = '/Job/ClientDashboard'; // redirect after success
         } else {
-            alert(result.message || 'Failed to create job');
-        }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while creating the job');
-            } finally {
-                const submitBtn = document.querySelector('.job-btn');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="bi-check-circle-fill me-2"></i> Post Job';
+            if (validationMessage) {
+                validationMessage.textContent = '';
+                validationMessage.style.display = 'none';
             }
-        });
+        }
     }
+
+    // Setup skill addition button
+    document.getElementById('addSkillBtn').addEventListener('click', function() {
+        const select = document.getElementById('skillsDropdown');
+        const selectedOption = select.options[select.selectedIndex];
+
+        if (selectedOption.value) {
+            const skillName = selectedOption.getAttribute('data-name');
+            addSkill(skillName);
+        }
+    });
+
+            document.addEventListener('DOMContentLoaded', function() {
+        fetchSkills();
+                fetchCategories();
+
+        setupDatePicker();
+        initializeSkills();
+
+        // Trigger validation check on load
+        updateSkillsInput();
+    });
 </script>

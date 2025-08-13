@@ -5,16 +5,15 @@ namespace FreelanceBoard.MVC.Models
 	public class JobCreateViewModel
 	{
 
-		public JobCreateViewModel()
-		{
-			SkillNames = new List<string>(); // Initialize the list
-			Deadline = DateTime.Now.AddDays(7); // Set default deadline
-		}
 
 		[Required(ErrorMessage = "Job title is required")]
+		[StringLength(100, ErrorMessage = "Title cannot be longer than 100 characters")]
+
 		public string Title { get; set; }
 
 		[Required(ErrorMessage = "Description is required")]
+		[StringLength(1000, ErrorMessage = "Description cannot be longer than 1000 characters")]
+
 		public string Description { get; set; }
 
 		[Required(ErrorMessage = "Category is required")]
@@ -29,9 +28,10 @@ namespace FreelanceBoard.MVC.Models
 		[FutureDate(ErrorMessage = "Deadline must be in the future")]
 		public DateTime Deadline { get; set; }
 
+		[Required(ErrorMessage = "Skills are required")]
+		[MinLength(1, ErrorMessage = "At least one skill is required")]
 		public List<string> SkillNames { get; set; } = new List<string>();
 
-		// This will be set automatically, not in the form
 		public string UserId { get; set; }
 
 		public DateTime dateCreated { get; set; }

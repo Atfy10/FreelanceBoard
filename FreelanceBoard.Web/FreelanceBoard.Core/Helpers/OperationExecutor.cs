@@ -29,13 +29,31 @@ namespace FreelanceBoard.Core.Helpers
 
                 res = await operation();
 
-                if (res.IsSuccess)
-                    _logger.LogInformation("{Operation} operation completed successfully: {Message}", opType, res.Message);
-                else
-                    _logger.LogWarning("Operation {Operation} failed: {Message}", opType, res.Message);
+				if (res.IsSuccess)
+				{
+					_logger.LogInformation("{Operation} operation completed successfully: {Message}", opType, res.Message);
+					res.StatusCode = opType switch
+					{
+						OperationType.Add => 201,
+						OperationType.Update => 200,
+						OperationType.Delete => 204,
+						 _=> 200
+					};
+				}
+				else
+				{
+					_logger.LogWarning("Operation {Operation} failed: {Message}", opType, res.Message);
+					res.StatusCode = opType switch
+					{
+						OperationType.Add => 400,
+						OperationType.Update => 400,
+						OperationType.Delete => 404,
 
-                return res;
-            }
+						 _=> 500
+					};
+				}
+				return res;
+			}
             catch (ArgumentOutOfRangeException ex)
             {
                 _logger.LogError(ex, "Argument out of range error occurred during {Operation}", opType);
