@@ -17,7 +17,7 @@ namespace FreelanceBoard.Infrastructure.Repositories
         public async Task<List<Proposal>?> GetManyByIdsAsync(params int[] ids)
         {
             return await _dbContext.Proposals
-                .Where(p => ids.Contains(p.Id))
+                .Where(p => ids.Contains(p.JobId))
                 .ToListAsync();
         }
         public async Task<Proposal?> GetFullProposalWithIdAsync(int id)
