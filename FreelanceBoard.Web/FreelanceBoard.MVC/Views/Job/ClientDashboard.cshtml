@@ -1,5 +1,13 @@
 ﻿@model List<ClientDashboardViewModel>
 
+@{
+    List<string> status = [];
+    @foreach(var s in Model)
+    {
+        status.Add((s.DateCreated - s.Deadline).Hours > 0 ? "Active" : "Ended"); 
+    }
+}
+
 <style>
             .dashboard-section {
                 background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
@@ -306,32 +314,38 @@
                         </div>
 
                         <!-- Stats Row  -->
-                        <div class="row stats-row">
-                            <div class="col-lg-3 col-md-6 col-12 mb-3">
-                                <div class="stat-card">
-                                    <div class="stat-number" id="totalJobs">5</div>
-                                    <div class="stat-label">Total Jobs</div>
+                    <div class="row stats-row justify-content-center text-center">
+                        <!-- Total Jobs -->
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalJobs">
+                                    @Model?.Count()
                                 </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12 mb-3">
-                                <div class="stat-card">
-                                    <div class="stat-number" id="activeJobs">3</div>
-                                    <div class="stat-label">Active Jobs</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12 mb-3">
-                                <div class="stat-card">
-                                    <div class="stat-number" id="totalProposals">24</div>
-                                    <div class="stat-label">Total Proposals</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-12 mb-3">
-                                <div class="stat-card">
-                                    <div class="stat-number" id="hiredFreelancers">2</div>
-                                    <div class="stat-label">Hired</div>
-                                </div>
+                                <div class="stat-label">Total Jobs</div>
                             </div>
                         </div>
+
+                        <!-- Active Jobs -->
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                            <div class="stat-card">
+                                <div class="stat-number" id="activeJobs">
+                                    @status.Where(s=> s.Contains("Active")).ToList().Count
+                                </div>
+                                <div class="stat-label">Active Jobs</div>
+                            </div>
+                        </div>
+
+                        <!-- Total Proposals -->
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalProposals">
+                                    @Model.Sum(job => job.Proposals.Count)
+                                </div>
+                                <div class="stat-label">Total Proposals</div>
+                            </div>
+                        </div>
+                    </div>
+
 
                         <!-- Create New Job Button  -->
                         <div class="text-center">
@@ -422,46 +436,6 @@
     </section>
 
 <script>
-    // Sample client jobs data
-    let clientJobs = [
-        {
-            id: 1,
-            title: "Senior Full Stack Developer",
-            category: "Technology",
-            description: "Looking for an experienced full-stack developer to build a modern e-commerce platform using React, Node.js, and MongoDB. Must have 5+ years of experience.",
-            price: "75000-95000",
-            location: "Remote",
-            status: "active",
-            postedDate: "3 days ago",
-            views: 156,
-            proposalsCount: 8
-        },
-        {
-            id: 2,
-            title: "UI/UX Designer",
-            category: "Design",
-            description: "Seeking a creative UI/UX designer to redesign our mobile app interface. Experience with Figma and user research required.",
-            price: "45000-60000",
-            location: "New York, NY",
-            status: "active",
-            postedDate: "1 week ago",
-            views: 89,
-            proposalsCount: 12
-        },
-        {
-            id: 3,
-            title: "Content Writer",
-            category: "Marketing",
-            description: "Looking for a skilled content writer to create blog posts and marketing materials. SEO knowledge preferred.",
-            price: "30000-40000",
-            location: "Remote",
-            status: "paused",
-            postedDate: "2 weeks ago",
-            views: 67,
-            proposalsCount: 4
-        }
-    ];
-
     // Filter jobs by status
     function filterJobs(status) {
         const jobCards = document.querySelectorAll('.job-card');
@@ -491,14 +465,6 @@
         } else {
             emptyState.style.display = 'none';
         }
-    }
-
-    // Edit job function
-    function editJob(jobId) {
-        // In a real application, you would redirect to an edit form
-        // or open a modal with the job data pre-filled
-        alert(`Edit job with ID: ${jobId}`);
-        // Example: window.location.href = `edit-job.html?id=${jobId}`;
     }
 
     // Delete job function

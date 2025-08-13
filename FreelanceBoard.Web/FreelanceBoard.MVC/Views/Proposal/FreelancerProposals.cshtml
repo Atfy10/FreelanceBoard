@@ -1,4 +1,6 @@
-﻿<style>
+﻿@model List<JobWithProposalsViewModel>
+
+<style>
             .dashboard-section {
                 background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
                 min-height: 100vh;
@@ -408,36 +410,28 @@
                     <div class="row stats-row">
                         <div class="col-lg-3 col-md-6 col-12 mb-3">
                             <div class="stat-card">
-                                <div class="stat-number" id="totalApplications">12</div>
+                                <div class="stat-number">@Model.Count</div>
                                 <div class="stat-label">Total Applications</div>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6 col-12 mb-3">
                             <div class="stat-card pending">
-                                <div class="stat-number" id="pendingApplications">7</div>
+                                <div class="stat-number">@Model.Count(p => p.Status == "Pending")</div>
                                 <div class="stat-label">Pending</div>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6 col-12 mb-3">
                             <div class="stat-card accepted">
-                                <div class="stat-number" id="acceptedApplications">3</div>
+                                <div class="stat-number">@Model.Count(p => p.Status == "Accepted")</div>
                                 <div class="stat-label">Accepted</div>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6 col-12 mb-3">
                             <div class="stat-card rejected">
-                                <div class="stat-number" id="rejectedApplications">2</div>
+                                <div class="stat-number">@Model.Count(p => p.Status == "Rejected")</div>
                                 <div class="stat-label">Rejected</div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Browse Jobs Button -->
-                    <div class="text-center">
-                        <a href="job-listings.html" class="browse-jobs-btn">
-                            <i class="bi-search"></i>
-                            Browse More Jobs
-                        </a>
                     </div>
                 </div>
 
@@ -453,273 +447,75 @@
 
                     <!-- Applications Container -->
                     <div id="applicationsContainer">
-                        <!-- Application Card 1 - Accepted -->
-                        <div class="application-card" data-status="accepted">
-                            <div class="success-indicator"></div>
-                            <div class="application-header">
-                                <div class="job-info">
-                                    <h3 class="job-title">Senior React Developer</h3>
-                                    <p class="company-name">TechCorp Solutions</p>
-                                    <span class="job-category">Technology</span>
-                                </div>
-                                <div class="application-status">
-                                    <span class="status-badge status-accepted">Accepted</span>
-                                    <div class="application-date">Applied 5 days ago</div>
-                                </div>
-                            </div>
-
-                            <div class="proposal-details">
-                                <div class="proposal-meta">
-                                    <div class="meta-item">
-                                        <i class="bi-cash"></i>
-                                        <span class="proposed-price">$85,000</span>
+                        @foreach (var proposal in Model)
+                        {
+                            var statusClass = proposal.Status?.ToLower();
+                            <div class="application-card" data-status="@statusClass">
+                                @if (proposal.Status == "Accepted")
+                                {
+                                    <div class="success-indicator"></div>
+                                }
+                                <div class="application-header">
+                                    <div class="job-info">
+                                        <h3 class="job-title">@proposal.JobTitle</h3>
+                                        @* <span class="job-category">@proposal.JobCategory</span> *@
                                     </div>
-                                    <div class="meta-item">
-                                        <i class="bi-clock"></i>
-                                        <span>3 months delivery</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="bi-geo-alt"></i>
-                                        <span>Remote</span>
+                                    <div class="application-status">
+                                        <span class="status-badge status-@statusClass">@proposal.Status</span>
+                                        @* <div class="application-date">Applied @proposal.DateSubmitted.ToString("MMM d, yyyy")</div> *@
                                     </div>
                                 </div>
-                                <p class="proposal-message">
-                                    I'm excited to work on your React project. With 6+ years of experience in React development,
-                                    I can deliver a high-quality, scalable solution that meets all your requirements.
-                                </p>
-                            </div>
 
-                            <div class="client-feedback">
-                                <h6><i class="bi-chat-quote me-2"></i>Client Feedback</h6>
-                                <p>"Great proposal! Your experience with React and previous projects look impressive. Looking forward to working with you."</p>
-                            </div>
-
-                            <div class="application-actions">
-                                <a href="job-details.html" class="action-btn btn-view-job">
-                                    <i class="bi-eye"></i>
-                                    View Job
-                                </a>
-                                <button class="action-btn btn-message" onclick="messageClient(1)">
-                                    <i class="bi-chat-dots"></i>
-                                    Message Client
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Application Card 2 - Pending -->
-                        <div class="application-card" data-status="pending">
-                            <div class="application-header">
-                                <div class="job-info">
-                                    <h3 class="job-title">UI/UX Designer</h3>
-                                    <p class="company-name">Creative Agency Inc</p>
-                                    <span class="job-category">Design</span>
-                                </div>
-                                <div class="application-status">
-                                    <span class="status-badge status-pending">Pending</span>
-                                    <div class="application-date">Applied 2 days ago</div>
-                                </div>
-                            </div>
-
-                            <div class="proposal-details">
-                                <div class="proposal-meta">
-                                    <div class="meta-item">
-                                        <i class="bi-cash"></i>
-                                        <span class="proposed-price">$65,000</span>
+                                <div class="proposal-details">
+                                    <div class="proposal-meta">
+                                        <div class="meta-item">
+                                            <i class="bi-cash"></i>
+                                            <span class="proposed-price">@proposal.Price.ToString("C0")</span>
+                                        </div>
                                     </div>
-                                    <div class="meta-item">
-                                        <i class="bi-clock"></i>
-                                        <span>2 months delivery</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="bi-geo-alt"></i>
-                                        <span>New York, NY</span>
-                                    </div>
+                                    <p class="proposal-message">@proposal.Message</p>
                                 </div>
-                                <p class="proposal-message">
-                                    I specialize in creating intuitive and beautiful user interfaces. My design process focuses on
-                                    user research, wireframing, and creating pixel-perfect designs that enhance user experience.
-                                </p>
-                            </div>
-
-                            <div class="application-actions">
-                                <a href="job-details.html" class="action-btn btn-view-job">
-                                    <i class="bi-eye"></i>
-                                    View Job
-                                </a>
-                                <button class="action-btn btn-edit" onclick="editProposal(2)">
-                                    <i class="bi-pencil"></i>
-                                    Edit Proposal
-                                </button>
-                                <button class="action-btn btn-withdraw" onclick="withdrawApplication(2)">
-                                    <i class="bi-x-circle"></i>
-                                    Withdraw
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Application Card 3 - Pending -->
-                        <div class="application-card" data-status="pending">
-                            <div class="application-header">
-                                <div class="job-info">
-                                    <h3 class="job-title">Full Stack Developer</h3>
-                                    <p class="company-name">StartupXYZ</p>
-                                    <span class="job-category">Technology</span>
-                                </div>
-                                <div class="application-status">
-                                    <span class="status-badge status-pending">Pending</span>
-                                    <div class="application-date">Applied 1 day ago</div>
+                                <div class="application-actions">
+                                    <a href="@Url.Action("JobDetails", "Job", new { id = proposal.JobId })" class="action-btn btn-view-job">
+                                        <i class="bi-eye"></i>
+                                        View Job
+                                    </a>
+                                    @if (proposal.Status == "Pending")
+                                    {
+                                        @* <button class="action-btn btn-edit" onclick="editProposal(@proposal.JobId)">
+                                            <i class="bi-pencil"></i>
+                                            Edit Proposal
+                                        </button> *@
+                                        <button class="action-btn btn-withdraw" onclick="withdrawApplication(@proposal.JobId)">
+                                            <i class="bi-x-circle"></i>
+                                            Withdraw
+                                        </button>
+                                    }
+                                    @if (proposal.Status == "Accepted")
+                                    {
+                                        <button class="action-btn btn-message" onclick="messageClient(@proposal.JobId)">
+                                            <i class="bi-chat-dots"></i>
+                                            Message Client
+                                        </button>
+                                    }
                                 </div>
                             </div>
-
-                            <div class="proposal-details">
-                                <div class="proposal-meta">
-                                    <div class="meta-item">
-                                        <i class="bi-cash"></i>
-                                        <span class="proposed-price">$95,000</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="bi-clock"></i>
-                                        <span>4 months delivery</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="bi-geo-alt"></i>
-                                        <span>Remote</span>
-                                    </div>
-                                </div>
-                                <p class="proposal-message">
-                                    I'm a full-stack developer with expertise in both frontend and backend technologies.
-                                    I can help you build a scalable web application from concept to deployment.
-                                </p>
-                            </div>
-
-                            <div class="application-actions">
-                                <a href="job-details.html" class="action-btn btn-view-job">
-                                    <i class="bi-eye"></i>
-                                    View Job
-                                </a>
-                                <button class="action-btn btn-edit" onclick="editProposal(3)">
-                                    <i class="bi-pencil"></i>
-                                    Edit Proposal
-                                </button>
-                                <button class="action-btn btn-withdraw" onclick="withdrawApplication(3)">
-                                    <i class="bi-x-circle"></i>
-                                    Withdraw
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Application Card 4 - Rejected -->
-                        <div class="application-card" data-status="rejected">
-                            <div class="application-header">
-                                <div class="job-info">
-                                    <h3 class="job-title">Mobile App Developer</h3>
-                                    <p class="company-name">MobileFirst Ltd</p>
-                                    <span class="job-category">Technology</span>
-                                </div>
-                                <div class="application-status">
-                                    <span class="status-badge status-rejected">Rejected</span>
-                                    <div class="application-date">Applied 1 week ago</div>
-                                </div>
-                            </div>
-
-                            <div class="proposal-details">
-                                <div class="proposal-meta">
-                                    <div class="meta-item">
-                                        <i class="bi-cash"></i>
-                                        <span class="proposed-price">$75,000</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="bi-clock"></i>
-                                        <span>3 months delivery</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="bi-geo-alt"></i>
-                                        <span>San Francisco, CA</span>
-                                    </div>
-                                </div>
-                                <p class="proposal-message">
-                                    I have extensive experience in mobile app development using React Native and Flutter.
-                                    I can create cross-platform apps that work seamlessly on both iOS and Android.
-                                </p>
-                            </div>
-
-                            <div class="rejection-reason">
-                                <h6><i class="bi-info-circle me-2"></i>Rejection Reason</h6>
-                                <p>"Thank you for your interest. We decided to go with a candidate who has more specific experience with our tech stack."</p>
-                            </div>
-
-                            <div class="application-actions">
-                                <a href="job-details.html" class="action-btn btn-view-job">
-                                    <i class="bi-eye"></i>
-                                    View Job
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Application Card 5 - Accepted -->
-                        <div class="application-card" data-status="accepted">
-                            <div class="success-indicator"></div>
-                            <div class="application-header">
-                                <div class="job-info">
-                                    <h3 class="job-title">WordPress Developer</h3>
-                                    <p class="company-name">Digital Marketing Pro</p>
-                                    <span class="job-category">Web Development</span>
-                                </div>
-                                <div class="application-status">
-                                    <span class="status-badge status-accepted">Accepted</span>
-                                    <div class="application-date">Applied 2 weeks ago</div>
-                                </div>
-                            </div>
-
-                            <div class="proposal-details">
-                                <div class="proposal-meta">
-                                    <div class="meta-item">
-                                        <i class="bi-cash"></i>
-                                        <span class="proposed-price">$45,000</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="bi-clock"></i>
-                                        <span>6 weeks delivery</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="bi-geo-alt"></i>
-                                        <span>Remote</span>
-                                    </div>
-                                </div>
-                                <p class="proposal-message">
-                                    I'm a WordPress expert with 5+ years of experience creating custom themes and plugins.
-                                    I can help you build a professional website that meets all your business needs.
-                                </p>
-                            </div>
-
-                            <div class="client-feedback">
-                                <h6><i class="bi-chat-quote me-2"></i>Client Feedback</h6>
-                                <p>"Perfect! Your WordPress portfolio is exactly what we're looking for. Let's get started!"</p>
-                            </div>
-
-                            <div class="application-actions">
-                                <a href="job-details.html" class="action-btn btn-view-job">
-                                    <i class="bi-eye"></i>
-                                    View Job
-                                </a>
-                                <button class="action-btn btn-message" onclick="messageClient(5)">
-                                    <i class="bi-chat-dots"></i>
-                                    Message Client
-                                </button>
-                            </div>
-                        </div>
+                        }
                     </div>
 
-                    <!-- Empty State (hidden by default) -->
-                    <div id="emptyState" class="empty-state" style="display: none;">
-                        <i class="bi-inbox"></i>
-                        <h4>No Applications Found</h4>
-                        <p>You haven't applied to any jobs yet. Start browsing and apply to jobs that match your skills!</p>
-                        <a href="job-listings.html" class="browse-jobs-btn">
-                            <i class="bi-search"></i>
-                            Browse Jobs
-                        </a>
-                    </div>
+                    <!-- Empty State -->
+                    @if (!Model.Any())
+                    {
+                        <div id="emptyState" class="empty-state">
+                            <i class="bi-inbox"></i>
+                            <h4>No Applications Found</h4>
+                            <p>You haven't applied to any jobs yet. Start browsing and apply to jobs that match your skills!</p>
+                            <a href="@Url.Action("Index", "Jobs")" class="browse-jobs-btn">
+                                <i class="bi-search"></i>
+                                Browse Jobs
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

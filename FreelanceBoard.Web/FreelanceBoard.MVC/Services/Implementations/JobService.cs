@@ -1,8 +1,6 @@
 ﻿using FreelanceBoard.MVC.Extensions;
 using FreelanceBoard.MVC.Models;
 using FreelanceBoard.MVC.Services.Interfaces;
-using Newtonsoft.Json;
-using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace FreelanceBoard.MVC.Services.Implementations

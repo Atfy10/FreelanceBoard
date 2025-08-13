@@ -1,13 +1,8 @@
-﻿using FreelanceBoard.Infrastructure.DBContext;
-using FreelanceBoard.MVC.Extensions;
+﻿using FreelanceBoard.MVC.Extensions;
 using FreelanceBoard.MVC.Models;
-using FreelanceBoard.MVC.Services.Implementations;
 using FreelanceBoard.MVC.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace FreelanceBoard.MVC.Controllers
 {
