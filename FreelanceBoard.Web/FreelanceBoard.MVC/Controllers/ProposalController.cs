@@ -2,10 +2,12 @@
 using FreelanceBoard.MVC.Extensions;
 using FreelanceBoard.MVC.Models;
 using FreelanceBoard.MVC.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FreelanceBoard.MVC.Controllers
 {
+   
     public class ProposalController : Controller
     {
         private readonly IProposalService _proposalService;
@@ -30,5 +32,41 @@ namespace FreelanceBoard.MVC.Controllers
 
             return View("JobProposal", job);
         }
+
+
+        [HttpGet]
+        public IActionResult CreateProposal(int jobId)
+        {
+            if (jobId <= 0) return NotFound();
+
+            var model = new CreateProposalViewModel
+            {
+                JobId = jobId,
+                FreelancerId = User.GetUserId() // This gets the current user's ID
+            };
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProposalPost(CreateProposalViewModel model)
+        {
+            int proposalId = 0;
+            var success = await _executor.Execute(
+                async () =>
+                { proposalId = await _proposalService.CreateProposalAsync(model, HttpContext); },
+                error => ModelState.AddModelError(string.Empty, error)
+            );
+
+            if (!success || proposalId == 0)
+                return View("NotFound");
+
+            return RedirectToAction("MyJobApplication","Job");
+
+        }
+
+
+
     }
 }

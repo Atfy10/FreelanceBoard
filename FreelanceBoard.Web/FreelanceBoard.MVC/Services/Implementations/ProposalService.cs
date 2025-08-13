@@ -44,5 +44,29 @@ namespace FreelanceBoard.MVC.Services.Implementations
             jobProposals.JobDateCreated = jobApiResult.Data.PostedDate;
             return jobProposals;
         }
+
+        public async Task<int> CreateProposalAsync(CreateProposalViewModel model, HttpContext httpContext)
+        {
+            var token = httpContext.User.GetAccessToken();
+            if (string.IsNullOrEmpty(token))
+                throw new ApplicationException("User not logged in.");
+
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.PostAsJsonAsync("/api/Proposal/create", model);
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse<CreateProposalViewModel>>();
+                throw new ApplicationException($"Failed to create proposal: {error.Message}");
+            }
+
+            var newId = await response.Content.ReadFromJsonAsync<ApiErrorResponse<int>>();
+            if (newId.Data <= 0)
+                throw new ApplicationException("Proposal creation returned an invalid ID.");
+
+            return newId.Data;
+        }
+
     }
 }

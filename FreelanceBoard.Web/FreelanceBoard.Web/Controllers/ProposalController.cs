@@ -47,6 +47,7 @@ namespace FreelanceBoard.Web.Controllers
             var proposals = await _proposalQuery.GetProposalsByJobIdAsync(jobId);
             return Ok(proposals);
         }
+
         [HttpPut("update")]
         public async Task<IActionResult> UpdateProposal(UpdateProposalCommand command)
         {
