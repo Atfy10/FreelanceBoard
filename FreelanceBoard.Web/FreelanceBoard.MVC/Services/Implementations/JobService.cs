@@ -16,8 +16,26 @@ namespace FreelanceBoard.MVC.Services.Implementations
             _httpClientFactory = httpClientFactory;
         }
 
-        //get all jobs using the user id
-        public async Task<List<ClientDashboardViewModel>> GetAllJobsAsync(HttpContext httpContext, int page = 1)
+		public async Task CreateJobAsync(JobCreateViewModel model, HttpContext httpContext)
+		{
+            var token = httpContext.User.GetAccessToken();
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            model.dateCreated = DateTime.UtcNow;
+
+			var response = await client.PostAsJsonAsync("/api/Job/create", model);
+			if (response.IsSuccessStatusCode)
+				return;
+
+			var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool?>>();
+			var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
+
+			throw new ApplicationException(errorMessage);
+		}
+
+		//get all jobs using the user id
+		public async Task<List<ClientDashboardViewModel>> GetAllJobsAsync(HttpContext httpContext, int page = 1)
         {
             var token = httpContext.User.GetAccessToken();
             var client = _httpClientFactory.CreateClient("FreelanceApiClient");

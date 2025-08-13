@@ -34,6 +34,8 @@ namespace FreelanceBoard.MVC.Models
 		// This will be set automatically, not in the form
 		public string UserId { get; set; }
 
+		public DateTime dateCreated { get; set; }
+
 		public class FutureDateAttribute : ValidationAttribute
 		{
 			public override bool IsValid(object value)
