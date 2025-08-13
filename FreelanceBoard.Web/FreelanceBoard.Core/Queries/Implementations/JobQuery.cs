@@ -1,5 +1,12 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AutoMapper;
+using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Domain.Enums;
+using FreelanceBoard.Core.Dtos;
 using FreelanceBoard.Core.Dtos.JobDtos;
 using FreelanceBoard.Core.Exceptions;
 using FreelanceBoard.Core.Helpers;
@@ -9,30 +16,28 @@ using FreelanceBoard.Core.Queries.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
 {
     public class JobQuery : IJobQuery
     {
+        private readonly IBaseRepository<Category> _categoryRepository;
         private readonly IJobRepository _jobRepository;
         private readonly IMapper _mapper;
         private readonly OperationExecutor _executor;
         private readonly string GetOperation;
         private const int PAGESIZE = 5;
+        private readonly string GetALLOperation;
 
-        public JobQuery(IJobRepository jobRepo, IMapper mapper, OperationExecutor executor)
+		public JobQuery(IJobRepository jobRepo, IMapper mapper, OperationExecutor executor, IBaseRepository<Category> categoryRepository)
         {
             _jobRepository = jobRepo;
             _mapper = mapper;
             _executor = executor ?? throw new ArgumentNullException(nameof(executor));
             GetOperation = OperationType.Get.ToString();
-
-        }
+            _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+            GetALLOperation = OperationType.GetAll.ToString();
+		}
 
         public async Task<Result<JobDto>> GetJobByIdAsync(int id)
             => await _executor.Execute(async () =>
@@ -139,6 +144,18 @@ namespace FreelanceBoard.Core.QueryHandlers.JobQueryHandlers
             pageSize = Math.Clamp(pageSize, 1, 50);
             var skip = (page - 1) * pageSize;
             return source.Skip(skip).Take(pageSize);
-        }
-    }
+		}
+
+
+		public async Task<Result<IEnumerable<CategoryDto>>> GetAllJobCategoriesAsync()
+            => await _executor.Execute(async () =>
+               {
+                   var categories = await _categoryRepository.GetAllAsync();
+                   var categoriesDto = _mapper.Map<IEnumerable<CategoryDto>>(categories);
+				   return Result<IEnumerable<CategoryDto>>.Success(categoriesDto, GetALLOperation, "all job categories retreived succesfully");
+
+			   }, OperationType.GetAll);
+
+		
+	}
 }

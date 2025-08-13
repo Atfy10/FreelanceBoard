@@ -93,5 +93,12 @@ namespace FreelanceBoard.Web.Controllers
             return Ok(jobs);
         }
 
-    }
+        [HttpGet("all-categories")]
+        public async Task<IActionResult> GetAllJobCategories()
+        {
+            var categories = await _jobQuery.GetAllJobCategoriesAsync();
+            return Ok(categories);
+		}
+
+	}
 }

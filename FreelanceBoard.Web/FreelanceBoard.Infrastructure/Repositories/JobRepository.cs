@@ -73,6 +73,6 @@ namespace FreelanceBoard.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-    }
+	}
 
 }

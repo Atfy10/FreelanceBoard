@@ -103,7 +103,7 @@ namespace FreelanceBoard.Core.Helpers
             }
 
 
-            catch (Exception ex)
+			catch (Exception ex)
             {
                 _logger.LogError(ex, "Unexpected error occurred during {Operation}", opType);
                 return Result<T>.Failure(opType.ToString(), "An unexpected error occurred. Please try again later.");

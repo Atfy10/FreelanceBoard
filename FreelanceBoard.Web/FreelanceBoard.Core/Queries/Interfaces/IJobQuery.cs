@@ -1,12 +1,13 @@
-﻿using FreelanceBoard.Core.Domain.Enums;
-using FreelanceBoard.Core.Dtos.JobDtos;
-using FreelanceBoard.Core.Helpers;
-using MediatR;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FreelanceBoard.Core.Domain.Enums;
+using FreelanceBoard.Core.Dtos;
+using FreelanceBoard.Core.Dtos.JobDtos;
+using FreelanceBoard.Core.Helpers;
+using MediatR;
 
 namespace FreelanceBoard.Core.Queries.Interfaces
 {
@@ -18,5 +19,6 @@ namespace FreelanceBoard.Core.Queries.Interfaces
         Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByBudget(int min, int max, int page);
         Task<Result<IEnumerable<JobDto>>> GetJobsFilteredByCategory(List<string> category, int page);
         public Task<Result<IEnumerable<JobDto>>> GetJobsByUserIdAsync(string userId);
-    }
+        Task<Result<IEnumerable<CategoryDto>>> GetAllJobCategoriesAsync();
+	}
 }

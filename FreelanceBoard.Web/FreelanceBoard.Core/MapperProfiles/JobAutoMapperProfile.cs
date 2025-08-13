@@ -41,6 +41,10 @@ namespace FreelanceBoard.Core.MapperProfiles
             // Proposal → ProposalDto
             CreateMap<Proposal, ProposalDto>()
                 .ForMember(d => d.FreelancerName, o => o.MapFrom(src => src.Freelancer.UserName));
-        }
-    }
+
+            // Category → CategoryDto
+            CreateMap<Category, CategoryDto>()
+                .ForMember(d => d.Name, o => o.MapFrom(src => src.Name));
+		}
+	}
 }
