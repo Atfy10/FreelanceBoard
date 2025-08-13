@@ -293,7 +293,7 @@
                             </div>
                             <div class="skills-input-container" id="skillsContainer"></div>
                             <input type="hidden" asp-for="SkillNames" id="skillNamesInput" value="">
-                            <span asp-validation-for="SkillNames" class="text-danger d-block mt-1"></span>
+                            <span asp-validation-for="SkillNames" class="text-danger d-block mt-1" data-valmsg-for="SkillNames"></span>
                         </div>
 
                         <button type="submit" class="job-btn">
@@ -415,11 +415,20 @@
     }
 
     // Remove skill from selected list
-        function removeSkill(skillName) {
+    function removeSkill(skillName) {
         selectedSkills = selectedSkills.filter(skill => skill !== skillName);
         renderSkills();
         populateSkillsDropdown();
         updateSkillsInput();
+
+        // If this was the last skill, ensure validation is triggered
+        if (selectedSkills.length === 0) {
+            const validationMessage = document.querySelector('[data-valmsg-for="SkillNames"]');
+            if (validationMessage) {
+                validationMessage.textContent = 'At least one skill is required';
+                validationMessage.style.display = 'block';
+            }
+        }
     }
 
 
@@ -440,7 +449,7 @@
     }
 
     // Update hidden input with selected skills
-        function updateSkillsInput() {
+            function updateSkillsInput() {
         const skillNamesInput = document.getElementById('skillNamesInput');
         skillNamesInput.value = selectedSkills.join(',');
 
@@ -459,6 +468,7 @@
             }
         }
     }
+
 
     // Setup skill addition button
     document.getElementById('addSkillBtn').addEventListener('click', function() {
@@ -480,5 +490,23 @@
 
         // Trigger validation check on load
         updateSkillsInput();
+    });
+
+        // Add form submission handler
+    document.getElementById('jobForm').addEventListener('submit', function(e) {
+        if (selectedSkills.length === 0) {
+            e.preventDefault(); // Prevent form submission
+            // Show error message
+            const validationMessage = document.querySelector('[data-valmsg-for="SkillNames"]');
+            if (validationMessage) {
+                validationMessage.textContent = 'At least one skill is required';
+                validationMessage.style.display = 'block';
+            }
+            // Scroll to the skills section
+            document.getElementById('skillsContainer').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
     });
 </script>
