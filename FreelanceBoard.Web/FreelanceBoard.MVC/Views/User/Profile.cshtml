@@ -813,7 +813,7 @@
             formData.append("ProfilePicture", file);
             const token = sessionStorage.getItem('token');
             try {
-                const response = await fetch("https://localhost:7029/api/User/ChangeProfilePicture", {
+                const response = await fetch("https://localhost:7029/api/User/change-profile-picture", {
                     method: "POST",
                     body: formData,
                     headers: { Authorization: `Bearer ${token}` }
