@@ -808,7 +808,7 @@
         const modal = new bootstrap.Modal(document.getElementById("addSkillModal"));
 
         try {
-            const response = await fetch("https://localhost:7029/api/Skill");
+            const response = await fetch("https://localhost:7029/api/Skill/get-all");
             const result = await response.json();
 
             if (result.isSuccess && Array.isArray(result.data)) {

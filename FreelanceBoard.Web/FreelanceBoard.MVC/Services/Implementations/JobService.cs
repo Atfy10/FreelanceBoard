@@ -35,13 +35,13 @@ namespace FreelanceBoard.MVC.Services.Implementations
 
             return apiResult.Data;
         }
-        public async Task<List<JobViewModel>> GetAllJobsSortedAsync(HttpContext httpContext, string sortBy, int page = 1)
+        public async Task<List<JobViewModel>> GetAllJobsSortedAsync(HttpContext httpContext, string sortBy, bool isAscending = true, int page = 1)
         {
             var token = httpContext.User.GetAccessToken();
             var client = _httpClientFactory.CreateClient("FreelanceApiClient");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync($"/api/job/sort-by?field={sortBy}&page={page}");
+            var response = await client.GetAsync($"/api/job/sort-by?field={sortBy}&sortAscendingly={isAscending}&page={page}");
 
             if (!response.IsSuccessStatusCode)
                 throw new ApplicationException("Failed to fetch sorted jobs");
