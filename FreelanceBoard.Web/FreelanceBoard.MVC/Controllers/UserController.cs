@@ -204,7 +204,6 @@ namespace FreelanceBoard.MVC.Controllers
 			return RedirectToAction("Profile", "User");
         }
 
-        [Authorize(Roles = "Freelancer")]
         [HttpPost]
         public async Task<IActionResult> UpdateProfile([FromBody] UserProfileViewModel model)
         {
