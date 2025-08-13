@@ -480,24 +480,25 @@
                                         <i class="bi-eye"></i>
                                         View Job
                                     </a>
-                                    @if (proposal.Status == "Pending")
+                                    @* @if (proposal.Status == "Pending")
                                     {
                                         @* <button class="action-btn btn-edit" onclick="editProposal(@proposal.JobId)">
                                             <i class="bi-pencil"></i>
                                             Edit Proposal
                                         </button> *@
-                                        <button class="action-btn btn-withdraw" onclick="withdrawApplication(@proposal.JobId)">
+                                    @*     <button class="action-btn btn-withdraw" onclick="withdrawApplication(@proposal.JobId)">
                                             <i class="bi-x-circle"></i>
                                             Withdraw
                                         </button>
-                                    }
-                                    @if (proposal.Status == "Accepted")
+                                    } *@
+
+                                    @* @if (proposal.Status == "Accepted")
                                     {
                                         <button class="action-btn btn-message" onclick="messageClient(@proposal.JobId)">
                                             <i class="bi-chat-dots"></i>
                                             Message Client
                                         </button>
-                                    }
+                                    }  *@
                                 </div>
                             </div>
                         }

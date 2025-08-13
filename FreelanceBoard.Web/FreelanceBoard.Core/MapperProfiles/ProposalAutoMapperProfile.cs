@@ -1,11 +1,12 @@
-﻿using AutoMapper;
-using FreelanceBoard.Core.Commands.ProposalCommands;
-using FreelanceBoard.Core.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using FreelanceBoard.Core.Commands.ProposalCommands;
+using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Dtos.JobDtos;
 using Profile = AutoMapper.Profile;
 
 namespace FreelanceBoard.Core.MapperProfiles
@@ -30,6 +31,11 @@ namespace FreelanceBoard.Core.MapperProfiles
             CreateMap<DeleteProposalCommand, Proposal>()
                 .ForMember(dest => dest.Freelancer, opt => opt.Ignore())
                 .ForMember(dest => dest.Job, opt => opt.Ignore());
-        }
-    }
+
+
+           
+
+
+		}
+	}
 }
