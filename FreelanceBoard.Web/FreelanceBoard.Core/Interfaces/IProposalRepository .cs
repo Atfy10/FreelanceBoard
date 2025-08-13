@@ -14,5 +14,7 @@ namespace FreelanceBoard.Core.Interfaces
         Task<List<Proposal>?> GetManyByIdsAsync(params int[] ids);
 
         Task<Proposal?> GetFullProposalWithIdAsync(int id);
+        Task<IEnumerable<Proposal>> GetProposalsByFreelancerIdAsync(string freelancerId);
+
     }
 }

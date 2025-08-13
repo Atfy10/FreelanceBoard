@@ -35,6 +35,8 @@
     <link href="~/css/owl.theme.default.min.css" rel="stylesheet">
 
     <link href="~/css/tooplate-gotto-job.css" rel="stylesheet">
+    @await RenderSectionAsync("Styles", required: false)
+
 
     <!--
 
@@ -89,7 +91,10 @@
                     @if (User.IsInRole("Client"))
                     {
                         <li><a class="nav-link" href="/Job/ClientDashboard">Dashboard</a></li>
+                        <li><a class="nav-link" href="/Job/CreateJob">CreateJob</a></li>
+
                     }
+
 
                     @if (User.IsInRole("Freelancer"))
                     {

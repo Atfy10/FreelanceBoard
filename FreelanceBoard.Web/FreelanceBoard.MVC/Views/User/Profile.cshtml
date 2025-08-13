@@ -363,15 +363,15 @@
             transform: scale(1.1);
         }
 
-        .add-project-btn:hover {
-            background: rgba(139, 92, 246, 0.2);
-            border-color: #6366f1;
-        }
+    .add-project-btn:hover {
+        background: rgba(139, 92, 246, 0.2);
+        border-color: #6366f1;
+    }
 
-        .add-project-btn i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
+    .add-project-btn i {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
 
     .save-btn {
         background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 50%, #f9f9f9 100%);
@@ -383,6 +383,7 @@
         font-size: 16px;
         transition: all 0.3s ease;
         margin-top: 30px;
+        margin-bottom: 30px;
     }
 
         .save-btn:hover {
@@ -455,6 +456,17 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-12">
 
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    </div>
+                }
+
+                <div id="messageContainer" class="mt-3" style="display:none;">
+                    <div id="messageContent" class="alert" role="alert"></div>
+                </div>
+
                 <div id="messageContainer" class="mt-3" style="display:none;">
                     <div id="messageContent" class="alert" role="alert"></div>
                 </div>
@@ -474,8 +486,8 @@
                     <div class="profile-header">
                         <div class="profile-picture-container">
                             <img src="@(string.IsNullOrEmpty(Model.Profile?.Image)
-                                                                      ? Url.Content("~/images/avatar.png")
-                                                                      : Url.Content("https://localhost:7029" + Model.Profile.Image))"
+                                                                                                                                        ? Url.Content("~/images/avatar.png")
+                                                                                                                                        : Url.Content("https://localhost:7029" + Model.Profile.Image))"
                                  alt="Profile Picture"
                                  class="profile-picture"
                                  id="profilePicture">
@@ -524,6 +536,14 @@
                                       placeholder="Tell us about yourself...">@Model.Profile?.Bio</textarea>
                         </div>
                     </div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="text-center">
+                    <button class="save-btn" id="saveBtn" onclick="saveProfile()" style="display: none;">
+                        <i class="bi-check-circle me-2"></i>
+                        Save Changes
+                    </button>
                 </div>
 
                 <!-- Skills Section -->
@@ -611,17 +631,19 @@
                 </div>
 
 
-                <!-- Save Button -->
-                <div class="text-center">
-                    <button class="save-btn" id="saveBtn" onclick="saveProfile()" style="display: none;">
-                        <i class="bi-check-circle me-2"></i>
-                        Save Changes
-                    </button>
-                </div>
+
             </div>
         </div>
     </div>
 </section>
+
+<!-- Display ModelState errors -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    </div>
+}
 
 <!-- Add Project Modal -->
 <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
@@ -660,213 +682,223 @@
 </div>
 
 <script>
-            // Store original values when page loads
-        let originalValues = {};
-    let isEditMode = false;
+                // Store original values when page loads
+            let originalValues = {};
+        let isEditMode = false;
 
-    document.addEventListener('DOMContentLoaded', function() {
-        storeOriginalValues();
-        setupPhoneNumberValidation();
-    });
-
-    function storeOriginalValues() {
-        originalValues = {
-            username: document.getElementById('username').value,
-            phoneNumber: document.getElementById('phoneNumber').value,
-            bio: document.getElementById('bio').value
-        };
-    }
-
-        function showMessage(message, type = "success") {
-        const container = document.getElementById("messageContainer");
-        const content = document.getElementById("messageContent");
-
-        // Reset classes and set type
-        content.className = "alert alert-" + type;
-        content.textContent = message;
-
-        // Show message
-        container.style.display = "block";
-
-        // Auto-hide after 4 seconds
-        setTimeout(() => {
-            container.style.display = "none";
-        }, 4000);
-    }
-
-    function setupPhoneNumberValidation() {
-        const phoneInput = document.getElementById('phoneNumber');
-        phoneInput.addEventListener('input', function(e) {
-            // Remove any non-numeric characters
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-    }
-
-    function toggleEditMode() {
-        isEditMode = !isEditMode;
-        const editBtn = document.getElementById('edit-btn-text');
-        const saveBtn = document.getElementById('saveBtn');
-        const inputFields = document.querySelectorAll('input, textarea');
-        const skillRemoveBtns = document.querySelectorAll('.skill-remove');
-        const addSkillBtn = document.querySelector('.add-skill-btn');
-        const addProjectBtn = document.querySelector('.add-project-btn');
-        const projectRemoveBtns = document.querySelectorAll('.project-remove');
-
-        if (isEditMode) {
-            // Enter edit mode
-            editBtn.textContent = 'Cancel Edit';
-            saveBtn.style.display = 'inline-block';
-            addSkillBtn.style.display = 'flex';
-            addProjectBtn.style.display = 'flex';
-
-            // Enable editing for all fields
-            inputFields.forEach(field => {
-                field.removeAttribute('readonly');
-                field.classList.remove('readonly-field');
-            });
-
-            skillRemoveBtns.forEach(btn => btn.style.display = 'flex');
-            projectRemoveBtns.forEach(btn => btn.style.display = 'block');
-
-        } else {
-            // Cancel edit mode - restore original values
-            editBtn.textContent = 'Edit Profile';
-            saveBtn.style.display = 'none';
-            addSkillBtn.style.display = 'none';
-            addProjectBtn.style.display = 'none';
-
-
-            // Restore original values
-            document.getElementById('username').value = originalValues.username;
-            document.getElementById('phoneNumber').value = originalValues.phoneNumber;
-            document.getElementById('bio').value = originalValues.bio;
-
-            // Disable all fields
-            inputFields.forEach(field => {
-                field.setAttribute('readonly', true);
-                field.classList.add('readonly-field');
-            });
-
-            skillRemoveBtns.forEach(btn => btn.style.display = 'none');
-            projectRemoveBtns.forEach(btn => btn.style.display = 'none');
-
-        }
-    }
-
-        async function removeProject(projectId, button) {
-    if (!confirm('Are you sure you want to delete this project?')) return;
-
-    try {
-        const response = await fetch(`/User/DeleteProject?projectId=${projectId}`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" }
+        document.addEventListener('DOMContentLoaded', function() {
+            storeOriginalValues();
+            setupPhoneNumberValidation();
         });
 
-        if (response.ok) {
-            // Remove project card from DOM
-            button.closest('.project-card').remove();
-            showMessage('✅ Project deleted successfully!', 'success');
-            } else {
-            const error = await response.text();
-            showMessage('❌ Failed to delete project: ' + error);
+        function storeOriginalValues() {
+            originalValues = {
+                username: document.getElementById('username').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                bio: document.getElementById('bio').value
+            };
         }
-    } catch (error) {
-        console.error('Error:', error);
-            showMessage('❌ Error deleting project');
-    }
-}
 
+            function showMessage(message, type = "success") {
+            const container = document.getElementById("messageContainer");
+            const content = document.getElementById("messageContent");
 
+            // Reset classes and set type
+            content.className = "alert alert-" + type;
+            content.textContent = message;
 
-    async function handleProfilePictureChange(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+            // Show message
+            container.style.display = "block";
 
-        const formData = new FormData();
-        formData.append("ProfilePicture", file);
-        const token = sessionStorage.getItem('token');
-        try {
-            const response = await fetch("https://localhost:7029/api/User/ChangeProfilePicture", {
-                method: "POST",
-                body: formData,
-                headers: { Authorization: `Bearer ${token}` }
+                window.scrollTo({
+                top: 0,
+                behavior: "smooth"
             });
 
-            const result = await response.json();
 
-            if (response.ok && result.isSuccess) {
-                document.getElementById("profilePicture").src = "https://localhost:7029" + result.data;
+
+        }
+
+        function setupPhoneNumberValidation() {
+            const phoneInput = document.getElementById('phoneNumber');
+            phoneInput.addEventListener('input', function(e) {
+                // Remove any non-numeric characters
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        }
+
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const editBtn = document.getElementById('edit-btn-text');
+            const saveBtn = document.getElementById('saveBtn');
+            const inputFields = document.querySelectorAll('input, textarea');
+            const skillRemoveBtns = document.querySelectorAll('.skill-remove');
+            const addSkillBtn = document.querySelector('.add-skill-btn');
+            const addProjectBtn = document.querySelector('.add-project-btn');
+            const projectRemoveBtns = document.querySelectorAll('.project-remove');
+
+            if (isEditMode) {
+                // Enter edit mode
+                editBtn.textContent = 'Cancel Edit';
+                saveBtn.style.display = 'inline-block';
+                addSkillBtn.style.display = 'flex';
+                addProjectBtn.style.display = 'flex';
+
+                // Enable editing for all fields
+                inputFields.forEach(field => {
+                    field.removeAttribute('readonly');
+                    field.classList.remove('readonly-field');
+                });
+
+                skillRemoveBtns.forEach(btn => btn.style.display = 'flex');
+                projectRemoveBtns.forEach(btn => btn.style.display = 'block');
+
             } else {
-                    showMessage("Failed to update profile picture: " + result.message);
+                // Cancel edit mode - restore original values
+                editBtn.textContent = 'Edit Profile';
+                saveBtn.style.display = 'none';
+                addSkillBtn.style.display = 'none';
+                addProjectBtn.style.display = 'none';
+
+
+                // Restore original values
+                document.getElementById('username').value = originalValues.username;
+                document.getElementById('phoneNumber').value = originalValues.phoneNumber;
+                document.getElementById('bio').value = originalValues.bio;
+
+                // Disable all fields
+                inputFields.forEach(field => {
+                    field.setAttribute('readonly', true);
+                    field.classList.add('readonly-field');
+                });
+
+                skillRemoveBtns.forEach(btn => btn.style.display = 'none');
+                projectRemoveBtns.forEach(btn => btn.style.display = 'none');
+
             }
-        } catch {
-                showMessage("Error uploading image.");
+        }
+
+            async function removeProject(projectId, button) {
+        if (!confirm('Are you sure you want to delete this project?')) return;
+
+        try {
+            const response = await fetch(`/User/DeleteProject?projectId=${projectId}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" }
+            });
+
+            if (response.ok) {
+                // Remove project card from DOM
+                button.closest('.project-card').remove();
+                showMessage('✅ Project deleted successfully!', 'success');
+                } else {
+                const error = await response.text();
+                showMessage('❌ Failed to delete project: ' + error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+                showMessage('❌ Error deleting project');
         }
     }
 
-            async function openAddSkillModal() {
-        const modal = new bootstrap.Modal(document.getElementById("addSkillModal"));
+
+
+        async function handleProfilePictureChange(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("ProfilePicture", file);
+            const token = sessionStorage.getItem('token');
+            try {
+                const response = await fetch("https://localhost:7029/api/User/ChangeProfilePicture", {
+                    method: "POST",
+                    body: formData,
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.isSuccess) {
+                    document.getElementById("profilePicture").src = "https://localhost:7029" + result.data;
+                } else {
+                        showMessage("Failed to update profile picture: " + result.message);
+                }
+            } catch {
+                    showMessage("Error uploading image.");
+            }
+        }
+
+                async function openAddSkillModal() {
+            const modal = new bootstrap.Modal(document.getElementById("addSkillModal"));
 
         try {
             const response = await fetch("https://localhost:7029/api/Skill/get-all");
             const result = await response.json();
 
-            if (result.isSuccess && Array.isArray(result.data)) {
-                const select = document.getElementById("skillSelect");
-                select.innerHTML = '<option value="">-- Choose a skill --</option>';
+                if (result.isSuccess && Array.isArray(result.data)) {
+                    const select = document.getElementById("skillSelect");
+                    select.innerHTML = '<option value="">-- Choose a skill --</option>';
 
-                // Get user's current skills from Razor into JS
-                const userSkills = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Skills?.Select(s => s.Name) ?? new List<string>()));
+                    // Get user's current skills from Razor into JS
+                    const userSkills = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Skills?.Select(s => s.Name) ?? new List<string>()));
 
-                // Filter out skills the user already has
-                const filteredSkills = result.data.filter(skill => !userSkills.includes(skill.name));
+                    // Filter out skills the user already has
+                    const filteredSkills = result.data.filter(skill => !userSkills.includes(skill.name));
 
-                // Populate only the filtered skills
-                filteredSkills.forEach(skill => {
-                    const option = document.createElement("option");
-                    option.value = skill.id;
-                    option.textContent = skill.name;
-                    select.appendChild(option);
-                });
-            } else {
-                    showMessage("❌ Failed to load skills");
+                    // Populate only the filtered skills
+                    filteredSkills.forEach(skill => {
+                        const option = document.createElement("option");
+                        option.value = skill.id;
+                        option.textContent = skill.name;
+                        select.appendChild(option);
+                    });
+                } else {
+                        showMessage("❌ Failed to load skills");
+                }
+            } catch (error) {
+                console.error("Error fetching skills:", error);
+                    showMessage("❌ Error loading skills");
             }
-        } catch (error) {
-            console.error("Error fetching skills:", error);
-                showMessage("❌ Error loading skills");
+
+            modal.show();
         }
 
-        modal.show();
-    }
 
+            async function saveSkill() {
+            const skillSelect = document.getElementById("skillSelect");
+            const selectedId = skillSelect.value;
+            const selectedName = skillSelect.options[skillSelect.selectedIndex]?.text;
 
-        async function saveSkill() {
-        const skillSelect = document.getElementById("skillSelect");
-        const selectedId = skillSelect.value;
-        const selectedName = skillSelect.options[skillSelect.selectedIndex]?.text;
+            if (!selectedId) {
+                    showMessage("⚠️ Please select a skill.");
+                return;
+            }
 
-        if (!selectedId) {
-                showMessage("⚠️ Please select a skill.");
-            return;
+            const response = await fetch("/User/AddSkill", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ skillName: selectedName })
+            });
+
+            if (response.ok) {
+                bootstrap.Modal.getInstance(document.getElementById('addSkillModal')).hide();
+                localStorage.setItem("successMessage", `✅ Skill ${selectedName} added successfully!`);
+                location.reload();
+            } else {
+                showMessage("❌ Failed to add skill");
+            }
         }
 
-        const response = await fetch("/User/AddSkill", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ skillName: selectedName }) 
-        });
-
-        if (response.ok) {
-            bootstrap.Modal.getInstance(document.getElementById('addSkillModal')).hide();
-            location.reload();
-                            showMessage("✅ Skill added successfully!");
-
-        } else {
-            alert("❌ Failed to add skill");
+            document.addEventListener("DOMContentLoaded", () => {
+        const msg = localStorage.getItem("successMessage");
+        if (msg) {
+            showMessage(msg);
+            localStorage.removeItem("successMessage");
         }
-    }
+    });
 
-        async function removeSkill(skillName, button) {
+               async function removeSkill(skillName, button) {
         if (!confirm(`Are you sure you want to remove "${skillName}"?`)) return;
 
         const response = await fetch("/User/RemoveSkill", {
@@ -876,88 +908,85 @@
         });
 
         if (response.ok) {
-            // remove from DOM only if server success
-            button.parentElement.remove();
-                showMessage(`✅ Skill "${skillName}" removed successfully!`);
+            // Store message in localStorage to show after reload
+            localStorage.setItem("successMessage", `✅ Skill "${skillName}" removed successfully!`);
+            location.reload();
         } else {
-                showMessage(`❌ Failed to remove skill "${skillName}"`);
-        }
-    }
-
-    // function saveProfile() {
-    //     const profileData = {
-    //         username: document.getElementById('username').value,
-    //         phoneNumber: document.getElementById('phoneNumber').value,
-    //         bio: document.getElementById('bio').value,
-    //         skills: Array.from(document.querySelectorAll('.skill-tag')).map(tag =>
-    //             tag.textContent.replace('×', '').trim()
-    //         ).filter(skill => skill !== 'Add Skill')
-    //     };
-    //     console.log('Saving profile:', profileData);
-    //     alert('Profile saved successfully!');
-    //     toggleEditMode();
-    // }
-                async function saveProfile() {
-        const profileData = {
-            userName: document.getElementById('username').value.trim(),
-            phoneNumber: document.getElementById('phoneNumber').value.trim(),
-            bio: document.getElementById('bio').value.trim()
-        };
-
-        // Validate inputs
-        if (!profileData.userName) {
-                showMessage('Username is required');
-            return;
-        }
-
-        if (!profileData.phoneNumber || profileData.phoneNumber.length < 10 || profileData.phoneNumber.length > 15) {
-                showMessage('Please enter a valid phone number (10-15 digits)');
-            return;
-        }
-
-        try {
-            // Show loading state
-            const saveBtn = document.getElementById('saveBtn');
-            saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
-            saveBtn.disabled = true;
-
-            const response = await fetch("/User/UpdateProfile", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(profileData)
-            });
-
-            if (response.ok) {
-                // Success - refresh the page to get updated data
-                location.reload();
+            const result = await response.json().catch(() => null);
+            if (result?.error) {
+                showMessage(`❌ ${result.error}`, "danger");
             } else {
-                const error = await response.text();
-                    showMessage("Failed to update profile: " + error);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-                showMessage('An error occurred while updating profile');
-        } finally {
-            // Reset save button
-            const saveBtn = document.getElementById('saveBtn');
-            if (saveBtn) {
-                saveBtn.innerHTML = '<i class="bi-check-circle me-2"></i> Save Changes';
-                saveBtn.disabled = false;
+                showMessage(`❌ Failed to remove skill "${skillName}"`, "danger");
             }
         }
     }
 
 
-    function openAddProjectModal() {
-        const modal = new bootstrap.Modal(document.getElementById('addProjectModal'));
-        modal.show();
-    }
+                    async function saveProfile() {
+            const profileData = {
+                userName: document.getElementById('username').value.trim(),
+                phoneNumber: document.getElementById('phoneNumber').value.trim(),
+                bio: document.getElementById('bio').value.trim()
+            };
 
-    async function saveProject() {
+            // Validate inputs
+            if (!profileData.userName) {
+                    showMessage('Username is required');
+                return;
+            }
+
+            if (!profileData.phoneNumber || profileData.phoneNumber.length < 10 || profileData.phoneNumber.length > 15) {
+                    showMessage('Please enter a valid phone number (10-15 digits)');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const saveBtn = document.getElementById('saveBtn');
+                saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                saveBtn.disabled = true;
+
+                const response = await fetch("/User/UpdateProfile", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(profileData)
+                });
+
+                if (response.ok) {
+                    // Success - refresh the page to get updated data
+                    location.reload();
+                } else {
+                        const result = await response.json();
+                        if (result.error) {
+                    showMessage(result.error, "danger");
+                } else {
+                    showMessage("❌ Failed to update profile", "danger");
+                }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                    showMessage('An error occurred while updating profile');
+            } finally {
+                // Reset save button
+                const saveBtn = document.getElementById('saveBtn');
+                if (saveBtn) {
+                    saveBtn.innerHTML = '<i class="bi-check-circle me-2"></i> Save Changes';
+                    saveBtn.disabled = false;
+                }
+            }
+        }
+
+
+        function openAddProjectModal() {
+            const modal = new bootstrap.Modal(document.getElementById('addProjectModal'));
+            modal.show();
+        }
+
+            async function saveProject() {
         const projectData = {
-            title: document.getElementById("projectTitle").value,
-            description: document.getElementById("projectDescription").value,
-            attachments: document.getElementById("projectAttachments").value
+            title: document.getElementById("projectTitle").value.trim(),
+            description: document.getElementById("projectDescription").value.trim(),
+            attachments: document.getElementById("projectAttachments").value.trim()
         };
 
         const response = await fetch("/User/AddProject", {
@@ -968,11 +997,22 @@
 
         if (response.ok) {
             bootstrap.Modal.getInstance(document.getElementById('addProjectModal')).hide();
+            localStorage.setItem("successMessage", `✅ Project "${projectData.title}" added successfully!`);
             location.reload();
-           showMessage("✅ Project added successfully!");
-
         } else {
-            alert("❌ Failed to add project");
+            const result = await response.json().catch(() => null);
+            if (result?.error) {
+                showMessage(`❌ ${result.error}`, "danger");
+            } else {
+                showMessage("❌ Failed to add project", "danger");
+            }
         }
     }
-</script>`
+
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

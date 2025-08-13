@@ -126,19 +126,27 @@ namespace FreelanceBoard.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
+            string errorMessage = null;
+
             var success = await _executor.Execute(
                 async () =>
                 {
                     await _userService.ChangePasswordAsync(model, HttpContext);
                     TempData["Success"] = "Password changed successfully.";
                 },
-                error => ModelState.AddModelError(string.Empty, error)
+                error =>{ ModelState.AddModelError(string.Empty, error);
+                    errorMessage = error;
+				}
             );
 
             if (success)
                 return RedirectToAction("Login", "User");
+            else
+            {
+                ModelState.AddModelError(string.Empty, errorMessage ?? "An error occurred while changing the password.");
+                return View(model);
+			}
 
-            return View(model);
         }
 
 
@@ -178,16 +186,19 @@ namespace FreelanceBoard.MVC.Controllers
         {
             ModelState.Remove(nameof(model.UserId));
             if (!ModelState.IsValid) return View(model);
-            var success = await _executor.Execute(
+            string errorMessage = null;
+			var success = await _executor.Execute(
                 async () =>
                 {
                     await _userService.RemoveSkillAsync(model, HttpContext);
                 },
-                error => ModelState.AddModelError(string.Empty, error)
+                error => { ModelState.AddModelError(string.Empty, error); 
+                    errorMessage = error;
+				}
             );
             if (!success)
-                return View("Profile",model);
-            return RedirectToAction("Profile", "User");
+                return BadRequest(new { error = errorMessage ?? "error occurred while removing skill" });
+			return RedirectToAction("Profile", "User");
         }
 
         [HttpPost]
@@ -204,33 +215,45 @@ namespace FreelanceBoard.MVC.Controllers
             ModelState.Remove(nameof(model.Email));
             ModelState.Remove(nameof(model.Role));
 
-
+            string errorMessage = null;
 
 			var success = await _executor.Execute(
                 async () =>
                 {
                     await _userService.UpdateProfileAsync(model, HttpContext);
                 },
-                error => ModelState.AddModelError(string.Empty, error)
+                error => {
+                    ModelState.AddModelError(string.Empty, error);
+                    errorMessage = error;
+				}
             );
             if (!success)
-                return View("Profile",model);
-            return RedirectToAction("Profile", "User");
+            {
+				return BadRequest(new { error = errorMessage ?? "error occurred while updating profile" });
+			}
+			return RedirectToAction("Profile", "User");
 
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteProject(int projectId)
         {
-            var success = await _executor.Execute(
-                async () =>
-                {
-                    await _userService.DeleteProjectAsync(projectId, HttpContext);
-                },
-                error => ModelState.AddModelError(string.Empty, error)
-            );
-            if (!success)
-                return View("Profile");
+			string errorMessage = null;
+
+			var success = await _executor.Execute(
+				async () =>
+				{
+					await _userService.DeleteProjectAsync(projectId, HttpContext);
+				},
+				err =>
+				{
+					errorMessage = err; 
+					ModelState.AddModelError(string.Empty, err);
+				}
+			);
+
+			if (!success)
+				return BadRequest(new { error = errorMessage ?? "error occurred while deleting project" });
 			return NoContent(); 
 		}
 	}

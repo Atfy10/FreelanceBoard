@@ -14,5 +14,7 @@ namespace FreelanceBoard.Core.Queries.Interfaces
     {
         Task<Result<ProposalDto>> GetProposalByIdAsync(int id);
         Task<Result<IEnumerable<ProposalDto>>> GetProposalsByJobIdAsync(int jobId);
+        Task<Result<IEnumerable<ProposalDto>>> GetProposalsByFreelancerIdAsync(string freelancerId);
+
     }
 }

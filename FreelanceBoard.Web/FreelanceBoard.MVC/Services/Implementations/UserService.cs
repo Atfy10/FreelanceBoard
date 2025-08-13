@@ -106,11 +106,13 @@ namespace FreelanceBoard.MVC.Services.Implementations
 
             var response = await client.PostAsJsonAsync("/api/User/change-password", model);
 
-			if (!response.IsSuccessStatusCode)
-			{
-				var errorContent = await response.Content.ReadAsStringAsync();
-				throw new ApplicationException($"Failed to change password: password not correct");
-			}
+			if (response.IsSuccessStatusCode)
+				return;
+
+			var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool?>>();
+			var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
+
+			throw new ApplicationException(errorMessage);
 		}
 
 		public async Task AddProject(AddProjectViewModel model, HttpContext httpContext)
@@ -120,11 +122,13 @@ namespace FreelanceBoard.MVC.Services.Implementations
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
 			var response = await client.PostAsJsonAsync("/api/User/add-project", model);
-			if (!response.IsSuccessStatusCode)
-			{
-				var error = await response.Content.ReadAsStringAsync();
-				throw new ApplicationException("invalid inputs");
-			}
+			if (response.IsSuccessStatusCode)
+				return;
+
+			var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool?>>();
+			var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
+
+			throw new ApplicationException(errorMessage);
 
 
 		}
@@ -137,11 +141,13 @@ namespace FreelanceBoard.MVC.Services.Implementations
 			var client = _httpClientFactory.CreateClient("FreelanceApiClient");
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 			var response = await client.PostAsJsonAsync("/api/User/add-skill", model);
-			if (!response.IsSuccessStatusCode)
-			{
-				var errorContent = await response.Content.ReadAsStringAsync();
-				throw new ApplicationException($"Failed to add skill: {errorContent}");
-			}
+			if (response.IsSuccessStatusCode)
+				return;
+
+			var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool?>>();
+			var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
+
+			throw new ApplicationException(errorMessage);
 		}
 
 
@@ -152,11 +158,13 @@ namespace FreelanceBoard.MVC.Services.Implementations
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             model.UserId = httpContext.User.GetUserId();
 			var response = await client.PostAsJsonAsync("/api/User/remove-skill", model);
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                throw new ApplicationException($"Failed to remove skill: {errorContent}");
-            }
+			if (response.IsSuccessStatusCode)
+				return;
+
+			var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool?>>();
+			var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
+
+			throw new ApplicationException(errorMessage);
 		}
 
         public async Task UpdateProfileAsync(UserProfileViewModel model, HttpContext httpContext)
@@ -168,8 +176,13 @@ namespace FreelanceBoard.MVC.Services.Implementations
             var client = _httpClientFactory.CreateClient("FreelanceApiClient");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await client.PutAsJsonAsync("/api/User/update-profile", model);
-            if (!response.IsSuccessStatusCode)
-                throw new ApplicationException("Failed to update profile");
+			if (response.IsSuccessStatusCode)
+				return;
+
+			var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool?>>();
+			var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
+
+			throw new ApplicationException(errorMessage);
 		}
 
 
@@ -182,8 +195,13 @@ namespace FreelanceBoard.MVC.Services.Implementations
             var client = _httpClientFactory.CreateClient("FreelanceApiClient");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await client.DeleteAsync($"/api/User/delete-project/{projectId}");
-            if (!response.IsSuccessStatusCode)
-                throw new ApplicationException("Failed to delete project");
+			if (response.IsSuccessStatusCode)
+				return;
+
+			var apiError = await response.Content.ReadFromJsonAsync<ApiErrorResponse<bool?>>();
+			var errorMessage = apiError?.Message ?? "An unexpected error occurred.";
+
+			throw new ApplicationException(errorMessage);
 		}
 	}
 
