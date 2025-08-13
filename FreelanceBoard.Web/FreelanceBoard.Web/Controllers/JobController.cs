@@ -12,6 +12,7 @@ using FreelanceBoard.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace FreelanceBoard.Web.Controllers
@@ -59,7 +60,7 @@ namespace FreelanceBoard.Web.Controllers
         }
 
         [HttpGet("sort-by")]
-        public async Task<IActionResult> GetAllJobsSortedDateOrBudget(string field, bool sortAscendingly, int page = 1)
+        public async Task<IActionResult> GetAllJobsSortedDateOrBudget([Required] string field, bool sortAscendingly, int page = 1)
         {
             var jobs = await _jobQuery.GetAllJobsSorted(field, page, sortAscendingly);
             return Ok(jobs);

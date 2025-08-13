@@ -43,12 +43,16 @@ namespace FreelanceBoard.Infrastructure.Repositories
         public async Task<IEnumerable<Job>?> GetJobsFilteredSkills(List<string> skills)
         {
             return await GetAllJobsWithDetails()
-                .Where(s => s.Skills.Any(sk => skills.Contains(sk.Name))).ToListAsync();
+                        .Where(job => skills.All(skill =>
+                            job.Skills.Any(jobSkill => jobSkill.Name == skill)))
+                        .ToListAsync();
         }
         public async Task<IEnumerable<Job>?> GetJobsFilteredCategory(List<string> categories)
         {
             return await GetAllJobsWithDetails()
-                .Where(s => s.Categories.Any(sk => categories.Contains(sk.Name))).ToListAsync();
+                        .Where(job => categories.All(category =>
+                            job.Categories.Any(jobCategory => jobCategory.Name == category)))
+                        .ToListAsync();
         }
         public async Task<IEnumerable<Job>?> GetJobsFilteredBudget(int min, int max)
         {

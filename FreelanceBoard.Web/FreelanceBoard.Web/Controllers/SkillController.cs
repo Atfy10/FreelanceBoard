@@ -31,10 +31,10 @@ namespace FreelanceBoard.Web.Controllers
         }
 
 		[HttpGet("get-all")]
-		public async Task<IActionResult> GetAllSkills()
+		public async Task<IActionResult> GetAllSkills()	
 		{
 			var result = await _skillQuery.GetAllSkillsAsync();
-			return this.HandleResult(result);
+			return Ok(result);
 		}
 
 

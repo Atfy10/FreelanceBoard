@@ -43,8 +43,10 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 				var userId = _userAccessor.GetUserId();
 				if (string.IsNullOrEmpty(userId))
 					throw new UnauthorizedAccessException("User is not authenticated.");
+				var userExist = await _userSkillRepository.UserExistsAsync(userId);
 
-				var skillId = await _skillRepository.GetIdByNameAsync(request.SkillName);
+
+                var skillId = await _skillRepository.GetIdByNameAsync(request.SkillName);
 				if (!skillId.HasValue)
 					throw new KeyNotFoundException($"Skill '{request.SkillName}' not found.");
 

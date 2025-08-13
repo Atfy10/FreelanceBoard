@@ -56,6 +56,7 @@ namespace FreelanceBoard.Core.CommandHandlers.JobHandlers
 
                 return Result<int>.Success(newJob.Id, CreateOperation,
                     $"Job created successfully (ID: {newJob.Id}");
+            
             }, OperationType.Add);
     }
 }

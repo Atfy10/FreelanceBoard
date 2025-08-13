@@ -41,8 +41,6 @@ namespace FreelanceBoard.Web.Controllers
         [HttpGet("job/{jobId}/proposals")]
         public async Task<IActionResult> GetProposalsByJobId(int jobId)
         {
-            if (jobId <= 0)
-                return BadRequest("Invalid job ID.");
 
             var proposals = await _proposalQuery.GetProposalsByJobIdAsync(jobId);
             return Ok(proposals);

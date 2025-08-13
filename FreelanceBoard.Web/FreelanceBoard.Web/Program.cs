@@ -110,9 +110,14 @@ namespace FreelanceBoard.Web
                 };
             });
 
+            builder.Services.AddControllers()
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.SuppressModelStateInvalidFilter = true; // This is the key line
+                });
+
             builder.Services.AddAuthorization();
 
-            builder.Services.AddControllers();
 
             builder.Services.AddSwaggerGen(options =>
             {

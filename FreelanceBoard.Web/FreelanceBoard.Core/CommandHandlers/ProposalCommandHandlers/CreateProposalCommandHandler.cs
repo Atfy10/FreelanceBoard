@@ -36,6 +36,11 @@ namespace FreelanceBoard.Core.CommandHandlers.ProposalCommandHandlers
 
             var newProposal = _mapper.Map<Proposal>(request);
 
+            var userExist = await _proposalRepository.UserExistsAsync(request.FreelancerId);
+            if (!userExist)
+                return Result<int>.Failure(CreateOperation,
+                $"Freelancer with ID `{request.FreelancerId}` not found");
+
             await _proposalRepository.AddAsync(newProposal);
             return Result<int>.Success(newProposal.Id, CreateOperation, "Proposal created successfully.");
         }, OperationType.Add);

@@ -30,6 +30,30 @@ namespace FreelanceBoard.Core.Helpers
                 res = await operation();
 
                 if (res.IsSuccess)
+                {
+                    _logger.LogInformation("{Operation} operation completed successfully: {Message}", opType, res.Message);
+                    res.StatusCode = opType switch
+                    {
+                        OperationType.Add => 201,
+                        OperationType.Update => 200,
+                        OperationType.Delete => 204,
+                        _ => 200
+                    };
+                }
+                else
+                {
+                    _logger.LogWarning("Operation {Operation} failed: {Message}", opType, res.Message);
+                    res.StatusCode = opType switch
+                    {
+                        OperationType.Add => 400,
+                        OperationType.Update => 400,
+                        OperationType.Delete => 404,
+                        _ => 500
+                    };
+                }
+                return res;
+
+                if (res.IsSuccess)
                     _logger.LogInformation("{Operation} operation completed successfully: {Message}", opType, res.Message);
                 else
                     _logger.LogWarning("Operation {Operation} failed: {Message}", opType, res.Message);
@@ -39,27 +63,27 @@ namespace FreelanceBoard.Core.Helpers
             catch (ArgumentOutOfRangeException ex)
             {
                 _logger.LogError(ex, "Argument out of range error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "The provided value is out of the acceptable range. Please check and try again.");
+                return Result<T>.Failure(opType.ToString(), ex.Message);
             }
             catch (ArgumentNullException ex)
             {
                 _logger.LogError(ex, "Argument null error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "Some required information was missing. Please check and try again.");
+                return Result<T>.Failure(opType.ToString(), ex.Message);
             }
             catch (NullReferenceException ex)
             {
                 _logger.LogError(ex, "Null reference error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "Something went wrong while processing your request. Please try again.");
+                return Result<T>.Failure(opType.ToString(), ex.Message);
             }
             catch (InvalidOperationException ex)
             {
                 _logger.LogError(ex, "Invalid operation error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "The action you tried isn’t allowed in the current state.");
+                return Result<T>.Failure(opType.ToString(), ex.Message);
             }
             catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex, "Key not found error occurred during {Operation}", opType);
-                return Result<T>.Failure(opType.ToString(), "We couldn’t find the requested item.");
+                return Result<T>.Failure(opType.ToString(), ex.Message);    
             }
             catch (DbUpdateException ex)
             {
