@@ -2,7 +2,6 @@
 {
     public class CreateProposalViewModel
     {
-
         public int JobId { get; set; }
         public string FreelancerId { get; set; }
         public string Message { get; set; }

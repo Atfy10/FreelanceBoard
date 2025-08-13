@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FreelanceBoard.MVC.Controllers
 {
-   
+
     public class ProposalController : Controller
     {
         private readonly IProposalService _proposalService;
@@ -18,6 +18,9 @@ namespace FreelanceBoard.MVC.Controllers
             _proposalService = proposalService;
             _executor = executor;
         }
+
+        [Authorize(Roles = "Client")]
+        [HttpGet]
         public async Task<IActionResult> JobProposal(int id)
         {
             JobProposalsViewModel job = default!;
@@ -33,22 +36,22 @@ namespace FreelanceBoard.MVC.Controllers
             return View("JobProposal", job);
         }
 
-
+        [Authorize(Roles = "Freelancer")]
         [HttpGet]
-        public IActionResult CreateProposal(int jobId)
+        public IActionResult CreateProposal(int id)
         {
-            if (jobId <= 0) return NotFound();
+            if (id <= 0) return NotFound();
 
             var model = new CreateProposalViewModel
             {
-                JobId = jobId,
+                JobId = id,
                 FreelancerId = User.GetUserId() // This gets the current user's ID
             };
 
             return View(model);
         }
 
-
+        [Authorize(Roles = "Freelancer")]
         [HttpPost]
         public async Task<IActionResult> CreateProposalPost(CreateProposalViewModel model)
         {
@@ -62,7 +65,7 @@ namespace FreelanceBoard.MVC.Controllers
             if (!success || proposalId == 0)
                 return View("NotFound");
 
-            return RedirectToAction("MyJobApplication","Job");
+            return RedirectToAction("MyJobApplication", "Job");
 
         }
 
