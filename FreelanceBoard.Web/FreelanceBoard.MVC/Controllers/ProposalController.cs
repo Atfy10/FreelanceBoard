@@ -53,7 +53,7 @@ namespace FreelanceBoard.MVC.Controllers
 
         [Authorize(Roles = "Freelancer")]
         [HttpPost]
-        public async Task<IActionResult> CreateProposalPost(CreateProposalViewModel model)
+        public async Task<IActionResult> CreateProposal(CreateProposalViewModel model)
         {
             int proposalId = 0;
             var success = await _executor.Execute(
@@ -65,11 +65,25 @@ namespace FreelanceBoard.MVC.Controllers
             if (!success || proposalId == 0)
                 return View("NotFound");
 
-            return RedirectToAction("MyJobApplication", "Job");
+            return RedirectToAction("MyJobApplication");
 
         }
 
+        [Authorize(Roles = "Freelancer")]
+        [HttpGet]
+        public async Task<IActionResult> FreelancerProposals()
+        {
+            List<JobWithProposalsViewModel> proposals = default!;
+            var success = await _executor.Execute(
+                async () =>
+                { proposals = await _proposalService.GetProposalsByFreelancerIdAsync(User.GetUserId(), HttpContext); },
+                error => ModelState.AddModelError(string.Empty, error)
+            );
 
+            if (!success || proposals == null)
+                return View("NotFound");
 
+            return View("FreelancerProposals", proposals);
+        }
     }
 }

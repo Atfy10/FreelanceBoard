@@ -21,7 +21,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             model.dateCreated = DateTime.UtcNow;
-
+            model.SkillNames = model.SkillName.Split(',').ToList();
 			var response = await client.PostAsJsonAsync("/api/Job/create", model);
 			if (response.IsSuccessStatusCode)
 				return;

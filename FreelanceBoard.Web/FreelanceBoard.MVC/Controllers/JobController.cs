@@ -69,7 +69,7 @@ namespace FreelanceBoard.MVC.Controllers
         [HttpGet]
         public IActionResult MyJobApplication()
         {
-            return View("MyJobApplication");
+            return View("FreelancerProposals");
         }
 
         [HttpGet]
@@ -84,6 +84,7 @@ namespace FreelanceBoard.MVC.Controllers
 		public async Task<IActionResult> CreateJob(JobCreateViewModel model)
 		{
 			ModelState.Remove(nameof(model.UserId));
+			ModelState.Remove(nameof(model.SkillNames));
 
 			if (!ModelState.IsValid)
 			{
@@ -91,21 +92,15 @@ namespace FreelanceBoard.MVC.Controllers
 			}
 
 			model.UserId = User.GetUserId();
-
-
 			var success = await _executor.Execute(
 				async () => await _jobService.CreateJobAsync(model, HttpContext),
 				error => ModelState.AddModelError(string.Empty, error)
 			);
 
 			if (!success)
-			{
                 return View(model);
-			}
+
             return RedirectToAction("ClientDashboard", "Job");
 		}
-
-
-
 	}
 }

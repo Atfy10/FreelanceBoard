@@ -23,7 +23,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var proposalResponse = await client.GetAsync($"/api/Proposal/job/{id}/proposals");
-            var jobResponse = await client.GetAsync($"/api/job/get?id={id}");
+            var jobResponse = await client.GetAsync($"/api/Job/get?id={id}");
 
             if (!proposalResponse.IsSuccessStatusCode)
                 throw new ApplicationException("Failed to fetch proposals");
@@ -45,7 +45,6 @@ namespace FreelanceBoard.MVC.Services.Implementations
             return jobProposals;
         }
 
-
         public async Task<List<JobWithProposalsViewModel>> GetProposalsByFreelancerIdAsync(string freelancerId, HttpContext httpContext)
         {
             var token = httpContext.User.GetAccessToken();
@@ -53,7 +52,6 @@ namespace FreelanceBoard.MVC.Services.Implementations
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await client.GetAsync($"/api/Proposal/freelancer/{freelancerId}/proposals");
-            //var jobresponse = await client.GetAsync($"/api/job/get?id={id}");
 
             if (!response.IsSuccessStatusCode)
                 throw new ApplicationException("Failed to fetch proposals");

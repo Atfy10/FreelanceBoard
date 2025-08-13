@@ -30,7 +30,8 @@ namespace FreelanceBoard.MVC.Models
 
 		[Required(ErrorMessage = "Skills are required")]
 		[MinLength(1, ErrorMessage = "At least one skill is required")]
-		public List<string> SkillNames { get; set; } = new List<string>();
+		public string SkillName { get; set; }
+		public List<string> SkillNames { get; set; }
 
 		public string UserId { get; set; }
 
