@@ -13,11 +13,11 @@ namespace FreelanceBoard.Core.Helpers
         public string Message { get; protected set; }
         public int StatusCode { get; set; }
 
-        protected ResultBase(bool isSuccess, string operationType, string message)
-        {
-            IsSuccess = isSuccess;
-            OperationType = operationType;
-            Message = message;
-        }
-    }
+		protected ResultBase(bool isSuccess, string operationType, string message)
+		{
+			IsSuccess = isSuccess;
+			OperationType = operationType;
+			Message = message;
+		}
+	}
 }

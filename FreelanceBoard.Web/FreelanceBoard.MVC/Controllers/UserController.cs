@@ -131,7 +131,9 @@ namespace FreelanceBoard.MVC.Controllers
                 async () =>
                 {
                     await _userService.ChangePasswordAsync(model, HttpContext);
-                    TempData["Success"] = "Password changed successfully.";
+					await _userService.LogoutAsync(HttpContext);
+
+					TempData["Success"] = "Password changed successfully.";
                 },
                 error =>{ ModelState.AddModelError(string.Empty, error);
                     errorMessage = error;

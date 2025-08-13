@@ -85,5 +85,32 @@ namespace FreelanceBoard.MVC.Controllers
 			return View(model);
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> CreateJob(JobCreateViewModel model)
+		{
+			ModelState.Remove(nameof(model.UserId));
+
+			if (!ModelState.IsValid)
+			{
+                return View(model);
+			}
+
+			model.UserId = User.GetUserId();
+
+
+			var success = await _executor.Execute(
+				async () => await _jobService.CreateJobAsync(model, HttpContext),
+				error => ModelState.AddModelError(string.Empty, error)
+			);
+
+			if (!success)
+			{
+                return View(model);
+			}
+            return RedirectToAction("ClientDashboard", "Job");
+		}
+
+
+
 	}
 }

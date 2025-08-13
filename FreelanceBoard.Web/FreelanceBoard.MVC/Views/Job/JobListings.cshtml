@@ -377,7 +377,7 @@
             <div class="col-lg-6 col-12 d-flex justify-content-end">
                 @if (User.IsInRole("Client"))
                 {
-                    <button class="create-job-btn" data-bs-toggle="modal" data-bs-target="#createJobModal">
+                    <button class="create-job-btn" onclick="location.href='@Url.Action("CreateJob", "Job")'">
                         <i class="bi-plus-circle"></i>
                         Create New Job
                     </button>

@@ -16,5 +16,6 @@ namespace FreelanceBoard.Core.Interfaces
         Task<IEnumerable<Job>?> GetJobsFilteredCategory(List<string> category);
         Task<IEnumerable<Job>?> GetJobsFilteredSkills(List<string> skill);
         Task<IEnumerable<Job>> GetJobsByUserIdAsync(string userId);
-    }
+     
+	}
 }
