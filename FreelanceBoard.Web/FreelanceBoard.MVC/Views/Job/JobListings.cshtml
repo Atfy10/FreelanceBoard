@@ -437,7 +437,12 @@
                                 </p>
                                 @if (User.IsInRole("Freelancer"))
                                 {
-                                    <button class="custom-btn btn ms-auto" onclick="openApplyModal(@job.Id)">Apply now</button>
+                                    <a asp-controller="Proposal"
+                                       asp-action="CreateProposal"
+                                       asp-route-jobId="@job.Id"
+                                       class="custom-btn btn ms-auto">
+                                        Apply now
+                                    </a>
                                 }
                                 else
                                 {
@@ -618,7 +623,7 @@
     </div>
 </div>
 
-<!-- Apply for Job Modal -->
+@* <!-- Apply for Job Modal -->
 <div class="modal fade" id="applyJobModal" tabindex="-1" aria-labelledby="applyJobModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -704,7 +709,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
 
 <script>
                 const sortSwitch = document.getElementById("sortOrderSwitch");
