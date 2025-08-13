@@ -178,7 +178,7 @@
                             <label asp-for="Price">Your Proposed Price *</label>
                             <div class="input-group">
                                 <span class="input-group-text">$</span>
-                                <input asp-for="Price" type="number" class="form-control" placeholder="Enter your proposed price" step="0.01" min="0">
+                                <input asp-for="Price" type="number" class="form-control" placeholder="Enter your proposed price" step="1" min="1">
                             </div>
                             <span asp-validation-for="Price" class="text-danger"></span>
                         </div>
