@@ -44,5 +44,26 @@ namespace FreelanceBoard.MVC.Services.Implementations
             jobProposals.JobDateCreated = jobApiResult.Data.PostedDate;
             return jobProposals;
         }
+
+
+        public async Task<List<JobWithProposalsViewModel>> GetProposalsByFreelancerIdAsync(string freelancerId, HttpContext httpContext)
+        {
+            var token = httpContext.User.GetAccessToken();
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.GetAsync($"/api/Proposal/freelancer/{freelancerId}/proposals");
+            //var jobresponse = await client.GetAsync($"/api/job/get?id={id}");
+
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException("Failed to fetch proposals");
+
+            var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<List<JobWithProposalsViewModel>>>();
+
+            if (apiResult is null || !apiResult.IsSuccess)
+                throw new ApplicationException(apiResult?.Message ?? "No proposals found");
+
+            return apiResult.Data;
+        }
     }
 }

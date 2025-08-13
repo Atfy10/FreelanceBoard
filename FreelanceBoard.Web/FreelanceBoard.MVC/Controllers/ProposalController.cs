@@ -30,5 +30,20 @@ namespace FreelanceBoard.MVC.Controllers
 
             return View("JobProposal", job);
         }
+
+        public async Task<IActionResult> FreelancerProposals()
+        {
+            List<JobWithProposalsViewModel> proposals = default!;
+            var success = await _executor.Execute(
+                async () =>
+                { proposals = await _proposalService.GetProposalsByFreelancerIdAsync(User.GetUserId(),HttpContext); },
+                error => ModelState.AddModelError(string.Empty, error)
+            );
+
+            if (!success || proposals == null)
+                return View("NotFound");
+
+            return View("FreelancerProposals", proposals);
+        }
     }
 }

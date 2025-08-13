@@ -9,6 +9,7 @@ namespace FreelanceBoard.MVC.Models
         public string Description { get; set; }    // Job description
         public decimal Price { get; set; }         // Price/budget
         public DateTime DateCreated { get; set; }  // Posting date
+        public DateTime Deadline {  get; set; }
         public List<Category> Categories { get; set; } = new();
         public List<Proposal> Proposals { get; set; } = new();
     }
