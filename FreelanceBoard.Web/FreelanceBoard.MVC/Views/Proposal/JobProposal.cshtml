@@ -374,15 +374,8 @@
                                 <div class="proposals-header">
                                     <div class="d-flex align-items-center gap-3">
                                         <h2 class="proposals-title">Proposals</h2>
-                                        <span class="proposals-count" id="proposalsCount">8 Applications</span>
+                                        <span class="proposals-count" id="proposalsCount">@Model.Proposals.Count Applications</span>
                                     </div>
-                                    <select class="form-select sort-dropdown" id="sortProposals">
-                                        <option value="newest">Newest First</option>
-                                        <option value="oldest">Oldest First</option>
-                                        <option value="price-low">Price: Low to High</option>
-                                        <option value="price-high">Price: High to Low</option>
-                                        <option value="rating">Highest Rated</option>
-                                    </select>
                                 </div>
 
                                  <!-- Proposals Container  -->
@@ -391,35 +384,14 @@
                         {
                             <div class="proposal-card" data-proposal-id="@proposal.Id">
                                 <div class="proposal-header">
-                                    <div class="freelancer-info">
-                                        @* <img src="@proposal.FreelancerAvatarUrl" alt="@proposal.FreelancerName" class="freelancer-avatar"> *@
+                                    <div class="freelancer-info">   
                                         <div class="freelancer-details">
                                             <h4>@proposal.FreelancerName</h4>
-                                            <div class="freelancer-rating">
-                                                @* <div class="stars">
-                                                    @for (int i = 0; i < proposal.Rating; i++)
-                                                    {
-                                                        <i class="bi-star-fill"></i>
-                                                    }
-                                                    @for (int i = proposal.Rating; i < 5; i++)
-                                                    {
-                                                        <i class="bi-star"></i>
-                                                    }
-                                                </div> *@
-                                                @* <span>@proposal.Rating.ToString("0.0") (@proposal.ReviewCount reviews)</span> *@
-                                            </div>
-                                            @* <div class="freelancer-location">
-                                                <i class="bi-geo-alt"></i>
-                                                @proposal.Location
-                                            </div> *@
                                         </div>
                                     </div>
                                     <div class="proposal-price">
                                         <div class="price-amount">$@proposal.Price</div>
-                                        @* <div class="delivery-time">
-                                            <i class="bi-clock"></i>
-                                            @proposal.DeliveryTime
-                                        </div> *@
+
                                         <span class="proposal-status status-@proposal.Status.ToLower()">
                                             @proposal.Status
                                         </span>
@@ -427,39 +399,8 @@
                                 </div>
 
                                 <div class="proposal-message">
-                                    <h5>Cover Letter</h5>
                                     <p>@proposal.Message</p>
                                 </div>
-
-                               @*  <div class="proposal-meta">
-                                    <div class="meta-item">
-                                        <i class="bi-calendar-check"></i>
-                                        <span>Applied @proposal.AppliedTimeAgo</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="bi-briefcase"></i>
-                                        <span>@proposal.CompletedJobs jobs completed</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="bi-award"></i>
-                                        <span>@proposal.Badge</span>
-                                    </div>
-                                </div> *@
-
-                                @* @if (proposal.PortfolioLinks != null && proposal.PortfolioLinks.Any())
-                                {
-                                    <div class="portfolio-links">
-                                        <h6>Portfolio Links:</h6>
-                                        @foreach (var link in proposal.PortfolioLinks)
-                                        {
-                                            <a href="@link.Url" class="portfolio-link" target="_blank">
-                                                <i class="@link.IconClass"></i>
-                                                @link.Title
-                                            </a>
-                                        }
-                                    </div>
-                                }
- *@
                                 <div class="proposal-actions">
                                     <button class="action-btn btn-accept" onclick="acceptProposal(@proposal.Id)">
                                         <i class="bi-check-circle"></i>
@@ -468,10 +409,6 @@
                                     <button class="action-btn btn-reject" onclick="rejectProposal(@proposal.Id)">
                                         <i class="bi-x-circle"></i>
                                         Reject
-                                    </button>
-                                    <button class="action-btn btn-message" onclick="messageFreelancer(@proposal.Id)">
-                                        <i class="bi-chat-dots"></i>
-                                        Message
                                     </button>
                                     <button class="action-btn btn-view-profile" onclick="viewProfile(@proposal.Id)">
                                         <i class="bi-person"></i>
