@@ -5,7 +5,7 @@ namespace FreelanceBoard.MVC.Services.Interfaces
     public interface IJobService
     {
         Task<List<ClientDashboardViewModel>> GetAllJobsAsync(HttpContext httpContext, int page = 1);
-        Task<List<JobViewModel>> GetAllJobsSortedAsync(HttpContext httpContext, string sortBy, int page = 1);
+        Task<List<JobViewModel>> GetAllJobsSortedAsync(HttpContext httpContext, string sortBy, bool isAscending = true, int page = 1);
         Task<JobViewModel> GetJobByIdAsync(HttpContext httpContext, int id);
 
     }

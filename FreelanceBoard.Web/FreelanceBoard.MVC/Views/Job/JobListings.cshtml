@@ -27,347 +27,348 @@
 
 
 
-            .create-job-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
-                color: white;
-                text-decoration: none;
-            }
+        .create-job-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+            color: white;
+            text-decoration: none;
+        }
 
-            .job-actions {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                display: flex;
-                gap: 5px;
-                z-index: 10;
-                opacity: 0.7;
-                transition: all 0.3s ease;
-            }
+    .job-actions {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        gap: 5px;
+        z-index: 10;
+        opacity: 0.7;
+        transition: all 0.3s ease;
+    }
 
-            .job-thumb:hover .job-actions {
-                opacity: 1;
-            }
+    .job-thumb:hover .job-actions {
+        opacity: 1;
+    }
 
-            .action-btn {
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                border: none;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 12px;
-                transition: all 0.3s ease;
-                cursor: pointer;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            }
+    .action-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
 
-            .edit-btn {
-                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                color: white;
-            }
+    .edit-btn {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+    }
 
-            .edit-btn:hover {
-                transform: scale(1.1);
-                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-            }
+        .edit-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
 
-            .delete-btn {
-                background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-                color: white;
-            }
+    .delete-btn {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+    }
 
-            .delete-btn:hover {
-                transform: scale(1.1);
-                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-            }
+        .delete-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
 
-            .job-thumb {
-                position: relative;
-                overflow: visible;
-            }
+    .job-thumb {
+        position: relative;
+        overflow: visible;
+    }
 
-            .job-image-box-wrap {
-                position: relative;
-            }
+    .job-image-box-wrap {
+        position: relative;
+    }
 
-            /* Modal Styles */
-            .modal-content {
-                border: none;
-                border-radius: 20px;
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            }
+    /* Modal Styles */
+    .modal-content {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
 
-            .modal-header {
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-                color: white;
-                border-radius: 20px 20px 0 0;
-                border: none;
-            }
+    .modal-header {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        color: white;
+        border-radius: 20px 20px 0 0;
+        border: none;
+    }
 
-            .modal-header .btn-close {
-                filter: brightness(0) invert(1);
-            }
+        .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
 
-            .modal-body {
-                padding: 30px;
-            }
+    .modal-body {
+        padding: 30px;
+    }
 
-            .form-group {
-                margin-bottom: 20px;
-            }
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-            .form-group label {
-                color: #6366f1;
-                font-weight: 600;
-                margin-bottom: 8px;
-                display: block;
-            }
+        .form-group label {
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
 
-            .form-control, .form-select {
-                border: none;
-                background: rgba(139, 92, 246, 0.1);
-                border-radius: 10px;
-                padding: 12px 15px;
-                font-size: 14px;
-                transition: all 0.3s ease;
-            }
+    .form-control, .form-select {
+        border: none;
+        background: rgba(139, 92, 246, 0.1);
+        border-radius: 10px;
+        padding: 12px 15px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
 
-            .form-control:focus, .form-select:focus {
-                background: rgba(139, 92, 246, 0.15);
-                box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-                border: none;
-                outline: none;
-            }
+        .form-control:focus, .form-select:focus {
+            background: rgba(139, 92, 246, 0.15);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+            border: none;
+            outline: none;
+        }
 
-            .form-control::placeholder {
-                color: #9ca3af;
-            }
+        .form-control::placeholder {
+            color: #9ca3af;
+        }
 
-            textarea.form-control {
-                min-height: 100px;
-                resize: vertical;
-            }
+    textarea.form-control {
+        min-height: 100px;
+        resize: vertical;
+    }
 
-            .modal-footer {
-                border: none;
-                padding: 20px 30px 30px;
-            }
+    .modal-footer {
+        border: none;
+        padding: 20px 30px 30px;
+    }
 
-            .btn-primary {
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-                border: none;
-                padding: 12px 30px;
-                border-radius: 25px;
-                font-weight: 600;
-                transition: all 0.3s ease;
-            }
+    .btn-primary {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
 
-            .btn-primary:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
-            }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
 
-            .btn-secondary {
-                background: #6c757d;
-                border: none;
-                padding: 12px 30px;
-                border-radius: 25px;
-                font-weight: 600;
-                transition: all 0.3s ease;
-            }
+    .btn-secondary {
+        background: #6c757d;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
 
-            .btn-secondary:hover {
-                background: #5a6268;
-                transform: translateY(-2px);
-            }
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
 
-            .skills-input-container {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                margin-top: 10px;
-            }
+    .skills-input-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+    }
 
-            .skill-tag {
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-                color: white;
-                padding: 6px 12px;
-                border-radius: 15px;
-                font-size: 12px;
-                font-weight: 500;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
+    .skill-tag {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
 
-            .skill-remove {
-                background: rgba(255, 255, 255, 0.2);
-                border: none;
-                color: white;
-                border-radius: 50%;
-                width: 18px;
-                height: 18px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                font-size: 10px;
-            }
+    .skill-remove {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 10px;
+    }
 
-            .add-skill-input {
-                border: 2px dashed #8b5cf6;
-                background: rgba(139, 92, 246, 0.05);
-                color: #6366f1;
-                padding: 6px 12px;
-                border-radius: 15px;
-                font-size: 12px;
-                min-width: 100px;
-                outline: none;
-            }
+    .add-skill-input {
+        border: 2px dashed #8b5cf6;
+        background: rgba(139, 92, 246, 0.05);
+        color: #6366f1;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        min-width: 100px;
+        outline: none;
+    }
 
-            .add-skill-input::placeholder {
-                color: #8b5cf6;
-            }
+        .add-skill-input::placeholder {
+            color: #8b5cf6;
+        }
 
-            /* Delete Confirmation Modal */
-            .delete-modal .modal-header {
-                background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            }
+    /* Delete Confirmation Modal */
+    .delete-modal .modal-header {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
 
-            .delete-modal .btn-danger {
-                background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-                border: none;
-                padding: 12px 30px;
-                border-radius: 25px;
-                font-weight: 600;
-                transition: all 0.3s ease;
-            }
+    .delete-modal .btn-danger {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
 
-            .delete-modal .btn-danger:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
-            }
+        .delete-modal .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
 
-            .alert-warning {
-                background: rgba(245, 158, 11, 0.1);
-                border: 1px solid rgba(245, 158, 11, 0.3);
-                color: #f59e0b;
-                border-radius: 10px;
-            }
+    .alert-warning {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        color: #f59e0b;
+        border-radius: 10px;
+    }
 
-                .action-btn {
-                    width: 28px;
-                    height: 28px;
-                    font-size: 11px;
-                }
+    .action-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+    }
 
-                .create-job-btn {
-                    width: 100%;
-                    justify-content: center;
-                    margin-bottom: 20px;
-                }
-            }
+    .create-job-btn {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
 
-            .job-info-section .job-icon {
-                width: 60px;
-                height: 60px;
-                background: rgba(99, 102, 241, 0.1);
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+    }
 
-            .job-info-section h6 {
-                color: #6366f1;
-                font-weight: 600;
-            }
+    .job-info-section .job-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(99, 102, 241, 0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-            .input-group-text {
-                background: rgba(139, 92, 246, 0.1);
-                border: none;
-                color: #6366f1;
-                font-weight: 600;
-            }
-        </style>
+    .job-info-section h6 {
+        color: #6366f1;
+        font-weight: 600;
+    }
 
-            <header class="site-header">
-                <div class="section-overlay"></div>
-                <div class="container">
+    .input-group-text {
+        background: rgba(139, 92, 246, 0.1);
+        border: none;
+        color: #6366f1;
+        font-weight: 600;
+    }
+</style>
+
+<header class="site-header">
+    <div class="section-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-12 text-center">
+                <h1 class="text-white">Job Listings</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a href="/Home">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Job listings</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="section-padding pb-0 d-flex justify-content-center align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <form class="custom-form hero-form" action="#" method="get" role="form">
+                    <h3 class="text-white mb-3">Search your dream job</h3>
                     <div class="row">
-                        <div class="col-lg-12 col-12 text-center">
-                            <h1 class="text-white">Job Listings</h1>
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb justify-content-center">
-                                    <li class="breadcrumb-item"><a href="/Home">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Job listings</li>
-                                </ol>
-                            </nav>
+
+                        <div class="col-lg-4 col-md-4 col-12">
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon"></i></span>
+                                <select class="form-select form-control" name="job-salary" id="job-salary" aria-label="Default select example">
+                                    <option selected>Price Range</option>
+                                    <option value="1">$300k - $500k</option>
+                                    <option value="2">$10000k - $45000k</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </header>
-
-            <section class="section-padding pb-0 d-flex justify-content-center align-items-center">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 col-12">
-                            <form class="custom-form hero-form" action="#" method="get" role="form">
-                                <h3 class="text-white mb-3">Search your dream job</h3>
-                                <div class="row">
-                                    
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <div class="input-group">
-                                            <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon"></i></span>
-                                            <select class="form-select form-control" name="job-salary" id="job-salary" aria-label="Default select example">
-                                                <option selected>Price Range</option>
-                                                <option value="1">$300k - $500k</option>
-                                                <option value="2">$10000k - $45000k</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <div class="input-group">
-                                            <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
-                                            <select class="form-select form-control" name="job-level" id="job-level" aria-label="Default select example">
-                                                <option selected>Category</option>
-                                                <option value="1">Internship</option>
-                                                <option value="2">Junior</option>
-                                                <option value="2">Senior</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <div class="input-group">
+                        <div class="col-lg-4 col-md-4 col-12">
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
+                                <select class="form-select form-control" name="job-level" id="job-level" aria-label="Default select example">
+                                    <option selected>Category</option>
+                                    <option value="1">Internship</option>
+                                    <option value="2">Junior</option>
+                                    <option value="2">Senior</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-12">
+                            <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><i class="custom-icon bi-code-slash me-1"></i></span>
-                                            <select class="form-select form-control" name="job-remote" id="job-remote" aria-label="Default select example">
-                                                <option selected>Skills</option>
-                                                <option value="1">Full Time</option>
-                                                <option value="2">Contract</option>
-                                                <option value="2">Part Time</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-12">
-                                        <button type="submit" class="form-control">
-                                            Search job
-                                        </button>
-                                    </div>
-                                    <div class="col-12">
-                                    </div>
-                                </div>
-                            </form>
+                                <select class="form-select form-control" name="job-remote" id="job-remote" aria-label="Default select example">
+                                    <option selected>Skills</option>
+                                    <option value="1">Full Time</option>
+                                    <option value="2">Contract</option>
+                                    <option value="2">Part Time</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-lg-6 col-12">
-                            <img src="images/4557388.png" class="hero-image img-fluid" alt="">
+                        <div class="col-lg-12 col-12">
+                            <button type="submit" class="form-control">
+                                Search job
+                            </button>
+                        </div>
+                        <div class="col-12">
                         </div>
                     </div>
-                </div>
-            </section>
+                </form>
+            </div>
+            <div class="col-lg-6 col-12">
+                <img src="images/4557388.png" class="hero-image img-fluid" alt="">
+            </div>
+        </div>
+    </div>
+</section>
 
-            <section class="job-section section-padding">
+<section class="job-section section-padding">
     <div class="container">
         <div class="row align-items-center mb-4">
             <div class="col-lg-6 col-12">
@@ -386,8 +387,8 @@
 
         <!-- Sorting buttons -->
         <div class="mb-4">
-            <a href="@Url.Action("JobListings", new { sortBy = "Date" })" class="btn btn-primary me-2">Sort by Date</a>
-            <a href="@Url.Action("JobListings", new { sortBy = "Budget" })" class="btn btn-secondary">Sort by Budget</a>
+            <a id="date-sort" href="@Url.Action("JobListings", new { sortBy = "Date" })" class="btn btn-primary sort-by-btn">Sort by Date</a>
+            <a id="budget-sort" href="@Url.Action("JobListings", new { sortBy = "Budget" })" class="btn btn-secondary sort-by-btn">Sort by Budget</a>
         </div>
 
         <div class="form-check form-switch">
@@ -436,12 +437,7 @@
                                 </p>
                                 @if (User.IsInRole("Freelancer"))
                                 {
-                                    <a asp-controller="Proposal"
-                                       asp-action="CreateProposal"
-                                       asp-route-jobId="@job.Id"
-                                       class="custom-btn btn ms-auto">
-                                        Apply now
-                                    </a>
+                                    <button class="custom-btn btn ms-auto" onclick="openApplyModal(@job.Id)">Apply now</button>
                                 }
                                 else
                                 {
@@ -464,23 +460,23 @@
                                 <span aria-hidden="true">Prev</span>
                             </a>
                         </li>
-                        <li class="page-item active" aria-current="page">
+                        <li class="page-item page-number active" aria-current="page">
                             <a class="page-link" href="#">1</a>
                         </li>
-                        <li class="page-item">
+                        <li class="page-item page-number">
                             <a class="page-link" href="#">2</a>
                         </li>
-                        <li class="page-item">
+                        <li class="page-item page-number">
                             <a class="page-link" href="#">3</a>
                         </li>
-                        <li class="page-item">
+                        <li class="page-item page-number">
                             <a class="page-link" href="#">4</a>
                         </li>
-                        <li class="page-item">
+                        <li class="page-item page-number">
                             <a class="page-link" href="#">5</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
+                            <a class="page-link page-number" href="#" aria-label="Next">
                                 <span aria-hidden="true">Next</span>
                             </a>
                         </li>
@@ -491,471 +487,544 @@
     </div>
 </section>
 
-    <section class="cta-section">
-        <div class="section-overlay"></div>
-                <div class="container">
+<section class="cta-section">
+    <div class="section-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-10">
+                <h2 class="text-white mb-2">Over 10k opening jobs</h2>
+                <p class="text-white">Gotto Job is a free HTML CSS template for job hunting related websites. This layout is based on the famous Bootstrap 5 CSS framework. Thank you for visiting Tooplate website.</p>
+            </div>
+            <div class="col-lg-4 col-12 ms-auto">
+                <div class="custom-border-btn-wrap d-flex align-items-center mt-lg-4 mt-2">
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <a href="#" class="custom-btn custom-border-btn btn me-4">Create an account</a>
+                        <a href="#" class="custom-link">Post a job</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Create/Edit Job Modal -->
+<div class="modal fade" id="createJobModal" tabindex="-1" aria-labelledby="createJobModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createJobModalLabel">
+                    <i class="bi-briefcase-fill me-2"></i>
+                    <span id="modalTitle">Create New Job</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="jobForm">
+                    <input type="hidden" id="jobId" value="">
+                    <input type="hidden" id="currentUserId" value="@User.GetUserId()" />
                     <div class="row">
-                        <div class="col-lg-6 col-10">
-                            <h2 class="text-white mb-2">Over 10k opening jobs</h2>
-                            <p class="text-white">Gotto Job is a free HTML CSS template for job hunting related websites. This layout is based on the famous Bootstrap 5 CSS framework. Thank you for visiting Tooplate website.</p>
-                        </div>
-                        <div class="col-lg-4 col-12 ms-auto">
-                            <div class="custom-border-btn-wrap d-flex align-items-center mt-lg-4 mt-2">
-                                @if (!User.Identity.IsAuthenticated)
-                                {
-                                <a href="#" class="custom-btn custom-border-btn btn me-4">Create an account</a>
-                                <a href="#" class="custom-link">Post a job</a>
-                                }
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="jobTitle">Job Title *</label>
+                                <input type="text" class="form-control" id="jobTitle" placeholder="Enter job title" required>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
-
-        <!-- Create/Edit Job Modal -->
-        <div class="modal fade" id="createJobModal" tabindex="-1" aria-labelledby="createJobModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createJobModalLabel">
-                            <i class="bi-briefcase-fill me-2"></i>
-                            <span id="modalTitle">Create New Job</span>
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="jobForm">
-                            <input type="hidden" id="jobId" value="">
-                            <input type="hidden" id="currentUserId" value="@User.GetUserId()" />
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <label for="jobTitle">Job Title *</label>
-                                        <input type="text" class="form-control" id="jobTitle" placeholder="Enter job title" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="jobCategory">Category *</label>
-                                        <select class="form-select" id="jobCategory" required>
-                                            <option value="">Select Category</option>
-                                            <option value="Technology">Technology</option>
-                                            <option value="Design">Design</option>
-                                            <option value="Marketing">Marketing</option>
-                                            <option value="Sales">Sales</option>
-                                            <option value="Customer Support">Customer Support</option>
-                                            <option value="Education">Education</option>
-                                            <option value="Healthcare">Healthcare</option>
-                                            <option value="Finance">Finance</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label for="jobDescription">Job Description *</label>
-                                <textarea class="form-control" id="jobDescription" rows="4" placeholder="Describe the job requirements, responsibilities, and qualifications..." required></textarea>
+                                <label for="jobCategory">Category *</label>
+                                <select class="form-select" id="jobCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Design">Design</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="Customer Support">Customer Support</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Finance">Finance</option>
+                                </select>
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="jobPrice">Price/Salary *</label>
-                                        <input type="number" class="form-control" id="jobPrice" placeholder="Enter amount" step="0.01" min="0" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="jobLocation">Location</label>
-                                        <input type="text" class="form-control" id="jobLocation" placeholder="e.g., Remote, New York, London">
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label for="jobDescription">Job Description *</label>
+                        <textarea class="form-control" id="jobDescription" rows="4" placeholder="Describe the job requirements, responsibilities, and qualifications..." required></textarea>
+                    </div>
 
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="jobSkills">Required Skills</label>
-                                <input type="text" class="add-skill-input" id="skillInput" placeholder="Type skill and press Enter">
-                                <div class="skills-input-container" id="skillsContainer">
-                                    <!-- Skills will be added here dynamically -->
-                                </div>
+                                <label for="jobPrice">Price/Salary *</label>
+                                <input type="number" class="form-control" id="jobPrice" placeholder="Enter amount" step="0.01" min="0" required>
                             </div>
-                        </form>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="jobLocation">Location</label>
+                                <input type="text" class="form-control" id="jobLocation" placeholder="e.g., Remote, New York, London">
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" onclick="saveJob()">
-                            <i class="bi-check-circle me-2"></i>
-                            <span id="saveButtonText">Create Job</span>
-                        </button>
+
+                    <div class="form-group">
+                        <label for="jobSkills">Required Skills</label>
+                        <input type="text" class="add-skill-input" id="skillInput" placeholder="Type skill and press Enter">
+                        <div class="skills-input-container" id="skillsContainer">
+                            <!-- Skills will be added here dynamically -->
+                        </div>
                     </div>
-                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveJob()">
+                    <i class="bi-check-circle me-2"></i>
+                    <span id="saveButtonText">Create Job</span>
+                </button>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Delete Confirmation Modal -->
-        <div class="modal fade delete-modal" id="deleteJobModal" tabindex="-1" aria-labelledby="deleteJobModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteJobModalLabel">
-                            <i class="bi-exclamation-triangle-fill me-2"></i>
-                            Confirm Delete
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-warning">
-                            <i class="bi-info-circle me-2"></i>
-                            This action cannot be undone!
-                        </div>
-                        <p>Are you sure you want to delete the job "<strong id="deleteJobTitle"></strong>"?</p>
-                        <p class="text-muted">This will permanently remove the job listing and all associated data.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger" onclick="confirmDelete()">
-                            <i class="bi-trash me-2"></i>
-                            Delete Job
-                        </button>
-                    </div>
+<!-- Delete Confirmation Modal -->
+<div class="modal fade delete-modal" id="deleteJobModal" tabindex="-1" aria-labelledby="deleteJobModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteJobModalLabel">
+                    <i class="bi-exclamation-triangle-fill me-2"></i>
+                    Confirm Delete
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="bi-info-circle me-2"></i>
+                    This action cannot be undone!
                 </div>
+                <p>Are you sure you want to delete the job "<strong id="deleteJobTitle"></strong>"?</p>
+                <p class="text-muted">This will permanently remove the job listing and all associated data.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+                    <i class="bi-trash me-2"></i>
+                    Delete Job
+                </button>
             </div>
         </div>
+    </div>
+</div>
 
-        @* <!-- Apply for Job Modal -->
-        <div class="modal fade" id="applyJobModal" tabindex="-1" aria-labelledby="applyJobModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="applyJobModalLabel">
-                            <i class="bi-briefcase-heart me-2"></i>
-                            <span id="applyModalTitle">Apply for Job</span>
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="job-info-section mb-4">
-                            <div class="d-flex align-items-center p-3 bg-light rounded">
-                                <div class="job-icon me-3">
-                                    <i class="bi-briefcase-fill text-primary" style="font-size: 2rem;"></i>
-                                </div>
-                                <div>
-                                    <h6 class="mb-1" id="applyJobTitle">Job Title</h6>
-                                    <p class="mb-0 text-muted" id="applyJobCompany">Company Name</p>
-                                    <small class="text-success fw-bold" id="applyJobPrice">$0</small>
-                                </div>
-                            </div>
+<!-- Apply for Job Modal -->
+<div class="modal fade" id="applyJobModal" tabindex="-1" aria-labelledby="applyJobModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="applyJobModalLabel">
+                    <i class="bi-briefcase-heart me-2"></i>
+                    <span id="applyModalTitle">Apply for Job</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="job-info-section mb-4">
+                    <div class="d-flex align-items-center p-3 bg-light rounded">
+                        <div class="job-icon me-3">
+                            <i class="bi-briefcase-fill text-primary" style="font-size: 2rem;"></i>
                         </div>
-
-                        <form id="applyJobForm">
-                            <input type="hidden" id="applyJobId" value="">
-                            
-                            <div class="form-group">
-                                <label for="proposalMessage">Cover Letter / Proposal Message *</label>
-                                <textarea class="form-control" id="proposalMessage" rows="6" placeholder="Write a compelling message explaining why you're the perfect fit for this job. Highlight your relevant experience, skills, and what value you can bring to this project..." required></textarea>
-                                <small class="text-muted">Tip: Personalize your message and mention specific requirements from the job description.</small>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="proposalPrice">Your Proposed Price *</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">$</span>
-                                            <input type="number" class="form-control" id="proposalPrice" placeholder="Enter your price" step="0.01" min="0" required>
-                                        </div>
-                                        <small class="text-muted">Enter your competitive rate for this project.</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="deliveryTime">Estimated Delivery Time</label>
-                                        <select class="form-select" id="deliveryTime">
-                                            <option value="">Select timeframe</option>
-                                            <option value="1-3 days">1-3 days</option>
-                                            <option value="1 week">1 week</option>
-                                            <option value="2 weeks">2 weeks</option>
-                                            <option value="1 month">1 month</option>
-                                            <option value="2-3 months">2-3 months</option>
-                                            <option value="3+ months">3+ months</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="portfolioLinks">Portfolio Links (Optional)</label>
-                                <textarea class="form-control" id="portfolioLinks" rows="3" placeholder="Share links to your relevant work, portfolio, or previous projects that demonstrate your expertise for this job..."></textarea>
-                                <small class="text-muted">Include URLs to your best work that's relevant to this project.</small>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="agreeTerms" required>
-                                    <label class="form-check-label" for="agreeTerms">
-                                        I agree to the <a href="#" class="text-primary">Terms of Service</a> and confirm that all information provided is accurate.
-                                    </label>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" onclick="submitProposal()">
-                            <i class="bi-send me-2"></i>
-                            Submit Proposal
-                        </button>
+                        <div>
+                            <h6 class="mb-1" id="applyJobTitle">Job Title</h6>
+                            <p class="mb-0 text-muted" id="applyJobCompany">Company Name</p>
+                            <small class="text-success fw-bold" id="applyJobPrice">$0</small>
+                        </div>
                     </div>
                 </div>
+
+                <form id="applyJobForm">
+                    <input type="hidden" id="applyJobId" value="">
+
+                    <div class="form-group">
+                        <label for="proposalMessage">Cover Letter / Proposal Message *</label>
+                        <textarea class="form-control" id="proposalMessage" rows="6" placeholder="Write a compelling message explaining why you're the perfect fit for this job. Highlight your relevant experience, skills, and what value you can bring to this project..." required></textarea>
+                        <small class="text-muted">Tip: Personalize your message and mention specific requirements from the job description.</small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="proposalPrice">Your Proposed Price *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" id="proposalPrice" placeholder="Enter your price" step="0.01" min="0" required>
+                                </div>
+                                <small class="text-muted">Enter your competitive rate for this project.</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="deliveryTime">Estimated Delivery Time</label>
+                                <select class="form-select" id="deliveryTime">
+                                    <option value="">Select timeframe</option>
+                                    <option value="1-3 days">1-3 days</option>
+                                    <option value="1 week">1 week</option>
+                                    <option value="2 weeks">2 weeks</option>
+                                    <option value="1 month">1 month</option>
+                                    <option value="2-3 months">2-3 months</option>
+                                    <option value="3+ months">3+ months</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="portfolioLinks">Portfolio Links (Optional)</label>
+                        <textarea class="form-control" id="portfolioLinks" rows="3" placeholder="Share links to your relevant work, portfolio, or previous projects that demonstrate your expertise for this job..."></textarea>
+                        <small class="text-muted">Include URLs to your best work that's relevant to this project.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">
+                                I agree to the <a href="#" class="text-primary">Terms of Service</a> and confirm that all information provided is accurate.
+                            </label>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </div> *@
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitProposal()">
+                    <i class="bi-send me-2"></i>
+                    Submit Proposal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <script>
-            const sortSwitch = document.getElementById("sortOrderSwitch");
-            const url = new URL(window.location.href);
-            const currentOrder = url.searchParams.get("order");
-
-            // Set the switch position based on the query string
-            if (currentOrder === "asc") {
-                sortSwitch.checked = true;
-            } else if (currentOrder === "desc") {
-                sortSwitch.checked = false;
-            }
-
-            sortSwitch.addEventListener("change", function () {
-                const isAscending = this.checked;
-                url.searchParams.set("order", isAscending ? "asc" : "desc");
-                window.location.href = url.toString();
-            });
-
-            // Skills management
-            document.getElementById('skillInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    addSkill();
+<script>
+                const sortSwitch = document.getElementById("sortOrderSwitch");
+                const dateSortBtn = document.getElementById("date-sort");
+                const budgetSortBtn = document.getElementById("budget-sort");
+                const url = new URL(window.location.href);
+                const currentOrder = url.searchParams.get("isAscending");
+                const page = url.searchParams.get("page");
+                const sort = url.searchParams.get("sortBy");
+                if(page<1)
+                {
+                    url.searchParams.set("page", "1");
                 }
-            });
-
-            function addSkill() {
-                const skillInput = document.getElementById('skillInput');
-                const skillName = skillInput.value.trim();
-                
-                if (skillName && !currentSkills.includes(skillName)) {
-                    currentSkills.push(skillName);
-                    renderSkills();
-                    skillInput.value = '';
+                // Set the switch position based on the query string
+                if (currentOrder === "true") {
+                    sortSwitch.checked = true;
+                } else if (currentOrder === "false") {
+                    sortSwitch.checked = false;
                 }
-            }
 
-            function removeSkill(skillName) {
-                currentSkills = currentSkills.filter(skill => skill !== skillName);
-                renderSkills();
-            }
-
-            function renderSkills() {
-                const container = document.getElementById('skillsContainer');
-                container.innerHTML = '';
-                
-                currentSkills.forEach(skill => {
-                    const skillTag = document.createElement('div');
-                    skillTag.className = 'skill-tag';
-                    skillTag.innerHTML = `
-                        ${skill}
-                        <button type="button" class="skill-remove" onclick="removeSkill('${skill}')">×</button>
-                    `;
-                    container.appendChild(skillTag);
+                sortSwitch.addEventListener("change", function () {
+                    const isAscending = this.checked;
+                    url.searchParams.set("isAscending", isAscending ? "true" : "false");
+                    url.searchParams.set("page", "1");
+                    window.location.href = url.toString();
                 });
-            }
 
-            // Modal management
-            function resetModal() {
-                document.getElementById('jobForm').reset();
-                document.getElementById('jobId').value = '';
-                currentSkills = [];
-                renderSkills();
-                currentJobId = null;
-            }
+                // sort by button
+                const buttons = document.querySelectorAll('.sort-by-btn');
+                
+                buttons.forEach(button => {
+                    if(sort=="Date"){
+                        dateSortBtn.classList.remove("btn-secondary");
+                        budgetSortBtn.classList.remove("btn-primary");
+                        dateSortBtn.classList.add("btn-primary");
+                        budgetSortBtn.classList.add("btn-secondary");
+                    }
+                    else if(sort == "Budget"){
+                        budgetSortBtn.classList.remove("btn-secondary");
+                        dateSortBtn.classList.remove("btn-primary");
+                        budgetSortBtn.classList.add("btn-primary");
+                        dateSortBtn.classList.add("btn-secondary");
+                    }
+                  button.addEventListener('click', function(e) {
+                    //e.preventDefault();
 
-            // Create new job
-            document.getElementById('createJobModal').addEventListener('show.bs.modal', function() {
-                if (!currentJobId) {
-                    document.getElementById('modalTitle').textContent = 'Create New Job';
-                    document.getElementById('saveButtonText').textContent = 'Create Job';
-                    resetModal();
+                    // Remove active class from all buttons
+                    buttons.forEach(btn => {
+                      btn.classList.remove('btn-primary');
+                      btn.classList.add('btn-secondary');
+                    });
+
+                    // Add active class to clicked button
+                    this.classList.add('btn-primary');
+                    this.classList.remove('btn-secondary');
+                  });
+                });
+
+                // Traverse between pages
+                const pages = document.querySelectorAll('.page-number');
+
+                pages.forEach((pageItem, index) => {
+                  pageItem.classList.remove("active");
+                  // index starts from 0, page numbers from 1, so add 1
+                  if (page == (index + 1)) {
+                    pageItem.classList.add("active");
+                  }
+
+                  // Add click event listener to each page
+                  pageItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // Remove active class from current active element
+                    const currentActive = document.querySelector('.page-number.active');
+                    if (currentActive) {
+                      currentActive.classList.remove('active');
+                    }
+
+                    // Add active class to clicked element
+                    this.classList.add('active');
+
+                    // Update URL param "page" with clicked page number
+                    const url = new URL(window.location);
+                    const pageNumber = this.textContent.trim();
+                    url.searchParams.set("page", pageNumber);
+
+                    // Redirect to updated URL to trigger page change
+                    window.location.href = url.toString();
+                  });
+                });
+
+               
+                // Skills management
+                document.getElementById('skillInput').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addSkill();
+                    }
+                });
+
+                function addSkill() {
+                    const skillInput = document.getElementById('skillInput');
+                    const skillName = skillInput.value.trim();
+
+                    if (skillName && !currentSkills.includes(skillName)) {
+                        currentSkills.push(skillName);
+                        renderSkills();
+                        skillInput.value = '';
+                    }
                 }
-            });
 
-            // Edit job
-            function editJob(jobId) {
-                const job = jobs.find(j => j.id === jobId);
-                if (!job) return;
+                function removeSkill(skillName) {
+                    currentSkills = currentSkills.filter(skill => skill !== skillName);
+                    renderSkills();
+                }
 
-                currentJobId = jobId;
-                
-                // Populate form
-                document.getElementById('jobId').value = job.id;
-                document.getElementById('jobTitle').value = job.title;
-                document.getElementById('jobDescription').value = job.description;
-                document.getElementById('jobCategory').value = job.category;
-                document.getElementById('jobPrice').value = job.price;
-                
-                // Set skills
-                currentSkills = [...job.skills];
-                renderSkills();
-                
-                // Update modal title
-                document.getElementById('modalTitle').textContent = 'Edit Job';
-                document.getElementById('saveButtonText').textContent = 'Update Job';
-                
-                // Show modal
-                new bootstrap.Modal(document.getElementById('createJobModal')).show();
-            }
+                function renderSkills() {
+                    const container = document.getElementById('skillsContainer');
+                    container.innerHTML = '';
 
-            // Save job (create or update)
-            async function saveJob() {
-    const form = document.getElementById('jobForm');
-    if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-    }
+                    currentSkills.forEach(skill => {
+                        const skillTag = document.createElement('div');
+                        skillTag.className = 'skill-tag';
+                        skillTag.innerHTML = `
+                            ${skill}
+                            <button type="button" class="skill-remove" onclick="removeSkill('${skill}')">×</button>
+                        `;
+                        container.appendChild(skillTag);
+                    });
+                }
 
-    const jobData = {
-        Title: document.getElementById('jobTitle').value,
-        Description: document.getElementById('jobDescription').value,
-        Category: document.getElementById('jobCategory').value,
-        Price: parseFloat(document.getElementById('jobPrice').value),
-        // Skills: [...currentSkills],
-        UserId: document.getElementById('currentUserId').value
-    };
-
-    try {
-        const response = await fetch('/api/jobs', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(jobData)
-        });
-
-        if (response.ok) {
-            alert('Job created successfully!');
-            bootstrap.Modal.getInstance(document.getElementById('createJobModal')).hide();
-            resetModal();
-            // Optionally reload job listings here
-        } else {
-            const errorText = await response.text();
-            alert('Failed to create job: ' + errorText);
-        }
-    } catch (err) {
-        console.error('Error creating job:', err);
-        alert('An error occurred while creating the job.');
-    }
-}
-
-
-            // Delete job
-            function deleteJob(jobId) {
-                const job = jobs.find(j => j.id === jobId);
-                if (!job) return;
-
-                currentJobId = jobId;
-                document.getElementById('deleteJobTitle').textContent = job.title;
-                
-                new bootstrap.Modal(document.getElementById('deleteJobModal')).show();
-            }
-
-            function confirmDelete() {
-                if (!currentJobId) return;
-
-                const jobIndex = jobs.findIndex(j => j.id === currentJobId);
-                if (jobIndex !== -1) {
-                    const deletedJob = jobs.splice(jobIndex, 1)[0];
-                    console.log('Job deleted:', deletedJob);
-                    alert('Job deleted successfully!');
-                    
-                    // Close modal
-                    bootstrap.Modal.getInstance(document.getElementById('deleteJobModal')).hide();
+                // Modal management
+                function resetModal() {
+                    document.getElementById('jobForm').reset();
+                    document.getElementById('jobId').value = '';
+                    currentSkills = [];
+                    renderSkills();
                     currentJobId = null;
-                    
-                    // In a real app, you would refresh the job listings here
-                    // refreshJobListings();
-                }
-            }
-
-            // Clean up when modals are hidden
-            document.getElementById('createJobModal').addEventListener('hidden.bs.modal', resetModal);
-            document.getElementById('deleteJobModal').addEventListener('hidden.bs.modal', function() {
-                currentJobId = null;
-            });
-
-            // Apply for job functionality
-            let currentApplyJobId = null;
-
-            function openApplyModal(jobId) {
-                const job = jobs.find(j => j.id === jobId);
-                if (!job) return;
-
-                currentApplyJobId = jobId;
-                
-                // Populate job information
-                document.getElementById('applyJobId').value = job.id;
-                document.getElementById('applyJobTitle').textContent = job.title;
-                document.getElementById('applyJobCompany').textContent = getCompanyName(jobId); // You can customize this
-                document.getElementById('applyJobPrice').textContent = `$${job.price.toLocaleString()}`;
-                
-                // Reset form
-                document.getElementById('applyJobForm').reset();
-                document.getElementById('applyJobId').value = job.id;
-                
-                // Show modal
-                new bootstrap.Modal(document.getElementById('applyJobModal')).show();
-            }
-
-            function getCompanyName(jobId) {
-                // Map job IDs to company names (you can customize this based on your data)
-                const companies = {
-                    1: "Microsoft",
-                    2: "Dropbox", 
-                    3: "Soundcloud"
-                };
-                return companies[jobId] || "Company";
-            }
-
-            function submitProposal() {
-                const form = document.getElementById('applyJobForm');
-                if (!form.checkValidity()) {
-                    form.reportValidity();
-                    return;
                 }
 
-                const proposalData = {
-                    jobId: parseInt(document.getElementById('applyJobId').value),
-                    message: document.getElementById('proposalMessage').value,
-                    price: parseFloat(document.getElementById('proposalPrice').value),
-                    deliveryTime: document.getElementById('deliveryTime').value,
-                    portfolioLinks: document.getElementById('portfolioLinks').value,
-                    status: "Pending", // Default status
-                    freelancerId: "current-user-id" // You would get this from your authentication system
-                };
+                // Create new job
+                document.getElementById('createJobModal').addEventListener('show.bs.modal', function() {
+                    if (!currentJobId) {
+                        document.getElementById('modalTitle').textContent = 'Create New Job';
+                        document.getElementById('saveButtonText').textContent = 'Create Job';
+                        resetModal();
+                    }
+                });
 
-                console.log('Proposal submitted:', proposalData);
-                
-                // Here you would typically send this data to your backend API
-                // Example: 
-                // fetch('/api/proposals', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(proposalData)
-                // });
+                // Edit job
+                function editJob(jobId) {
+                    const job = jobs.find(j => j.id === jobId);
+                    if (!job) return;
 
-                alert('Your proposal has been submitted successfully! The employer will review it and get back to you soon.');
-                
-                // Close modal
-                bootstrap.Modal.getInstance(document.getElementById('applyJobModal')).hide();
-                currentApplyJobId = null;
-            }
+                    currentJobId = jobId;
 
-            // Clean up when apply modal is hidden
-            document.getElementById('applyJobModal').addEventListener('hidden.bs.modal', function() {
-                currentApplyJobId = null;
-                document.getElementById('applyJobForm').reset();
+                    // Populate form
+                    document.getElementById('jobId').value = job.id;
+                    document.getElementById('jobTitle').value = job.title;
+                    document.getElementById('jobDescription').value = job.description;
+                    document.getElementById('jobCategory').value = job.category;
+                    document.getElementById('jobPrice').value = job.price;
+
+                    // Set skills
+                    currentSkills = [...job.skills];
+                    renderSkills();
+
+                    // Update modal title
+                    document.getElementById('modalTitle').textContent = 'Edit Job';
+                    document.getElementById('saveButtonText').textContent = 'Update Job';
+
+                    // Show modal
+                    new bootstrap.Modal(document.getElementById('createJobModal')).show();
+                }
+
+                // Save job (create or update)
+                async function saveJob() {
+        const form = document.getElementById('jobForm');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        const jobData = {
+            Title: document.getElementById('jobTitle').value,
+            Description: document.getElementById('jobDescription').value,
+            Category: document.getElementById('jobCategory').value,
+            Price: parseFloat(document.getElementById('jobPrice').value),
+            // Skills: [...currentSkills],
+            UserId: document.getElementById('currentUserId').value
+        };
+
+        try {
+            const response = await fetch('/api/jobs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(jobData)
             });
-        </script>
+
+            if (response.ok) {
+                alert('Job created successfully!');
+                bootstrap.Modal.getInstance(document.getElementById('createJobModal')).hide();
+                resetModal();
+                // Optionally reload job listings here
+            } else {
+                const errorText = await response.text();
+                alert('Failed to create job: ' + errorText);
+            }
+        } catch (err) {
+            console.error('Error creating job:', err);
+            alert('An error occurred while creating the job.');
+        }
+    }
+
+
+                // Delete job
+                function deleteJob(jobId) {
+                    const job = jobs.find(j => j.id === jobId);
+                    if (!job) return;
+
+                    currentJobId = jobId;
+                    document.getElementById('deleteJobTitle').textContent = job.title;
+
+                    new bootstrap.Modal(document.getElementById('deleteJobModal')).show();
+                }
+
+                function confirmDelete() {
+                    if (!currentJobId) return;
+
+                    const jobIndex = jobs.findIndex(j => j.id === currentJobId);
+                    if (jobIndex !== -1) {
+                        const deletedJob = jobs.splice(jobIndex, 1)[0];
+                        console.log('Job deleted:', deletedJob);
+                        alert('Job deleted successfully!');
+
+                        // Close modal
+                        bootstrap.Modal.getInstance(document.getElementById('deleteJobModal')).hide();
+                        currentJobId = null;
+
+                        // In a real app, you would refresh the job listings here
+                        // refreshJobListings();
+                    }
+                }
+
+                // Clean up when modals are hidden
+                document.getElementById('createJobModal').addEventListener('hidden.bs.modal', resetModal);
+                document.getElementById('deleteJobModal').addEventListener('hidden.bs.modal', function() {
+                    currentJobId = null;
+                });
+
+                // Apply for job functionality
+                let currentApplyJobId = null;
+
+                function openApplyModal(jobId) {
+                    const job = jobs.find(j => j.id === jobId);
+                    if (!job) return;
+
+                    currentApplyJobId = jobId;
+
+                    // Populate job information
+                    document.getElementById('applyJobId').value = job.id;
+                    document.getElementById('applyJobTitle').textContent = job.title;
+                    document.getElementById('applyJobCompany').textContent = getCompanyName(jobId); // You can customize this
+                    document.getElementById('applyJobPrice').textContent = `$${job.price.toLocaleString()}`;
+
+                    // Reset form
+                    document.getElementById('applyJobForm').reset();
+                    document.getElementById('applyJobId').value = job.id;
+
+                    // Show modal
+                    new bootstrap.Modal(document.getElementById('applyJobModal')).show();
+                }
+
+                function getCompanyName(jobId) {
+                    // Map job IDs to company names (you can customize this based on your data)
+                    const companies = {
+                        1: "Microsoft",
+                        2: "Dropbox",
+                        3: "Soundcloud"
+                    };
+                    return companies[jobId] || "Company";
+                }
+
+                function submitProposal() {
+                    const form = document.getElementById('applyJobForm');
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return;
+                    }
+
+                    const proposalData = {
+                        jobId: parseInt(document.getElementById('applyJobId').value),
+                        message: document.getElementById('proposalMessage').value,
+                        price: parseFloat(document.getElementById('proposalPrice').value),
+                        deliveryTime: document.getElementById('deliveryTime').value,
+                        portfolioLinks: document.getElementById('portfolioLinks').value,
+                        status: "Pending", // Default status
+                        freelancerId: "current-user-id" // You would get this from your authentication system
+                    };
+
+                    console.log('Proposal submitted:', proposalData);
+
+                    // Here you would typically send this data to your backend API
+                    // Example:
+                    // fetch('/api/proposals', {
+                    //     method: 'POST',
+                    //     headers: { 'Content-Type': 'application/json' },
+                    //     body: JSON.stringify(proposalData)
+                    // });
+
+                    alert('Your proposal has been submitted successfully! The employer will review it and get back to you soon.');
+
+                    // Close modal
+                    bootstrap.Modal.getInstance(document.getElementById('applyJobModal')).hide();
+                    currentApplyJobId = null;
+                }
+
+                // Clean up when apply modal is hidden
+                document.getElementById('applyJobModal').addEventListener('hidden.bs.modal', function() {
+                    currentApplyJobId = null;
+                    document.getElementById('applyJobForm').reset();
+                });
+</script>

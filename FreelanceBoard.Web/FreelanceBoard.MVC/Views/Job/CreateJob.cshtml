@@ -1,0 +1,378 @@
+﻿@model JobCreateViewModel
+
+<style>
+    .job-section {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 80px 0;
+    }
+
+    .job-form-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 50px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .job-form-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+        .job-form-header .logo-container {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+            .job-form-header .logo-container i {
+                font-size: 2rem;
+                color: white;
+            }
+
+        .job-form-header h2 {
+            color: #6366f1;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .job-form-header p {
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+        .form-group label {
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+    .input-group {
+        position: relative;
+    }
+
+        .input-group .form-control {
+            padding-left: 50px;
+            height: 55px;
+            border: none;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .input-group .form-control:focus {
+                background: rgba(255, 255, 255, 1);
+                box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+                outline: none;
+            }
+
+    .input-group-text {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #6c757d;
+        z-index: 10;
+        font-size: 1.2rem;
+    }
+
+    .form-select {
+        padding-left: 50px;
+        height: 55px;
+        border: none;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .form-select:focus {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+            outline: none;
+        }
+
+    textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+        padding: 15px !important;
+        border: none;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+        textarea.form-control:focus {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+            outline: none;
+        }
+
+    .job-btn {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        border: none;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 16px;
+        width: 100%;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+
+        .job-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            color: white;
+        }
+
+    .skills-input-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .skill-tag {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .skill-remove {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-left: 6px;
+        font-size: 10px;
+    }
+
+    .add-skill-input {
+        border: 2px dashed #8b5cf6;
+        background: rgba(139, 92, 246, 0.05);
+        color: #6366f1;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        min-width: 100px;
+        outline: none;
+    }
+
+        .add-skill-input::placeholder {
+            color: #8b5cf6;
+        }
+
+    .date-input .input-group-text {
+        z-index: 11;
+    }
+
+    .date-input .form-control {
+        padding-left: 50px;
+    }
+</style>
+
+<section class="job-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12 col-12">
+                <div class="job-form-container">
+                    <div class="job-form-header">
+                        <div class="logo-container">
+                            <i class="bi-briefcase-fill"></i>
+                        </div>
+                        <h2>Create New Job</h2>
+                        <p>Post your opportunity and find the perfect candidate</p>
+                    </div>
+
+                    <form asp-action="CreateJob" method="post">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label asp-for="Title">Job Title</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi-card-heading"></i></span>
+                                        <input asp-for="Title" class="form-control" placeholder="Enter job title (e.g., Senior Web Developer)" required>
+                                    </div>
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Category">Category</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi-tag"></i></span>
+                                        <select asp-for="Category" class="form-select" required>
+                                            <option value="">Select Category</option>
+                                            <option value="Technology">Technology</option>
+                                            <option value="Design">Design</option>
+                                            <option value="Marketing">Marketing</option>
+                                            <option value="Sales">Sales</option>
+                                            <option value="Customer Support">Customer Support</option>
+                                        </select>
+                                    </div>
+                                    <span asp-validation-for="Category" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Description">Job Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="6" placeholder="Describe the job requirements, responsibilities, and qualifications..." required></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Price">Budget</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi-cash"></i></span>
+                                        <input asp-for="Price" type="number" class="form-control" placeholder="Enter amount" step="0.01" min="0" required>
+                                    </div>
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Deadline">Application Deadline</label>
+                                    <div class="input-group date-input">
+                                        <span class="input-group-text"><i class="bi-calendar"></i></span>
+                                        <input asp-for="Deadline" type="date" class="form-control" required>
+                                    </div>
+                                    <span asp-validation-for="Deadline" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Required Skills</label>
+                            <input type="text" class="add-skill-input" id="skillInput" placeholder="Type skill and press Enter">
+                            <div class="skills-input-container" id="skillsContainer">
+                                @if (Model.SkillNames != null)
+                                {
+                                    @foreach (var skill in Model.SkillNames)
+                                    {
+                                        <div class="skill-tag">
+                                            @skill
+                                            <button type="button" class="skill-remove" onclick="removeSkill('@skill')">×</button>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <input type="hidden" id="skillNamesInput" name="SkillNames" value="@(Model.SkillNames != null ? string.Join(",", Model.SkillNames) : "")">
+                            <small class="text-muted">Add relevant skills for this job</small>
+                        </div>
+
+                        <button type="submit" class="job-btn">
+                            <i class="bi-check-circle-fill me-2"></i>
+                            Post Job
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Skills management
+        let currentSkills = @Html.Raw(Model.SkillNames != null ? Json.Serialize(Model.SkillNames) : "[]");
+
+        document.getElementById('skillInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addSkill();
+            }
+        });
+
+        function addSkill() {
+            const skillInput = document.getElementById('skillInput');
+            const skillName = skillInput.value.trim();
+
+            if (skillName && !currentSkills.includes(skillName)) {
+                currentSkills.push(skillName);
+                renderSkills();
+                updateSkillsInput();
+                skillInput.value = '';
+            }
+        }
+
+        function removeSkill(skillName) {
+            currentSkills = currentSkills.filter(skill => skill !== skillName);
+            renderSkills();
+            updateSkillsInput();
+        }
+
+        function renderSkills() {
+            const container = document.getElementById('skillsContainer');
+            container.innerHTML = '';
+
+            currentSkills.forEach(skill => {
+                const skillTag = document.createElement('div');
+                skillTag.className = 'skill-tag';
+                skillTag.innerHTML = `
+                    ${skill}
+                    <button type="button" class="skill-remove" onclick="removeSkill('${skill}')">×</button>
+                `;
+                container.appendChild(skillTag);
+            });
+        }
+
+        function updateSkillsInput() {
+            document.getElementById('skillNamesInput').value = currentSkills.join(',');
+        }
+
+        // Initialize date picker with min date
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+
+            const deadlineInput = document.querySelector('input[type="date"]');
+            deadlineInput.min = tomorrow.toISOString().split('T')[0];
+
+            // If no deadline set, default to tomorrow
+            if (!deadlineInput.value) {
+                deadlineInput.value = tomorrow.toISOString().split('T')[0];
+            }
+        });
+    </script>
+}

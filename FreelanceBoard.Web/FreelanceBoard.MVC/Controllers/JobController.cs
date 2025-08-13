@@ -38,12 +38,12 @@ namespace FreelanceBoard.MVC.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> JobListings(string sortBy = "Date")
+        public async Task<IActionResult> JobListings(string sortBy = "Date", bool isAscending = true, int page = 1)
         {
             List<JobViewModel> job = [];
             var success = await _executor.Execute(
             async () =>
-                { job = await _jobService.GetAllJobsSortedAsync(HttpContext, sortBy); },
+                { job = await _jobService.GetAllJobsSortedAsync(HttpContext, sortBy, isAscending, page); },
                 error => ModelState.AddModelError(string.Empty, error)
             );
 
@@ -71,5 +71,12 @@ namespace FreelanceBoard.MVC.Controllers
             return View("MyJobApplication");
         }
 
-    }
+        [HttpGet]
+        public IActionResult CreateJob()
+        {
+			var model = new JobCreateViewModel();
+			return View(model);
+		}
+
+	}
 }

@@ -54,5 +54,16 @@ namespace FreelanceBoard.Web.Controllers
             var success = await _mediator.Send(command);
             return Ok(success);
         }
+
+        [HttpGet("freelancer/{freelancerId}/proposals")]
+        public async Task<IActionResult> GetProposalsByFreelancerId(string freelancerId)
+        {
+            if (string.IsNullOrWhiteSpace(freelancerId))
+                return BadRequest("Invalid freelancer ID.");
+
+            var proposals = await _proposalQuery.GetProposalsByFreelancerIdAsync(freelancerId);
+            return Ok(proposals);
+        }
+
     }
 }
