@@ -1,11 +1,13 @@
 ﻿using FreelanceBoard.Core.Commands.ProposalCommands;
 using FreelanceBoard.Core.Queries.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace FreelanceBoard.Web.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProposalController : ControllerBase

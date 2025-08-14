@@ -29,7 +29,7 @@ namespace FreelanceBoard.MVC.Controllers
                 { job = await _proposalService.GetProposalsByJobIdAsync(id, HttpContext); },
                 error => ModelState.AddModelError(string.Empty, error)
             );
-
+            TempData["token"] = User.GetAccessToken();
             if (!success || job == null)
                 return View("NotFound");
 

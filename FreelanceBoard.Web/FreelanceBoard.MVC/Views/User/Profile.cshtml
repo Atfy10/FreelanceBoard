@@ -811,7 +811,6 @@
 
             const formData = new FormData();
             formData.append("ProfilePicture", file);
-            alert(sessionStorage.getItem('token'));
             const token = sessionStorage.getItem('token');
             try {
                 const response = await fetch("https://localhost:7029/api/User/change-profile-picture", {

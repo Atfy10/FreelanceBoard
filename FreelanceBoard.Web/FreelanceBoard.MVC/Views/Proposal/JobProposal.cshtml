@@ -1,4 +1,10 @@
 ﻿@model JobProposalsViewModel
+@if (TempData["token"] != null)
+{
+    <script>
+        sessionStorage.setItem("token", "@TempData["token"]");
+    </script>
+}
 @{
     var difference = (DateTime.Now - Model.JobDateCreated);
     var daysAgo = (int?)difference.TotalDays;
@@ -442,124 +448,64 @@
 
 <script>
 
-    // Get job ID from URL parameters
-    function getJobIdFromUrl() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('jobId') || '1';
-    }
-
-        const job = jobData[jobId];
-        if (job) {
-            document.getElementById('jobTitle').textContent = job.title;
-            document.getElementById('jobPrice').textContent = job.price;
-            document.getElementById('jobLocation').textContent = job.location;
-            document.getElementById('jobPostedDate').textContent = job.postedDate;
-            document.getElementById('jobViews').textContent = job.views;
+        // Get job ID from URL parameters
+        function getJobIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('jobId') || '1';
         }
 
-        // Update proposals count
-        document.getElementById('proposalsCount').textContent = `${proposals.length} Applications`;
-    }
+        // Accept proposal
+        async function acceptProposal(proposalId) {
+            const token = sessionStorage.getItem('token');
+            alert(token);
+            try {
+                // 1. Get the proposal from API
+            response = await fetch(`https://localhost:7029/api/Proposal/get?id=${proposalId}`, {
+                    method: "GET", // أو PUT حسب API
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                });
+                if (!response.ok) {
+                    alert('Failed to fetch proposal');
+                    return;
+                }
 
-    // Accept proposal
-    function acceptProposal(proposalId) {
-        if (confirm('Are you sure you want to accept this proposal? This will notify the freelancer and start the project.')) {
-            const proposal = proposals.find(p => p.id === proposalId);
-            if (proposal) {
-                proposal.status = 'accepted';
+                let proposal = await response.json();
 
-                // Update UI
-                const proposalCard = document.querySelector(`[data-proposal-id="${proposalId}"]`);
-                const statusElement = proposalCard.querySelector('.proposal-status');
-                statusElement.textContent = 'Accepted';
-                statusElement.className = 'proposal-status status-accepted';
-
-                // Disable action buttons
-                const actionButtons = proposalCard.querySelectorAll('.btn-accept, .btn-reject');
-                actionButtons.forEach(btn => {
-                    btn.disabled = true;
-                    btn.style.opacity = '0.5';
+                alert(response.json());
+                alert(proposal.data.status);
+                console.log(proposal.data);
+                // 2. Update status
+                proposal.data.status = 'Accepted'; // أو القيمة اللي الـ API بيقبلها
+                alert(proposal.data.status);
+                // 3. Send updated proposal to API
+                response = await fetch("https://localhost:7029/api/Proposal/update", {
+                    method: "PUT", // أو PUT حسب API
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify(proposal.data)
                 });
 
-                alert(`Proposal from ${proposal.freelancerName} has been accepted!`);
+                const result = await response.json();
+
+                if (response.ok && result.isSuccess) {
+                    alert('Proposal accepted successfully!');
+                    location.reload();
+                } else {
+                    alert("Failed to update proposal state: " + (result.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error("Error updating proposal:", error);
+                alert("Something went wrong while accepting the proposal.");
             }
         }
-    }
 
-    // Reject proposal
-    function rejectProposal(proposalId) {
-        if (confirm('Are you sure you want to reject this proposal? This action cannot be undone.')) {
-            const proposal = proposals.find(p => p.id === proposalId);
-            if (proposal) {
-                proposal.status = 'rejected';
-
-                // Update UI
-                const proposalCard = document.querySelector(`[data-proposal-id="${proposalId}"]`);
-                const statusElement = proposalCard.querySelector('.proposal-status');
-                statusElement.textContent = 'Rejected';
-                statusElement.className = 'proposal-status status-rejected';
-
-                // Disable action buttons
-                const actionButtons = proposalCard.querySelectorAll('.btn-accept, .btn-reject');
-                actionButtons.forEach(btn => {
-                    btn.disabled = true;
-                    btn.style.opacity = '0.5';
-                });
-
-                alert(`Proposal from ${proposal.freelancerName} has been rejected.`);
-            }
-        }
-    }
-
-    // Message freelancer
-    function messageFreelancer(proposalId) {
-        const proposal = proposals.find(p => p.id === proposalId);
-        if (proposal) {
-            alert(`Opening message thread with ${proposal.freelancerName}...`);
-            // In real app, redirect to messaging system
-            // window.location.href = `messages.html?freelancerId=${proposal.freelancerId}`;
-        }
-    }
-
-    // View freelancer profile
-    function viewProfile(proposalId) {
-        const proposal = proposals.find(p => p.id === proposalId);
-        if (proposal) {
-            alert(`Opening profile for ${proposal.freelancerName}...`);
-            // In real app, redirect to freelancer profile
-            // window.location.href = `freelancer-profile.html?id=${proposal.freelancerId}`;
-        }
-    }
-
-    // Sort proposals
-    document.getElementById('sortProposals').addEventListener('change', function() {
-        const sortBy = this.value;
-        let sortedProposals = [...proposals];
-
-        switch(sortBy) {
-            case 'newest':
-                // Sort by application date (newest first)
-                break;
-            case 'oldest':
-                // Sort by application date (oldest first)
-                break;
-            case 'price-low':
-                sortedProposals.sort((a, b) => a.price - b.price);
-                break;
-            case 'price-high':
-                sortedProposals.sort((a, b) => b.price - a.price);
-                break;
-            case 'rating':
-                sortedProposals.sort((a, b) => b.freelancerRating - a.freelancerRating);
-                break;
+        // Reject proposal
+        function rejectProposal(proposalId) {
         }
 
-        // Re-render proposals (in a real app, you'd update the DOM)
-        console.log('Sorted proposals:', sortedProposals);
-    });
-
-    // Initialize page
-    document.addEventListener('DOMContentLoaded', function() {
-        loadJobInfo();
-    });
-</script>
+        </script>
