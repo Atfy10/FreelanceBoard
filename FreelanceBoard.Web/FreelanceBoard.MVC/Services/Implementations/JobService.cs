@@ -92,8 +92,11 @@ namespace FreelanceBoard.MVC.Services.Implementations
             var client = _httpClientFactory.CreateClient("FreelanceApiClient");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+            var baseUrl = "/api/job/filter-by-category";
+            var queryString = string.Join("&", categories.Select(c => $"category={Uri.EscapeDataString(c)}"));
+            var url = $"{baseUrl}?{queryString}&page={page}";
 
-            var response = await client.GetAsync($"/api/job/filter-by-category?category={categories}&page={page}");
+            var response = await client.GetAsync(url);
 
             if (!response.IsSuccessStatusCode)
                 throw new ApplicationException($"Error occured while getting jobs with specified category");
@@ -111,7 +114,13 @@ namespace FreelanceBoard.MVC.Services.Implementations
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
 
-            var response = await client.GetAsync($"/api/job/filter-by-skills?skill={skillNames}&page={page}");
+            
+
+            var baseUrl = "/api/job/filter-by-skills";
+            var queryString = string.Join("&", skillNames.Select(c => $"skill={Uri.EscapeDataString(c)}"));
+            var url = $"{baseUrl}?{queryString}&page={page}";
+
+            var response = await client.GetAsync(url);
 
             if (!response.IsSuccessStatusCode)
                 throw new ApplicationException($"Error occured while getting jobs with specified skills");

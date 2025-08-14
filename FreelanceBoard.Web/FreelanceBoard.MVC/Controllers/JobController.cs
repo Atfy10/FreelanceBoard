@@ -57,7 +57,7 @@ namespace FreelanceBoard.MVC.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> JobListingCategories(List<string> categories, int page = 1)
+        public async Task<IActionResult> JobListingCategories([FromQuery(Name = "category")] List<string> categories, int page = 1)
         {
             List<JobViewModel> job = [];
             var success = await _executor.Execute(
@@ -92,7 +92,7 @@ namespace FreelanceBoard.MVC.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> JobListingSkill(List<string> skills,int page = 1)
+        public async Task<IActionResult> JobListingSkill([FromQuery(Name = "skill")] List<string> skills,int page = 1)
         {
             List<JobViewModel> job = [];
             var success = await _executor.Execute(
