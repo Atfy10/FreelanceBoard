@@ -1,5 +1,6 @@
 ﻿using FreelanceBoard.Core.Commands.ProposalCommands;
 using FreelanceBoard.Core.Queries.Interfaces;
+using FreelanceBoard.Web.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,49 +26,46 @@ namespace FreelanceBoard.Web.Controllers
         public async Task<IActionResult> GetProposalById(int id)
         {
             var proposalDto = await _proposalQuery.GetProposalByIdAsync(id);
-            return Ok(proposalDto);
-        }
-        [HttpDelete("delete")]
+			return this.HandleResult(proposalDto);
+		}
+		[HttpDelete("delete")]
         public async Task<IActionResult> DeleteProposal(int id)
         {
             var deleted = await _mediator.Send(new DeleteProposalCommand(id));
-            return Ok(deleted);
-        }
-        [HttpPost("create")]
+			return this.HandleResult(deleted);
+		}
+		[HttpPost("create")]
         public async Task<IActionResult> CreateProposal(CreateProposalCommand command)
         {
             var newProposalId = await _mediator.Send(command);
 
-			if (newProposalId.IsSuccess)
-			{
-				return Ok(newProposalId);
-			}
-			return BadRequest(newProposalId);
+			return this.HandleResult(newProposalId);
+
 		}
-        [HttpGet("job/{jobId}/proposals")]
+		[HttpGet("job/{jobId}/proposals")]
         public async Task<IActionResult> GetProposalsByJobId(int jobId)
         {
 
             var proposals = await _proposalQuery.GetProposalsByJobIdAsync(jobId);
-            return Ok(proposals);
-        }
+			return this.HandleResult(proposals);
+		}
 
-        [HttpPut("update")]
+		[HttpPut("update")]
         public async Task<IActionResult> UpdateProposal(UpdateProposalCommand command)
         {
             var success = await _mediator.Send(command);
-            return Ok(success);
-        }
+			return this.HandleResult(success);
+		}
 
-        [HttpGet("freelancer/{freelancerId}/proposals")]
+		[HttpGet("freelancer/{freelancerId}/proposals")]
         public async Task<IActionResult> GetProposalsByFreelancerId(string freelancerId)
         {
             if (string.IsNullOrWhiteSpace(freelancerId))
                 return BadRequest("Invalid freelancer ID.");
 
             var proposals = await _proposalQuery.GetProposalsByFreelancerIdAsync(freelancerId);
-            return Ok(proposals);
-        }
+			return this.HandleResult(proposals);
+		}
 
-    }
+	}
 }

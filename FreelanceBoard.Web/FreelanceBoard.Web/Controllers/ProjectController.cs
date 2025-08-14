@@ -2,6 +2,7 @@
 using FreelanceBoard.Core.Domain.Entities;
 using FreelanceBoard.Core.Dtos;
 using FreelanceBoard.Infrastructure.DBContext;
+using FreelanceBoard.Web.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -25,9 +26,10 @@ namespace FreelanceBoard.Web.Controllers
         public async Task<IActionResult> CreateProject([FromForm] CreateFileCommand request)
         {
             var result = await _mediator.Send(request);
-            return Ok(result);
-        }
+			return this.HandleResult(result);
+
+		}
 
 
-    }
+	}
 }

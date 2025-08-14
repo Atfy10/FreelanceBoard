@@ -50,6 +50,9 @@ namespace FreelanceBoard.Core.CommandHandlers.UserCommandHandlers
 				if (!skillId.HasValue)
 					throw new KeyNotFoundException($"Skill '{request.SkillName}' not found.");
 
+				if (userExist && await _userSkillRepository.GetByIdsAsync(userId, skillId.Value) != null)
+					return Result<int>.Failure(AddOperation, $"User already has this skill");
+
 				var userSkill = new ApplicationUserSkill
 				{
 					ApplicationUsersId = userId,

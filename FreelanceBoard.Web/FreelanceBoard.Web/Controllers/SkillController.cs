@@ -27,14 +27,14 @@ namespace FreelanceBoard.Web.Controllers
                 return BadRequest(new { Message = "Command cannot be null." });
 
             var result = await _mediator.Send(command);
-            return Ok(result);
-        }
+			return this.HandleResult(result);
+		}
 
 		[HttpGet("get-all")]
 		public async Task<IActionResult> GetAllSkills()	
 		{
 			var result = await _skillQuery.GetAllSkillsAsync();
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 
