@@ -5,10 +5,14 @@ namespace FreelanceBoard.MVC.Models
     public class RegisterViewModel
     {
         [Required]
-        public string FirstName { get; set; }
+        [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
+        [MinLength(3, ErrorMessage = "First name must be at least 3 characters long.")]
+		public string FirstName { get; set; }
 
         [Required]
-        public string LastName { get; set; }
+        [StringLength(50, ErrorMessage = "Last name cannot be longer than 50 characters.")]
+        [MinLength(3, ErrorMessage = "Last name must be at least 3 characters long.")]
+		public string LastName { get; set; }
 
         [Required]
         public string UserName { get; set; }
@@ -29,6 +33,7 @@ namespace FreelanceBoard.MVC.Models
         public string PhoneNumber { get; set; }
 
         [Required]
+
         public string Role { get; set; }
     }
 

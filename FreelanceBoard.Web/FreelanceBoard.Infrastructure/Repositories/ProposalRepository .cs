@@ -1,4 +1,5 @@
 ﻿using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.Core.Domain.Enums;
 using FreelanceBoard.Core.Interfaces;
 using FreelanceBoard.Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,13 @@ namespace FreelanceBoard.Infrastructure.Repositories
             return await _dbContext.Proposals
                 .AnyAsync(p => p.JobId == jobId && p.FreelancerId == freelancerId);
 
+		}
+
+		public Task<Proposal?> GetAcceptedProposalByJobIdAsync(int jobId)
+		{
+            return _dbContext.Proposals
+                .Where(p => p.JobId == jobId && p.Status == ProposalStatus.Accepted.ToString())
+                .FirstOrDefaultAsync();
 		}
 	}
 }

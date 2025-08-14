@@ -44,8 +44,26 @@ namespace FreelanceBoard.Core.CommandHandlers.ProposalCommandHandlers
             var proposal = await _proposalRepository.GetByIdAsync(request.Id) ??
                 throw new KeyNotFoundException("Proposal with the provided ID was not found.");
 
+			if (proposal.Status == ProposalStatus.Accepted.ToString())
+			{
+				throw new InvalidOperationException("This proposal has already been accepted and cannot be updated.");
+			}
+			if (proposal.Status == ProposalStatus.Rejected.ToString())
+			{
+				throw new InvalidOperationException("This proposal has already been rejected and cannot be updated.");
+			}
 
-            var updatedProposal = _mapper.Map(request, proposal);
+			if (request.Status == ProposalStatus.Accepted.ToString())
+            {
+                var existingAcceptedProposal = await _proposalRepository.GetAcceptedProposalByJobIdAsync(proposal.JobId);
+                if (existingAcceptedProposal != null && existingAcceptedProposal.Id != proposal.Id)
+                {
+                    throw new InvalidOperationException("This job already has an accepted proposal.");
+                }
+            }
+
+           
+			var updatedProposal = _mapper.Map(request, proposal);
 
             //
             updatedProposal.Freelancer = await _userRepository.GetByIdAsync(request.FreelancerId) ??
