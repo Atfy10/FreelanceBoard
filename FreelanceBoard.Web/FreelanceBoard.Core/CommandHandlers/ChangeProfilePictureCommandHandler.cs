@@ -40,7 +40,7 @@ public class ChangeProfilePictureCommandHandler : IRequestHandler<ChangeProfileP
                 return Result<string>.Failure(OperationType.Update.ToString(), "User not found.");
 
             if (user.Profile == null)
-                user.Profile = new Profile();
+                throw new KeyNotFoundException();
 
 
             if (request.ProfilePicture == null || request.ProfilePicture.Length == 0)

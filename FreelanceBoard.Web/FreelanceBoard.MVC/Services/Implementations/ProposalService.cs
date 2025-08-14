@@ -42,7 +42,7 @@ namespace FreelanceBoard.MVC.Services.Implementations
             jobProposals.Proposals = apiResult.Data;
             jobProposals.JobPrice = jobApiResult.Data.Price;
             jobProposals.JobTitle = jobApiResult.Data.Title;
-            jobProposals.JobDateCreated = jobApiResult.Data.PostedDate;
+            jobProposals.JobDateCreated = jobApiResult.Data.DateCreated;
             return jobProposals;
         }
 

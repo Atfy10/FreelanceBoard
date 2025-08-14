@@ -427,7 +427,7 @@
 
                                 <p class="job-date">
                                     <i class="custom-icon bi-clock me-1"></i>
-                                    @job.PostedDate.ToString("MMM dd, yyyy")
+                                    @job.DateCreated.ToString("MMM dd, yyyy")
                                 </p>
                             </div>
                             <div class="d-flex align-items-center border-top pt-3">
@@ -719,9 +719,12 @@
                 const currentOrder = url.searchParams.get("isAscending");
                 const page = url.searchParams.get("page");
                 const sort = url.searchParams.get("sortBy");
-                if(page<1)
+                const pages = document.querySelectorAll('.page-number');
+
+                if(page<1 || !page)
                 {
                     url.searchParams.set("page", "1");
+                    window.location.href = url.toString();
                 }
                 // Set the switch position based on the query string
                 if (currentOrder === "true") {
@@ -739,7 +742,7 @@
 
                 // sort by button
                 const buttons = document.querySelectorAll('.sort-by-btn');
-                
+
                 buttons.forEach(button => {
                     if(sort=="Date"){
                         dateSortBtn.classList.remove("btn-secondary");
@@ -769,8 +772,6 @@
                 });
 
                 // Traverse between pages
-                const pages = document.querySelectorAll('.page-number');
-
                 pages.forEach((pageItem, index) => {
                   pageItem.classList.remove("active");
                   // index starts from 0, page numbers from 1, so add 1
@@ -801,7 +802,7 @@
                   });
                 });
 
-               
+
                 // Skills management
                 document.getElementById('skillInput').addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
