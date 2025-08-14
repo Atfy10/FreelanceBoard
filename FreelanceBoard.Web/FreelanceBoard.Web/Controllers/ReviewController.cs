@@ -1,5 +1,6 @@
 ﻿using FreelanceBoard.Core.Commands.ReviewCommands;
 using FreelanceBoard.Core.Queries.Interfaces;
+using FreelanceBoard.Web.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,21 +23,21 @@ namespace FreelanceBoard.Web.Controllers
         public async Task<IActionResult> GetReviewById(int id)
         {
             var reviewDto = await _reviewQuery.GetReviewByIdAsync(id);
-            return Ok(reviewDto);
-        }
+			return this.HandleResult(reviewDto);
+		}
 
-        [HttpPost("add")]
+		[HttpPost("add")]
         public async Task<IActionResult> CreateReview(CreateReviewCommand command)
         {
             var newReviewId = await _mediator.Send(command);
-            return Ok(newReviewId);
-        }
+			return this.HandleResult(newReviewId);
+		}
 
-        [HttpGet("get-top-three")]
+		[HttpGet("get-top-three")]
         public async Task<IActionResult> GetTopThreeReviews()
         {
             var reviews = await _reviewQuery.GetTopThreeReviewsAsync();
-            return Ok(reviews);
-        }
-    }
+			return this.HandleResult(reviews);
+		}
+	}
 }

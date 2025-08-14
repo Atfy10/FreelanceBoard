@@ -30,84 +30,85 @@ namespace FreelanceBoard.Web.Controllers
 		public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
 		{
 			var result = await _mediator.Send(command);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		[HttpDelete("delete")]
 		public async Task<IActionResult> DeleteUser(DeleteUserCommand command)
 		{
 			var result = await _mediator.Send(command);
-			return Ok(result);
+			return this.HandleResult(result);
+
 		}
 
 		[HttpPut("update")]
 		public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
 		{
 			var result = await _mediator.Send(command);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		[HttpGet("get/{id}")]
 		public async Task<IActionResult> GetUserById(string id)
 		{
 			var result = await _userQuery.GetUserByIdAsync(id);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		[HttpGet("get-all")]
 		public async Task<IActionResult> GetAllUsers()
 		{
 			var result = await _userQuery.GetAllUsersAsync();
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		[HttpGet("get-all-banned")]
 		public async Task<IActionResult> GetAllBannedUsers()
 		{
 			var result = await _userQuery.GetAllBannedUsersAsync();
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		[HttpGet("get-search-by-name/{name}")]
 		public async Task<IActionResult> SearchUsersByName(string name)
 		{
 			var result = await _userQuery.SearchUsersByNameAsync(name);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		[HttpGet("get-with-projects/{id}")]
 		public async Task<IActionResult> GetUserWithProjects(string id)
 		{
 			var result = await _userQuery.GetUserWithProjectsAsync(id);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		[HttpGet("get-with-skills/{id}")]
 		public async Task<IActionResult> GetUserWithSkills(string id)
 		{
 			var result = await _userQuery.GetUserWithSkillsAsync(id);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		[HttpGet("get-full-profile/{id}")]
 		public async Task<IActionResult> GetUserFullProfile(string id)
 		{
 			var result = await _userQuery.GetUserFullProfileAsync(id);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
-        [HttpPost("change-profile-picture")]
+		[HttpPost("change-profile-picture")]
         public async Task<IActionResult> ChangeProfilePicture([FromForm] ChangeProfilePictureCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(result);
-        }
+			return this.HandleResult(result);
+		}
 
 		[HttpPost("add-project")]
 		public async Task<IActionResult> AddUserProject([FromBody] AddProjectCommand command)
 		{
 			var result = await _mediator.Send(command);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		[HttpPost("add-skill")]
@@ -116,7 +117,7 @@ namespace FreelanceBoard.Web.Controllers
 			if (command == null)
 				return BadRequest(new { Message = "Command cannot be null." });
 			var result = await _mediator.Send(command);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		//make delete user skill endpoint
@@ -126,7 +127,7 @@ namespace FreelanceBoard.Web.Controllers
 			if (command == null)
 				return BadRequest(new { Message = "Command cannot be null." });
 			var result = await _mediator.Send(command);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		[HttpPut("update-profile")]
@@ -135,7 +136,7 @@ namespace FreelanceBoard.Web.Controllers
 			if (command == null)
 				return BadRequest(new { Message = "Command cannot be null." });
 			var result = await _mediator.Send(command);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 
 		[HttpDelete("delete-project/{projectId}")]
@@ -143,7 +144,7 @@ namespace FreelanceBoard.Web.Controllers
 		{
 			var command = new DeleteProjectCommand { ProjectId = projectId };
 			var result = await _mediator.Send(command);
-			return Ok(result);
+			return this.HandleResult(result);
 		}
 	}
 }
