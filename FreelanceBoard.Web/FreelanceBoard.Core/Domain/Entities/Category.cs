@@ -12,6 +12,7 @@ namespace FreelanceBoard.Core.Domain.Entities
 
         public string Name { get; set; }
 
-        public virtual ICollection<Job> Jobs { get; set; } = [];
+        //public virtual ICollection<Job> Jobs { get; set; } = [];
+        public virtual ICollection<CategoryJob> CategoryJobs { get; set; } = [];
     }
 }

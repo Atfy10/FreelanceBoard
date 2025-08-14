@@ -22,21 +22,24 @@ namespace FreelanceBoard.Core.MapperProfiles
                 .ForMember(dest => dest.Skills, opt => opt.Ignore())
                 .ForMember(dest => dest.Proposals, opt => opt.Ignore())
                 .ForMember(dest => dest.Contract, opt => opt.Ignore())
-                .ForMember(dest => dest.Categories, opt => opt.Ignore());
+                .ForMember(dest => dest.CategoryJobs, opt => opt.Ignore());
 
             // UpdateJobCommand → Job (Partial Update Support)
             CreateMap<UpdateJobCommand, Job>()
                 .ForMember(dest => dest.Skills, opt => opt.Ignore())
                 .ForMember(dest => dest.Proposals, opt => opt.Ignore())
                 .ForMember(dest => dest.Contract, opt => opt.Ignore())
-                .ForMember(dest => dest.Categories, opt => opt.Ignore())
+                .ForMember(dest => dest.CategoryJobs, opt => opt.Ignore())
                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
 
             // Job → JobDto
             CreateMap<Job, JobDto>()
                 .ForMember(d => d.SkillNames, o => o.MapFrom(src => src.Skills.Select(s => s.Name)))
                 .ForMember(d => d.Proposals, o => o.MapFrom(src => src.Proposals))
-                .ForMember(d => d.Categories, o => o.MapFrom(src => src.Categories.Select(c => c.Name)));
+                .ForMember(
+                    d => d.Categories,
+                    o => o.MapFrom(src => src.CategoryJobs.Select(cj => cj.Category.Name))
+                );
 
             // Proposal → ProposalDto
             CreateMap<Proposal, ProposalDto>()
@@ -45,6 +48,6 @@ namespace FreelanceBoard.Core.MapperProfiles
             // Category → CategoryDto
             CreateMap<Category, CategoryDto>()
                 .ForMember(d => d.Name, o => o.MapFrom(src => src.Name));
-		}
-	}
+        }
+    }
 }

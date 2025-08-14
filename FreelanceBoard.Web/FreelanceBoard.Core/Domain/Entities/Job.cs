@@ -20,7 +20,8 @@ namespace FreelanceBoard.Core.Domain.Entities
         //  Navigation properties
         public virtual ApplicationUser User { get; set; }
         public virtual Contract Contract { get; set; }
-        public virtual ICollection<Category> Categories { get; set; } = [];
+        //public virtual ICollection<Category> Categories { get; set; } = [];
+        public virtual ICollection<CategoryJob> CategoryJobs { get; set; } = [];
         public virtual ICollection<Skill> Skills { get; set; } = [];
         public virtual ICollection<Proposal> Proposals { get; set; } = [];
 

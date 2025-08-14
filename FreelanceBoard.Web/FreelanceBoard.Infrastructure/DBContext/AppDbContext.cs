@@ -37,7 +37,8 @@ namespace FreelanceBoard.Infrastructure.DBContext
         public DbSet<Review> Reviews{ get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<Category> Categories { get; set; }
-		public DbSet<ApplicationUserSkill> ApplicationUserSkills { get; set; }
+        public DbSet<CategoryJob> CategoryJob { get; set; }
+        public DbSet<ApplicationUserSkill> ApplicationUserSkills { get; set; }
 
 
 	}

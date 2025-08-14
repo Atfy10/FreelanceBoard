@@ -51,7 +51,7 @@ namespace FreelanceBoard.Infrastructure.Repositories
         {
             return await GetAllJobsWithDetails()
                         .Where(job => categories.All(category =>
-                            job.Categories.Any(jobCategory => jobCategory.Name == category)))
+                            job.CategoryJobs.Any(jobCategory => jobCategory.Category.Name == category)))
                         .ToListAsync();
         }
         public async Task<IEnumerable<Job>?> GetJobsFilteredBudget(int min, int max)
@@ -65,7 +65,7 @@ namespace FreelanceBoard.Infrastructure.Repositories
         {
             return _dbContext.Jobs
                 .Include(j => j.Skills)
-                .Include(c => c.Categories)
+                .Include(c => c.CategoryJobs).ThenInclude(cj => cj.Category)
                 .Include(j => j.Proposals)
                 .ThenInclude(p => p.Freelancer);
         }

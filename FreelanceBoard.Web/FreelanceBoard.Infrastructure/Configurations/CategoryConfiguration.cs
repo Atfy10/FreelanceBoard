@@ -33,9 +33,8 @@ namespace FreelanceBoard.Infrastructure.Configurations
                    .HasDatabaseName("IX_Categories_Name");
 
             // Many-to-Many relationship
-            builder.HasMany(c => c.Jobs)
-                .WithMany(j => j.Categories)
-                .UsingEntity(j => j.ToTable("JobCategories"));
+            builder.HasMany(c => c.CategoryJobs)
+                .WithOne(j => j.Category);
 
             //builder.HasMany(c => c.Jobs)
             //       .WithMany(j => j.Categories)

@@ -10,7 +10,7 @@ namespace FreelanceBoard.MVC.Models
         public decimal Price { get; set; }         // Price/budget
         public DateTime DateCreated { get; set; }  // Posting date
         public DateTime Deadline {  get; set; }
-        public List<Category> Categories { get; set; } = new();
+        public string Category { get; set; }
         public List<Proposal> Proposals { get; set; } = new();
     }
 }

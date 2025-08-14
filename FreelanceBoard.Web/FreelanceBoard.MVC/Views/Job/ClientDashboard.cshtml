@@ -375,7 +375,7 @@
                                         <div class="flex-grow-1">
                                             <h3 class="job-title">@job.Title</h3>
                                             <span class="job-category">
-                                                @string.Join(", ", job.Categories.Select(c => c.Name))
+                                                @job.Category
                                             </span>
                                         </div>
                                         <span class="job-status status-active">Active</span>

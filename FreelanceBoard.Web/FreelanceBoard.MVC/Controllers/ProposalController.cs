@@ -73,7 +73,7 @@ namespace FreelanceBoard.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> FreelancerProposals()
         {
-            List<JobWithProposalsViewModel> proposals = default!;
+            List<JobWithProposalsViewModel> proposals = [];
             var success = await _executor.Execute(
                 async () =>
                 { proposals = await _proposalService.GetProposalsByFreelancerIdAsync(User.GetUserId(), HttpContext); },

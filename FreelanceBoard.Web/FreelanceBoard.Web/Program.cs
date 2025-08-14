@@ -41,6 +41,8 @@ namespace FreelanceBoard.Web
 
             builder.Services.AddScoped(typeof(IRoleRepository), typeof(RoleRepository));
 
+            builder.Services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
+
             builder.Services.AddScoped(typeof(IUserQuery), typeof(UserQuery));
 
             builder.Services.AddScoped(typeof(IUserAccessor), typeof(UserAccessor));

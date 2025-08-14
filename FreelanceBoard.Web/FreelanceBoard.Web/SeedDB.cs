@@ -159,7 +159,19 @@ namespace FreelanceBoard.Web
 
                 // Attach existing skills/categories (no duplicates)
                 job.Skills = allSkills.OrderBy(_ => rnd.Next()).Take(2 + (i % 2)).ToList();
-                job.Categories = allCats.OrderBy(_ => rnd.Next()).Take(1 + (i % 2)).ToList();
+                var selectedCats = allCats
+                    .OrderBy(_ => rnd.Next())
+                    .Take(1 + (i % 2))
+                    .ToList();
+
+                foreach (var cat in selectedCats)
+                {
+                    job.CategoryJobs.Add(new CategoryJob
+                    {
+                        Category = cat,  // or CategoriesId = cat.Id if you want to set by ID
+                        Job = job
+                    });
+                }
 
                 jobs.Add(job);
             }
