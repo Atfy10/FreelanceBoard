@@ -103,7 +103,11 @@ namespace FreelanceBoard.MVC.Services.Implementations
 
             var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<List<JobViewModel>>>();
 
-            return apiResult.Data ?? new List<JobViewModel>();
+            var activeJobs = apiResult.Data?
+           .Where(job => job.Deadline == null || job.Deadline >= DateTime.Now)
+           .ToList() ?? new List<JobViewModel>();
+            return activeJobs;
+            //return apiResult?.Data ?? new List<JobViewModel>();
         }
 
         //GetJobsFilteredSkills([FromQuery] List<string> skill, int page = 1)
@@ -127,7 +131,11 @@ namespace FreelanceBoard.MVC.Services.Implementations
 
             var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<List<JobViewModel>>>();
 
-            return apiResult.Data ?? new List<JobViewModel>();
+            var activeJobs = apiResult.Data?
+           .Where(job => job.Deadline == null || job.Deadline >= DateTime.Now)
+           .ToList() ?? new List<JobViewModel>();
+            return activeJobs;
+            //return apiResult?.Data ?? new List<JobViewModel>();
         }
 
         public async Task<List<JobViewModel>> GetJobByBudget(HttpContext httpConetext,int min, int max, int page = 1)
@@ -144,7 +152,11 @@ namespace FreelanceBoard.MVC.Services.Implementations
 
             var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<List<JobViewModel>>>();
 
-            return apiResult.Data ?? new List<JobViewModel>();
+            var activeJobs = apiResult.Data?
+            .Where(job => job.Deadline == null || job.Deadline >= DateTime.Now)
+            .ToList() ?? new List<JobViewModel>();
+            return activeJobs;
+            //return apiResult?.Data ?? new List<JobViewModel>();
         }
     }
 
