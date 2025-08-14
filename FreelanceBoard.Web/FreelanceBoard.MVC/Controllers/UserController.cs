@@ -150,7 +150,6 @@ namespace FreelanceBoard.MVC.Controllers
 
         }
 
-        [Authorize(Roles = "Freelancer")]
         [HttpPost]
         public async Task<IActionResult> AddProject([FromBody] AddProjectViewModel model)
         {
@@ -165,7 +164,6 @@ namespace FreelanceBoard.MVC.Controllers
             return RedirectToAction("Project", "User");
         }
 
-        [Authorize(Roles = "Freelancer")]
         [HttpPost]
         public async Task<IActionResult> AddSkill([FromBody] AddSkillViewModel request)
         {
@@ -183,7 +181,6 @@ namespace FreelanceBoard.MVC.Controllers
             return RedirectToAction("Profile", "User");
         }
 
-        [Authorize(Roles = "Freelancer")]
         [HttpPost]
         public async Task<IActionResult> RemoveSkill([FromBody] RemoveSkillViewModel model)
         {
@@ -237,7 +234,6 @@ namespace FreelanceBoard.MVC.Controllers
 
         }
 
-        [Authorize(Roles = "Freelancer")]
         [HttpDelete]
         public async Task<IActionResult> DeleteProject(int projectId)
         {
