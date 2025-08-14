@@ -9,5 +9,9 @@ namespace FreelanceBoard.MVC.Services.Interfaces
         Task<List<JobViewModel>> GetAllJobsSortedAsync(HttpContext httpContext, string sortBy, bool isAscending = true, int page = 1);
         Task<JobViewModel> GetJobByIdAsync(HttpContext httpContext, int id);
 
+
+        Task<List<JobViewModel>> GetJobByCategory(HttpContext httpConetext, List<string> categories, int page = 1);
+        Task<List<JobViewModel>> GetJobBySkill(HttpContext httpConetext, List<string> skillNames, int page = 1);
+        Task<List<JobViewModel>> GetJobByBudget(HttpContext httpConetext, int min, int max, int page = 1);
     }
 }

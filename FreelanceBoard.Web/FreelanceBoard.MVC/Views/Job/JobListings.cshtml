@@ -269,7 +269,7 @@
         margin-bottom: 20px;
     }
 
-    }
+
 
     .job-info-section .job-icon {
         width: 60px;
@@ -292,6 +292,23 @@
         color: #6366f1;
         font-weight: 600;
     }
+
+    .filter-disabled {
+        opacity: 0.6;
+        pointer-events: none;
+        background-color: #f8f9fa;
+    }
+
+    #clearFiltersBtn {
+        background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%) !important;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        #clearFiltersBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 </style>
 
 <header class="site-header">
@@ -317,26 +334,26 @@
             <div class="col-lg-12 col-12">
                 <form class="custom-form hero-form" action="#" method="get" role="form">
                     <h3 class="text-white mb-3">Search your dream job</h3>
-                    <div class="row">
 
+                    <!-- Selected Keywords Field (NEW) -->
+                    <div class="mb-2">
+                        <label class="text-white mb-2">Selected keywords</label>
+                        <div id="selectedKeywordsContainer" class="skills-input-container" style="display:none;"></div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-lg-4 col-md-4 col-12">
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon"></i></span>
-                                <select class="form-select form-control" name="job-salary" id="job-salary" aria-label="Default select example">
-                                    <option selected>Price Range</option>
-                                    <option value="1">$300k - $500k</option>
-                                    <option value="2">$10000k - $45000k</option>
-                                </select>
+                                <input type="number" class="form-control" name="minPrice" id="min-price" placeholder="Min" step="1" min="0" />
+                                <input type="number" class="form-control" name="maxPrice" id="max-price" placeholder="Max" step="1" min="0" />
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4 col-12">
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
                                 <select class="form-select form-control" name="job-level" id="job-level" aria-label="Default select example">
-                                    <option selected>Category</option>
-                                    <option value="1">Internship</option>
-                                    <option value="2">Junior</option>
-                                    <option value="2">Senior</option>
+                                    <option value="" disabled>Category</option>
                                 </select>
                             </div>
                         </div>
@@ -344,22 +361,26 @@
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><i class="custom-icon bi-code-slash me-1"></i></span>
                                 <select class="form-select form-control" name="job-remote" id="job-remote" aria-label="Default select example">
-                                    <option selected>Skills</option>
-                                    <option value="1">Full Time</option>
-                                    <option value="2">Contract</option>
-                                    <option value="2">Part Time</option>
+                                    <option value="" disabled>Skills</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-12 col-12">
-                            <button type="submit" class="form-control">
+                            <button type="submit" class="btn btn-primary w-100">
                                 Search job
                             </button>
                         </div>
-                        <div class="col-12">
-                        </div>
                     </div>
                 </form>
+                @* added something here *@
+                <div class="col-lg-12 col-12 mt-2">
+                    <button type="button" id="clearFiltersBtn" class="btn btn-secondary w-100">
+                        Clear Filters
+                    </button>
+                    @* <button type="button" id="clearFiltersBtn" class="form-control bg-secondary text-white"> *@
+                    @*     Clear Filters
+                    </button> *@
+                </div>
             </div>
             <div class="col-lg-6 col-12">
                 <img src="images/4557388.png" class="hero-image img-fluid" alt="">
@@ -386,9 +407,25 @@
         </div>
 
         <!-- Sorting buttons -->
+        @{
+            var currentSort = Context.Request.Query["sortBy"].ToString();
+            var isAsc = Context.Request.Query["isAscending"].ToString();
+            if (string.IsNullOrEmpty(isAsc)) isAsc = "true";
+        }
+
         <div class="mb-4">
-            <a id="date-sort" href="@Url.Action("JobListings", new { sortBy = "Date" })" class="btn btn-primary sort-by-btn">Sort by Date</a>
-            <a id="budget-sort" href="@Url.Action("JobListings", new { sortBy = "Budget" })" class="btn btn-secondary sort-by-btn">Sort by Budget</a>
+            <a id="date-sort"
+               href="@Url.Action("JobListings", new { sortBy = "Date", isAscending = isAsc, page = 1 })"
+               class="btn @(currentSort == "Budget" ? "btn-secondary" : "btn-primary") sort-by-btn">
+                Sort by Date
+            </a>
+
+            <a id="budget-sort"
+               href="@Url.Action("JobListings", new { sortBy = "Budget", isAscending = isAsc, page = 1 })"
+               class="btn @(currentSort == "Budget" ? "btn-primary" : "btn-secondary") sort-by-btn">
+                Sort by Budget
+            </a>
+
         </div>
 
         <div class="form-check form-switch">
@@ -481,7 +518,8 @@
                             <a class="page-link" href="#">5</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link page-number" href="#" aria-label="Next">
+                            <a class="page-link" href="#" aria-label="Next">
+
                                 <span aria-hidden="true">Next</span>
                             </a>
                         </li>
@@ -712,216 +750,435 @@
 </div> *@
 
 <script>
-                const sortSwitch = document.getElementById("sortOrderSwitch");
-                const dateSortBtn = document.getElementById("date-sort");
-                const budgetSortBtn = document.getElementById("budget-sort");
-                const url = new URL(window.location.href);
-                const currentOrder = url.searchParams.get("isAscending");
-                const page = url.searchParams.get("page");
-                const sort = url.searchParams.get("sortBy");
-                const pages = document.querySelectorAll('.page-number');
+    // Current active filters
+    let activeFilters = {
+        price: null,
+        categories: null,
+        skills: null
+    };
 
-                if(page<1 || !page)
-                {
-                    url.searchParams.set("page", "1");
-                    window.location.href = url.toString();
-                }
-                // Set the switch position based on the query string
-                if (currentOrder === "true") {
-                    sortSwitch.checked = true;
-                } else if (currentOrder === "false") {
-                    sortSwitch.checked = false;
-                }
+    // NEW: store selected keywords from single-select dropdowns
+    const selectedCategoryKeywords = [];
+    const selectedSkillKeywords = [];
 
-                sortSwitch.addEventListener("change", function () {
-                    const isAscending = this.checked;
-                    url.searchParams.set("isAscending", isAscending ? "true" : "false");
-                    url.searchParams.set("page", "1");
-                    window.location.href = url.toString();
-                });
+    // Initialize the form and fetch data
+    document.addEventListener('DOMContentLoaded', function() {
 
-                // sort by button
-                const buttons = document.querySelectorAll('.sort-by-btn');
+    document.getElementById('clearFiltersBtn')?.addEventListener('click', clearAllFilters);
+        // Load dropdown data
+        loadCategoriesInto('#job-level');
+        loadSkillsInto('#job-remote');
 
-                buttons.forEach(button => {
-                    if(sort=="Date"){
-                        dateSortBtn.classList.remove("btn-secondary");
-                        budgetSortBtn.classList.remove("btn-primary");
-                        dateSortBtn.classList.add("btn-primary");
-                        budgetSortBtn.classList.add("btn-secondary");
-                    }
-                    else if(sort == "Budget"){
-                        budgetSortBtn.classList.remove("btn-secondary");
-                        dateSortBtn.classList.remove("btn-primary");
-                        budgetSortBtn.classList.add("btn-primary");
-                        dateSortBtn.classList.add("btn-secondary");
-                    }
-                  button.addEventListener('click', function(e) {
-                    //e.preventDefault();
+        // Initialize from URL parameters
+        initializeFromUrl();
 
-                    // Remove active class from all buttons
-                    buttons.forEach(btn => {
-                      btn.classList.remove('btn-primary');
-                      btn.classList.add('btn-secondary');
-                    });
+        // Price range validation
+        document.getElementById('min-price').addEventListener('change', validatePriceRange);
+        document.getElementById('max-price').addEventListener('change', validatePriceRange);
 
-                    // Add active class to clicked button
-                    this.classList.add('btn-primary');
-                    this.classList.remove('btn-secondary');
-                  });
-                });
+        // Form submission
+            // Replace this existing form submission handler:
+    document.querySelector('form.hero-form').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-                // Traverse between pages
-                pages.forEach((pageItem, index) => {
-                  pageItem.classList.remove("active");
-                  // index starts from 0, page numbers from 1, so add 1
-                  if (page == (index + 1)) {
-                    pageItem.classList.add("active");
-                  }
-
-                  // Add click event listener to each page
-                  pageItem.addEventListener('click', function(e) {
-                    e.preventDefault();
-
-                    // Remove active class from current active element
-                    const currentActive = document.querySelector('.page-number.active');
-                    if (currentActive) {
-                      currentActive.classList.remove('active');
-                    }
-
-                    // Add active class to clicked element
-                    this.classList.add('active');
-
-                    // Update URL param "page" with clicked page number
-                    const url = new URL(window.location);
-                    const pageNumber = this.textContent.trim();
-                    url.searchParams.set("page", pageNumber);
-
-                    // Redirect to updated URL to trigger page change
-                    window.location.href = url.toString();
-                  });
-                });
-
-
-                // Skills management
-                document.getElementById('skillInput').addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        addSkill();
-                    }
-                });
-
-                function addSkill() {
-                    const skillInput = document.getElementById('skillInput');
-                    const skillName = skillInput.value.trim();
-
-                    if (skillName && !currentSkills.includes(skillName)) {
-                        currentSkills.push(skillName);
-                        renderSkills();
-                        skillInput.value = '';
-                    }
-                }
-
-                function removeSkill(skillName) {
-                    currentSkills = currentSkills.filter(skill => skill !== skillName);
-                    renderSkills();
-                }
-
-                function renderSkills() {
-                    const container = document.getElementById('skillsContainer');
-                    container.innerHTML = '';
-
-                    currentSkills.forEach(skill => {
-                        const skillTag = document.createElement('div');
-                        skillTag.className = 'skill-tag';
-                        skillTag.innerHTML = `
-                            ${skill}
-                            <button type="button" class="skill-remove" onclick="removeSkill('${skill}')">×</button>
-                        `;
-                        container.appendChild(skillTag);
-                    });
-                }
-
-                // Modal management
-                function resetModal() {
-                    document.getElementById('jobForm').reset();
-                    document.getElementById('jobId').value = '';
-                    currentSkills = [];
-                    renderSkills();
-                    currentJobId = null;
-                }
-
-                // Create new job
-                document.getElementById('createJobModal').addEventListener('show.bs.modal', function() {
-                    if (!currentJobId) {
-                        document.getElementById('modalTitle').textContent = 'Create New Job';
-                        document.getElementById('saveButtonText').textContent = 'Create Job';
-                        resetModal();
-                    }
-                });
-
-                // Edit job
-                function editJob(jobId) {
-                    const job = jobs.find(j => j.id === jobId);
-                    if (!job) return;
-
-                    currentJobId = jobId;
-
-                    // Populate form
-                    document.getElementById('jobId').value = job.id;
-                    document.getElementById('jobTitle').value = job.title;
-                    document.getElementById('jobDescription').value = job.description;
-                    document.getElementById('jobCategory').value = job.category;
-                    document.getElementById('jobPrice').value = job.price;
-
-                    // Set skills
-                    currentSkills = [...job.skills];
-                    renderSkills();
-
-                    // Update modal title
-                    document.getElementById('modalTitle').textContent = 'Edit Job';
-                    document.getElementById('saveButtonText').textContent = 'Update Job';
-
-                    // Show modal
-                    new bootstrap.Modal(document.getElementById('createJobModal')).show();
-                }
-
-                // Save job (create or update)
-                async function saveJob() {
-        const form = document.getElementById('jobForm');
-        if (!form.checkValidity()) {
-            form.reportValidity();
+        if (!validatePriceRange()) {
             return;
         }
 
-        const jobData = {
-            Title: document.getElementById('jobTitle').value,
-            Description: document.getElementById('jobDescription').value,
-            Category: document.getElementById('jobCategory').value,
-            Price: parseFloat(document.getElementById('jobPrice').value),
-            // Skills: [...currentSkills],
-            UserId: document.getElementById('currentUserId').value
-        };
+        const minPrice = document.getElementById('min-price').value;
+        const maxPrice = document.getElementById('max-price').value;
 
-        try {
-            const response = await fetch('/api/jobs', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(jobData)
-            });
+        // Use accumulated keywords from the chips
+        const categories = selectedCategoryKeywords.slice();
+        const skills = selectedSkillKeywords.slice();
 
-            if (response.ok) {
-                alert('Job created successfully!');
-                bootstrap.Modal.getInstance(document.getElementById('createJobModal')).hide();
-                resetModal();
-                // Optionally reload job listings here
+        // Clear other filters when one is selected
+            if (minPrice || maxPrice) {
+        document.getElementById('job-level').selectedIndex = -1;
+        document.getElementById('job-remote').selectedIndex = -1;
+    } else if (categories.length) {
+        document.getElementById('min-price').value = '';
+        document.getElementById('max-price').value = '';
+        document.getElementById('job-remote').selectedIndex = -1;
+    } else if (skills.length) {
+        document.getElementById('min-price').value = '';
+        document.getElementById('max-price').value = '';
+        document.getElementById('job-level').selectedIndex = -1;
+    }
+
+        // Submit based on the active filter
+        if (categories.length) {
+
+        const url = new URL('@Url.Action("JobListingCategories", "Job")', window.location.origin);
+        categories.forEach(c => url.searchParams.append('category', c));
+        window.location.href = url.toString();
+    }
+    else if (skills.length) {
+        const url = new URL('@Url.Action("JobListingSkill", "Job")', window.location.origin);
+        skills.forEach(s => url.searchParams.append('skill', s));
+        window.location.href = url.toString();
+    }else if (minPrice || maxPrice) {
+            const url = new URL('@Url.Action("JobListingBudget", "Job")', window.location.origin);
+            if (minPrice) url.searchParams.set('min', minPrice);
+            if (maxPrice) url.searchParams.set('max', maxPrice);
+            window.location.href = url.toString();
+        }
+        else {
+            window.location.href = '@Url.Action("JobListings", "Job")';
+        }
+    });
+
+            const sortSwitch = document.getElementById("sortOrderSwitch");
+    const url = new URL(window.location.href);
+    const currentOrder = url.searchParams.get("isAscending");
+    const page = parseInt(url.searchParams.get("page") || "1", 10);
+
+
+    // Set initial state
+    if (currentOrder === "true") {
+        sortSwitch.checked = true;
+    } else if (currentOrder === "false") {
+        sortSwitch.checked = false;
+    }
+
+    // Event listener
+    sortSwitch.addEventListener("change", function() {
+        const isAscending = this.checked;
+        url.searchParams.set("isAscending", isAscending ? "true" : "false");
+        url.searchParams.set("page", "1");
+        window.location.href = url.toString();
+    });
+        const minPriceInput = document.getElementById('min-price');
+    const maxPriceInput = document.getElementById('max-price');
+    const categorySelect = document.getElementById('job-level');
+    const skillSelect = document.getElementById('job-remote');
+
+    // Disable other filters when one is selected
+    [minPriceInput, maxPriceInput].forEach(input => {
+        input.addEventListener('input', function() {
+            if (this.value) {
+                categorySelect.disabled = true;
+                skillSelect.disabled = true;
+                categorySelect.parentElement.classList.add('filter-disabled');
+                skillSelect.parentElement.classList.add('filter-disabled');
             } else {
-                const errorText = await response.text();
-                alert('Failed to create job: ' + errorText);
+                categorySelect.disabled = false;
+                skillSelect.disabled = false;
+                categorySelect.parentElement.classList.remove('filter-disabled');
+                skillSelect.parentElement.classList.remove('filter-disabled');
             }
-        } catch (err) {
-            console.error('Error creating job:', err);
-            alert('An error occurred while creating the job.');
+        });
+    });
+
+    // When a category is picked, add it as a keyword chip and reset the select
+    categorySelect.addEventListener('change', function() {
+        const val = this.value;
+        if (val) {
+            if (!selectedCategoryKeywords.includes(val)) selectedCategoryKeywords.push(val);
+            renderSelectedKeywords();
+            // keep existing behavior that disables other filters
+            if (this.selectedOptions.length > 0) {
+                minPriceInput.disabled = true;
+                maxPriceInput.disabled = true;
+                skillSelect.disabled = true;
+                minPriceInput.parentElement.classList.add('filter-disabled');
+                maxPriceInput.parentElement.classList.add('filter-disabled');
+                skillSelect.parentElement.classList.add('filter-disabled');
+            }
+            // reset to placeholder to allow adding more
+            this.selectedIndex = 0;
+        } else {
+            minPriceInput.disabled = false;
+            maxPriceInput.disabled = false;
+            skillSelect.disabled = false;
+            minPriceInput.parentElement.classList.remove('filter-disabled');
+            maxPriceInput.parentElement.classList.remove('filter-disabled');
+            skillSelect.parentElement.classList.remove('filter-disabled');
+        }
+    });
+
+    // When a skill is picked, add it as a keyword chip and reset the select
+    skillSelect.addEventListener('change', function() {
+        const val = this.value;
+        if (val) {
+            if (!selectedSkillKeywords.includes(val)) selectedSkillKeywords.push(val);
+            renderSelectedKeywords();
+            // keep existing behavior that disables other filters
+            if (this.selectedOptions.length > 0) {
+                minPriceInput.disabled = true;
+                maxPriceInput.disabled = true;
+                categorySelect.disabled = true;
+                minPriceInput.parentElement.classList.add('filter-disabled');
+                maxPriceInput.parentElement.classList.add('filter-disabled');
+                categorySelect.parentElement.classList.add('filter-disabled');
+            }
+            // reset to placeholder to allow adding more
+            this.selectedIndex = 0;
+        } else {
+            minPriceInput.disabled = false;
+            maxPriceInput.disabled = false;
+            categorySelect.disabled = false;
+            minPriceInput.parentElement.classList.remove('filter-disabled');
+            maxPriceInput.parentElement.classList.remove('filter-disabled');
+            categorySelect.parentElement.classList.remove('filter-disabled');
+        }
+    });
+
+    // Handle removing chips (event delegation)
+    document.getElementById('selectedKeywordsContainer').addEventListener('click', function(e) {
+        const btn = e.target.closest('.skill-remove');
+        if (!btn) return;
+        const chip = btn.closest('[data-type]');
+        if (!chip) return;
+        const type = chip.getAttribute('data-type');
+        const value = chip.getAttribute('data-value');
+        if (type === 'category') {
+            const idx = selectedCategoryKeywords.indexOf(value);
+            if (idx > -1) selectedCategoryKeywords.splice(idx, 1);
+        } else if (type === 'skill') {
+            const idx = selectedSkillKeywords.indexOf(value);
+            if (idx > -1) selectedSkillKeywords.splice(idx, 1);
+        }
+        renderSelectedKeywords();
+        // re-enable other inputs if no chips remain
+        if (selectedCategoryKeywords.length === 0 && selectedSkillKeywords.length === 0) {
+            minPriceInput.disabled = false;
+            maxPriceInput.disabled = false;
+            categorySelect.disabled = false;
+            skillSelect.disabled = false;
+            minPriceInput.parentElement.classList.remove('filter-disabled');
+            maxPriceInput.parentElement.classList.remove('filter-disabled');
+            categorySelect.parentElement.classList.remove('filter-disabled');
+            skillSelect.parentElement.classList.remove('filter-disabled');
+        }
+    });
+
+               const pages = document.querySelectorAll('li.page-number');
+
+    pages.forEach((pageItem, index) => {
+        pageItem.classList.remove("active");
+        if (page == (index + 1)) {
+            pageItem.classList.add("active");
+        }
+        pageItem.addEventListener('click', function(e) {
+            e.preventDefault();
+            const currentActive = document.querySelector('.page-number.active');
+            if (currentActive) currentActive.classList.remove('active');
+            this.classList.add('active');
+            const url = new URL(window.location);
+                const pageNumber = parseInt(this.textContent.trim(), 10);
+    url.searchParams.set("page", pageNumber.toString());
+
+            window.location.href = url.toString();
+        });
+    });
+    });
+
+    // Helper functions
+    function validatePriceRange() {
+        const minPrice = document.getElementById('min-price').value;
+        const maxPrice = document.getElementById('max-price').value;
+
+        if (minPrice && maxPrice && parseInt(minPrice) > parseInt(maxPrice)) {
+            alert('Minimum price cannot be greater than maximum price');
+            return false;
+        }
+        return true;
+    }
+
+    function initializeFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Price range
+        if (urlParams.has('min') || urlParams.has('max')) {
+            document.getElementById('min-price').value = urlParams.get('min') || '';
+            document.getElementById('max-price').value = urlParams.get('max') || '';
+            activeFilters.price = {
+                min: urlParams.get('min'),
+                max: urlParams.get('max')
+            };
+        }
+        // Category
+            else if (urlParams.has('category')) {
+        const cats = urlParams.getAll('category');
+        // accumulate chips instead of multi-select
+        cats.forEach(c => { if (!selectedCategoryKeywords.includes(c)) selectedCategoryKeywords.push(c); });
+        activeFilters.categories = cats;
+        // reflect chips
+        renderSelectedKeywords();
+        // disable other inputs to match previous behavior
+        if (cats.length > 0) {
+            document.getElementById('min-price').disabled = true;
+            document.getElementById('max-price').disabled = true;
+            document.getElementById('job-remote').disabled = true;
+            document.getElementById('min-price').parentElement.classList.add('filter-disabled');
+            document.getElementById('max-price').parentElement.classList.add('filter-disabled');
+            document.getElementById('job-remote').parentElement.classList.add('filter-disabled');
         }
     }
+    // Skill
+    else if (urlParams.has('skill')) {
+        const sks = urlParams.getAll('skill');
+        sks.forEach(s => { if (!selectedSkillKeywords.includes(s)) selectedSkillKeywords.push(s); });
+        const select = document.getElementById('job-remote');
+        activeFilters.skills = sks;
+        renderSelectedKeywords();
+        if (sks.length > 0) {
+            document.getElementById('min-price').disabled = true;
+            document.getElementById('max-price').disabled = true;
+            document.getElementById('job-level').disabled = true;
+            document.getElementById('min-price').parentElement.classList.add('filter-disabled');
+            document.getElementById('max-price').parentElement.classList.add('filter-disabled');
+            document.getElementById('job-level').parentElement.classList.add('filter-disabled');
+        }
+    }
+    }
+
+    function getCurrentFilterParams() {
+        const currentUrl = new URL(window.location.href);
+        const filterType = currentUrl.pathname.split('/').pop();
+        const params = new URLSearchParams();
+
+        if (filterType === 'JobListingBudget') {
+            if (currentUrl.searchParams.has('min')) params.set('min', currentUrl.searchParams.get('min'));
+            if (currentUrl.searchParams.has('max')) params.set('max', currentUrl.searchParams.get('max'));
+        }
+        else if (filterType === 'JobListingCategories') {
+            if (currentUrl.searchParams.has('category')) params.set('category', currentUrl.searchParams.get('category'));
+        }
+        else if (filterType === 'JobListingSkill') {
+            if (currentUrl.searchParams.has('skill')) params.set('skill', currentUrl.searchParams.get('skill'));
+        }
+
+        return params;
+    }
+
+    async function loadCategoriesInto(selectQuery) {
+        try {
+            const res = await fetch('https://localhost:7029/api/Job/all-categories');
+            const json = await res.json();
+            if (!json?.isSuccess || !Array.isArray(json.data)) return;
+
+            const select = document.querySelector(selectQuery);
+            if (!select) return;
+
+            // Remember current selection
+            const current = (select.value || '').trim();
+
+            // Rebuild options
+            select.innerHTML = '<option value="" disabled>Category</option>';
+
+            json.data.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.name;
+                opt.textContent = c.name;
+                select.appendChild(opt);
+            });
+
+            if (current) {
+                select.value = current;
+                if (select.value !== current) select.selectedIndex = 0;
+            }
+        } catch (e) {
+            console.error('Error loading categories:', e);
+        }
+    }
+
+    async function loadSkillsInto(selectQuery) {
+        try {
+            const res = await fetch('https://localhost:7029/api/Skill/get-all');
+            const json = await res.json();
+            if (!json?.isSuccess || !Array.isArray(json.data)) return;
+
+            const select = document.querySelector(selectQuery);
+            if (!select) return;
+
+            const current = (select.value || '').trim();
+
+            select.innerHTML = '<option value="" disabled>Skills</option>';
+
+            json.data.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.name;
+                opt.textContent = s.name;
+                select.appendChild(opt);
+            });
+
+            if (current) {
+                select.value = current;
+                if (select.value !== current) select.selectedIndex = 0;
+            }
+        } catch (e) {
+            console.error('Error loading skills:', e);
+        }
+    }
+
+                function clearAllFilters() {
+        // Clear input values
+        document.getElementById('min-price').value = '';
+        document.getElementById('max-price').value = '';
+            document.getElementById('job-level').selectedIndex = -1;
+    document.getElementById('job-remote').selectedIndex = -1;
+
+        // Clear selected keywords (chips)
+        selectedCategoryKeywords.length = 0;
+        selectedSkillKeywords.length = 0;
+        renderSelectedKeywords();
+
+        // Enable all inputs
+        document.getElementById('min-price').disabled = false;
+        document.getElementById('max-price').disabled = false;
+        document.getElementById('job-level').disabled = false;
+        document.getElementById('job-remote').disabled = false;
+
+        // Remove disabled styling
+        document.querySelectorAll('.input-group').forEach(group => {
+            group.classList.remove('filter-disabled');
+        });
+
+        // Remove this line to prevent page refresh:
+        // window.location.href = '@Url.Action("JobListings", "Job")';
+
+        // Clear any active filters from the URL without refreshing
+        if (window.history.pushState) {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('min');
+            url.searchParams.delete('max');
+            url.searchParams.delete('category');
+            url.searchParams.delete('skill');
+            window.history.pushState({}, '', url);
+        }
+    }
+
+    // Renders the combined keywords chips
+    function renderSelectedKeywords() {
+        const box = document.getElementById('selectedKeywordsContainer');
+        const parts = [];
+        selectedCategoryKeywords.forEach(v => {
+            parts.push(`<span class="skill-tag" data-type="category" data-value="${encodeHTML(v)}">
+                ${escapeHTML(v)}
+                <button type="button" class="skill-remove" aria-label="Remove ${escapeHTML(v)}">×</button>
+            </span>`);
+        });
+        selectedSkillKeywords.forEach(v => {
+            parts.push(`<span class="skill-tag" data-type="skill" data-value="${encodeHTML(v)}">
+                ${escapeHTML(v)}
+                <button type="button" class="skill-remove" aria-label="Remove ${escapeHTML(v)}">×</button>
+            </span>`);
+        });
+        if (parts.length === 0) {
+            box.style.display = 'none';
+            box.innerHTML = '';
+        } else {
+            box.style.display = 'flex';
+            box.innerHTML = parts.join('');
+        }
+    }
+
+    // simple escaping helpers
+    function escapeHTML(str) { return (str || '').replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
+    function encodeHTML(str) { return escapeHTML(str); }
+
+    // Add event listener for the clear button (already bound safely above)
+    // document.getElementById('clearFiltersBtn').addEventListener('click', clearAllFilters);
 </script>

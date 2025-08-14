@@ -14,36 +14,12 @@
             </div>
 
             <div class="col-lg-6 col-12">
-                <form class="custom-form hero-form" action="#" method="get" role="form">
-                    <h3 class="text-white mb-3">Search your dream job</h3>
-
+                <form class="custom-form hero-form" action="http://localhost:5030/Job/JobListings" method="get" role="form">
                     <div class="row">
-                        <div class="col-lg-12 col-12">
-                            <div class="input-group">
-                                <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon"></i></span>
-
-                                <input type="text" name="job-title" id="job-category" class="form-control" placeholder="Job Category" required>
-                            </div>
-                        </div>
-
                         <div class="col-lg-12 col-12">
                             <button type="submit" class="form-control">
                                 Find a job
                             </button>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="d-flex flex-wrap align-items-center mt-4 mt-lg-0">
-                                <span class="text-white mb-lg-0 mb-md-0 me-2">Popular keywords:</span>
-
-                                <div>
-                                    <a id="category1" onclick="setCategory('Web design')" href="#" class="badge">Web design</a>
-
-                                    <a id="category2" onclick="setCategory('Marketing')" href="#" class="badge">Marketing</a>
-
-                                    <a id="category3" onclick="setCategory('Customer support')" href="#" class="badge">Customer support</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </form>
@@ -107,7 +83,6 @@
                 <h2 class="text-center mb-5">Happy customers</h2>
 
                 <div id="reviews" class="owl-carousel owl-theme reviews-carousel">
-
                 </div>
             </div>
 
@@ -118,9 +93,6 @@
 
 @section Scripts {
     <script>
-        function setCategory(value) {
-            document.getElementById("job-category").value = value;
-        }
         const reviewsSec = document.getElementById("reviews");
 
         fetch("/Review/TopThreeReviewsPartial") // GET request
