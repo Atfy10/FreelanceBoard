@@ -416,11 +416,11 @@
                                     <p>@proposal.Message</p>
                                 </div>
                                 <div class="proposal-actions">
-                                    <button class="action-btn btn-accept" onclick="acceptProposal(@proposal.Id)">
+                                    <button class="action-btn btn-accept" onclick="acceptProposal(@proposal.Id, 'Accepted')">
                                         <i class="bi-check-circle"></i>
                                         Accept
                                     </button>
-                                    <button class="action-btn btn-reject" onclick="rejectProposal(@proposal.Id)">
+                                    <button class="action-btn btn-reject" onclick="acceptProposal(@proposal.Id, 'Rejected')">
                                         <i class="bi-x-circle"></i>
                                         Reject
                                     </button>
@@ -447,6 +447,7 @@
 
 
 <script>
+            const token = sessionStorage.getItem('token');
 
         // Get job ID from URL parameters
         function getJobIdFromUrl() {
@@ -455,12 +456,10 @@
         }
 
         // Accept proposal
-        async function acceptProposal(proposalId) {
-            const token = sessionStorage.getItem('token');
-            alert(token);
+        async function acceptProposal(proposalId, status) {
             try {
                 // 1. Get the proposal from API
-            response = await fetch(`https://localhost:7029/api/Proposal/get?id=${proposalId}`, {
+                response = await fetch(`https://localhost:7029/api/Proposal/get?id=${proposalId}`, {
                     method: "GET", // أو PUT حسب API
                     headers: {
                         "Content-Type": "application/json",
@@ -468,18 +467,13 @@
                     },
                 });
                 if (!response.ok) {
-                    alert('Failed to fetch proposal');
                     return;
                 }
 
                 let proposal = await response.json();
 
-                alert(response.json());
-                alert(proposal.data.status);
-                console.log(proposal.data);
                 // 2. Update status
-                proposal.data.status = 'Accepted'; // أو القيمة اللي الـ API بيقبلها
-                alert(proposal.data.status);
+                proposal.data.status = status; // أو القيمة اللي الـ API بيقبلها
                 // 3. Send updated proposal to API
                 response = await fetch("https://localhost:7029/api/Proposal/update", {
                     method: "PUT", // أو PUT حسب API
@@ -493,19 +487,14 @@
                 const result = await response.json();
 
                 if (response.ok && result.isSuccess) {
-                    alert('Proposal accepted successfully!');
+                    alert(`Proposal ${status} successfully!`);
                     location.reload();
                 } else {
                     alert("Failed to update proposal state: " + (result.message || 'Unknown error'));
                 }
             } catch (error) {
                 console.error("Error updating proposal:", error);
-                alert("Something went wrong while accepting the proposal.");
             }
-        }
-
-        // Reject proposal
-        function rejectProposal(proposalId) {
         }
 
         </script>
