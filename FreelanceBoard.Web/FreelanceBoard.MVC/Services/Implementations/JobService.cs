@@ -1,6 +1,9 @@
-﻿using FreelanceBoard.MVC.Extensions;
+﻿using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.MVC.Extensions;
 using FreelanceBoard.MVC.Models;
 using FreelanceBoard.MVC.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace FreelanceBoard.MVC.Services.Implementations
@@ -82,6 +85,58 @@ namespace FreelanceBoard.MVC.Services.Implementations
             return apiResult?.Data ?? new JobViewModel();
         }
 
+        //List<string> category, int page
+        public async Task<List<JobViewModel>> GetJobByCategory(HttpContext httpConetext, List<string> categories, int page = 1)
+        {
+            var token = httpConetext.User.GetAccessToken();
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+
+            var response = await client.GetAsync($"/api/job/filter-by-category?category={categories}&page={page}");
+
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException($"Error occured while getting jobs with specified category");
+
+            var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<List<JobViewModel>>>();
+
+            return apiResult.Data ?? new List<JobViewModel>();
+        }
+
+        //GetJobsFilteredSkills([FromQuery] List<string> skill, int page = 1)
+        public async Task<List<JobViewModel>> GetJobBySkill(HttpContext httpConetext, List<string> skillNames, int page = 1)
+        {
+            var token = httpConetext.User.GetAccessToken();
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+
+            var response = await client.GetAsync($"/api/job/filter-by-skills?skill={skillNames}&page={page}");
+
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException($"Error occured while getting jobs with specified skills");
+
+            var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<List<JobViewModel>>>();
+
+            return apiResult.Data ?? new List<JobViewModel>();
+        }
+
+        public async Task<List<JobViewModel>> GetJobByBudget(HttpContext httpConetext,int min, int max, int page = 1)
+        {
+            var token = httpConetext.User.GetAccessToken();
+            var client = _httpClientFactory.CreateClient("FreelanceApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+
+            var response = await client.GetAsync($"/api/job/filter-by-budget?min={min}&max={max}&page={page}");
+
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException($"Error occured while getting jobs with specified skills");
+
+            var apiResult = await response.Content.ReadFromJsonAsync<ApiErrorResponse<List<JobViewModel>>>();
+
+            return apiResult.Data ?? new List<JobViewModel>();
+        }
     }
 
 

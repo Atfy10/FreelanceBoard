@@ -1,4 +1,5 @@
-﻿using FreelanceBoard.MVC.Extensions;
+﻿using FreelanceBoard.Core.Domain.Entities;
+using FreelanceBoard.MVC.Extensions;
 using FreelanceBoard.MVC.Models;
 using FreelanceBoard.MVC.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -52,6 +53,61 @@ namespace FreelanceBoard.MVC.Controllers
             return View("JobListings", job);
 
         }
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> JobListingCategories(List<string> categories, int page = 1)
+        {
+            List<JobViewModel> job = [];
+            var success = await _executor.Execute(
+                async () =>
+                {
+                    job = await _jobService.GetJobByCategory(HttpContext, categories, page);},
+                    error => ModelState.AddModelError(string.Empty, error)
+                );
+
+            if (!success)
+                return View("NotFound");
+            return View("JobListings", job);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> JobListingBudget(int min, int max, int page = 1)
+        {
+            List<JobViewModel> job = [];
+            var success = await _executor.Execute(
+                async () =>
+                {
+                    job = await _jobService.GetJobByBudget(HttpContext,min,max, page);
+                },
+                    error => ModelState.AddModelError(string.Empty, error)
+                );
+
+            if (!success)
+                return View("NotFound");
+            return View("JobListings", job);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> JobListingSkill(List<string> skills,int page = 1)
+        {
+            List<JobViewModel> job = [];
+            var success = await _executor.Execute(
+                async () =>
+                {
+                    job = await _jobService.GetJobBySkill(HttpContext, skills, page);
+                },
+                    error => ModelState.AddModelError(string.Empty, error)
+                );
+
+            if (!success)
+                return View("NotFound");
+            return View("JobListings", job);
+        }
+
 
         [AllowAnonymous]
         [HttpGet]
