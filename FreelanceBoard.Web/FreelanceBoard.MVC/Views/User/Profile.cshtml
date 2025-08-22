@@ -7,455 +7,12 @@
     </script>
 }
 
-<style>
-    .profile-section {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-        min-height: 100vh;
-        padding: 80px 0;
-    }
-
-    .readonly-field {
-        background-color: #f5f5f5 !important;
-        cursor: not-allowed !important;
-        pointer-events: none !important;
-        user-select: none !important;
-    }
-
-    .profile-container {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
-    }
-
-    .profile-header {
-        text-align: center;
-        margin-bottom: 40px;
-        position: relative;
-    }
-
-    .profile-picture-container {
-        position: relative;
-        display: inline-block;
-        margin-bottom: 20px;
-    }
-
-    .profile-picture {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 4px solid white;
-        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-        transition: all 0.3s ease;
-    }
-
-        .profile-picture:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.4);
-        }
-
-    .profile-picture-upload {
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        width: 45px;
-        height: 45px;
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        border: 3px solid white;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-    }
-
-        .profile-picture-upload:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
-            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
-        }
-
-        .profile-picture-upload i {
-            color: white;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        .profile-picture-upload:hover i {
-            transform: scale(1.1);
-        }
-
-    .profile-username {
-        color: #6366f1;
-        font-weight: 700;
-        font-size: 2rem;
-        margin-bottom: 10px;
-    }
-
-    .profile-role {
-        color: #6c757d;
-        font-size: 1.1rem;
-        margin-bottom: 0;
-    }
-
-    .section-title {
-        color: #6366f1;
-        font-weight: 700;
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-        .section-title i {
-            font-size: 1.3rem;
-        }
-
-    .form-group {
-        margin-bottom: 25px;
-    }
-
-        .form-group label {
-            color: #6366f1;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-    .input-group {
-        position: relative;
-    }
-
-        .input-group .form-control,
-        .input-group .form-control:focus {
-            padding-left: 50px;
-            height: 55px;
-            border: none;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-            .input-group .form-control:focus {
-                background: rgba(255, 255, 255, 1);
-                box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
-                outline: none;
-            }
-
-    .input-group-text {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        color: #6c757d;
-        z-index: 10;
-        font-size: 1.2rem;
-    }
-
-    .bio-input-group {
-        align-items: flex-start; /* Align items to the top */
-    }
-
-    .bio-icon {
-        height: auto; /* Let the icon take natural height */
-        padding-top: 15px; /* Align with textarea text */
-    }
-
-    .bio-textarea {
-        min-height: 120px;
-        resize: vertical;
-        padding: 15px;
-        line-height: 1.5;
-        border: none;
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: 10px;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        width: 100%;
-    }
-
-        .bio-textarea:focus {
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
-            outline: none;
-        }
-
-    /* For readonly state */
-    .readonly-field {
-        background: rgba(255, 255, 255, 0.5) !important;
-        cursor: not-allowed;
-    }
-
-
-    .skills-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    .skill-tag {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        color: white;
-        padding: 8px 15px;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-    }
-
-        .skill-tag:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
-        }
-
-    .skill-remove {
-        background: rgba(255, 255, 255, 0.2);
-        border: none;
-        color: white;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-size: 0.8rem;
-    }
-
-    .add-skill-btn {
-        background: rgba(139, 92, 246, 0.1);
-        border: 2px dashed #8b5cf6;
-        color: #6366f1;
-        padding: 8px 15px;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-        .add-skill-btn:hover {
-            background: rgba(139, 92, 246, 0.2);
-            border-color: #6366f1;
-        }
-
-    .projects-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        margin-top: 20px;
-    }
-
-    .project-card {
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        border: none;
-    }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
-        }
-
-    .project-title {
-        color: #6366f1;
-        font-weight: 600;
-        font-size: 1.1rem;
-        margin-bottom: 10px;
-    }
-
-    .project-description {
-        color: #6c757d;
-        font-size: 0.9rem;
-        margin-bottom: 15px;
-    }
-
-    .project-attachment {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        background: rgba(139, 92, 246, 0.1);
-        border-radius: 8px;
-        margin-bottom: 8px;
-        transition: all 0.3s ease;
-        overflow: hidden;
-        max-width: 100%;
-        cursor: pointer;
-    }
-
-        .project-attachment:hover {
-            background: rgba(139, 92, 246, 0.2);
-        }
-
-        .project-attachment i {
-            color: #6366f1;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-
-        .project-attachment span {
-            color: #6366f1;
-            font-weight: 500;
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 0.85rem;
-        }
-
-    .add-project-btn {
-        background: rgba(139, 92, 246, 0.1);
-        border: 2px dashed #8b5cf6;
-        color: #6366f1;
-        padding: 40px 20px;
-        border-radius: 15px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .project-card {
-        position: relative; /* Needed for absolute positioning of remove button */
-    }
-
-    .project-remove {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: rgba(255, 0, 0, 0.2);
-        border: none;
-        color: #ff4444;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-        .project-remove:hover {
-            background: rgba(255, 0, 0, 0.3);
-            transform: scale(1.1);
-        }
-
-    .add-project-btn:hover {
-        background: rgba(139, 92, 246, 0.2);
-        border-color: #6366f1;
-    }
-
-    .add-project-btn i {
-        font-size: 2rem;
-        margin-bottom: 10px;
-    }
-
-    .save-btn {
-        background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 50%, #f9f9f9 100%);
-        border: 1px solid #ddd;
-        color: #333; /* dark text for contrast */
-        padding: 15px 40px;
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        margin-top: 30px;
-        margin-bottom: 30px;
-    }
-
-        .save-btn:hover {
-            background: linear-gradient(135deg, #ececec 0%, #ffffff 50%, #ececec 100%);
-            color: #333; /* same dark text */
-        }
-
-    .edit-mode-toggle {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 25px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-        .edit-mode-toggle:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
-        }
-
-    .readonly-field {
-        background: rgba(255, 255, 255, 0.5) !important;
-        cursor: not-allowed;
-    }
-
-    .change-password-link {
-        position: absolute;
-        top: 20px;
-        right: 180px;
-        background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 25px;
-        font-weight: 500;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        font-size: 14px;
-    }
-
-        .change-password-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
-            color: white;
-            text-decoration: none;
-        }
-
-    .project-attachment[title]:hover:after {
-        content: attr(title);
-        position: absolute;
-        background: #333;
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 0.8rem;
-        white-space: nowrap;
-        z-index: 100;
-        pointer-events: none;
-    }
-</style>
-
 <section class="profile-section">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-12">
 
+                @* Validation Errors *@
                 @if (!ViewData.ModelState.IsValid)
                 {
                     <div class="alert alert-danger">
@@ -463,18 +20,14 @@
                     </div>
                 }
 
-                <div id="messageContainer" class="mt-3" style="display:none;">
+                @* Single Message Container instead of duplicate *@
+                <div id="messageContainer" class="mt-3 d-none">
                     <div id="messageContent" class="alert" role="alert"></div>
                 </div>
-
-                <div id="messageContainer" class="mt-3" style="display:none;">
-                    <div id="messageContent" class="alert" role="alert"></div>
-                </div>
-
 
                 <!-- Profile Header -->
                 <div class="profile-container">
-                    <button class="edit-mode-toggle" onclick="toggleEditMode()">
+                    <button class="edit-mode-toggle" id="editModeBtn">
                         <i class="bi-pencil-square me-2"></i>
                         <span id="edit-btn-text">Edit Profile</span>
                     </button>
@@ -486,21 +39,20 @@
                     <div class="profile-header">
                         <div class="profile-picture-container">
                             <img src="@(string.IsNullOrEmpty(Model.Profile?.Image)
-                                                                                                                                                                                                                                                                                                             ? Url.Content("~/images/avatar.png")
-                                                                                                                                                                                                                                                                                                             : Url.Content("https://localhost:7029" + Model.Profile.Image))"
+                                                                 ? Url.Content("~/images/avatar.png")
+                                                                 : Url.Content("https://localhost:7029" + Model.Profile.Image))"
                                  alt="Profile Picture"
                                  class="profile-picture"
                                  id="profilePicture">
 
-                            <div class="profile-picture-upload" onclick="document.getElementById('profilePictureInput').click()">
+                            <div class="profile-picture-upload" id="profileUploadTrigger">
                                 <i class="bi-camera-fill"></i>
                             </div>
 
-                            <input type="file" id="profilePictureInput" accept="image/*" style="display: none;" onchange="handleProfilePictureChange(event)">
+                            <input type="file" id="profilePictureInput" accept="image/*" class="d-none">
                         </div>
-                        <h2 class="profile-username" id="displayUsername">@Model.UserName</h2>
-                        <h2 class="profile-username" id="displayUsername">@Model.Role</h2>
-
+                        <h2 class="profile-username">@Model.UserName</h2>
+                        <h2 class="profile-role">@Model.Role</h2>
                     </div>
 
                     <!-- Basic Information -->
@@ -510,11 +62,10 @@
                                 <label for="username">Username</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi-person-badge"></i></span>
-                                    <input type="text" id="username" class="form-control readonly-field" value="@Model.UserName">
+                                    <input type="text" id="username" class="form-control readonly-field" value="@Model.UserName" readonly>
                                 </div>
                             </div>
                         </div>
-
 
                         <div class="col-lg-6 col-12">
                             <div class="form-group">
@@ -532,489 +83,151 @@
                         <label for="bio">Bio</label>
                         <div class="input-group bio-input-group">
                             <span class="input-group-text bio-icon"><i class="bi-person-lines-fill"></i></span>
-                            <textarea id="bio" class="form-control bio-textarea readonly-field" readonly
-                                      placeholder="Tell us about yourself...">@Model.Profile?.Bio</textarea>
+                            <textarea id="bio" class="form-control bio-textarea readonly-field" readonly>@Model.Profile?.Bio</textarea>
                         </div>
                     </div>
                 </div>
 
                 <!-- Save Button -->
                 <div class="text-center">
-                    <button class="save-btn" id="saveBtn" onclick="saveProfile()" style="display: none;">
+                    <button class="save-btn d-none" id="saveBtn">
                         <i class="bi-check-circle me-2"></i>
                         Save Changes
                     </button>
                 </div>
 
-                    <!-- Skills Section -->
-                    <div class="profile-container">
-                        <h3 class="section-title">
-                            <i class="bi-gear-fill"></i>
-                            Skills
-                        </h3>
-                        <div class="skills-container" id="skillsContainer">
-                            @foreach (var skill in Model.Skills ?? new List<SkillViewModel>())
-                            {
-                                <div class="skill-tag">
-                                    @skill.Name
-                                    <button class="skill-remove" onclick="removeSkill('@skill.Name', this)" style="display: none;">×</button>
-                                </div>
-                            }
-                            <div class="add-skill-btn" onclick="openAddSkillModal()" style="display: none;">
-                                <i class="bi-plus-circle me-2"></i>
-                                Add Skill
+                <!-- Skills Section -->
+                <div class="profile-container">
+                    <h3 class="section-title">
+                        <i class="bi-gear-fill"></i> Skills
+                    </h3>
+                    <div class="skills-container" id="skillsContainer">
+                        @foreach (var skill in Model.Skills ?? new List<SkillViewModel>())
+                        {
+                            <div class="skill-tag">
+                                @skill.Name
+                                <button class="skill-remove d-none" data-skill="@skill.Name">×</button>
                             </div>
-                        </div>
-
-                    </div>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="addSkillModal" tabindex="-1" aria-labelledby="addSkillModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addSkillModalLabel">Add New Skill</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <label for="skillSelect">Select Skill *</label>
-                                    <select id="skillSelect" class="form-control" required>
-                                        <option value="">-- Choose a skill --</option>
-                                    </select>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button class="btn btn-primary" onclick="saveSkill()">Save Skill</button>
-                                </div>
-                            </div>
+                        }
+                        <div class="add-skill-btn d-none" id="addSkillBtn">
+                            <i class="bi-plus-circle me-2"></i> Add Skill
                         </div>
                     </div>
+                </div>
 
-                    <!-- Projects Section -->
-                    <div class="profile-container">
-                        <h3 class="section-title">
-                            <i class="bi-folder-fill"></i>
-                            Projects
-                        </h3>
-                        <div class="projects-container" id="projectsContainer">
-                            @foreach (var project in Model.Projects ?? new List<ProjectViewModel>())
-                            {
-                                <div class="project-card">
-                                    <h4 class="project-title">@project.Title</h4>
-                                    <button class="project-remove" onclick="removeProject('@project.Id', this)" style="display: none;">×</button>
-                                    <p class="project-description">@project.Description</p>
-                                    @if (!string.IsNullOrEmpty(project.Attachments))
+                <!-- Projects Section -->
+                <div class="profile-container">
+                    <h3 class="section-title">
+                        <i class="bi-folder-fill"></i> Projects
+                    </h3>
+                    <div class="projects-container" id="projectsContainer">
+                        @foreach (var project in Model.Projects ?? new List<ProjectViewModel>())
+                        {
+                            <div class="project-card">
+                                <h4 class="project-title">@project.Title</h4>
+                                <button class="project-remove d-none" data-project-id="@project.Id">×</button>
+                                <p class="project-description">@project.Description</p>
+
+                                @if (!string.IsNullOrEmpty(project.Attachments))
+                                {
+                                    var attachments = project.Attachments.Split(',');
+                                    foreach (var attachment in attachments)
                                     {
-                                        var attachments = project.Attachments.Split(',');
-                                        foreach (var attachment in attachments)
-                                        {
-                                            var trimmed = attachment.Trim();
-                                            var isLink = trimmed.StartsWith("http");
-                                            var icon = isLink ? "bi-box-arrow-up-right" :
-                                            trimmed.EndsWith(".pdf") ? "bi-file-earmark-pdf" :
-                                            "bi-file-earmark-code";
+                                        var trimmed = attachment.Trim();
+                                        var isLink = trimmed.StartsWith("http");
+                                        var icon = isLink ? "bi-box-arrow-up-right" :
+                                        trimmed.EndsWith(".pdf") ? "bi-file-earmark-pdf" :
+                                        "bi-file-earmark-code";
 
-                                            <div class="project-attachment" title="@trimmed" onclick="if('@isLink' === 'True') window.open('@trimmed', '_blank')">
-                                                <i class="@icon"></i>
-                                                <span>@trimmed</span>
-                                            </div>
-                                        }
+                                        <div class="project-attachment" data-url="@trimmed" data-islink="@isLink">
+                                            <i class="@icon"></i>
+                                            <span>@trimmed</span>
+                                        </div>
                                     }
-                                </div>
-                            }
-                            <!-- Add Project Button -->
-                            <div class="add-project-btn" onclick="openAddProjectModal()" style="display: none;">
-                                <i class="bi-plus-circle"></i>
-                                <span>Add New Project</span>
+                                }
                             </div>
+                        }
+
+                        <div class="add-project-btn d-none" id="addProjectBtn">
+                            <i class="bi-plus-circle"></i> <span>Add New Project</span>
                         </div>
                     </div>
-                
-
+                </div>
 
             </div>
         </div>
     </div>
+
 </section>
 
-<!-- Display ModelState errors -->
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-    </div>
-}
-
-    <!-- Add Project Modal -->
-    <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+<!-- Add Project Modal -->
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="addProjectForm">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addProjectModalLabel">
                         <i class="bi-plus-circle me-2"></i> Add New Project
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addProjectForm">
-                        <div class="mb-3">
-                            <label for="projectTitle" class="form-label">Title *</label>
-                            <input type="text" class="form-control" id="projectTitle" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="projectDescription" class="form-label">Description *</label>
-                            <textarea class="form-control" id="projectDescription" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="projectAttachments" class="form-label">Attachments</label>
-                            <input type="text" class="form-control" id="projectAttachments" placeholder="URLs or filenames">
-                        </div>
-                    </form>
+                    <div class="mb-3">
+                        <label for="projectTitle" class="form-label">Title *</label>
+                        <input type="text" class="form-control" id="projectTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="projectDescription" class="form-label">Description *</label>
+                        <textarea class="form-control" id="projectDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="projectAttachments" class="form-label">Attachments</label>
+                        <input type="text" class="form-control" id="projectAttachments" placeholder="URLs or filenames">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="saveProject()">
-                        <i class="bi-check-circle me-2"></i> Save Project
+                    <button type="submit" class="btn btn-primary" id="saveProjectBtn">
+                        <i class="bi-check-circle me-2" ></i> Save Project
                     </button>
                 </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Skill Modal -->
+<div class="modal fade" id="addSkillModal" tabindex="-1" aria-labelledby="addSkillModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSkillModalLabel">Add New Skill</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <label for="skillSelect">Select Skill *</label>
+                <select id="skillSelect" class="form-control" required>
+                    <option value="">-- Choose a skill --</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" id="saveSkillBtn">Save Skill</button>
             </div>
         </div>
     </div>
+</div>
 
 
-
-<script>
-                // Store original values when page loads
-            let originalValues = {};
-        let isEditMode = false;
-
-        document.addEventListener('DOMContentLoaded', function() {
-            storeOriginalValues();
-            setupPhoneNumberValidation();
-        });
-
-        function storeOriginalValues() {
-            originalValues = {
-                username: document.getElementById('username').value,
-                phoneNumber: document.getElementById('phoneNumber').value,
-                bio: document.getElementById('bio').value
-            };
-        }
-
-            function showMessage(message, type = "success") {
-            const container = document.getElementById("messageContainer");
-            const content = document.getElementById("messageContent");
-
-            // Reset classes and set type
-            content.className = "alert alert-" + type;
-            content.textContent = message;
-
-            // Show message
-            container.style.display = "block";
-
-                window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
-
-
-        }
-
-        function setupPhoneNumberValidation() {
-            const phoneInput = document.getElementById('phoneNumber');
-            phoneInput.addEventListener('input', function(e) {
-                // Remove any non-numeric characters
-                this.value = this.value.replace(/[^0-9]/g, '');
-            });
-        }
-
-        function toggleEditMode() {
-            isEditMode = !isEditMode;
-            const editBtn = document.getElementById('edit-btn-text');
-            const saveBtn = document.getElementById('saveBtn');
-            const inputFields = document.querySelectorAll('input, textarea');
-                const skillRemoveBtns = document.querySelectorAll('.skill-remove');
-                const addSkillBtn = document.querySelector('.add-skill-btn');
-                const addProjectBtn = document.querySelector('.add-project-btn');
-                const projectRemoveBtns = document.querySelectorAll('.project-remove');
-
-            if (isEditMode) {
-                // Enter edit mode
-                editBtn.textContent = 'Cancel Edit';
-                saveBtn.style.display = 'inline-block';
-                addSkillBtn.style.display = 'flex';
-                addProjectBtn.style.display = 'flex';
-
-                // Enable editing for all fields
-                inputFields.forEach(field => {
-                    field.removeAttribute('readonly');
-                    field.classList.remove('readonly-field');
-                });
-
-                skillRemoveBtns.forEach(btn => btn.style.display = 'flex');
-                projectRemoveBtns.forEach(btn => btn.style.display = 'block');
-
-            } else {
-                // Cancel edit mode - restore original values
-                editBtn.textContent = 'Edit Profile';
-                saveBtn.style.display = 'none';
-                addSkillBtn.style.display = 'none';
-                addProjectBtn.style.display = 'none';
-
-
-                // Restore original values
-                document.getElementById('username').value = originalValues.username;
-                document.getElementById('phoneNumber').value = originalValues.phoneNumber;
-                document.getElementById('bio').value = originalValues.bio;
-
-                // Disable all fields
-                inputFields.forEach(field => {
-                    field.setAttribute('readonly', true);
-                    field.classList.add('readonly-field');
-                });
-
-                skillRemoveBtns.forEach(btn => btn.style.display = 'none');
-                projectRemoveBtns.forEach(btn => btn.style.display = 'none');
-
-            }
-        }
-
-            async function removeProject(projectId, button) {
-        if (!confirm('Are you sure you want to delete this project?')) return;
-
-        try {
-            const response = await fetch(`/User/DeleteProject?projectId=${projectId}`, {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" }
-            });
-
-            if (response.ok) {
-                // Remove project card from DOM
-                button.closest('.project-card').remove();
-                showMessage('✅ Project deleted successfully!', 'success');
-                } else {
-                const error = await response.text();
-                showMessage('❌ Failed to delete project: ' + error);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-                showMessage('❌ Error deleting project');
-        }
-    }
-
-
-
-        async function handleProfilePictureChange(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const formData = new FormData();
-            formData.append("ProfilePicture", file);
-            const token = sessionStorage.getItem('token');
-            try {
-                const response = await fetch("https://localhost:7029/api/User/change-profile-picture", {
-                    method: "POST",
-                    body: formData,
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.isSuccess) {
-                    document.getElementById("profilePicture").src = "https://localhost:7029" + result.data;
-                } else {
-                        showMessage("Failed to update profile picture: " + result.message);
-                }
-            } catch {
-                    showMessage("Error uploading image.");
-            }
-        }
-
-                async function openAddSkillModal() {
-            const modal = new bootstrap.Modal(document.getElementById("addSkillModal"));
-
-        try {
-            const response = await fetch("https://localhost:7029/api/Skill/get-all");
-            const result = await response.json();
-
-                if (result.isSuccess && Array.isArray(result.data)) {
-                    const select = document.getElementById("skillSelect");
-                    select.innerHTML = '<option value="">-- Choose a skill --</option>';
-
-                    // Get user's current skills from Razor into JS
-                    const userSkills = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Skills?.Select(s => s.Name) ?? new List<string>()));
-
-                    // Filter out skills the user already has
-                    const filteredSkills = result.data.filter(skill => !userSkills.includes(skill.name));
-
-                    // Populate only the filtered skills
-                    filteredSkills.forEach(skill => {
-                        const option = document.createElement("option");
-                        option.value = skill.id;
-                        option.textContent = skill.name;
-                        select.appendChild(option);
-                    });
-                } else {
-                        showMessage("❌ Failed to load skills");
-                }
-            } catch (error) {
-                console.error("Error fetching skills:", error);
-                    showMessage("❌ Error loading skills");
-            }
-
-            modal.show();
-        }
-
-
-            async function saveSkill() {
-            const skillSelect = document.getElementById("skillSelect");
-            const selectedId = skillSelect.value;
-            const selectedName = skillSelect.options[skillSelect.selectedIndex]?.text;
-
-            if (!selectedId) {
-                    showMessage("⚠️ Please select a skill.");
-                return;
-            }
-
-            const response = await fetch("/User/AddSkill", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ skillName: selectedName })
-            });
-
-            if (response.ok) {
-                bootstrap.Modal.getInstance(document.getElementById('addSkillModal')).hide();
-                localStorage.setItem("successMessage", `✅ Skill ${selectedName} added successfully!`);
-                location.reload();
-            } else {
-                showMessage("❌ Failed to add skill");
-            }
-        }
-
-            document.addEventListener("DOMContentLoaded", () => {
-        const msg = localStorage.getItem("successMessage");
-        if (msg) {
-            showMessage(msg);
-            localStorage.removeItem("successMessage");
-        }
-    });
-
-               async function removeSkill(skillName, button) {
-        if (!confirm(`Are you sure you want to remove "${skillName}"?`)) return;
-
-        const response = await fetch("/User/RemoveSkill", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ skillName: skillName }) // send skill name to backend
-        });
-
-        if (response.ok) {
-            // Store message in localStorage to show after reload
-            localStorage.setItem("successMessage", `✅ Skill "${skillName}" removed successfully!`);
-            location.reload();
-        } else {
-            const result = await response.json().catch(() => null);
-            if (result?.error) {
-                showMessage(`❌ ${result.error}`, "danger");
-            } else {
-                showMessage(`❌ Failed to remove skill "${skillName}"`, "danger");
-            }
-        }
-    }
-
-
-                    async function saveProfile() {
-            const profileData = {
-                userName: document.getElementById('username').value.trim(),
-                phoneNumber: document.getElementById('phoneNumber').value.trim(),
-                bio: document.getElementById('bio').value.trim()
-            };
-
-            // Validate inputs
-            if (!profileData.userName) {
-                    showMessage('Username is required');
-                return;
-            }
-
-            if (!profileData.phoneNumber || profileData.phoneNumber.length < 10 || profileData.phoneNumber.length > 15) {
-                    showMessage('Please enter a valid phone number (10-15 digits)');
-                return;
-            }
-
-            try {
-                // Show loading state
-                const saveBtn = document.getElementById('saveBtn');
-                saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
-                saveBtn.disabled = true;
-
-                const response = await fetch("/User/UpdateProfile", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(profileData)
-                });
-
-                if (response.ok) {
-                    // Success - refresh the page to get updated data
-                    location.reload();
-                } else {
-                        const result = await response.json();
-                        if (result.error) {
-                    showMessage(result.error, "danger");
-                } else {
-                    showMessage("❌ Failed to update profile", "danger");
-                }
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                    showMessage('An error occurred while updating profile');
-            } finally {
-                // Reset save button
-                const saveBtn = document.getElementById('saveBtn');
-                if (saveBtn) {
-                    saveBtn.innerHTML = '<i class="bi-check-circle me-2"></i> Save Changes';
-                    saveBtn.disabled = false;
-                }
-            }
-        }
-
-
-        function openAddProjectModal() {
-            const modal = new bootstrap.Modal(document.getElementById('addProjectModal'));
-            modal.show();
-        }
-
-            async function saveProject() {
-        const projectData = {
-            title: document.getElementById("projectTitle").value.trim(),
-            description: document.getElementById("projectDescription").value.trim(),
-            attachments: document.getElementById("projectAttachments").value.trim()
-        };
-
-        const response = await fetch("/User/AddProject", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(projectData)
-        });
-
-        if (response.ok) {
-            bootstrap.Modal.getInstance(document.getElementById('addProjectModal')).hide();
-            localStorage.setItem("successMessage", `✅ Project "${projectData.title}" added successfully!`);
-            location.reload();
-        } else {
-            const result = await response.json().catch(() => null);
-            if (result?.error) {
-                showMessage(`❌ ${result.error}`, "danger");
-            } else {
-                showMessage("❌ Failed to add project", "danger");
-            }
-        }
-    }
-
-</script>
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile.css" />
+}
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <script src="~/js/profile.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }
+
+<script>
+    const userSkills = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Skills?.Select(s => s.Name) ?? new List<string>()));
+</script>

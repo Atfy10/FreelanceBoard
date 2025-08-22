@@ -151,20 +151,27 @@ namespace FreelanceBoard.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProject([FromBody] AddProjectViewModel model)
-        {
-            if (!ModelState.IsValid) return View(model);
-            var success = await _executor.Execute(
-                async () =>
-                {
-                    await _userService.AddProject(model, HttpContext);
-                },
-                error => ModelState.AddModelError(string.Empty, error)
-                );
-            return RedirectToAction("Project", "User");
-        }
+		[HttpPost]
+		public async Task<IActionResult> AddProject([FromBody] AddProjectViewModel model)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(new { error = "Invalid data" });
 
-        [HttpPost]
+			var success = await _executor.Execute(
+				async () =>
+				{
+					await _userService.AddProject(model, HttpContext);
+				},
+				error => ModelState.AddModelError(string.Empty, error)
+			);
+
+			if (!success)
+				return BadRequest(new { error = "Failed to save project" });
+
+			return Ok(new { message = "Project saved successfully" });
+		}
+
+		[HttpPost]
         public async Task<IActionResult> AddSkill([FromBody] AddSkillViewModel request)
         {
             ModelState.Remove(nameof(request.userId));
