@@ -1,5 +1,4 @@
-﻿// changePassword.js - Refactored with jQuery
-
+﻿
 $(document).ready(function () {
     initializePage();
     setupEventListeners();
