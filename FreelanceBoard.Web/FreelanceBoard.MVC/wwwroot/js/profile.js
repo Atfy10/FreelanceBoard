@@ -1,199 +1,266 @@
-﻿// profile.js
-
-let originalValues = {};
+﻿let originalValues = {};
 let isEditMode = false;
 
-document.addEventListener('DOMContentLoaded', function () {
-    storeOriginalValues();
-    setupPhoneNumberValidation();
-
-    // show message if stored in localStorage
-    const msg = localStorage.getItem("successMessage");
-    if (msg) {
-        showMessage(msg);
-        localStorage.removeItem("successMessage");
-    }
-
-    // 🔹 Toggle Edit Mode
-    const editBtn = document.getElementById("editModeBtn");
-    if (editBtn) {
-        editBtn.addEventListener("click", toggleEditMode);
-    }
-
-    // 🔹 Save Profile
-    const saveBtn = document.getElementById("saveBtn");
-    if (saveBtn) {
-        saveBtn.addEventListener("click", saveProfile);
-    }
-
-    // 🔹 Profile Picture Upload
-    const profileUploadTrigger = document.getElementById("profileUploadTrigger");
-    const profilePictureInput = document.getElementById("profilePictureInput");
-    if (profileUploadTrigger && profilePictureInput) {
-        profileUploadTrigger.addEventListener("click", () => profilePictureInput.click());
-        profilePictureInput.addEventListener("change", handleProfilePictureChange);
-    }
-
-    // 🔹 Skills
-    const addSkillBtn = document.getElementById("addSkillBtn");
-    if (addSkillBtn) {
-        addSkillBtn.addEventListener("click", openAddSkillModal);
-    }
-    document.querySelectorAll(".skill-remove").forEach(btn => {
-        btn.addEventListener("click", () => removeSkill(btn.dataset.skill, btn));
-    });
-
-    // 🔹 Save Skill
-    const saveSkillBtn = document.getElementById("saveSkillBtn");
-    if (saveSkillBtn) {
-        saveSkillBtn.addEventListener("click", saveSkill);
-    }
-
-    // 🔹 Projects
-    const addProjectBtn = document.getElementById("addProjectBtn");
-    if (addProjectBtn) {
-        addProjectBtn.addEventListener("click", openAddProjectModal);
-    }
-    document.querySelectorAll(".project-remove").forEach(btn => {
-        btn.addEventListener("click", () => removeProject(btn.dataset.projectId, btn));
-    });
-
-    // 🔹 Save Project
-    const saveProjectBtn = document.getElementById("saveProjectBtn");
-    if (saveProjectBtn) {
-        saveProjectBtn.addEventListener("click", saveProject);
-    }
-    
+$(document).ready(function () {
+    initializePage();
+    setupEventListeners();
+    setupValidation();
 });
 
-// ----------------- Utility & Actions -----------------
+// ----------------- Initialization -----------------
+
+function initializePage() {
+    storeOriginalValues();
+
+    // Show message if stored in localStorage
+    const msg = localStorage.getItem("successMessage");
+    if (msg) {
+        showMessage(msg, "success");
+        localStorage.removeItem("successMessage");
+    }
+}
 
 function storeOriginalValues() {
     originalValues = {
-        username: document.getElementById('username').value,
-        phoneNumber: document.getElementById('phoneNumber').value,
-        bio: document.getElementById('bio').value
+        username: $('#username').val(),
+        phoneNumber: $('#phoneNumber').val(),
+        bio: $('#bio').val()
     };
 }
 
-function showMessage(message, type = "success") {
-    const container = document.getElementById("messageContainer");
-    const content = document.getElementById("messageContent");
+// ----------------- Event Listeners -----------------
 
-    content.className = "alert alert-" + type;
-    content.textContent = message;
+function setupEventListeners() {
+    // Toggle Edit Mode
+    $('#editModeBtn').on('click', toggleEditMode);
 
-    container.classList.remove("d-none");
+    // Save Profile
+    $('#saveBtn').on('click', function (e) {
+        e.preventDefault();
+        saveProfile();
+    });
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Profile Picture Upload
+    $('#profileUploadTrigger').on('click', function () {
+        $('#profilePictureInput').click();
+    });
 
-    setTimeout(() => {
-        container.classList.add("d-none");
-    }, 6000);
+    $('#profilePictureInput').on('change', handleProfilePictureChange);
+
+    // Skills
+    $('#addSkillBtn').on('click', openAddSkillModal);
+    $(document).on('click', '.skill-remove', function () {
+        removeSkill($(this).data('skill'), $(this));
+    });
+    $('#saveSkillBtn').on('click', saveSkill)
+
+    // Projects
+    $('#addProjectBtn').on('click', openAddProjectModal);
+    $(document).on('click', '.project-remove', function () {
+        removeProject($(this).data('project-id'), $(this));
+    });
+    $('#saveProjectBtn').on('click', saveProject);
+
+    // Project attachment click
+    $(document).on('click', '.project-attachment', function () {
+        const url = $(this).data('url');
+        const isLink = $(this).data('islink');
+
+        if (isLink) {
+            window.open(url, '_blank');
+        } else {
+            // Handle file download/view logic here
+            console.log('File attachment clicked:', url);
+        }
+    });
 }
 
-function setupPhoneNumberValidation() {
-    const phoneInput = document.getElementById('phoneNumber');
-    if (!phoneInput) return;
-    phoneInput.addEventListener('input', function () {
-        this.value = this.value.replace(/[^0-9]/g, '');
+// ----------------- Validation Setup -----------------
+
+function setupValidation() {
+    // Phone number validation
+    $('#phoneNumber').on('input', function () {
+        $(this).val($(this).val().replace(/[^0-9]/g, ''));
     });
+
+    // Setup project form validation
+    $('#addProjectForm').validate({
+        rules: {
+            projectTitle: {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            projectDescription: {
+                required: true,
+                minlength: 10,
+                maxlength: 500
+            }
+        },
+        messages: {
+            projectTitle: {
+                required: "Please enter a project title",
+                minlength: "Title must be at least 3 characters",
+                maxlength: "Title cannot exceed 100 characters"
+            },
+            projectDescription: {
+                required: "Please enter a project description",
+                minlength: "Description must be at least 10 characters",
+                maxlength: "Description cannot exceed 500 characters"
+            }
+        },
+        errorElement: 'div',
+        errorClass: 'invalid-feedback',
+        highlight: function (element) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        unhighlight: function (element) {
+            $(element).addClass('is-valid').removeClass('is-invalid');
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        }
+    });
+
+    // Setup skill form validation
+    $('#addSkillForm').validate({
+        rules: {
+            skillSelect: {
+                required: true
+            }
+        },
+        messages: {
+            skillSelect: {
+                required: "Please select a skill"
+            }
+        },
+        errorElement: 'div',
+        errorClass: 'invalid-feedback',
+        highlight: function (element) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        unhighlight: function (element) {
+            $(element).addClass('is-valid').removeClass('is-invalid');
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        }
+    });
+}
+
+// ----------------- Utility Functions -----------------
+
+function showMessage(message, type = "success") {
+    const container = $("#messageContainer");
+    const content = $("#messageContent");
+
+    content.removeClass('alert-success alert-danger alert-warning')
+        .addClass(`alert-${type}`);
+    content.text(message);
+
+    container.removeClass("d-none");
+
+    $('html, body').animate({ scrollTop: 0 }, 'slow');
+
+    setTimeout(() => {
+        container.addClass("d-none");
+    }, 6000);
 }
 
 function toggleEditMode() {
     isEditMode = !isEditMode;
-    const editBtnText = document.getElementById('edit-btn-text');
-    const saveBtn = document.getElementById('saveBtn');
-    const inputFields = document.querySelectorAll('input, textarea');
-    const skillRemoveBtns = document.querySelectorAll('.skill-remove');
-    const addSkillBtn = document.getElementById('addSkillBtn');
-    const addProjectBtn = document.getElementById('addProjectBtn');
-    const projectRemoveBtns = document.querySelectorAll('.project-remove');
+    const editBtnText = $('#edit-btn-text');
+    const saveBtn = $('#saveBtn');
+    const inputFields = $('input, textarea');
+    const skillRemoveBtns = $('.skill-remove');
+    const addSkillBtn = $('#addSkillBtn');
+    const addProjectBtn = $('#addProjectBtn');
+    const projectRemoveBtns = $('.project-remove');
 
     if (isEditMode) {
-        editBtnText.textContent = 'Cancel Edit';
-        saveBtn.classList.remove("d-none");
-        if (addSkillBtn) addSkillBtn.classList.remove("d-none");
-        if (addProjectBtn) addProjectBtn.classList.remove("d-none");
+        editBtnText.text('Cancel Edit');
+        saveBtn.removeClass("d-none");
+        addSkillBtn.removeClass("d-none");
+        addProjectBtn.removeClass("d-none");
 
-        inputFields.forEach(field => {
-            field.removeAttribute('readonly');
-            field.classList.remove('readonly-field');
-        });
+        inputFields.prop('readonly', false).removeClass('readonly-field');
+        skillRemoveBtns.removeClass("d-none");
+        projectRemoveBtns.removeClass("d-none");
 
-        skillRemoveBtns.forEach(btn => btn.classList.remove("d-none"));
-        projectRemoveBtns.forEach(btn => btn.classList.remove("d-none"));
+        // Add editing class to skill tags
+        $('.skill-tag').addClass('editing');
     } else {
-        editBtnText.textContent = 'Edit Profile';
-        saveBtn.classList.add("d-none");
-        if (addSkillBtn) addSkillBtn.classList.add("d-none");
-        if (addProjectBtn) addProjectBtn.classList.add("d-none");
+        editBtnText.text('Edit Profile');
+        saveBtn.addClass("d-none");
+        addSkillBtn.addClass("d-none");
+        addProjectBtn.addClass("d-none");
 
-        document.getElementById('username').value = originalValues.username;
-        document.getElementById('phoneNumber').value = originalValues.phoneNumber;
-        document.getElementById('bio').value = originalValues.bio;
+        // Restore original values
+        $('#username').val(originalValues.username);
+        $('#phoneNumber').val(originalValues.phoneNumber);
+        $('#bio').val(originalValues.bio);
 
-        inputFields.forEach(field => {
-            field.setAttribute('readonly', true);
-            field.classList.add('readonly-field');
-        });
+        inputFields.prop('readonly', true).addClass('readonly-field');
+        skillRemoveBtns.addClass("d-none");
+        projectRemoveBtns.addClass("d-none");
 
-        skillRemoveBtns.forEach(btn => btn.classList.add("d-none"));
-        projectRemoveBtns.forEach(btn => btn.classList.add("d-none"));
+        // Remove editing class from skill tags
+        $('.skill-tag').removeClass('editing');
     }
 }
 
+// ----------------- API Functions -----------------
+
 async function saveProfile() {
     const profileData = {
-        userName: document.getElementById('username').value.trim(),
-        phoneNumber: document.getElementById('phoneNumber').value.trim(),
-        bio: document.getElementById('bio').value.trim()
+        userName: $('#username').val().trim(),
+        phoneNumber: $('#phoneNumber').val().trim(),
+        bio: $('#bio').val().trim()
     };
 
-    // Validate inputs
+    // Client-side validation
     if (!profileData.userName) {
-        showMessage('Username is required');
+        showMessage('Username is required', 'danger');
+        $('#username').addClass('is-invalid');
         return;
     }
 
     if (!profileData.phoneNumber || profileData.phoneNumber.length < 10 || profileData.phoneNumber.length > 15) {
-        showMessage('Please enter a valid phone number (10-15 digits)');
+        showMessage('Please enter a valid phone number (10-15 digits)', 'danger');
+        $('#phoneNumber').addClass('is-invalid');
         return;
     }
 
     try {
         // Show loading state
-        const saveBtn = document.getElementById('saveBtn');
-        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
-        saveBtn.disabled = true;
+        const saveBtn = $('#saveBtn');
+        saveBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...')
+            .addClass('btn-loading')
+            .prop('disabled', true);
 
         const response = await fetch("/User/UpdateProfile", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+            },
             body: JSON.stringify(profileData)
         });
 
         if (response.ok) {
-            // Success - refresh the page to get updated data
-            location.reload();
+            showMessage('✅ Profile updated successfully!', 'success');
+            setTimeout(() => location.reload(), 1500);
         } else {
             const result = await response.json();
-            if (result.error) {
-                showMessage(result.error, "danger");
-            } else {
-                showMessage("❌ Failed to update profile", "danger");
-            }
+            showMessage(result.error || "❌ Failed to update profile", "danger");
         }
     } catch (error) {
         console.error('Error:', error);
-        showMessage('An error occurred while updating profile');
+        showMessage('❌ An error occurred while updating profile', 'danger');
     } finally {
-        // Reset save button
-        const saveBtn = document.getElementById('saveBtn');
-        if (saveBtn) {
-            saveBtn.innerHTML = '<i class="bi-check-circle me-2"></i> Save Changes';
-            saveBtn.disabled = false;
-        }
+        $('#saveBtn').html('<i class="bi-check-circle me-2"></i> Save Changes')
+            .removeClass('btn-loading')
+            .prop('disabled', false);
     }
 }
 
@@ -201,135 +268,160 @@ async function handleProfilePictureChange(event) {
     const file = event.target.files[0];
     if (!file) return;
 
+    // Validate file type and size
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    if (!validTypes.includes(file.type)) {
+        showMessage('Please select a valid image file (JPEG, PNG, GIF)', 'danger');
+        return;
+    }
+
+    if (file.size > maxSize) {
+        showMessage('Image size must be less than 5MB', 'danger');
+        return;
+    }
+
     const formData = new FormData();
     formData.append("ProfilePicture", file);
 
     const token = sessionStorage.getItem("token");
-    console.log("Uploading profile picture with token:", token);
 
     try {
+        $('#profileUploadTrigger').addClass('btn-loading');
+
         const response = await fetch("https://localhost:7029/api/User/change-profile-picture", {
             method: "POST",
             body: formData,
             headers: {
-                Authorization: `Bearer ${token}`
+                "Authorization": `Bearer ${token}`
             }
         });
-        console.log("Form data:", formData);
 
         const result = await response.json();
-        console.log("Response:", result);
 
         if (response.ok && result.isSuccess) {
-            // ✅ Update image on screen
-            document.getElementById("profilePicture").src = "https://localhost:7029" + result.data;
-            showMessage("Profile picture updated successfully!");
+            $('#profilePicture').attr("src", "https://localhost:7029" + result.data + "?t=" + new Date().getTime());
+            showMessage("✅ Profile picture updated successfully!", "success");
         } else {
-            showMessage("Failed to update profile picture: " + result.message);
+            showMessage("❌ Failed to update profile picture: " + (result.message || "Unknown error"), "danger");
         }
-    } catch {
-        showMessage("Error uploading image.");
+    } catch (error) {
+        console.error("Upload error:", error);
+        showMessage("❌ Error uploading image", "danger");
+    } finally {
+        $('#profileUploadTrigger').removeClass('btn-loading');
+        $('#profilePictureInput').val('');
     }
 }
 
 async function openAddSkillModal() {
-    const modal = new bootstrap.Modal(document.getElementById("addSkillModal"));
+    const modal = new bootstrap.Modal($("#addSkillModal")[0]);
 
     try {
         const response = await fetch("https://localhost:7029/api/Skill/get-all");
         const result = await response.json();
 
         if (result.isSuccess && Array.isArray(result.data)) {
-            const select = document.getElementById("skillSelect");
-            select.innerHTML = '<option value="">-- Choose a skill --</option>';
+            const select = $("#skillSelect");
+            select.empty().append('<option value="">-- Choose a skill --</option>');
 
-
-            // Filter out skills the user already has
             const filteredSkills = result.data.filter(skill => !userSkills.includes(skill.name));
 
-            // Populate only the filtered skills
             filteredSkills.forEach(skill => {
-                const option = document.createElement("option");
-                option.value = skill.id;
-                option.textContent = skill.name;
-                select.appendChild(option);
+                select.append($('<option>', {
+                    value: skill.id,
+                    text: skill.name
+                }));
             });
         } else {
-            showMessage("❌ Failed to load skills");
+            showMessage("❌ Failed to load skills", "danger");
         }
     } catch (error) {
         console.error("Error fetching skills:", error);
-        showMessage("❌ Error loading skills");
+        showMessage("❌ Error loading skills", "danger");
     }
 
     modal.show();
 }
 
 async function saveSkill() {
-    console.log("saveSkill function called");
-    const skillSelect = document.getElementById("skillSelect");
-    const selectedId = skillSelect.value;
-    const selectedName = skillSelect.options[skillSelect.selectedIndex]?.text;
+    if (!$('#addSkillForm').valid()) return;
 
-    if (!selectedId) {
-        showMessage("⚠️ Please select a skill.");
-        return;
-    }
+    const skillSelect = $("#skillSelect");
+    const selectedId = skillSelect.val();
+    const selectedName = skillSelect.find('option:selected').text();
 
-    const response = await fetch("/User/AddSkill", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ skillName: selectedName })
-    });
+    try {
+        $('#saveSkillBtn').addClass('btn-loading').prop('disabled', true);
 
-    if (response.ok) {
-        bootstrap.Modal.getInstance(document.getElementById('addSkillModal')).hide();
-        localStorage.setItem("successMessage", `✅ Skill ${selectedName} added successfully!`);
-        location.reload();
-    } else {
-        showMessage("❌ Failed to add skill");
+        const response = await fetch("/User/AddSkill", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+            },
+            body: JSON.stringify({ skillName: selectedName })
+        });
+
+        if (response.ok) {
+            bootstrap.Modal.getInstance($('#addSkillModal')[0]).hide();
+            localStorage.setItem("successMessage", `✅ Skill "${selectedName}" added successfully!`);
+            location.reload();
+        } else {
+            const result = await response.json();
+            showMessage(result.error || "❌ Failed to add skill", "danger");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        showMessage("❌ Network error while adding skill", "danger");
+    } finally {
+        $('#saveSkillBtn').removeClass('btn-loading').prop('disabled', false);
     }
 }
+
 function openAddProjectModal() {
-    const modal = new bootstrap.Modal(document.getElementById('addProjectModal'));
+    $('#addProjectForm')[0].reset();
+    $('#addProjectForm').validate().resetForm();
+
+    const modal = new bootstrap.Modal($('#addProjectModal')[0]);
     modal.show();
 }
 
 async function saveProject() {
+    if (!$('#addProjectForm').valid()) return;
+
     const projectData = {
-        title: document.getElementById("projectTitle").value.trim(),
-        description: document.getElementById("projectDescription").value.trim(),
-        attachments: document.getElementById("projectAttachments").value.trim()
+        title: $("#projectTitle").val().trim(),
+        description: $("#projectDescription").val().trim(),
+        attachments: $("#projectAttachments").val().trim()
     };
 
     try {
+        $('#saveProjectBtn').addClass('btn-loading').prop('disabled', true);
+
         const response = await fetch("/User/AddProject", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+            },
             body: JSON.stringify(projectData)
         });
 
-        if (!response.ok) {
-            const result = await response.json().catch(() => null);
-            if (result?.error) {
-                showMessage(`❌ ${result.error}`, "danger");
-            } else {
-                showMessage("❌ Failed to add project", "danger");
-            }
-            return;
+        if (response.ok) {
+            bootstrap.Modal.getInstance($('#addProjectModal')[0]).hide();
+            localStorage.setItem("successMessage", `✅ Project "${projectData.title}" added successfully!`);
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            const result = await response.json();
+            showMessage(result.error || "❌ Failed to add project", "danger");
         }
-
-        const result = await response.json();
-        bootstrap.Modal.getInstance(document.getElementById('addProjectModal')).hide();
-
-        localStorage.setItem("successMessage", `✅ Project "${projectData.title}" added successfully!`);
-        setTimeout(() => {
-            location.reload();
-        }, 2000);
-
     } catch (error) {
-        console.error("Fetch error:", error);
+        console.error("Error:", error);
         showMessage("❌ Network error while saving project", "danger");
+    } finally {
+        $('#saveProjectBtn').removeClass('btn-loading').prop('disabled', false);
     }
 }
 
@@ -339,42 +431,49 @@ async function removeProject(projectId, button) {
     try {
         const response = await fetch(`/User/DeleteProject?projectId=${projectId}`, {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" }
+            headers: {
+                "Content-Type": "application/json",
+                "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+            }
         });
 
         if (response.ok) {
-            // Remove project card from DOM
-            button.closest('.project-card').remove();
-            showMessage('✅ Project deleted successfully!', 'success');
+            button.closest('.project-card').fadeOut(300, function () {
+                $(this).remove();
+                showMessage('✅ Project deleted successfully!', 'success');
+            });
         } else {
             const error = await response.text();
-            showMessage('❌ Failed to delete project: ' + error);
+            showMessage('❌ Failed to delete project: ' + error, 'danger');
         }
     } catch (error) {
         console.error('Error:', error);
-        showMessage('❌ Error deleting project');
+        showMessage('❌ Error deleting project', 'danger');
     }
-}      
+}
 
 async function removeSkill(skillName, button) {
     if (!confirm(`Are you sure you want to remove "${skillName}"?`)) return;
 
-    const response = await fetch("/User/RemoveSkill", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ skillName: skillName }) // send skill name to backend
-    });
+    try {
+        const response = await fetch("/User/RemoveSkill", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+            },
+            body: JSON.stringify({ skillName: skillName })
+        });
 
-    if (response.ok) {
-        // Store message in localStorage to show after reload
-        localStorage.setItem("successMessage", `✅ Skill "${skillName}" removed successfully!`);
-        location.reload();
-    } else {
-        const result = await response.json().catch(() => null);
-        if (result?.error) {
-            showMessage(`❌ ${result.error}`, "danger");
+        if (response.ok) {
+            localStorage.setItem("successMessage", `✅ Skill "${skillName}" removed successfully!`);
+            location.reload();
         } else {
-            showMessage(`❌ Failed to remove skill "${skillName}"`, "danger");
+            const result = await response.json();
+            showMessage(result.error || `❌ Failed to remove skill "${skillName}"`, "danger");
         }
+    } catch (error) {
+        console.error("Error:", error);
+        showMessage("❌ Network error while removing skill", "danger");
     }
 }

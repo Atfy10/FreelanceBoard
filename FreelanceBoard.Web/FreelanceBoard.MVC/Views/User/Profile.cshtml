@@ -12,7 +12,6 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-12">
 
-                @* Validation Errors *@
                 @if (!ViewData.ModelState.IsValid)
                 {
                     <div class="alert alert-danger">
@@ -20,27 +19,26 @@
                     </div>
                 }
 
-                @* Single Message Container instead of duplicate *@
                 <div id="messageContainer" class="mt-3 d-none">
                     <div id="messageContent" class="alert" role="alert"></div>
                 </div>
 
                 <!-- Profile Header -->
                 <div class="profile-container">
-                    <button class="edit-mode-toggle" id="editModeBtn">
-                        <i class="bi-pencil-square me-2"></i>
-                        <span id="edit-btn-text">Edit Profile</span>
-                    </button>
-                    <a href="/User/ChangePassword" class="change-password-link">
-                        <i class="bi-shield-lock-fill me-2"></i>
-                        Change Password
-                    </a>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <button class="btn btn-outline-primary" id="editModeBtn">
+                            <i class="bi-pencil-square me-2"></i>
+                            <span id="edit-btn-text">Edit Profile</span>
+                        </button>
+                        <a href="/User/ChangePassword" class="btn btn-outline-secondary">
+                            <i class="bi-shield-lock-fill me-2"></i>
+                            Change Password
+                        </a>
+                    </div>
 
-                    <div class="profile-header">
-                        <div class="profile-picture-container">
-                            <img src="@(string.IsNullOrEmpty(Model.Profile?.Image)
-                                                                 ? Url.Content("~/images/avatar.png")
-                                                                 : Url.Content("https://localhost:7029" + Model.Profile.Image))"
+                    <div class="profile-header text-center">
+                        <div class="profile-picture-container mx-auto mb-3">
+                            <img src="@(string.IsNullOrEmpty(Model.Profile?.Image) ? Url.Content("~/images/avatar.png") : Url.Content("https://localhost:7029" + Model.Profile.Image))"
                                  alt="Profile Picture"
                                  class="profile-picture"
                                  id="profilePicture">
@@ -89,15 +87,15 @@
                 </div>
 
                 <!-- Save Button -->
-                <div class="text-center">
-                    <button class="save-btn d-none" id="saveBtn">
+                <div class="text-center mt-4">
+                    <button class="btn btn-success d-none" id="saveBtn">
                         <i class="bi-check-circle me-2"></i>
                         Save Changes
                     </button>
                 </div>
 
                 <!-- Skills Section -->
-                <div class="profile-container">
+                <div class="profile-container mt-4">
                     <h3 class="section-title">
                         <i class="bi-gear-fill"></i> Skills
                     </h3>
@@ -116,7 +114,7 @@
                 </div>
 
                 <!-- Projects Section -->
-                <div class="profile-container">
+                <div class="profile-container mt-4">
                     <h3 class="section-title">
                         <i class="bi-folder-fill"></i> Projects
                     </h3>
@@ -124,8 +122,10 @@
                         @foreach (var project in Model.Projects ?? new List<ProjectViewModel>())
                         {
                             <div class="project-card">
-                                <h4 class="project-title">@project.Title</h4>
-                                <button class="project-remove d-none" data-project-id="@project.Id">×</button>
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h4 class="project-title">@project.Title</h4>
+                                    <button class="btn btn-sm btn-outline-danger project-remove d-none" data-project-id="@project.Id">×</button>
+                                </div>
                                 <p class="project-description">@project.Description</p>
 
                                 @if (!string.IsNullOrEmpty(project.Attachments))
@@ -157,7 +157,6 @@
             </div>
         </div>
     </div>
-
 </section>
 
 <!-- Add Project Modal -->
@@ -174,24 +173,25 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="projectTitle" class="form-label">Title *</label>
-                        <input type="text" class="form-control" id="projectTitle" required>
+                        <input type="text" class="form-control" id="projectTitle" name="projectTitle" required>
                     </div>
                     <div class="mb-3">
                         <label for="projectDescription" class="form-label">Description *</label>
-                        <textarea class="form-control" id="projectDescription" rows="3" required></textarea>
+                        <textarea class="form-control" id="projectDescription" name="projectDescription" rows="3" required></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="projectAttachments" class="form-label">Attachments</label>
-                        <input type="text" class="form-control" id="projectAttachments" placeholder="URLs or filenames">
+                        <input type="text" class="form-control" id="projectAttachments" name="projectAttachments" placeholder="URLs or filenames">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary" id="saveProjectBtn">
-                        <i class="bi-check-circle me-2" ></i> Save Project
+                        <i class="bi-check-circle me-2"></i> Save Project
                     </button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
@@ -200,24 +200,27 @@
 <div class="modal fade" id="addSkillModal" tabindex="-1" aria-labelledby="addSkillModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addSkillModalLabel">Add New Skill</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <label for="skillSelect">Select Skill *</label>
-                <select id="skillSelect" class="form-control" required>
-                    <option value="">-- Choose a skill --</option>
-                </select>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn btn-primary" id="saveSkillBtn">Save Skill</button>
-            </div>
+            <form id="addSkillForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSkillModalLabel">Add New Skill</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="skillSelect" class="form-label">Select Skill *</label>
+                        <select id="skillSelect" name="skillSelect" class="form-select" required>
+                            <option value="">-- Choose a skill --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveSkillBtn">Save Skill</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
 
 @section Styles {
     <link rel="stylesheet" href="~/css/profile.css" />
